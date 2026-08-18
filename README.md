@@ -27,7 +27,3 @@ This development build starts with test shortcuts enabled. Set `PATH_BLOODIED_DE
 ## Windows build
 
 Run `build_windows.bat`.
-
-## Preciosa development art
-
-`assets/characters/preciosa_spriteSheet.png` is used only for Preciosa's in-game sprite pipeline. Her existing portrait and character-card illustrations, separate dialogue and character-specific stats remain unchanged. All packaged media are temporary development assets and are intended to be replaced before public release.
