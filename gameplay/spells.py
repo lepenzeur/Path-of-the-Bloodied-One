@@ -1,14 +1,14 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0030>
 
-# Eadric'ten öğrenilen / satın alınan ilk gerçek büyü. Kaynak sheetler proje
-# kökünde de aranır; böylece eski klasör düzenleri sessizce kırılmaz.
+
+
 FIRE_MAGIC_ITEM_ADAYLARI = [
     os.path.join(ASSETS, "items", "sphaera_exothermica.png"),
     os.path.join(ASSETS, "items", "fire_magic.png"),
@@ -22,10 +22,10 @@ CORONA_AETHERICA_ITEM_ADAYLARI = [
     os.path.join(ASSETS, "items", "coronaAetherica.png"),
     os.path.join(BASE_DIR, "corona_aetherica.png"),
 ]
-# Corona Aetherica sprite sheet'i şimdilik yalnız varlık çözümleme seviyesinde
-# tanımlanır. Kullanıcının yönlendirmesine göre death satırındaki düz/kalın uzayan
-# çizgi varyantı nihai sunumda tercih edilmeyecek; büyü sade bir dağılma diliyle
-# ilerleyecek şekilde ayrık yüklenir.
+
+
+
+
 CORONA_AETHERICA_CAST_KLASORU = os.path.join(
     ASSETS,
     "spells",
@@ -33,10 +33,10 @@ CORONA_AETHERICA_CAST_KLASORU = os.path.join(
     "corona_aetherica",
 )
 CORONA_AETHERICA_CAST_ADAYLARI = [
-    # Canonical project location:
-    # D:\Downloads\path_of_bloodied_one\assets\spells\aether\corona_aetherica\corona_aetherica_cast.png
+
+
     os.path.join(CORONA_AETHERICA_CAST_KLASORU, "corona_aetherica_cast.png"),
-    # Tolerate a filename that accidentally contains a space before the extension.
+
     os.path.join(CORONA_AETHERICA_CAST_KLASORU, "corona_aetherica_cast .png"),
     os.path.join(ASSETS, "spells", "aether", "corona_aetherica_cast.png"),
     os.path.join(ASSETS, "spells", "corona_aetherica_cast.png"),
@@ -140,11 +140,11 @@ FIRE_MAGIC_GROUND_ADAYLARI = [
     ),
 ]
 
-# Sphaera Exothermica için üç ayrı ses olayı. Birincil klasör:
-# assets/sounds/spells/fire/fireMagicCharge.wav
-# assets/sounds/spells/fire/fireMagicWhoosh.wav
-# assets/sounds/spells/fire/fireMagicExplosion.wav
-# Kök / eski düzen fallback'leri korunur; dosya yoksa büyü sessizce çalışmaya devam eder.
+
+
+
+
+
 FIRE_MAGIC_SES_KLASORU = os.path.join(ASSETS, "sounds", "spells", "fire")
 FIRE_MAGIC_CHARGE_SES_ADAYLARI = [
     os.path.join(FIRE_MAGIC_SES_KLASORU, "fireMagicCharge.wav"),
@@ -181,8 +181,8 @@ FIRE_MAGIC_EXPLOSION_SES_YOLU = mevcut_ilk_dosya(FIRE_MAGIC_EXPLOSION_SES_ADAYLA
 
 # <POTBO_STAGE S0059>
 
-# IGNIS okul sembolü kullanıcı tarafından verilen görseldir. Kod yeni bir sembol
-# çizmez; PNG'yi yükler, yalnız siyah arka planını çalışma anında alpha=0 yapar.
+
+
 IGNIS_SEMBOL_ADAYLARI = [
     os.path.join(ASSETS, "ui", "ignis_symbol.png"),
     os.path.join(ASSETS, "spells", "ignis", "ignis_symbol.png"),
@@ -197,9 +197,9 @@ IGNIS_SEMBOL_YOLU = mevcut_ilk_dosya(IGNIS_SEMBOL_ADAYLARI)
 # </POTBO_STAGE S0061>
 
 # <POTBO_STAGE S0131>
-# =========================================================
-# FIRE MAGIC / Q HIZLI SLOT TRANSIENT DURUMU
-# =========================================================
+
+
+
 FIRE_MAGIC_EADRIC_FIYATI = 1230
 FIRE_MAGIC_SATIS_FIYATI = 746
 FIRE_MAGIC_GERI_ALIM_FIYATI = 800
@@ -218,14 +218,14 @@ SPELL_OKULLARI = {
         "en": "CONCORDIA",
     },
 }
-# Cast, fiziksel olarak oyuncunun gövdesinde doğmaz. Ateş çekirdeği oyuncunun baktığı
-# yönde birkaç piksel önde oluşur; çevresindeki alev halkası daralarak çekirdeğe
-# "çöker", sonra projectile bu odaktan ayrılır. Böylece büyü hem okunur hem de
-# karakterin içinden fırlıyormuş gibi görünmez.
-# Cast artık okunabilir üç faz taşır: halka -> yoğun ateş topu -> uzayan alev.
-# cast artık iki buçuk saniyelik bekleme değildir. İlk halka hızla kapanır,
-# yaklaşık çeyrek saniyede çekirdek görünür, bir saniye civarında projectile ayrılır.
-# Bu süreler ateş topunun oluşumunu okunabilir tutarken savaş ritmini kesmez.
+
+
+
+
+
+
+
+
 FIRE_MAGIC_CAST_RELEASE_MS = 1050
 FIRE_MAGIC_CAST_TOTAL_MS = 1180
 FIRE_MAGIC_CAST_LOCK_MS = 1090
@@ -234,34 +234,34 @@ FIRE_MAGIC_CAST_FOCUS_PULL = 0.72
 FIRE_MAGIC_ORB_START_RATIO = 0.24
 FIRE_MAGIC_STRETCH_START_RATIO = 0.70
 
-# ateş zamanlaması. Charge animasyonunun toplam süresi değişmez; ancak ilk ateş
-# pikseli göründüğü anda ses 1 başlar. Projectile temas ettiği karede fuse beklemeden
-# patlar ve ses 3 de aynı detonation karesine kilitlenir.
+
+
+
 FIRE_MAGIC_CHARGE_READY_SOUND_MS = 0
 FIRE_MAGIC_EXPLOSION_DELAY_MS = 0
 FIRE_MAGIC_EXPLOSION_SOUND_OFFSET_MS = 0
 
-# Whoosh karakterini korumak için top yaklaşık 1500 px yolu 2.27 saniyede alır.
+
 FIRE_MAGIC_PROJECTILE_SPEED = 660.0
-# Hedefe değmedikçe otomatik olarak menzil sonunda patlamaz. Bu değer yalnızca
-# safety-TTL / dünya dışına kaçan projectile için çok geniş bir yaşam koridorudur.
+
+
 FIRE_MAGIC_PROJECTILE_MAX_TRAVEL = 1500.0
 FIRE_MAGIC_PROJECTILE_TTL_MS = 3000
 FIRE_MAGIC_PROJECTILE_RADIUS = 15.5
-# Sphaera Exothermica'nın şiddeti yükseltildi. Merkez kabuğu ağır hedefleri
-# ciddi biçimde sarsar; dış kabuk artık yalnız kozmetik chip damage değildir.
-# Effective-distance hesabı ve duvar LOS filtresi aynı kaldığı için güç artışı
-# geometrik kuralları delmez.
-# Patlama tekrar kompakt dört katmana ayrıldı. Merkezden sonra ilk halka
-# yaklaşık iki karakter ölçeği (2 x 42 world-px), ikinci ve üçüncü halkalar birer
-# karakter ölçeğidir. Toplam radius 285 -> 210 px düşürüldü.
-# Tuple içindeki ikinci değer gerçek hasar değil, shell kimliğidir; gerçek hasar
-# mesafe + projectile momentumu + küçük impact varyansından aşağıdaki aralıklarda roll edilir.
+
+
+
+
+
+
+
+
+
 FIRE_MAGIC_EXPLOSION_BANDS = (
-    (42.0, 675),  # merkez: 672-678
-    (126.0, 425),  # 1. katman: 422-428
-    (168.0, 227),  # 2. katman: 224-230, fire-death
-    (210.0, 29),  # 3. katman: 26-32, yalnız şok/normal death
+    (42.0, 675),
+    (126.0, 425),
+    (168.0, 227),
+    (210.0, 29),
 )
 FIRE_MAGIC_EXPLOSION_RADIUS = FIRE_MAGIC_EXPLOSION_BANDS[-1][0]
 FIRE_MAGIC_EXPLOSION_DAMAGE_RANGES = {
@@ -276,8 +276,8 @@ FIRE_MAGIC_EXPLOSION_DEATH_MODES = {
     227: "blast_mid",
     29: "blood",
 }
-# Şok dalgası katmandan katmana hızla zayıflar. Dış halka hissedilir ama karakteri
-# ekranın öbür ucuna fırlatmaz.
+
+
 FIRE_MAGIC_KNOCKBACK_SPEEDS = {
     675: 1020.0,
     425: 760.0,
@@ -285,8 +285,8 @@ FIRE_MAGIC_KNOCKBACK_SPEEDS = {
     29: 245.0,
 }
 FIRE_MAGIC_KNOCKBACK_MS = 510
-# İkinci halka özellikle yanma odaklıdır; center/inner da alev bırakabilir fakat
-# ölüm sunumu yalnız ikinci halkada "fire" olarak zorlanır.
+
+
 FIRE_MAGIC_BURN_DURATION_MS = 6000
 FIRE_MAGIC_BURN_TICK_MS = 500
 FIRE_MAGIC_BURN_TOTAL_BY_BAND = {
@@ -295,14 +295,14 @@ FIRE_MAGIC_BURN_TOTAL_BY_BAND = {
     227: 132,
     29: 0,
 }
-# Görsel ölçekler projectile ve patlama hacmini mekanik menzille uyumlu tutar.
+
 
 FIRE_MAGIC_CAST_VISUAL_SCALE = 1.46
 FIRE_MAGIC_PROJECTILE_VISUAL_SCALE = 1.76
 FIRE_MAGIC_EXPLOSION_VISUAL_SCALE = 1.68
-# Patlama sonrası zemin kısa süreliğine gerçek bir yangın alanına dönüşür.
-# Çok sayıda küçük patch tek bir dev sprite yerine yayılır; böylece hem alan okunur
-# hem de oyuncu/düşmanlar alevlerin arasından geçerken temas mekaniği doğal görünür.
+
+
+
 FIRE_MAGIC_GROUND_FIRE_MIN = 24
 FIRE_MAGIC_GROUND_FIRE_MAX = 38
 FIRE_MAGIC_GROUND_FIRE_MIN_MS = 3200
@@ -325,24 +325,24 @@ player_magic_ground_fires = []
 # <POTBO_STAGE S0133>
 fire_magic_screen_flash_until = 0
 fire_magic_screen_flash_started = 0
-# Geçici geliştirici testleri save dosyasına yazılmaz. CTRL+O Q üzerinden
-# Sphaera Exothermica'yı mana/stamina/cooldown bedeli olmadan test eder.
-# Burn/DoT davranışı normal oyunla aynı kalır; ayrı burn test kısayolu kaldırıldı.
+
+
+
 gelistirici_sonsuz_ates = False
 # </POTBO_STAGE S0133>
 
 # <POTBO_STAGE S0184>
-# Fire Magic yalnız Eadric'ten ilk kez 1230 coin karşılığında alınır. Sonradan
-# Hanus'ye satılırsa aynı kopya 800 coin buyback olarak geri alınabilir.
+
+
 fire_magic_eadric_alindi = False
 eadric_fire_magic_reddetme = 0
 eadric_fire_magic_teklif_kilit_konusma = 0
 # </POTBO_STAGE S0184>
 
 # <POTBO_STAGE S0190>
-# 1-5 hızlı slotlar sabit slot seçimi olduğu için yeniden atamada ayrılmıştır.
-# Geliştirici testleri CTRL değiştiricisiyle izole edilir. Mouse hiçbir zaman atanmaz.
-# Yalnız istenen dört test girişi tutulur: I coin, L level, O sonsuz Sphaera, U special-move test kilidi.
+
+
+
 SABIT_HIZLI_SLOT_TUSLARI = {
     pygame.K_1,
     pygame.K_2,
@@ -565,17 +565,17 @@ def fire_magic_sesi_cal(tur):
 
 # <POTBO_STAGE S0269>
 
-# -----------------------------------------------------------------
-# FIRE MAGIC SPRITE HAZIRLIĞI
-# -----------------------------------------------------------------
-# Kullanıcının cast atlası üç ayrı görsel faz olarak okunur: üstte halka, ortada
-# küresel ateş topu, ardından aşağı doğru uzayan alev. Projectile bu son aileyi
-# hareket yönüne döndürerek kullanır; böylece yuvarlak topun ekranda sürüklenmesi yoktur.
+
+
+
+
+
+
 FIRE_MAGIC_CAST_RECTLERI = [(i * 50, 18, 50, 55) for i in range(7)]
-# kullanıcının yeşille işaretlediği iki aile bilinçli olarak atlas dışında.
-# Sağdaki büyük üç ateş kütlesi ve alttaki dört düşen/yanan varyant CAST/PROJECTILE
-# için kullanılmaz. Top yalnız soldaki dört küresel kareden oluşur; atış ise tam
-# olarak onların sağındaki üç uzayan alev karesini 0 -> 1 -> 2 sırasıyla kullanır.
+
+
+
+
 FIRE_MAGIC_ORB_RECTLERI = [
     (6, 66, 44, 49),
     (53, 65, 50, 49),
@@ -583,8 +583,8 @@ FIRE_MAGIC_ORB_RECTLERI = [
     (145, 68, 42, 46),
 ]
 FIRE_MAGIC_STRETCH_RECTLERI = [
-    # Yeşil sağ çemberden hemen önceki SON ÜÇ görsel, ayrı ayrı: küçük alev,
-    # uzun ateş izi, temas alevi. İlk rect artık iki sprite'ı aynı anda yutmaz.
+
+
     (185, 65, 25, 48),
     (217, 51, 26, 81),
     (253, 83, 34, 49),
@@ -593,10 +593,10 @@ FIRE_MAGIC_EXPLOSION_RECTLERI = [(i * 108, 0, 108, 84) for i in range(6)] + [
     (i * 108, 84, 108, 83) for i in range(6)
 ]
 
-# Zombie Attack fire atlas'ından yalnız alev adaları seçilir. Sağ taraftaki yanmış
-# beden/iskelet sprite'ları bilinçli olarak dışarıda bırakılır. Bu rect'ler animation
-# değildir; GroundFirePatch her patlamada deterministik bir alt-küme seçip çok küçük
-# alpha/scale titreşimleriyle "yaşayan" bir zemin alevi üretir.
+
+
+
+
 FIRE_MAGIC_GROUND_RECTLERI = [
     (0, 3, 37, 32),
     (38, 1, 52, 34),
@@ -632,8 +632,8 @@ _fire_stretch_raw = _sprite_sheet_karelerini_cikar(
     (153, 0, 153),
     FIRE_MAGIC_STRETCH_RECTLERI,
 )
-# Patlamadaki siyah ve ground-fire'daki beyaz fon yalnız kenara bağlı bölgede sökülür.
-# Böylece siyah duman ile beyaz-sarı sıcak çekirdek yanlışlıkla kaybolmaz.
+
+
 _fire_explosion_raw = _sinir_fonlu_sheet_rectlerini_cikar(
     fire_magic_explosion_yolu,
     FIRE_MAGIC_EXPLOSION_RECTLERI,
@@ -660,9 +660,9 @@ FIRE_MAGIC_EXPLOSION_SPRITELERI = _kareleri_ortak_canvas_yap(
 )
 FIRE_MAGIC_GROUND_SPRITELERI = [k for k in _fire_ground_raw if k is not None]
 
-# Zemin alevleri aynı animasyonun kareleri değil, farklı flame motifleridir.
-# Boy/en oranına göre üç aileye ayırmak, bir patch'in bir frame'de uzun meşale,
-# sonraki frame'de geniş ateş duvarına "morph" etmesini engeller.
+
+
+
 FIRE_MAGIC_GROUND_AILELERI = {
     "compact": [],
     "tall": [],
@@ -732,7 +732,7 @@ def spell_okulu_sembol_ciz(okul, rect, alpha=255):
             )
             w = max(1, int(round(kaynak.get_width() * oran)))
             h = max(1, int(round(kaynak.get_height() * oran)))
-            # Küçük UI boyutunda sembolün kırmızı-turuncu geçişi korunur.
+
             img = pygame.transform.smoothscale(kaynak, (w, h))
             sprite_olcek_onbellegi[key] = img
         draw = img
@@ -742,7 +742,7 @@ def spell_okulu_sembol_ciz(okul, rect, alpha=255):
         ekran.blit(draw, draw.get_rect(center=rect.center))
         return True
 
-    # Asset bulunamazsa eski metin sembolü yalnız güvenli fallback olarak kalır.
+
     sembol = SPELL_OKULLARI.get(okul, {}).get("symbol", "")
     if sembol:
         yazi_yaz(
@@ -856,7 +856,7 @@ def oyun_yukle(dosya_yolu, gore_koru=False):
         oyuncu_max_mana = veri.get("max_mana", 50)
         oyuncu_stamina = float(veri.get("stamina", 100))
         oyuncu_max_stamina = float(veri.get("max_stamina", 100))
-        # Eski save'lerde level yalnız sayıydı; yüklemede güncel stat eğrisine taşınır.
+
         if (
             int(veri.get("level_balance_version", 0) or 0) < LEVEL_BALANCE_VERSION
             and oyuncu_level > 1
@@ -873,7 +873,7 @@ def oyun_yukle(dosya_yolu, gore_koru=False):
 
         envanter_itemleri = (yuklenen_envanter[:30] + [None] * 30)[:30]
 
-        # Eski kayıtlarla uyumluluk: 1-coin health_potion artık kullanılmaz.
+
         for _i, _item in enumerate(envanter_itemleri):
             if isinstance(_item, dict):
                 if _item.get("id") == "health_potion":
@@ -990,8 +990,8 @@ def oyun_yukle(dosya_yolu, gore_koru=False):
         geri_alim = veri.get("merchant_buyback", [])
         merchant_geri_alim_listesi = geri_alim if isinstance(geri_alim, list) else []
 
-        # Eski kayıtlarda bool alanı yoksa inventory/buyback varlığından
-        # çıkarım yap. Böylece Eadric aynı eşyanın ikinci kopyasını satamaz.
+
+
         if not fire_magic_eadric_alindi:
             inventory_has = any(
                 isinstance(it, dict) and it.get("id") == "fire_magic"
@@ -1063,7 +1063,7 @@ def oyun_yukle(dosya_yolu, gore_koru=False):
         torrmund_durumunu_yukle(veri.get("torrmund"))
         fire_magic_transient_sifirla()
 
-        # Save/load sırasında geçici fiziksel kontrol durumları taşınmaz.
+
         oyuncu_baygin_bitis = 0
         oyuncu_zorlanmis_hiz = pygame.Vector2(0.0, 0.0)
         oyuncu_zorlanmis_bitis = 0
@@ -1281,7 +1281,7 @@ def item_aciklamasi(index):
     else:
         yerel = dict(item)
 
-    # Kayıtlı nicelik veya özel alanlar korunur.
+
     sonuc = dict(item)
     sonuc.update(yerel)
 
@@ -1382,8 +1382,8 @@ def item_q_hizli_kullanima_uygun_mu(item):
 
 
 def q_hizli_itemi_kullan():
-    # CTRL+O geliştirici modu envanteri/save'i değiştirmeden Q'yu geçici olarak
-    # sonsuz Sphaera Exothermica test girişine dönüştürür.
+
+
     if gelistirici_sonsuz_ates:
         return fire_magic_kullan()
     q_hizli_slot_normalize_et()
@@ -1394,8 +1394,8 @@ def q_hizli_itemi_kullan():
     if not isinstance(item, dict):
         return False
     if item_buyu_mu(item):
-        # Büyüler envanterdeki KULLAN eyleminden veya F/1-5 featured zincirinden
-        # cast edilemez. Tek giriş noktası Q slotudur.
+
+
         if item.get("id") == "fire_magic":
             return fire_magic_kullan()
         if item.get("id") == "corona_aetherica":
@@ -1481,7 +1481,7 @@ def onemli_item_penceresi_ciz():
     item = onemli_item_kuyrugu[0]
     if not isinstance(item, dict):
         return
-    # Dil oyun içinde değiştirildiğinde sırada bekleyen kart eski dilde kalmasın.
+
     _id = item.get("id")
     _factory = {
         "aurum_potabile": aurum_potabile_olustur,
@@ -1497,8 +1497,8 @@ def onemli_item_penceresi_ciz():
         birlesik.update(yerel)
         item = birlesik
 
-    # Sesin başladığı kare ile kartın görsel girişi aynı zaman çizelgesini kullanır.
-    # Kısa easing, kartın bir anda "patlaması" yerine daha ağır bir giriş verir.
+
+
     gecen_giris = max(0, pygame.time.get_ticks() - onemli_item_acilis_zamani)
     giris_orani = min(1.0, gecen_giris / 280.0)
     yumusak_oran = 1.0 - (1.0 - giris_orani) ** 3
@@ -1563,7 +1563,7 @@ def onemli_item_penceresi_ciz():
         yazi_yaz(satir_metni, metin_x, y, ACIK_GRI, mini_font)
         y += 23
 
-    # Beş saniyelik progress bittiğinde kart kapanmaz; açıkça tuş bekler.
+
     kalan_oran = max(
         0.0,
         min(
@@ -1652,8 +1652,8 @@ def diyalog_aksiyonunu_uygula(ad):
             torrmund_actor.last_pressure_ms = simdi
             torrmund_actor.tactical_refresh_ms = 0
             torrmund_actor.nav_next_replan_ms = 0
-            # Diyalog kapanırken aynı karede görünmez bir hit oluşmasın; kısa bir
-            # okunabilir giriş payından sonra av başlar.
+
+
             torrmund_actor.recovery_until = max(
                 torrmund_actor.recovery_until, simdi + 360
             )
@@ -1726,7 +1726,7 @@ def diyalog_aksiyonunu_uygula(ad):
             kuyruk_once = len(onemli_item_kuyrugu)
             if envantere_item_ekle(tas, kazanimi_goster=True):
                 eadric_tasi_alindi = True
-                # "Al." seçiminin ardından hikâye, eşya kartı görülene kadar bekler.
+
                 if len(onemli_item_kuyrugu) > kuyruk_once:
                     diyalog_onemli_item_bekliyor = True
             else:
@@ -1742,8 +1742,8 @@ def diyalog_aksiyonunu_uygula(ad):
 
 
 def _stage1__kan_profil_degerleri(profil, lethal=False):
-    # her temas daha etli okunur; ağırlık arttıkça yalnız adet değil hız/iz de artar.
-    # Burn ayrı ölüm yoluna sahip olduğu için burada düşük tutulur.
+
+
     tablo = {
         "burn": (4, 1, 0.62),
         "light_slash": (10, 2, 0.82),
@@ -1792,7 +1792,7 @@ def _stage1_gore_olum_patlamasi(x, y, profil="slash", yon=None):
         "intestine",
     ]
     if heavy:
-        # Et organları daha sık; kemikler görünür ama boyut olarak karaktere bağlı kalır.
+
         agir_havuz = [
             "intestine",
             "liver",
@@ -1853,7 +1853,7 @@ def _stage1_gore_olum_patlamasi(x, y, profil="slash", yon=None):
         parca = GoreChunk(kind, x, y, guc=guc, small=small)
 
         if profil == "heavy_slash" and ana.length_squared() > 0.0:
-            # Dar fan + az miktarda ters saçılma: kesik yönü okunur ama steril görünmez.
+
             d = ana.rotate(random.uniform(-52.0, 52.0))
             if random.random() < 0.16:
                 d *= -1.0
@@ -1877,7 +1877,7 @@ def gecici_dunya_aktorlerini_sifirla():
     enemy_projectiles.clear()
     enemy_rock_impacts.clear()
     ambient_rats.clear()
-    # Harita açılır açılmaz bir fare denemesi yapılır.
+
     ambient_rat_next_spawn_ms = 0
     fire_magic_transient_sifirla()
 # </POTBO_STAGE S0446>
@@ -1919,8 +1919,8 @@ def fire_magic_transient_sifirla():
     oyuncu_fire_burn_tick_damage = 0
     oyuncu_fire_burn_source = ""
 
-    # Enemy burn/impulse alanları save formatının parçası değildir. Aktörler mevcutsa
-    # temizlenir; yoksa dinamik alanlar ilk hit'te oluşturulur.
+
+
     for _dusman in list(common_enemies) + [
         d for d in (tarkard_actor, torrmund_actor) if d is not None
     ]:
@@ -2078,9 +2078,9 @@ def _fire_magic_burn_enemy_uygula(dusman, toplam_hasar, simdi):
     mevcut_kalan = max(0, int(getattr(dusman, "fire_burn_damage_remaining", 0)))
     mevcut_tick = max(0, int(getattr(dusman, "fire_burn_ticks_remaining", 0)))
 
-    # Yeni patlama mevcut yanmayı katlayıp sınırsız DoT üretmez. Daha güçlü burn
-    # varsa onu korur; süreyi tazeler. Bu, 3 s cooldown / 6 s burn kombinasyonunda
-    # güvenli ve deterministik stacking davranışıdır.
+
+
+
     if mevcut_kalan > toplam and mevcut_tick > 0:
         toplam = mevcut_kalan
         tick_sayisi = max(tick_sayisi, mevcut_tick)
@@ -2108,8 +2108,8 @@ def _fire_magic_burn_player_uygula(toplam_hasar, simdi):
         1,
         FIRE_MAGIC_BURN_DURATION_MS // FIRE_MAGIC_BURN_TICK_MS,
     )
-    # Global oyuncu state'i basit kalır; tick başına ceil kullanmak yerine toplamı
-    # yaklaşık eşit parçalara böler. Son tick kalan HP'yi aşamaz.
+
+
     oyuncu_fire_burn_tick_damage = max(
         int(oyuncu_fire_burn_tick_damage),
         int(math.ceil(toplam / float(tick_sayisi))),
@@ -2126,7 +2126,7 @@ def _fire_magic_enemy_impulse_uygula(dusman, merkez, hiz, simdi):
     pos = pygame.Vector2(float(dusman.x), float(dusman.y))
     yon = pos - merkez
     if yon.length_squared() <= 1e-6:
-        # Tam merkezde deterministik fakat UID'ye göre farklı küçük yön.
+
         seed = sum(ord(c) for c in str(getattr(dusman, "uid", "enemy")))
         angle = math.radians(seed % 360)
         yon = pygame.Vector2(math.cos(angle), math.sin(angle))
@@ -2143,9 +2143,9 @@ def _fire_magic_enemy_impulse_uygula(dusman, merkez, hiz, simdi):
         int(getattr(dusman, "fire_impulse_until", 0)),
         int(simdi) + FIRE_MAGIC_KNOCKBACK_MS,
     )
-    # Patlama saldırı commitment'ını doğrudan silmez; güçlü/poise'lı düşman yine
-    # attack animasyonunu tamamlayabilir. Fakat aktif fiziksel konumu impulse ile
-    # taşındığı için menzil dışına çıkarsa kendi hit test'i doğal olarak boşa düşer.
+
+
+
 
 
 def _fire_magic_player_impulse_uygula(merkez, hiz, simdi):
@@ -2284,14 +2284,14 @@ def fire_magic_enemy_status_preupdate(dusman, dt, simdi, digerler):
         impulse = pygame.Vector2(impulse)
 
     if simdi < impulse_until and impulse.length_squared() > 9.0:
-        # Exponential drag = kararlı, framerate-independent sönüm.
+
         step = impulse * max(0.0, float(dt))
         hedef = pygame.Vector2(dusman.x, dusman.y) + impulse * 0.12
         moved = dusman._hareketi_uygula(step.x, step.y, digerler, hedef)
         if not moved:
-            # Duvara çarpınca enerji büyük ölçüde kaybolur; bounce eklemek top-down
-            # melee'de karakterleri pinball'a çevirdiği için yalnız çok küçük tangential
-            # residual bırakılır.
+
+
+
             impulse *= 0.16
         else:
             impulse *= math.exp(-5.4 * max(0.0, float(dt)))
@@ -2473,10 +2473,10 @@ def _stage1_fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
                     "fire_magic_explosion_burn",
                 )
             elif death_mode == "blast_mid":
-                # ikinci patlama halkası doğrudan "yanarak ölüm" zorlamaz.
-                # Patlama öldürürse blast ölümü görülür; hedef hayatta kalırsa aşağıdaki
-                # burn uygulaması gerçek yanıcı statüyü başlatır ve ancak sonraki burn
-                # tick'i öldürürse fire-death devreye girer.
+
+
+
+
                 profile, source = (
                     "medium_blunt",
                     "fire_magic_explosion_mid",
@@ -2572,8 +2572,8 @@ def fire_magic_ground_fire_temasi_uygula(x, y, simdi):
     merkez = pygame.Vector2(float(x), float(y))
     simdi = int(simdi)
 
-    # Oyuncu da kendi yangın alanından muaftır değildir; büyü zaten self-hit fiziğine
-    # sahip olduğu için aynı risk dili zemin ateşinde de korunur.
+
+
     if oyuncu_hp > 0:
         p = pygame.Vector2(float(oyuncu_x), float(oyuncu_y) - 5.0)
         if merkez.distance_to(p) <= FIRE_MAGIC_GROUND_FIRE_TOUCH_RADIUS + 11.0:
@@ -2588,8 +2588,8 @@ def fire_magic_ground_fire_temasi_uygula(x, y, simdi):
                 )
                 if hasar > 0:
                     oyuncu_hp = max(0, int(oyuncu_hp) - int(hasar))
-                    # Direkt alev teması öldürürse ölüm tipi fire olur; kanlı slash gibi
-                    # değerlendirilmez.
+
+
                     oyuncu_kanli_hasar_kaydi(x, y, "burn", hasar, "ground_fire")
                     dunya_olayi_kaydet(
                         "hit_taken",
@@ -2609,7 +2609,7 @@ def fire_magic_ground_fire_temasi_uygula(x, y, simdi):
                             simdi,
                         )
 
-    # Düşmanlar için aynı temas hacmi, sprite yarıçapının küçük bir payını da ekler.
+
     for dusman in list(_magic_hedefleri()):
         if (
             dusman is None
@@ -2710,7 +2710,7 @@ class GroundFirePatch:
                 (simdi - self.start_ms) / max(1.0, float(self.duration_ms)),
             ),
         )
-        # İlk 12% hızlı ortaya çıkış, son 28% yumuşak sönüş.
+
         fade_in = min(1.0, age / 0.12)
         fade_out = 1.0 if age < 0.72 else max(0.0, (1.0 - age) / 0.28)
         alpha = int(255 * fade_in * fade_out)
@@ -2794,7 +2794,7 @@ class FireMagicExplosion:
         fire_magic_screen_flash_baslat(simdi)
         kamera_hit_sarsintisi_baslat(19.5, 520)
 
-        # ses 3 gerçek detonation karesine kilitlidir.
+
         if FIRE_MAGIC_EXPLOSION_SOUND_OFFSET_MS <= 0:
             fire_magic_sesi_cal("explosion")
             self.sound_played = True
@@ -2814,8 +2814,8 @@ class FireMagicExplosion:
             self.active = False
 
     def _impact_core_ciz(self, ex, ey, simdi):
-        # Fuse sırasında son projectile karesi impact noktasında sıkışmış halde kalır.
-        # Yeni efekt resmi yok; mevcut stretch sprite'ı küçük bir pulse ile kullanılır.
+
+
         if not FIRE_MAGIC_STRETCH_SPRITELERI:
             return
         frame = FIRE_MAGIC_STRETCH_SPRITELERI[-1]
@@ -2941,7 +2941,7 @@ class FireMagicProjectile:
             or self.travelled >= FIRE_MAGIC_PROJECTILE_MAX_TRAVEL
             or self._dunya_disinda_mi()
         ):
-            # "Değmediyse boşluğa doğru gitsin": timeout'ta patlama yok.
+
             self.active = False
             return
 
@@ -2952,14 +2952,14 @@ class FireMagicProjectile:
             eski = pygame.Vector2(self.x, self.y)
             yeni = eski + self.direction * adim
 
-            # Solid'e girilen noktayı değil, son temiz noktayı explosion center yap.
-            # Böylece AoE ray'i duvarın içinde doğup her şeyi yanlışlıkla bloklamaz.
+
+
             if harita_pikseli_engel_mi(yeni.x, yeni.y):
                 self.x, self.y = eski.x, eski.y
                 self._patlat(simdi)
                 break
 
-            # Projectile fiziksel küresi hedef hurt-radius'una değdiğinde patlar.
+
             hit = None
             for dusman in _magic_hedefleri():
                 radius = _magic_hedef_yaricapi(dusman) + FIRE_MAGIC_PROJECTILE_RADIUS
@@ -2984,9 +2984,9 @@ class FireMagicProjectile:
         simdi = pygame.time.get_ticks()
         yas = max(0, simdi - self.anim_epoch)
         if len(FIRE_MAGIC_PROJECTILE_SPRITELERI) >= 3:
-            # Kullanıcının işaretlemediği son üç atış karesi: 0 -> 1 -> 2.
-            # İlk 180 ms dönüşüm; son kare çarpışmaya kadar korunur ve tam bu
-            # görünümde hedefe temas edince Explosion doğar.
+
+
+
             idx = 0 if yas < 60 else 1 if yas < 120 else 2
         else:
             idx = min(
@@ -3017,7 +3017,7 @@ class FireMagicProjectile:
                 frame,
                 (max(1, int(round(frame.get_width() * sc))), h),
             )
-            # Stretch atlasındaki ana alev aşağı uzar; dünya yönüne burada döndürülür.
+
             if direction_name == "up":
                 img = pygame.transform.rotate(img, 180)
             elif direction_name == "right":
@@ -3026,8 +3026,8 @@ class FireMagicProjectile:
                 img = pygame.transform.rotate(img, -90)
             sprite_olcek_onbellegi[key] = img
 
-        # alevin kendi alpha maskesinden dinamik additive parlama. Ardından
-        # gerçek flame sprite'ından motion trail gelir; ikisi birlikte whoosh hızını okutur.
+
+
         _v27_ates_pariltisi_ciz(img, ex, ey - 13, simdi, guc=1.38)
         for i, (offset, alpha) in enumerate(((20.0, 118), (38.0, 70), (58.0, 34))):
             px = ex - self.direction.x * offset * KAMERA_YAKINLASTIRMA
@@ -3075,8 +3075,8 @@ def fire_magic_kullan():
         stamina_son_harcama = simdi
         fire_magic_son_kullanim = simdi
     else:
-        # No cooldown mask while debug is active. Cast animation/launch commitment
-        # remains intact so projectile physics is tested under real timing.
+
+
         fire_magic_son_kullanim = simdi - FIRE_MAGIC_COOLDOWN_MS
     fire_magic_cast_lock_until = simdi + FIRE_MAGIC_CAST_LOCK_MS
 
@@ -3084,8 +3084,8 @@ def fire_magic_kullan():
     origin = pygame.Vector2(float(oyuncu_x), float(oyuncu_y))
     focus = origin + yon * FIRE_MAGIC_CAST_FORWARD_OFFSET
 
-    # Focus solid'in içine denk gelirse geriye doğru kısa binary-like scan ile ilk
-    # temiz nokta seçilir. Karakter kayanın dibindeyken büyü duvarın içinde doğmaz.
+
+
     if harita_pikseli_engel_mi(focus.x, focus.y):
         found = None
         for back in (8.0, 14.0, 20.0, 26.0, 32.0):
@@ -3098,7 +3098,7 @@ def fire_magic_kullan():
         else:
             focus = origin + yon * 12.0
 
-    # Ses 1 ateş göründüğü anda başlar; update döngüsünü beklemez.
+
     fire_magic_sesi_cal("charge")
     fire_magic_cast_fx = {
         "start_ms": simdi,
@@ -3128,9 +3128,9 @@ def fire_magic_guncelle(dt, simdi):
         fx = fire_magic_cast_fx
         gecen = simdi - int(fx["start_ms"])
 
-        # Fallback koruması: normal kullanımda ses 1 fire_magic_kullan() içinde
-        # ilk ateşle aynı anda çalınır. Eski/restore edilmiş transient state gelirse
-        # burada tek seferlik sample yine garanti edilir.
+
+
+
         if (
             not fx.get("ready_sound_played", False)
             and gecen >= FIRE_MAGIC_CHARGE_READY_SOUND_MS
@@ -3141,7 +3141,7 @@ def fire_magic_guncelle(dt, simdi):
         if not fx.get("launched", False) and gecen >= FIRE_MAGIC_CAST_RELEASE_MS:
             d = pygame.Vector2(fx["direction"])
             bas = pygame.Vector2(float(fx["x"]), float(fx["y"]))
-            # Ses 2 tam projectile release anında; daha yüksek hız whoosh ile eşleşir.
+
             fire_magic_sesi_cal("whoosh")
             player_magic_projectiles.append(FireMagicProjectile(bas.x, bas.y, d, simdi))
             fx["launched"] = True
@@ -3183,12 +3183,12 @@ def fire_magic_alt_katman_ciz():
     dx, dy = fire_magic_cast_fx.get("direction", (1.0, 0.0))
     yon = "left" if dx < -0.5 else "right" if dx > 0.5 else "up" if dy < 0 else "down"
 
-    # Tek bir çekirdek odak noktası kullan. Kaynak sheet'teki crop farkları yüzünden
-    # ateş topunun yukarı-aşağı zıplaması bu merkez etrafında bastırılır.
+
+
     cekirdek_x = x
     cekirdek_y = y - 11
 
-    # 1) Halka çok kısa sürer; küre görünürken aynı anda küçülerek kaybolur.
+
     ring_end = 0.50
     if release_p < ring_end and FIRE_MAGIC_CAST_SPRITELERI:
         ring_p = min(1.0, release_p / ring_end)
@@ -3233,10 +3233,10 @@ def fire_magic_alt_katman_ciz():
             )
         _alpha_bounds_merkez_bastir(draw, cekirdek_x, cekirdek_y)
 
-    # 2) Yalnız yeşille işaretlenmemiş dört küre karesi. Top erken belirir ve
-    # kare geçişleri lineer ilerlediği için aynı frame'de uzun süre takılı kalmaz.
-    # Buna ek olarak görünen piksellerin merkezi sabit tutulur; top bir karede
-    # yukarıda, başka karede aşağıda görünmez.
+
+
+
+
     if release_p >= FIRE_MAGIC_ORB_START_RATIO and FIRE_MAGIC_ORB_SPRITELERI:
         orb_end = FIRE_MAGIC_STRETCH_START_RATIO
         orb_p = min(
@@ -3250,7 +3250,7 @@ def fire_magic_alt_katman_ciz():
             int(frame_pos + 0.12),
         )
         frame = FIRE_MAGIC_ORB_SPRITELERI[idx]
-        # Ease-out: ilk anda hızlı büyür, sona yaklaşırken sakinleşir.
+
         ease = 1.0 - (1.0 - orb_p) ** 2.2
         h = int(round((24 + 40 * ease) * KAMERA_YAKINLASTIRMA))
         key = ("fire_cast_orb_v17", id(frame), h)
@@ -3262,7 +3262,7 @@ def fire_magic_alt_katman_ciz():
                 (max(1, int(round(frame.get_width() * sc))), h),
             )
             sprite_olcek_onbellegi[key] = img
-        # Stretch başladığında orb kısa crossfade ile silinir.
+
         alpha = 255
         if release_p >= FIRE_MAGIC_STRETCH_START_RATIO:
             alpha = int(
@@ -3284,8 +3284,8 @@ def fire_magic_alt_katman_ciz():
         )
         _alpha_bounds_merkez_bastir(draw, cekirdek_x, cekirdek_y)
 
-    # 3) Atış öncesi son üç kare tam sırayla görünür. Sağdaki büyük ateş kütleleri
-    # ve alttaki dört varyant bu fonksiyonun hiçbir yolunda referans edilmez.
+
+
     if release_p >= FIRE_MAGIC_STRETCH_START_RATIO and FIRE_MAGIC_STRETCH_SPRITELERI:
         stretch_p = min(
             1.0,
@@ -3337,9 +3337,9 @@ def fire_magic_ground_layer_ciz():
 
 # <POTBO_STAGE S0465>
 
-# =========================================================
-# OYUN EKRANI / HARİTA
-# =========================================================
+
+
+
 
 
 def oyun_ekrani_ciz():
@@ -3402,8 +3402,8 @@ def oyun_ekrani_ciz():
             tus_gorunen_adi("interact"),
         )
 
-    # Ganimetin kendisi görünmez kalır. E kısayolu yalnızca oyuncu
-    # etkileşim alanının doğrudan üzerine geldiğinde belirir.
+
+
     ganimet_uzerinde = (
         oyun_alt_durumu == HARITA
         and npc_intro_tamamlandi
@@ -3433,8 +3433,8 @@ def oyun_ekrani_ciz():
             mini_font,
         )
 
-    # Bekleyen önemli eşya kartı varsa küçük bildirim de arkada başlamaz.
-    # Kart kapandıktan sonra bildirim kendi tam süresiyle görünür.
+
+
     if yeni_item_sahnesi_musait_mi() and not onemli_item_kuyrugu:
         bildirim_ciz()
 
@@ -3524,8 +3524,8 @@ def _v25_oyuncu_olum_ates_ciz():
     seed = int(oyuncu_olum_ates_seed or 911)
     rng = random.Random(seed)
 
-    # Yatan karakter boyunca ana ateş hattı + iki dış jet. Sayı sabit seed ile
-    # üretildiği için çok olsa da titreşmez.
+
+
     noktalar = []
     adet = 36
     for i in range(adet):
@@ -3574,8 +3574,8 @@ def _v25_oyuncu_olum_ates_ciz():
 def oyuncu_kontrol_kilitli_mi(simdi=None):
     if simdi is None:
         simdi = pygame.time.get_ticks()
-    # HP sıfırsa karakter yeni input alamaz; ESC/pause akışı bu fonksiyonun dışında
-    # işlendiği için oyuncu kaydını yüklemek veya menüye dönmek yine mümkündür.
+
+
     return (
         oyuncu_hp <= 0
         or simdi < oyuncu_baygin_bitis
@@ -3663,8 +3663,8 @@ def _stage2_oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_a
 
     kaynak = str(kaynak_adi or "")
 
-    # Kılıçla iki temiz yarım yalnız Torrmund'un özel infaz dilidir. Diğer katillerde
-    # ayrılma aşağıdaki tırtıklı, çok-parçalı corpse renderer tarafından yapılır.
+
+
     if str(oyuncu_olum_katil_tur or "") != "torrmund":
         oyuncu_olum_ikiye_bolundu = False
 
@@ -3686,19 +3686,19 @@ def _stage2_oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_a
 
 # <POTBO_STAGE S0576>
 
-# Blast'ın anlık öldürücü kısmı merkeze çekilir. Mid/outer shell doğrudan HP=0
-# yapamaz; oyuncuyu/enemy'yi 1 HP'de bırakabilir ve şok + gerçek burn statüsüne sokar.
+
+
 FIRE_MAGIC_EXPLOSION_BANDS = (
-    (34.0, 675),  # merkez: 672-678
-    (96.0, 425),  # yakın halka: 422-428, hâlâ ölümcül
+    (34.0, 675),
+    (96.0, 425),
     (
         142.0,
         227,
-    ),  # orta: 224-230, şok + yanma; blast tek başına öldürmez
+    ),
     (
         188.0,
         29,
-    ),  # dış: 26-32, şok; ateş alanındaysa yanma da alır
+    ),
 )
 FIRE_MAGIC_EXPLOSION_RADIUS = FIRE_MAGIC_EXPLOSION_BANDS[-1][0]
 FIRE_MAGIC_BURN_TOTAL_BY_BAND = {
@@ -3712,9 +3712,9 @@ FIRE_MAGIC_BURN_TOTAL_BY_BAND = {
 # <POTBO_STAGE S0588>
 
 
-# ---------------------------------------------------------
-# MORE BLOOD / ORGANS / BONES -- all lethal entities
-# ---------------------------------------------------------
+
+
+
 def _kan_profil_degerleri(profil, lethal=False):
     tablo = {
         "burn": (4, 1, 0.62),
@@ -3839,8 +3839,8 @@ def fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
             if yakin_olumcul:
                 gercek_hasar = min(int(hasar), max(0, int(oyuncu_hp)))
             else:
-                # Şok halkası blast tarafından öldürmez. Yanıcı statü daha sonra kendi
-                # tick'iyle öldürebilir; o zaman gerçek fire-death görünür.
+
+
                 gercek_hasar = min(int(hasar), max(0, int(oyuncu_hp) - 1))
             if gercek_hasar > 0:
                 oyuncu_hp = max(0, int(oyuncu_hp) - gercek_hasar)
@@ -4001,62 +4001,62 @@ def fire_magic_screen_flash_ciz():
 # <POTBO_STAGE S0935>
 
 
-# =========================================================
-# END V37
-# =========================================================
 
 
-# =========================================================
-# V38 THERMOCHEMICAL FIRE / CONTACT INTEGRITY / KINETIC SPECIAL
-# =========================================================
-# V38 üç problemi tek bir fizik kontratında toplar:
-#
-# 1) Sphaera Exothermica artık sabit hasar halkaları gibi değil, mesafeye göre sürekli
-#    azalan basınç + ısıl doz modeliyle çözülür. Bu gerçek bir CFD simülasyonu değildir;
-#    2D oyun alanında bilimsel ilişkileri koruyan, deterministik ve hesap açısından ucuz
-#    bir indirgenmiş modeldir.
-#
-# 2) Melee temasları broad-phase dikdörtgenlerin "yaklaşık değdi" sonucuna fazla
-#    güvenmez. Normal kılıç erişimi daraltılır; enemy aktif swing capsule'ları startup
-#    yaklaşma mesafesinden ayrılır. Heavy/special menzili görünmez rect değil beden
-#    hareketinden gelir.
-#
-# 3) Special move daha kısa bir authored timeline kullanır. Üç gerçek beden geçişinin
-#    her biri kendi stamina ücretini tam vuruş karesinde öder. Hold hazırlığındaki eski
-#    stamina rezervi R ile special arm edildiğinde geri verilir; böylece bar üç kez düşer.
-#
-# Matematiksel model notasyonu (world-pixel oyun birimindedir):
-#
-#   q = clamp(d / R, 0, 1)                           normalize mesafe
-#   P(d) = exp(-(d / sigma_p)^2)                    blast basıncı yaklaşımı
-#   H(d) = 1 / (1 + (d / r50)^4)                   ısıl maruziyet yaklaşımı
-#   D_enemy = Dp * P(d) + Dh * H(d)                 doğrudan hasar
-#   K(d) = K0 * P(d)^0.72                           knockback büyüklüğü
-#   B(d) = B0 * H(d)^1.30                           yanma toplam dozu
-#
-# Gaussian basınç eğrisi merkezin çok güçlü, dış alanın hızla zayıf olmasını sağlar.
-# Dördüncü dereceden thermal falloff ise alev/ısı etkisinin basınçtan daha geniş fakat
-# hâlâ sonlu bir alanda kalmasını sağlar. Böylece 200 px uzaktaki oyuncu sırf büyük
-# sprite gördü diye kendi ateş topundan hasar yemez.
-#
-# Projectile hız modeli:
-#
-#   v(t) = v_inf + (v0 - v_inf) exp(-k_v t)
-#   T(t) = T_air + (T0 - T_air) exp(-k_T t)
-#
-# Büyülü confinement nedeniyle top tamamen balistik bir köz değildir: v_inf sıfırdan
-# büyüktür. Bu, ateş topunun "havada frenleyip düşmesi" yerine ilk anda saldırgan,
-# ileride ise biraz daha ağır ilerlemesini verir. Sıcaklık görsel çekirdek yoğunluğunu
-# etkiler; hasar ise esas olarak impact anındaki mesafe alanından çözülür.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 V38_VERSION = 38
 
-# ---------------------------------------------------------
-# PLAYER-EXPOSED SETTINGS
-# ---------------------------------------------------------
-# Bunlar ayarlar.json'a eklenir. Eski settings dosyalarında alan yoksa aşağıdaki
-# varsayılanlar kullanılır; save uyumluluğu bozulmaz.
-v38_magic_fx_quality = "balanced"  # low | balanced | high
+
+
+
+
+
+v38_magic_fx_quality = "balanced"
 # </POTBO_STAGE S0935>
 
 # <POTBO_STAGE S0938>
@@ -4089,17 +4089,17 @@ def _v38_settings_bootstrap():
         TypeError,
         json.JSONDecodeError,
     ):
-        # Ana settings loader/recovery zaten kendi kontratını uygular; V38 alanları
-        # bozuksa yalnız varsayılana düşer, oyunun açılışını engellemez.
+
+
         pass
 # </POTBO_STAGE S0940>
 
 # <POTBO_STAGE S0942>
 
 
-# Existing atomic settings writer'ın bütün alanlarını koruyup V38 alanlarını aynı
-# atomik payload'a eklemek için doğrudan yeni writer kullanılır. Wrapper içinde eski
-# writer'ı çağırıp ardından ikinci kez yazmak gereksiz disk I/O yaratırdı.
+
+
+
 def ayarlari_kaydet():
     npc_ses_seviyesini_guncelle()
     ui_ses_seviyesini_guncelle()
@@ -4237,7 +4237,7 @@ def ayari_degistir(yon):
 
 # <POTBO_STAGE S0948>
 
-# Cast: yaklaşık 0.72 s'de çekirdek sıkışır, 0.82 s civarında serbest kalır.
+
 FIRE_MAGIC_CAST_RELEASE_MS = 820
 FIRE_MAGIC_CAST_TOTAL_MS = 930
 FIRE_MAGIC_CAST_LOCK_MS = 865
@@ -4248,8 +4248,8 @@ FIRE_MAGIC_STRETCH_START_RATIO = 0.66
 
 # <POTBO_STAGE S0959>
 
-# Ground fire artık dev bir 228 px patch bulutu değildir. Patlama sonrası kalan sıcak
-# yüzey fiziksel blast alanından daha küçük ve daha seyrektir.
+
+
 FIRE_MAGIC_GROUND_FIRE_MIN = 10
 FIRE_MAGIC_GROUND_FIRE_MAX = 16
 FIRE_MAGIC_GROUND_FIRE_RADIUS = 168.0
@@ -4261,7 +4261,7 @@ FIRE_MAGIC_GROUND_FIRE_BURN_TOTAL = 44
 FIRE_MAGIC_GROUND_FIRE_TOUCH_COOLDOWN_MS = 520
 FIRE_MAGIC_GROUND_FIRE_KNOCKBACK = 118.0
 
-# Existing names remain valid for old UI/debug/diagnostics.
+
 FIRE_MAGIC_PROJECTILE_SPEED = V38_FIRE_PROJECTILE_V0
 FIRE_MAGIC_PROJECTILE_MAX_TRAVEL = V38_FIRE_PROJECTILE_MAX_TRAVEL
 FIRE_MAGIC_PROJECTILE_TTL_MS = V38_FIRE_PROJECTILE_TTL_MS
@@ -4282,9 +4282,9 @@ def _v38_fx_density():
 # <POTBO_STAGE S0973>
 
 
-# ---------------------------------------------------------
-# FIRE CAST RESOURCE BALANCE
-# ---------------------------------------------------------
+
+
+
 _v38_fire_magic_kullan_original = fire_magic_kullan
 
 
@@ -4309,9 +4309,9 @@ def fire_magic_kullan():
     return True
 
 
-# ---------------------------------------------------------
-# CONTINUOUS EXPLOSION RESOLVER
-# ---------------------------------------------------------
+
+
+
 def fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
     global oyuncu_hp
     center = pygame.Vector2(float(x), float(y))
@@ -4328,7 +4328,7 @@ def fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
             continue
 
         if record["kind"] == "player":
-            # Owner radial exposure bilinçli biçimde enemy AoE'den daha küçüktür.
+
             damage = _v38_self_damage_at(effective, exposure)
             knock = 0.0
             if effective <= V38_FIRE_SELF_KNOCKBACK_RADIUS and v38_fire_self_damage:
@@ -4370,8 +4370,8 @@ def fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
         if hp_before <= 0:
             continue
 
-        # Thermal fringe doğrudan "mucizevi" one-shot üretmez. 85 px dışındaki çok
-        # düşük direct damage hedefi en az 1 HP'de bırakabilir; devam eden burn öldürebilir.
+
+
         direct = int(damage)
         if effective > 118.0 and direct >= hp_before:
             direct = max(0, hp_before - 1)
@@ -4390,7 +4390,7 @@ def fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
         ):
             _fire_magic_burn_enemy_uygula(enemy, burn, simdi)
 
-        # Çok yakın blast öldürürse eski gore dili korunur fakat shell bağımlılığı kalkar.
+
         if hp_before > 0 and int(getattr(enemy, "hp", 0)) <= 0 and effective < 82.0:
             pseudo_shell = 675 if effective < 44.0 else 425
             _v33_enemy_blast_extra_gore(enemy, pseudo_shell, center)
@@ -4467,7 +4467,7 @@ def _v38_fire_projectile_update(self, dt, simdi):
             break
 
         hit = None
-        # Projectile sphere -> enemy hurt sphere. No homing, no screen-space correction.
+
         for enemy in _magic_hedefleri():
             radius = _magic_hedef_yaricapi(enemy) + V38_FIRE_PROJECTILE_RADIUS
             target = pygame.Vector2(float(enemy.x), float(enemy.y) - 7.0)
@@ -4524,7 +4524,7 @@ def _v38_fire_projectile_draw(self):
     )
     img = _v38_oriented_fire_sprite(frame, h, direction_name, 255)
 
-    # T^4 intensity yalnız glow'a gider; sprite'ın kendisi stabil kalır.
+
     intensity = _v38_blackbody_visual_intensity(self.temperature_k)
     glow_r = int(round((16 + 7 * intensity) * KAMERA_YAKINLASTIRMA))
     glow = _v38_glow_surface(glow_r, int(round(intensity * 10)))
@@ -4534,7 +4534,7 @@ def _v38_fire_projectile_draw(self):
         special_flags=pygame.BLEND_RGBA_ADD,
     )
 
-    # Ghost sayısı quality setting'e bağlı ama cache'de hazır alpha sprite kullanır.
+
     density = _v38_fx_density()
     ghosts = 1 if density < 0.8 else 2 if density < 1.2 else 3
     for i in range(ghosts, 0, -1):
@@ -4572,7 +4572,7 @@ def _v38_fire_explosion_detonate(self, simdi):
         player_magic_ground_fires.append(GroundFirePatch(p.x, p.y, simdi, i))
 
     fire_magic_screen_flash_baslat(simdi)
-    # Screen shake bilimsel model değildir; pressure core ile uyumlu sabit presentation.
+
     camera_power = 11.0 if az_hareket else 15.0
     kamera_hit_sarsintisi_baslat(camera_power, 300)
     fire_magic_sesi_cal("explosion")
@@ -4591,7 +4591,7 @@ def _v38_fire_explosion_draw(self):
     age = max(0, now - int(self.explosion_start_ms))
     p = _v38_clamp01(age / max(1.0, float(self.duration_ms)))
     if FIRE_MAGIC_EXPLOSION_SPRITELERI:
-        # Explosion sprite ilk %70'te hızla büyür, sonra decay frame'leri akar.
+
         timeline = _v38_smoothstep(min(1.0, p / 0.86))
         idx = min(
             len(FIRE_MAGIC_EXPLOSION_SPRITELERI) - 1,
@@ -4616,7 +4616,7 @@ def _v38_fire_explosion_draw(self):
             _v38_cache_limit(v38_fire_explosion_core_cache, 96)
         ekran.blit(img, img.get_rect(midbottom=(ex, ey + 10)))
 
-    # Pressure ring mekanik radius'u birebir çizmez; sadece ilk 140ms'de kısa cue.
+
     if age < 140 and v38_magic_fx_quality != "low":
         q = age / 140.0
         rr = int((18 + 86 * _v38_smootherstep(q)) * KAMERA_YAKINLASTIRMA)
@@ -4636,7 +4636,7 @@ _v38_fire_magic_guncelle_original = fire_magic_guncelle
 
 def fire_magic_guncelle(dt, simdi):
     _v38_fire_magic_guncelle_original(dt, simdi)
-    # Liste bütçeleri yalnız transient VFX/objects için. En yeni objeler korunur.
+
     if len(player_magic_projectiles) > V38_MAX_PROJECTILES:
         del player_magic_projectiles[:-V38_MAX_PROJECTILES]
     if len(player_magic_explosions) > V38_MAX_EXPLOSIONS:
@@ -4648,9 +4648,9 @@ def fire_magic_guncelle(dt, simdi):
 # <POTBO_STAGE S1005>
 
 
-# Replace only the enemy branch math in the active continuous resolver by wrapping it
-# with a second, actor-aware implementation. Keeping this as one function avoids class
-# wrappers and therefore avoids the recursion class of bugs seen in older versions.
+
+
+
 def fire_magic_patlama_hasari_uygula(x, y, simdi, direction=None):
     global oyuncu_hp
     center = pygame.Vector2(float(x), float(y))
@@ -4767,9 +4767,9 @@ def v38_fire_quality_profile():
 # <POTBO_STAGE S1014>
 
 
-# ---------------------------------------------------------
-# FIRE / COMBAT DIAGNOSTICS AND EQUATION SAMPLER
-# ---------------------------------------------------------
+
+
+
 V38_TUNING_REGISTRY = {
     "fire.cast.release_ms": lambda: FIRE_MAGIC_CAST_RELEASE_MS,
     "fire.cast.total_ms": lambda: FIRE_MAGIC_CAST_TOTAL_MS,
@@ -4862,9 +4862,9 @@ def _v38_fire_contract():
 # <POTBO_STAGE S1026>
 
 
-# ---------------------------------------------------------
-# CROSS-SYSTEM INVARIANTS
-# ---------------------------------------------------------
+
+
+
 def v38_cross_system_invariants():
     """Magic/combat/special değerlerinin birbirleriyle çelişmediğini denetler."""
     nr, nw, hr, hw = _v38_player_reach_values()
@@ -5043,9 +5043,9 @@ def _v39_fire_projectile_draw(self):
 # <POTBO_STAGE S1088>
 
 
-# ---------------------------------------------------------
-# FIREBALL: YÖN KİLİDİ + DAİRESEL TURUNCU DOT YOK
-# ---------------------------------------------------------
+
+
+
 def _v40_locked_fire_direction():
     if fire_magic_cast_fx is None:
         return None
@@ -5066,8 +5066,8 @@ def fire_magic_guncelle(dt, simdi):
     global oyuncu_yonu
     locked = _v40_locked_fire_direction()
     if locked is not None:
-        # Cast frame'leri ve karakter aynı yön kontratını kullanır. Release anında
-        # yön değiştirerek stretch sprite'ın oval/90° ara görüntüde fırlaması engellenir.
+
+
         oyuncu_yonu = locked
     return _v40_fire_magic_guncelle_original(dt, simdi)
 
@@ -5111,11 +5111,11 @@ def _v40_fire_projectile_draw(self):
     )
     img = _v38_oriented_fire_sprite(frame, h, direction_name, 255)
 
-    # Dairesel turuncu glow/dot kaldırıldı. Işık yalnız gerçek flame alpha maskesini
-    # büyütür; yani ışık geometrisi ateşin piksel siluetinden türetilir.
+
+
     _v27_ates_pariltisi_ciz(img, sx, sy - 12, now, guc=0.82 + 0.28 * temp_ratio)
-    # V39'daki eliptik turuncu detail yüzeyi de kaldırıldı. Bunun yerine ana flame
-    # maskesinin gerisinde yalnız birkaç piksel ember vardır; görünür bir daire/oval yoktur.
+
+
     phase = int((now - self.start_ms) / 38)
     tangent = pygame.Vector2(-self.direction.y, self.direction.x)
     for i in range(3):
@@ -5179,7 +5179,7 @@ def v44_profile_sharpness(profile):
 # <POTBO_STAGE S1190>
 
 
-# Test paneli: var olan ve V46'da eklenen TÜM geliştirici kısayolları sağ altta.
+
 def v46_test_rows():
     return [
         ("CTRL + I", bt("+100 coin", "+100 coins")),
@@ -5352,15 +5352,15 @@ def gore_olum_patlamasi(x, y, profil="slash", yon=None):
 # <POTBO_STAGE S1476>
 
 
-# ---------------------------------------------------------
-# EXPLOSION SOURCE NORMALIZATION + PLAYER DEATH ROUTING
-# ---------------------------------------------------------
+
+
+
 def v73_blast_source_tier(kaynak_adi, profil=""):
     source = str(kaynak_adi or "").strip().lower()
     profile = str(profil or "").strip().lower()
     if not source:
         return None
-    # Saf burn tick'i patlama parçalanmasına dönüşmez.
+
     if source in ("fire_magic_burn", "ground_fire") or (
         "burn" in source and "explosion" not in source and "bomb" not in source
     ):
@@ -5649,9 +5649,9 @@ def oyuncu_kanli_hasar_kaydi(
             kaynak_x, kaynak_y, profil, hasar, kaynak_adi
         )
     if v85_mortal_wound_state.active:
-        # Enemy attack code subtracts HP before this recorder is called.  The
-        # internal sentinel stays at one until the authored follow-through lands;
-        # the HUD deliberately displays zero throughout this interval.
+
+
+
         oyuncu_hp = 1
         return 0
 
@@ -5674,8 +5674,8 @@ def oyuncu_kanli_hasar_kaydi(
             kaynak_x, kaynak_y, profil, hasar, kaynak_adi
         )
 
-    # All inherited blood wrappers see a non-lethal contact.  This prevents an
-    # early corpse/gore commit while preserving the first impact's ordinary spray.
+
+
     actual_damage = max(1, int(hasar))
     oyuncu_hp = actual_damage + 2
     result = _v85_player_damage_original(kaynak_x, kaynak_y, profil, hasar, kaynak_adi)
@@ -5839,9 +5839,9 @@ def _fire_magic_player_impulse_uygula(merkez, hiz, simdi):
 
 # <POTBO_STAGE S2057>
 
-# Canonical asset layout.  The attached small five-frame strip is an ambient
-# flame, not a spell projectile; keeping it under ambient/fire makes that role
-# explicit while the larger Ignis atlas remains under spells/ignis.
+
+
+
 V89_GROUND_FIRE_PATH = os.path.join(
     ASSETS,
     "spells",
@@ -5989,8 +5989,8 @@ def v89_q_slot_draw(rect, selected=False):
 
 # <POTBO_STAGE S2121>
 
-# Canonical Ignis layout.  Every spell owns a directory so cast, impact and
-# persistent-ground assets cannot silently shadow another spell's atlas.
+
+
 V90_DRACO_ITEM_PATH = os.path.join(ASSETS, "items", "draco_calcinans.png")
 V90_DRACO_CAST_PATH = os.path.join(
     ASSETS,
@@ -6189,8 +6189,8 @@ def v90_calcinatio_update(now, dt):
     v90_ash_marks[:] = [mark for mark in v90_ash_marks if mark.alive(now)]
 
 
-# Wrap the final enemy damage chain.  Calcinatio reacts only to a later physical
-# player strike; its own burn ticks and other magic never recursively trigger it.
+
+
 _v90_enemy_damage_raw = CommonEnemy.hasar_al
 
 
@@ -6334,8 +6334,8 @@ def kan_gore_guncelle():
     result = _v90_blood_world_update_raw()
     now = pygame.time.get_ticks()
     raw_gap = max(0, int(now) - int(_v90_last_world_tick_ms))
-    # Modal/pause time is not combat time.  Shift authored spell/status clocks
-    # instead of letting a long pause skip bite, silence or Calcinatio phases.
+
+
     pause_compensation = max(0, raw_gap - 80)
     if pause_compensation > 0:
         if v90_draco_state.active:
@@ -6611,11 +6611,11 @@ def gelistirici_test_paneli_ciz():
         y += 20
 
 
-# ---------------------------------------------------------
-# IGNIS: SPRITE-CONFORMING FIREBALL, AMBIENT FLAME CLUSTERS
-# ---------------------------------------------------------
-# The canonical cast/explosion atlases are loaded by the inherited asset paths.
-# No geometry-based halo or whole-screen flash is allowed for Sphaera.
+
+
+
+
+
 def _v27_ates_pariltisi_ciz(img, merkez_x, merkez_y, simdi, guc=1.0):
     return None
 
@@ -6679,7 +6679,7 @@ def _v91_fire_projectile_draw(self):
         )
     )
     draws = []
-    # Strong flame-shaped persistence, never a circle/rectangle of light.
+
     for offset, alpha in ((70.0, 28), (48.0, 48), (28.0, 82)):
         ghost = _v38_oriented_fire_sprite(
             frame, height, direction_name, alpha
@@ -6901,7 +6901,7 @@ def v91_smoke_test(output_prefix):
     hud_path = f"{output_prefix}_pixel_hud.png"
     pygame.image.save(ekran, hud_path)
 
-    # VFX preview: projectile, atlas explosion and 12 one-blit clusters.
+
     ekran.fill((12, 10, 11))
     now = pygame.time.get_ticks()
     projectile = FireMagicProjectile(
@@ -6969,7 +6969,7 @@ def v91_smoke_test(output_prefix):
     )
     pygame.image.save(ekran, draco_path)
 
-    # Developer controls grant/switch without producing endless duplicates.
+
     initial_gold = int(oyuncu_altin)
     gelistirici_test_girdisi_uygula(
         pygame.event.Event(
@@ -7010,7 +7010,7 @@ def v91_smoke_test(output_prefix):
     quote_opened = bool(v91_test_panel_visible)
     v91_test_panel_visible = False
 
-    # Run the V91 Draco state machine, including the stronger rupture method.
+
     target = CommonEnemy(
         "v91_smoke_target",
         "berserker",
@@ -7051,7 +7051,7 @@ def v91_smoke_test(output_prefix):
     v90_embers.clear()
     v90_ash_marks.clear()
 
-    # Burst budget and near-source kinematics.
+
     blood_particles.clear()
     before_pending = len(
         v87_pending_blood_landings
@@ -7077,7 +7077,7 @@ def v91_smoke_test(output_prefix):
         - before_pending
     )
 
-    # A footprint samples the rendered decal tone.
+
     blood_decals.clear()
     _v40_blood_grid_rebuild()
     sample_decal = _v89_create_decal_raw(
@@ -7112,7 +7112,7 @@ def v91_smoke_test(output_prefix):
         and tuple(footprint.v91_color)
         == sample_color
     )
-    # Critical wounds create only tiny hypoxic (dark) permanent droplets.
+
     injury_before = len(blood_decals)
     saved_player_position = (oyuncu_x, oyuncu_y)
     oyuncu_x, oyuncu_y = 470.0, 360.0
@@ -7176,7 +7176,7 @@ def v91_smoke_test(output_prefix):
         == sample_color
     )
 
-    # Audit the real death renderer rather than a synthetic swatch.
+
     gore_chunks.clear()
     gore_chunks.append(
         GoreChunk(
@@ -7223,7 +7223,7 @@ def v91_smoke_test(output_prefix):
         and V91_DEATH_BODY in unique_colors
     )
 
-    # Warm render benchmark: many permanent decals and a maximum one-cast fire.
+
     state.reset()
     oyuncu_hp = max(
         1, int(oyuncu_max_hp * 0.5)
@@ -7422,8 +7422,8 @@ def v92_test_fire_cast():
         oyuncu_mana = saved[1]
         oyuncu_stamina = saved[2]
         fire_magic_son_kullanim = saved[3]
-        # Developer cast owns no lock at all. The normal acquisition path still
-        # uses the inherited charge/cooldown timing.
+
+
         fire_magic_cast_lock_until = 0
     return True
 
@@ -7476,7 +7476,7 @@ def gelistirici_test_girdisi_uygula(olay):
         return _v94_bind_test_spell("fire_magic")
     if ctrl and olay.key == pygame.K_2:
         return _v94_bind_test_spell("draco_calcinans")
-    # V92 already owns I/U/O and prevents historical test chords from leaking.
+
     return _v94_dev_previous(olay)
 
 
@@ -7497,7 +7497,7 @@ def gelistirici_test_paneli_ciz():
     height = 46 + len(rows) * 21 + 62
     rect = pygame.Rect(GENISLIK - width - 16, 16, width, height)
     v89_medieval_panel(rect, V91_UI_RED, 238)
-    yazi_yaz(bt("TEST / GÜNCELLEME", "TEST / UPDATES"), rect.x + 14, rect.y + 13, V91_UI_WHITE, normal_font)
+    yazi_yaz(bt("TEST", "TEST"), rect.x + 14, rect.y + 13, V91_UI_WHITE, normal_font)
     y = rect.y + 43
     for key, description in rows:
         yazi_yaz(key, rect.x + 14, y, V91_UI_GOLD, mini_font)
@@ -7512,9 +7512,9 @@ def gelistirici_test_paneli_ciz():
 # <POTBO_STAGE S2381>
 
 
-# ---------------------------------------------------------
-# Language consistency for V94/V95 developer overlay and touched UI.
-# ---------------------------------------------------------
+
+
+
 def gelistirici_test_paneli_ciz():
     if not v94_test_panel_visible or oyun_durumu != OYUN:
         return None
@@ -7533,7 +7533,7 @@ def gelistirici_test_paneli_ciz():
     rect = pygame.Rect(GENISLIK - width - 16, 16, width, height)
     v89_medieval_panel(rect, V91_UI_RED, 238)
     yazi_yaz(
-        bt("TEST / GÜNCELLEME", "TEST / UPDATES"),
+        bt("TEST", "TEST"),
         rect.x + 14,
         rect.y + 13,
         V91_UI_WHITE,
@@ -7616,7 +7616,7 @@ def _v95_draco_apply_rupture(self, now):
 
 # <POTBO_STAGE S2427>
 
-# Mevcut bütün ground-fire seçimlerini aynı üç kareye yönlendir.
+
 if V98_UNIVERSAL_FIRE_FRAMES:
     FIRE_MAGIC_GROUND_SPRITELERI = list(V98_UNIVERSAL_FIRE_FRAMES)
     FIRE_MAGIC_GROUND_AILELERI = {"universal": list(V98_UNIVERSAL_FIRE_FRAMES)}
@@ -7641,7 +7641,7 @@ def _v98_ground_fire_draw(self):
     if alpha <= 0:
         return
 
-    # 0-1-2-1 daha doğal, ileri-geri soluyan dört adımlı bir loop verir.
+
     sequence = (0, 1, 2, 1) if len(frames) >= 3 else tuple(range(len(frames)))
     phase = (now // 96 + int(getattr(self, "v89_pulse_phase", 0))) % len(sequence)
     frame = frames[sequence[phase] % len(frames)]
@@ -7655,7 +7655,7 @@ def _v98_ground_fire_draw(self):
     sx = int(round(dunya_ekran_x(self.x)))
     sy = int(round(dunya_ekran_y(self.y) + 3))
 
-    # Hafif zemin ışıması; sprite geometrisini değiştirmez.
+
     glow_w = max(12, int(round(target_h * 1.20)))
     glow_h = max(5, int(round(target_h * 0.30)))
     glow = pygame.Surface((glow_w, glow_h), pygame.SRCALPHA)
@@ -7687,8 +7687,8 @@ def _v99_fire_explosion_detonate(self, simdi):
         self.direction,
     )
 
-    # Trails are a presentation artifact from V98; impact explicitly owns all
-    # persistent fire now.
+
+
     v98_projectile_trail_fires.clear()
 
     rng = random.Random(int(self.x * 17 + self.y * 37 + int(simdi) * 3))
@@ -7700,14 +7700,14 @@ def _v99_fire_explosion_detonate(self, simdi):
         V99_EXPLOSION_FIRE_SPAWN_RADIUS,
     )
 
-    # Guarantee a dense central core before the outer points. The spawn helper
-    # already rejects walls and invalid map positions.
+
+
     center = pygame.Vector2(float(self.x), float(self.y))
     ordered = sorted(points, key=lambda p: p.distance_squared_to(center))
     for index, point in enumerate(ordered):
         patch = GroundFirePatch(point.x, point.y, simdi, index)
-        # Dense impact field uses slightly smaller flames; this keeps the many
-        # sprites legible and prevents their edges from escaping the visual radius.
+
+
         patch.scale = min(float(getattr(patch, "scale", 1.0)), rng.uniform(0.66, 0.96))
         patch.v99_impact_center = (float(self.x), float(self.y))
         patch.v99_impact_radius = float(V99_EXPLOSION_FIRE_VISUAL_RADIUS)
@@ -7749,9 +7749,9 @@ def _v99_ground_fire_draw(self):
     sx = int(round(dunya_ekran_x(self.x)))
     sy = int(round(dunya_ekran_y(self.y) + 3))
 
-    # Strong local glow, deliberately smaller than the flame spacing. Since spawn
-    # centers are inset from the impact boundary, this glow remains inside the
-    # visible explosion field instead of forming a halo outside it.
+
+
+
     glow_w = max(10, int(round(target_h * 1.05)))
     glow_h = max(4, int(round(target_h * 0.28)))
     glow = pygame.Surface((glow_w, glow_h), pygame.SRCALPHA)
@@ -7767,11 +7767,11 @@ def _v99_ground_fire_draw(self):
 # <POTBO_STAGE S2471>
 
 
-# ---------------------------------------------------------
-# CLEAN FIREBALL: one body only. No ghost flame, no small trailing flames and no
-# second/orb follower. Brightness is additive INSIDE the projectile alpha mask,
-# therefore glow never forms an external circular halo.
-# ---------------------------------------------------------
+
+
+
+
+
 def _v100_fire_projectile_draw(self):
     if not self.active or not FIRE_MAGIC_PROJECTILE_SPRITELERI:
         return
@@ -7800,7 +7800,7 @@ def _v100_fire_projectile_draw(self):
     rect = body.get_rect(center=(sx, sy))
     ekran.blit(body, rect)
 
-    # Same silhouette, same bounds: brightens the fireball without extending it.
+
     mask = pygame.mask.from_surface(body, 2)
     inner = mask.to_surface(
         setcolor=(255, 186, 74, 74),
@@ -7813,11 +7813,11 @@ def _v100_fire_projectile_draw(self):
 
 
 def dunya_aktorlerini_derinlige_gore_ciz():
-    # Settled decals already have their own spatial/tile culling.
+
     kan_lekelerini_ciz()
 
-    # Airborne blood can peak during executions. Draw only visible, newest
-    # particles; physics and landing/decal generation still update all particles.
+
+
     particle_budget = int(V103_PARTICLE_DRAW_BUDGET.get(v63_tier, 96))
     gorunen_particles = [
         p for p in blood_particles
@@ -7914,8 +7914,8 @@ def dunya_aktorlerini_derinlige_gore_ciz():
         if _v103_obj_visible(fx, 220.0):
             fx.ciz(now)
 
-    # UI/debug is also culled. An off-screen actor does not need a health bar or
-    # navigation visualization, but its AI continues normally.
+
+
     for dusman in gorunen_common:
         dusman.ciz_ui()
         dusman.ciz_debug_nav()
@@ -7947,10 +7947,10 @@ def gelistirici_test_girdisi_uygula(olay):
 # <POTBO_STAGE S2515>
 
 
-# ---------------------------------------------------------
-# FINAL PAINTER: ground droplets remain behind actors; airborne blood returns to a
-# foreground pass. Camera culling and adaptive V103 particle budget are preserved.
-# ---------------------------------------------------------
+
+
+
+
 def dunya_aktorlerini_derinlige_gore_ciz():
     kan_lekelerini_ciz()
 
@@ -8052,8 +8052,8 @@ def dunya_aktorlerini_derinlige_gore_ciz():
     for _, _, draw_call in sorted(komutlar, key=lambda row: (row[0], row[1])):
         draw_call()
 
-    # Airborne blood is a foreground effect again. It can cross the victim/player
-    # silhouette; once it lands, it automatically moves to the ground pass above.
+
+
     for p in visible_particles:
         try:
             ground = bool(p.zemin_katmani_mi())
@@ -8080,7 +8080,7 @@ def dunya_aktorlerini_derinlige_gore_ciz():
         v90_draco_draw(now)
 
 
-# Test overlay keeps the new Corona chord discoverable.
+
 def gelistirici_test_paneli_ciz():
     if not v94_test_panel_visible or oyun_durumu != OYUN:
         return None
@@ -8100,7 +8100,7 @@ def gelistirici_test_paneli_ciz():
     rect = pygame.Rect(GENISLIK - width - 16, 16, width, height)
     v89_medieval_panel(rect, V91_UI_RED, 238)
     yazi_yaz(
-        bt("TEST / GÜNCELLEME", "TEST / UPDATES"),
+        bt("TEST", "TEST"),
         rect.x + 14,
         rect.y + 13,
         V91_UI_WHITE,
@@ -8137,8 +8137,8 @@ def v106_corona_frames_load(force_resolve=False):
     except (pygame.error, OSError):
         return []
 
-    # Only the four authored idle/orbit cells in the top row are used. The lower
-    # death/streak row is deliberately excluded from the Corona renderer.
+
+
     reference = (503.0, 219.0)
     rects = (
         (66.0, 1.0, 70.0, 70.0),
@@ -8156,8 +8156,8 @@ def v106_corona_frames_load(force_resolve=False):
         if area.width <= 0 or area.height <= 0:
             continue
         frame = sheet.subsurface(area).copy().convert_alpha()
-        # Chroma cleanup without PixelArray/get_at double access. This path runs
-        # only during asset load/reload, never per frame.
+
+
         for px in range(frame.get_width()):
             for py in range(frame.get_height()):
                 c = frame.get_at((px, py))
@@ -8219,8 +8219,8 @@ def corona_aetherica_kullan():
     now = pygame.time.get_ticks()
     if oyun_durumu != OYUN or oyun_alt_durumu != HARITA or oyuncu_hp <= 0:
         return False
-    # Do not silently fail merely because a transient attack/recovery animation has
-    # the generic control lock set. Corona itself resets melee state on successful cast.
+
+
     if oyun_sinematik_kilitli_mi():
         return False
     if v106_corona_active_orbs():
@@ -8242,8 +8242,8 @@ def corona_aetherica_kullan():
         )
         return False
 
-    # Asset failure must never make the mechanic disappear: the renderer has a
-    # procedural fallback orb. We still lazy-load the supplied authored sheet here.
+
+
     v107_corona_asset_ensure_loaded()
 
     if not debug_cast:
@@ -8285,7 +8285,7 @@ def q_hizli_itemi_kullan():
 # <POTBO_STAGE S2557>
 
 
-# Corona-aware Q slot cooldown and remaining-core readout.
+
 def v89_q_slot_draw(rect, selected=False):
     q_hizli_slot_normalize_et()
     q_item = q_hizli_item_index
@@ -8331,7 +8331,7 @@ def v89_q_slot_draw(rect, selected=False):
             ekran.blit(shade, (rect.x + 4, rect.bottom - 4 - height))
 
 
-# Test overlay wording matches the final shortcut contract.
+
 def gelistirici_test_paneli_ciz():
     if not v94_test_panel_visible or oyun_durumu != OYUN:
         return None
@@ -8351,7 +8351,7 @@ def gelistirici_test_paneli_ciz():
     rect = pygame.Rect(GENISLIK - width - 16, 16, width, height)
     v89_medieval_panel(rect, V91_UI_RED, 238)
     yazi_yaz(
-        bt("TEST / GÜNCELLEME", "TEST / UPDATES"),
+        bt("TEST", "TEST"),
         rect.x + 14,
         rect.y + 13,
         V91_UI_WHITE,
@@ -8369,8 +8369,8 @@ def gelistirici_test_paneli_ciz():
         ACIK_GRI,
         mini_font,
     )
-    # Compact diagnostic: if authored frames are zero, mechanics still work via
-    # fallback circles, but the tester immediately knows the cast PNG was not loaded.
+
+
     yazi_yaz(
         f"Corona frames: {len(V106_CORONA_FRAMES)}",
         rect.x + 14,
@@ -8432,14 +8432,14 @@ def v105_grant_corona_aetherica():
     return True
 
 
-# ---------------------------------------------------------
-# Q DEV CASTS
-# Sphaera: debug-free yolu kullanır; mana/stamina/cooldown tüketmez.
-# Draco: kaynak değerleri snapshot'lanır; cooldown dev item için sürekli sıfırlanır.
-# Corona: kendi debug-free cast yolunu her kullanımda yeniden silahlandırır.
-# Animasyon/aktif-form kilitleri korunur; amaç fizik sistemini bypass etmek değil,
-# test büyüsünün kullanım hakkını ve kaynak maliyetini sınırsız yapmaktır.
-# ---------------------------------------------------------
+
+
+
+
+
+
+
+
 _v108_corona_cast_raw = corona_aetherica_kullan
 
 
@@ -8450,7 +8450,7 @@ def corona_aetherica_kullan():
     v107_corona_test_cast_ready = True
     v106_corona_last_cast_ms = -1000000
     ok = _v108_corona_cast_raw()
-    # Raw cast consumes the one-shot debug flag. Dev ownership immediately restores it.
+
     v107_corona_test_cast_ready = True
     v106_corona_last_cast_ms = -1000000
     return ok
@@ -8479,7 +8479,7 @@ def q_hizli_itemi_kullan():
             old_stamina = float(oyuncu_stamina)
             gelistirici_sonsuz_ates = True
             fire_magic_son_kullanim = -1000000
-            # Cast commitment itself remains; only stale lock is removed before a new test cast.
+
             if pygame.time.get_ticks() >= int(fire_magic_cast_lock_until):
                 fire_magic_cast_lock_until = 0
             try:
@@ -8520,7 +8520,7 @@ def v89_q_slot_draw(rect, selected=False):
     if isinstance(q_hizli_item_index, int) and 0 <= q_hizli_item_index < len(envanter_itemleri):
         item = envanter_itemleri[q_hizli_item_index]
         if isinstance(item, dict) and v108_dev_spell_unlimited(item.get("id")):
-            # Cover the cooldown corner with the semantic state that matters in test mode.
+
             badge = pygame.Rect(rect.x + 5, rect.y + 5, 20, 18)
             pygame.draw.rect(ekran, (4, 4, 6), badge)
             yazi_yaz("∞", badge.centerx, badge.centery - 1, (255, 255, 255), mini_font, True)
@@ -8530,7 +8530,7 @@ def v89_q_slot_draw(rect, selected=False):
 # <POTBO_STAGE S2577>
 
 
-# Final developer overlay wording.
+
 def gelistirici_test_paneli_ciz():
     if not v94_test_panel_visible or oyun_durumu != OYUN:
         return None
@@ -8550,7 +8550,7 @@ def gelistirici_test_paneli_ciz():
     rect = pygame.Rect(GENISLIK - width - 16, 16, width, height)
     v89_medieval_panel(rect, V91_UI_RED, 238)
     yazi_yaz(
-        bt("TEST / GÜNCELLEME", "TEST / UPDATES"),
+        bt("TEST", "TEST"),
         rect.x + 14,
         rect.y + 13,
         V91_UI_WHITE,
@@ -8581,14 +8581,14 @@ def gelistirici_test_paneli_ciz():
 # <POTBO_STAGE S2600>
 
 
-# =========================================================
-# END V109
-# =========================================================
 
 
-# =========================================================
-# V110 - FULMEN CAERULEUM (AER)
-# =========================================================
+
+
+
+
+
+
 V110_VERSION = "110.0"
 
 FULMEN_CAERULEUM_ITEM_ADAYLARI = [
@@ -8717,9 +8717,9 @@ def gelistirici_test_paneli_ciz():
     return rect
 
 
-# ---------------------------------------------------------
-# FULMEN RUNTIME
-# ---------------------------------------------------------
+
+
+
 V110_FULMEN_MANA_COST = 72
 V110_FULMEN_COOLDOWN_MS = 11000
 V110_FULMEN_RANGE = 520.0
@@ -9141,14 +9141,14 @@ def gecici_dunya_aktorlerini_sifirla():
     return result
 
 
-# =========================================================
-# END V110
-# =========================================================
 
 
-# =========================================================
-# V111 - FULMEN CAERULEUM SKY STRIKE / GROUND ELECTRICITY
-# =========================================================
+
+
+
+
+
+
 V111_VERSION = "111.0"
 
 V111_FULMEN_GUIDE_MS = 24
@@ -9159,7 +9159,7 @@ V111_FULMEN_FLASH_WHITE_MS = 18
 V111_FULMEN_FLASH_BLACK_MS = 54
 V111_FULMEN_LIGHT_CACHE = {}
 
-# Daha hızlı ve korkutucu ritim.
+
 V110_FULMEN_GUIDE_MS = V111_FULMEN_GUIDE_MS
 V110_FULMEN_ION_MS = V111_FULMEN_ION_MS
 V110_FULMEN_STRIKE_MS = V111_FULMEN_STRIKE_MS
@@ -9235,7 +9235,7 @@ _v111_fulmen_prepare_raw = v110_fulmen_prepare
 
 def v110_fulmen_prepare(target_actor, target_point, self_strike=False):
     _v111_fulmen_prepare_raw(target_actor, target_point, self_strike=self_strike)
-    # Yıldırım karakterden değil gökten iner: başlangıç noktası hedefin çok üstü.
+
     rng = random.Random(int(v110_fulmen.seed) ^ 0x51EA)
     start = pygame.Vector2(v110_fulmen.target_point)
     start.x += rng.uniform(-42.0, 42.0)
@@ -9366,7 +9366,7 @@ def v110_fulmen_draw(now=None):
         v110_draw_polyline(branch, (255, 255, 255), 1)
     v110_draw_impact_sprite(v110_fulmen.target_point, age)
     v111_draw_ground_electric(v110_fulmen.target_point, age)
-    # Var olan chain-lightning hedefleri de korunur, fakat asıl görsel vurgu yere akan elektriktir.
+
     for chain in v110_fulmen.chain_points:
         v110_draw_polyline(chain, (158, 197, 255), 2)
         v110_draw_polyline(chain, (255, 255, 255), 1)
@@ -9393,21 +9393,21 @@ def parlaklik_kaplamasi_ciz():
             _v110_draw_white_silhouettes()
     return result
 
-# =========================================================
-# END V111
-# =========================================================
 
 
-# =========================================================
-# V112 - SPELL SCHOOL UI SYMBOLS + FULMEN REAL-LIGHTNING PASS
-# =========================================================
+
+
+
+
+
+
 V112_VERSION = "112.0"
 
-# ---------------------------------------------------------
-# SPELL SCHOOL ICONS
-# Kullanıcının verdiği UI sembolleri assets/ui altından aranır. Dosya adı tam
-# farklıysa yine eski metin fallback'i korunur.
-# ---------------------------------------------------------
+
+
+
+
+
 SPELL_SCHOOL_UI_CANDIDATES = {
     "IGNIS": IGNIS_SEMBOL_ADAYLARI,
     "AER": [
@@ -9481,10 +9481,10 @@ def spell_okulu_sembol_ciz(okul, rect, alpha=255):
     return False
 
 
-# ---------------------------------------------------------
-# FULMEN CAERULEUM: larger bolt, stronger local brilliance, visible post-strike
-# ground electricity, and non-geometric sprite silhouettes during black flash.
-# ---------------------------------------------------------
+
+
+
+
 V110_FULMEN_STRIKE_MS = 78
 V110_FULMEN_AFTER_MS = 240
 V112_FULMEN_FLASH_WHITE_MS = 16
@@ -9558,7 +9558,7 @@ def v110_fulmen_prepare(target_actor, target_point, self_strike=False):
         seed=v110_fulmen.seed,
     )
     v110_fulmen.branches = v110_build_branches(v110_fulmen.main_points, v110_fulmen.seed)
-    # Büyük yıldırım gövdesi için ek yan dallar.
+
     extra = []
     rng2 = random.Random(int(v110_fulmen.seed) ^ 0x52AC)
     for _ in range(4):
@@ -9695,15 +9695,15 @@ def parlaklik_kaplamasi_ciz():
                 ekran.blit(silhouette, (0, 0))
     return result
 
-# =========================================================
-# END V112
-# =========================================================
 
 
-# =========================================================
-# V113 - FULMEN CAERULEUM LIGHTNING REFINEMENT
-# Faster formation, less blocky local light, stronger whole-screen flash.
-# =========================================================
+
+
+
+
+
+
+
 V113_VERSION = "113.0"
 V110_FULMEN_GUIDE_MS = 14
 V110_FULMEN_ION_MS = 20
@@ -9719,15 +9719,15 @@ V113_FULMEN_FLASH_TOTAL_MS = V113_FULMEN_FLASH_WHITE_MS + V113_FULMEN_FLASH_BLAC
 
 
 def v113_draw_strike_bloom(center, age_ms):
-    # Pixel-sprite büyütüp blok blok göstermek yerine, çok parlak ama daha pürüzsüz
-    # bir saturasyon alanı oluştur. Çarpma noktası kısa an için okunamayacak kadar parlar.
+
+
     cx, cy = v110_screen_point((center.x, center.y - 10.0))
     total = max(1.0, float(V110_FULMEN_STRIKE_MS + V110_FULMEN_AFTER_MS))
     fade = max(0.0, 1.0 - float(age_ms) / total)
     if fade <= 0.0:
         return
     layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
-    # Büyük, dağınık ama karemsi olmayan ışık. Normal alpha ile yayılan ışık.
+
     circles = [
         (int(112 * fade + 36), (255, 255, 255, int(22 + 34 * fade))),
         (int(74 * fade + 26), (232, 242, 255, int(32 + 48 * fade))),
@@ -9748,7 +9748,7 @@ def v113_draw_ion_runner(points, phase_age_ms):
     if len(tail) < 2:
         return
     tip = tail[-1]
-    # İnce mavi kanal kısa an için oluşur.
+
     v113_draw_additive_glow(tail, [(5, 26), (3, 42)], (116, 174, 255))
     v110_draw_polyline(tail, (120, 180, 255), 2)
     v110_draw_polyline(tail, (255, 255, 255), 1)
@@ -9766,7 +9766,7 @@ def v111_draw_ground_electric(center, age_ms):
     fade = max(0.0, 1.0 - float(age_ms) / total_life)
     if fade <= 0.0:
         return
-    # Şimşek çaktıktan sonra zemine yayıldığı açıkça görülsün.
+
     spread = max(0.0, min(1.0, (float(age_ms) - 8.0) / 150.0))
     for path in getattr(v110_fulmen, 'ground_paths', []):
         sub = v113_polyline_tail(path, spread)
@@ -9816,7 +9816,7 @@ def v110_fulmen_draw(now=None):
         v113_draw_ion_runner(main, phase_age)
         return
     age = max(0, int(now) - int(v110_fulmen.strike_ms or now))
-    # Ana şimşek: daha büyük, daha sert, fakat bloğa dönmeden ışık yayıyor.
+
     v113_draw_additive_glow(main, [(20, 22), (14, 34), (10, 48)], (194, 224, 255))
     v110_draw_polyline(main, (172, 210, 255), 9)
     v110_draw_polyline(main, (255, 255, 255), 5)
@@ -9857,16 +9857,16 @@ def parlaklik_kaplamasi_ciz():
                 ekran.blit(silhouette, (0, 0))
     return result
 
-# =========================================================
-# END V113
-# =========================================================
 
 
-# =========================================================
-# V114 - FULMEN CAERULEUM CLEAN STRIKE PASS
-# Smaller bolt, no geometric orb-bloom, irregular impact electricity, stronger
-# whole-screen lightning flash with controlled cost.
-# =========================================================
+
+
+
+
+
+
+
+
 V114_VERSION = "114.0"
 V110_FULMEN_GUIDE_MS = 10
 V110_FULMEN_ION_MS = 16
@@ -9996,7 +9996,7 @@ def v110_fulmen_draw(now=None):
 
     age = max(0, int(now) - int(v110_fulmen.strike_ms or now))
     glow_layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
-    # Daha küçük ve kontrollü ana yıldırım.
+
     v114_glow_line(glow_layer, main, [(10, 14), (6, 22), (3, 36)], (196, 225, 255))
     v110_draw_polyline(main, (176, 212, 255), 4)
     v110_draw_polyline(main, (255, 255, 255), 2)
@@ -10006,7 +10006,7 @@ def v110_fulmen_draw(now=None):
         v110_draw_polyline(branch, (255, 255, 255), 1)
     v114_draw_impact_electric(age, glow_layer)
     ekran.blit(glow_layer, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
-    # Zemine yayılan elektriği ana çakmanın ardından ayrı ve görünür tut.
+
     v111_draw_ground_electric(v110_fulmen.target_point, age)
     for chain in v110_fulmen.chain_points:
         chain_glow = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
@@ -10041,16 +10041,16 @@ def parlaklik_kaplamasi_ciz():
                 ekran.blit(silhouette, (0, 0))
     return result
 
-# =========================================================
-# END V114
-# =========================================================
 
 
-# =========================================================
-# V115 - FULMEN AFTER-STRIKE GROUND PASS
-# Ground electricity begins after the strike, nearby enemies still receive chain,
-# and the hit point blackens with ember residue.
-# =========================================================
+
+
+
+
+
+
+
+
 V115_VERSION = "115.0"
 V115_FULMEN_GROUND_DELAY_MS = 34
 V115_FULMEN_SCORCH_LIFETIME_MS = 2600
@@ -10142,7 +10142,7 @@ def v115_draw_scars():
             continue
         center = scar["center"]
         layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
-        # Karanlık yanık leke.
+
         for blot in scar.get("blots", []):
             sx, sy = v110_screen_point((center.x + blot["ox"], center.y + blot["oy"]))
             rx = max(2, int(round(blot["rx"])))
@@ -10158,7 +10158,7 @@ def v115_draw_scars():
                 pygame.draw.lines(layer, (10, 10, 10, int(120 * fade)), False, pts, 2)
                 pygame.draw.lines(layer, (34, 18, 8, int(52 * fade)), False, pts, 1)
         ekran.blit(layer, (0, 0))
-        # Köz parçaları.
+
         for ember in scar.get("embers", []):
             t = max(0.0, 1.0 - float(ember.get("age", 0.0)) / max(1.0, float(ember.get("life", 1.0))))
             if t <= 0.0:
@@ -10179,15 +10179,15 @@ def gecici_dunya_aktorlerini_sifirla():
     v115_fulmen_scars.clear()
     return result
 
-# =========================================================
-# END V115
-# =========================================================
 
 
-# =========================================================
-# V116 - FULMEN LAYER / GROUND ANIMATION REFINEMENT
-# Ground electricity and embers stay under actors; main bolt stays above.
-# =========================================================
+
+
+
+
+
+
+
 V116_VERSION = "116.0"
 V115_FULMEN_SCORCH_LIFETIME_MS = 6200
 V115_FULMEN_EMBER_LIFETIME_MS = 2200
@@ -10213,7 +10213,7 @@ def v115_update_scars(now=None):
                 continue
             ember["age"] = age
             drift = float(ember.get("drift", 1.0))
-            # Hafif kıvrımlı, uzun süreli uçuş.
+
             ember["x"] += (float(ember.get("vx", 0.0)) + math.sin(age * 0.011 * drift) * 6.0) * dt
             ember["y"] += float(ember.get("vy", 0.0)) * dt
             ember["vy"] += 10.0 * dt
@@ -10226,7 +10226,7 @@ def v115_update_scars(now=None):
 
 
 def v116_ground_anim_progress(age_ms):
-    # Çakış sonrası dışa yayılır, sonra küçülerek söner.
+
     t = max(0.0, min(1.0, float(age_ms - V115_FULMEN_GROUND_DELAY_MS) / float(V116_FULMEN_GROUND_ANIM_MS)))
     if t <= 0.55:
         return t / 0.55
@@ -10276,7 +10276,7 @@ def v116_draw_fulmen_ground(now=None):
     if v110_fulmen.phase not in ("strike", "after"):
         return
     age = max(0, int(now) - int(v110_fulmen.strike_ms or now))
-    # Çarpma noktasındaki düzensiz elektrik saçakları da zemin katmanında kalır.
+
     glow_layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
     fade = max(0.0, 1.0 - float(age) / float(V110_FULMEN_STRIKE_MS + V110_FULMEN_AFTER_MS))
     for path in getattr(v110_fulmen, 'impact_paths', []):
@@ -10334,7 +10334,7 @@ def v116_draw_fulmen_air(now=None):
         v110_draw_polyline(branch, (208, 226, 255), 1)
         v110_draw_polyline(branch, (255, 255, 255), 1)
     ekran.blit(glow_layer, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
-    # Yakındaki düşmanlara iletim görünür kalır.
+
     for chain in v110_fulmen.chain_points:
         chain_glow = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
         v114_glow_line(chain_glow, chain, [(4, 7), (2, 12)], (180, 212, 255))
@@ -10379,12 +10379,12 @@ def v115_draw_scars():
             glow = pygame.Surface((r * 8, r * 8), pygame.SRCALPHA).convert_alpha()
             pygame.draw.circle(glow, (255, 142, 44, alpha // 4), (r * 4, r * 4), r * 2)
             pygame.draw.circle(glow, (255, 222, 148, alpha), (r * 4, r * 4), r)
-            # Zemin katmanında kalır; aktörlerin altına çizilecektir.
+
             ekran.blit(glow, glow.get_rect(center=(sx, sy)), special_flags=pygame.BLEND_RGBA_ADD)
 
 
-# Dünya painter'ını yeniden kur: yer elektriği + karartı + közler aktörlerin altında,
-# ana yıldırım ise üstünde.
+
+
 def dunya_aktorlerini_derinlige_gore_ciz():
     kan_lekelerini_ciz()
 
@@ -10414,7 +10414,7 @@ def dunya_aktorlerini_derinlige_gore_ciz():
             flame for flame in v98_projectile_trail_fires if flame.aktif_mi(now)
         ]
 
-    # Fulmen yer izleri / közler / yere yayılan elektrik aktörlerin altında.
+
     v115_draw_scars()
     v116_draw_fulmen_ground(now)
 
@@ -10490,12 +10490,12 @@ def dunya_aktorlerini_derinlige_gore_ciz():
     for _, _, draw_call in sorted(komutlar, key=lambda row: (row[0], row[1])):
         draw_call()
 
-    # Corona Aetherica, V116'nın final world painter'ı yeniden yazıldıktan sonra
-    # eski wrapper zincirinden düşüyordu. Mekanik çalışsa bile cast/orb sprite'ları
-    # bu nedenle hiç ekrana blit edilmiyordu. Final renderer içinde tekrar çiz.
+
+
+
     v106_corona_draw(now)
 
-    # Ana yıldırım ve chain iletimleri aktörlerin üstüne gelir.
+
     v116_draw_fulmen_air(now)
 
     for p in visible_particles:
@@ -10523,24 +10523,24 @@ def dunya_aktorlerini_derinlige_gore_ciz():
     if "v90_draco_draw" in globals():
         v90_draco_draw(now)
 
-# =========================================================
-# END V116
-# =========================================================
 
 
-# =========================================================
-# V117 - FULMEN ORIGIN / COLLISION REFINEMENT
-# Ignore general collision/LOS, hide the lightning source above the screen,
-# and tone the glow down a bit more.
-# =========================================================
+
+
+
+
+
+
+
+
 V117_VERSION = "117.0"
 V117_FULMEN_OFFSCREEN_TOP = 220.0
 V117_FULMEN_OFFSCREEN_JITTER_X = 34.0
 V117_FULMEN_OFFSCREEN_JITTER_Y = 40.0
 
 
-# Şimşek genel collision / ince LOS tarafından durdurulmaz; yalnız geçerli canlı
-# düşman/oyuncu hedef mantığına bağlıdır.
+
+
 def v110_fulmen_pick_target():
     player = pygame.Vector2(float(oyuncu_x), float(oyuncu_y) - 26.0)
     facing = v110_fulmen_facing()
@@ -10567,7 +10567,7 @@ def v110_fulmen_pick_target():
     return best_actor, best_center
 
 
-# Kaynak noktası görünmesin: çizgi ekranın üstünden, belirsiz bir yerden gelsin.
+
 _v117_prepare_raw = v110_fulmen_prepare
 
 def v110_fulmen_prepare(target_actor, target_point, self_strike=False):
@@ -10586,7 +10586,7 @@ def v110_fulmen_prepare(target_actor, target_point, self_strike=False):
         seed=v110_fulmen.seed,
     )
     v110_fulmen.branches = v110_build_branches(v110_fulmen.main_points, v110_fulmen.seed)
-    # Ek yan dallar kalsın ama daha kontrollü yoğunlukta.
+
     extra = []
     rng2 = random.Random(int(v110_fulmen.seed) ^ 0x17AC)
     for _ in range(3):

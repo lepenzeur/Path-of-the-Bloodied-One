@@ -1,30 +1,30 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0002>
 
-# =========================================================
-# PATH OF THE BLOODIED ONE
-# Pygame ana oyun dosyası
-# Menü, karakter, combat, büyü, AI, gore, ses ve save/load
-# =========================================================
 
-# =========================================================
-# PYGAME BAŞLATMA
-# =========================================================
+
+
+
+
+
+
+
+
 
 pygame.init()
 # </POTBO_STAGE S0002>
 
 # <POTBO_STAGE S0038>
 
-# =========================================================
-# KAN / GORE / GAME OVER ASSET KONTRATI
-# =========================================================
+
+
+
 BLOOD_EFFECT_KLASORU = os.path.join(ASSETS, "effects", "blood")
 BLOOD_PARTICLE_KLASORU = os.path.join(BLOOD_EFFECT_KLASORU, "particles")
 BLOOD_DECAL_KLASORU = os.path.join(BLOOD_EFFECT_KLASORU, "decals")
@@ -45,11 +45,11 @@ GORE_GORSEL_YOLLARI = {
     "ribcage": os.path.join(GORE_KLASORU, "ribcage.png"),
 }
 
-# Skull ve omurilik tek başına dosya olarak yüklenmez. Kullanıcının işaretlediği
-# Dead Ahead gore sheet'indeki bölgeden runtime'da matematiksel, normalize crop alınır.
-# Böylece yanlışlıkla bütün sheet tek bir "omurilik" sprite'ı haline gelemez.
-# 470x1065 referans çözünürlük yalnız oranları tanımlar; kaynak başka çözünürlükte
-# ölçeklenmiş olsa bile nx=x/W, ny=y/H denklemleri aynı anatomik kareyi bulur.
+
+
+
+
+
 GORE_ATLAS_ADAYLARI = [
     os.path.join(GORE_KLASORU, "blood_effects_sheet.png"),
     os.path.join(BLOOD_EFFECT_KLASORU, "dead_ahead_blood_effects.png"),
@@ -71,9 +71,9 @@ GORE_ATLAS_ADAYLARI = [
     ),
 ]
 
-# (x / 470, y / 1065, w / 470, h / 1065)
-# skull: işaretli bölgenin ilk kafatası karesi.
-# spinal_cord: işaretli bölgenin sağ altındaki uzun, tek parça omurilik karesi.
+
+
+
 GORE_ATLAS_NORMALIZE_CROPLARI = {
     "skull": (
         0.0 / 470.0,
@@ -89,9 +89,9 @@ GORE_ATLAS_NORMALIZE_CROPLARI = {
     ),
 }
 
-# Kullanıcının yeni Zombie Crisis gore sheet'i yalnız ekstra anatomi havuzu
-# için kullanılır. Kaynak dosya değiştirilmez; runtime'da normalize crop alınır.
-# 366x550 referans çözünürlük oran hesabının tabanıdır.
+
+
+
 V28_EXTRA_GORE_ATLAS_ADAYLARI = [
     os.path.join(GORE_KLASORU, "zombie_crisis_gore.png"),
     os.path.join(
@@ -104,7 +104,7 @@ V28_EXTRA_GORE_ATLAS_ADAYLARI = [
     ),
 ]
 V28_EXTRA_GORE_CROPLARI = {
-    # küçük iç organ / göz benzeri parçalar
+
     "organ_round_a": (
         18.0 / 366.0,
         6.0 / 550.0,
@@ -117,7 +117,7 @@ V28_EXTRA_GORE_CROPLARI = {
         40.0 / 366.0,
         42.0 / 550.0,
     ),
-    # büyük et/organ kütleleri
+
     "organ_mass_a": (
         7.0 / 366.0,
         194.0 / 550.0,
@@ -130,7 +130,7 @@ V28_EXTRA_GORE_CROPLARI = {
         68.0 / 366.0,
         74.0 / 550.0,
     ),
-    # uzun kemik ve kemik kümeleri
+
     "bone_long_a": (
         18.0 / 366.0,
         282.0 / 550.0,
@@ -155,7 +155,7 @@ V28_EXTRA_GORE_CROPLARI = {
         48.0 / 366.0,
         50.0 / 550.0,
     ),
-    # düzensiz et/kas parçası
+
     "flesh_shard_a": (
         8.0 / 366.0,
         438.0 / 550.0,
@@ -170,8 +170,8 @@ V28_EXTRA_GORE_CROPLARI = {
     ),
 }
 
-# Kan lekeleri yaşlandığında ortaya çıkan kurtçuklar. 76x24 NES sheet'i
-# 6 karelik kısa bir locomotion çevrimi olarak runtime'da bölünür.
+
+
 BLOOD_WORM_SHEET_ADAYLARI = [
     os.path.join(AMBIENT_KLASORU, "blood_worms.png"),
     os.path.join(ASSETS, "creatures", "blood_worms.png"),
@@ -193,44 +193,44 @@ one_cikan_slotlar = [None] * 5
 # </POTBO_STAGE S0108>
 
 # <POTBO_STAGE S0110>
-# Öne çıkan slotlar da kendi aralarında taşınıp yer değiştirebilir.
+
 one_cikan_tasima_kaynagi = None
-# Griddeki bir eşya "öne çıkanlara ata" seçildiğinde doğrudan atanmaz.
-# Oyuncu 1-5 arasından hedef slotu açıkça seçer.
+
+
 one_cikan_atama_item_index = None
 # </POTBO_STAGE S0110>
 
 # <POTBO_STAGE S0147>
 
-# Kan parçacıkları havada geçicidir; yere değdiklerinde kalıcı lekeye dönüşür.
-# blood_decals ve gore_chunks restart sırasında özellikle temizlenmez.
+
+
 blood_particles = []
 blood_decals = []
 gore_chunks = []
 blood_maggots = []
-# Her decal kendi dalgasını üretir ama global tavan FPS'i korur.
-# Kurtçuk ambient detaydır; oyuncunun gözüne ilk bakışta çarpmaması gerekir.
+
+
 BLOOD_MAGGOT_MAX = 6
 BLOOD_MAGGOT_FIRST_MIN_MS = 45000
 BLOOD_MAGGOT_FIRST_MAX_MS = 80000
 BLOOD_MAGGOT_WAVE_MIN_MS = 90000
 BLOOD_MAGGOT_WAVE_MAX_MS = 150000
-# Kurtçuk üretimi her frame bütün kalıcı kan listesini taramaz.
+
 blood_maggot_scan_next_ms = 0
 blood_maggot_scan_cursor = 0
 kan_gore_son_guncelleme = pygame.time.get_ticks()
-# Havada olan kan foreground olabilir; yere yaklaşan damla ise artık karakterlerin
-# üstünden geçmez ve zemin pass'ine düşer.
+
+
 BLOOD_PARTICLE_GROUND_Z = 4.5
 # </POTBO_STAGE S0147>
 
 # <POTBO_STAGE S0149>
 
-# Ölüm ekranı ayrı bir world-state değildir; dünya görüntüsü tamamen kesilir.
-# Zemin/harita çizilmez: arka plan saf siyahtır, yalnız kan/gore ve oyuncu kırmızı
-# silüet olarak kalır. Restart son yaşayan kaydı yükler fakat et/kanı korur.
-# Ağır kesici lethal darbe oyuncu sprite'ını runtime'da rastgele çapraz bir kesim
-# düzlemi boyunca iki parçaya ayırır; yeni death sprite gerekmez.
+
+
+
+
+
 oyuncu_olum_baslangic_ms = 0
 # </POTBO_STAGE S0149>
 
@@ -240,16 +240,16 @@ oyuncu_olum_gore_uretildi = False
 
 # <POTBO_STAGE S0156>
 oyuncu_olum_katil_kan_sonraki_ms = 0
-# ölümün sunum dili. "blood" normal kesici/darbe; "fire" ise burn DoT ile
-# gelen ölüm. Fire death'te yeni kan/gore ve arter burst üretilmez; mevcut ateş
-# atlası cesedin çevresinde kullanılır.
+
+
+
 oyuncu_olum_turu = "blood"
 # </POTBO_STAGE S0156>
 
 # <POTBO_STAGE S0176>
-# Gore ve zemin kanı kendi sınırlı önbelleklerini kullanır. Önceki sürümde
-# hareket eden her et parçasının her 5 derecelik dönüşü global cache'e ekleniyor,
-# büyük patlamalardan sonra binlerce Surface bellekte kalıyordu.
+
+
+
 gore_sprite_onbellegi = {}
 blood_decal_onbellegi = {}
 GORE_CACHE_MAX = 1400
@@ -291,7 +291,7 @@ def v104_sadelestirilmis_kan_decal(img):
     w, h = cropped.get_size()
     down_w = max(4, int(round(w * (0.58 if w > h * 1.35 else 0.68))))
     down_h = max(4, int(round(h * 0.68)))
-    # İki aşamalı smoothscale ince kuyrukları törpüler, gövdeyi korur.
+
     blob = pygame.transform.smoothscale(cropped, (down_w, down_h))
     blob = pygame.transform.smoothscale(blob, (w, h)).convert_alpha()
     mask = pygame.mask.from_surface(blob, 84)
@@ -328,9 +328,9 @@ def _v24_gore_preview_arka_planini_sil(src):
 
     temiz = src.copy().convert_alpha()
     fonlar = (
-        (39, 57, 28),  # ana koyu yeşil
-        (37, 95, 56),  # teal sprite hücresi
-        (24, 35, 15),  # grid / koyu panel
+        (39, 57, 28),
+        (37, 95, 56),
+        (24, 35, 15),
     )
     esik2 = 18 * 18
     w, h = temiz.get_size()
@@ -351,8 +351,8 @@ def _v24_gore_preview_arka_planini_sil(src):
     finally:
         temiz.unlock()
 
-    # Crop'ın içindeki artık şeffaf boşluğu da at. Boyut bundan sonra bütün sheet'e
-    # değil, yalnız gerçek skull / spinal_cord piksel kütlesine göre hesaplanır.
+
+
     bounds = temiz.get_bounding_rect(min_alpha=8)
     if bounds.width <= 0 or bounds.height <= 0:
         return None
@@ -434,7 +434,7 @@ def _v28_blood_worm_spriteleri_yukle():
     if sheet is None:
         return []
     sw, sh = sheet.get_size()
-    # Kaynak 76x24; altı 12x12 hücre normalize edilerek alınır.
+
     rectler = [(2 + 12 * i, 6, 12, 12) for i in range(6)]
     kareler = []
     for x, y, w, h in rectler:
@@ -515,8 +515,8 @@ def oyun_kaydet():
     global aktif_kayit
     global kayit_animasyon_bitis
 
-    # Ölüm anını autosave ile kalıcı bir soft-lock'a dönüştürme. Sir Torrmund gibi
-    # ölümcül özel düşmanlarda son yaşayan kayıt korunur; oyuncu menüden yükleyebilir.
+
+
     if oyuncu_hp <= 0:
         return False
 
@@ -567,23 +567,23 @@ def oyun_kaydet():
         "important_items_seen": sorted(onemli_item_gorulenler),
         "merchant_buyback": merchant_geri_alim_listesi,
         "merchant_products_seen": sorted(merchant_gorulen_urunler),
-        # Arka plan simülasyonu sürümler arası güvenli, sınırlı veri taşır.
+
         "world_state": dict(dunya_durumu),
         "world_event_log": list(dunya_olay_gunlugu)[-72:],
-        # Common enemy durumları: can, konum ve aggro kayıtla birlikte yaşar.
+
         "common_enemy_version": COMMON_ENEMY_SAVE_VERSION,
         "common_enemies": [dusman.to_save() for dusman in common_enemies],
-        # Özel aktörler common_enemies içine seri hale getirilmez.
+
         "tarkard": tarkard_actor.to_save() if tarkard_actor is not None else None,
         "torrmund": torrmund_actor.to_save() if torrmund_actor is not None else None,
-        # Oyuncunun bölümde kaldığı son koordinatlar.
+
         "x": oyuncu_x,
         "y": oyuncu_y,
     }
 
     try:
-        # V34: sibling temp + os.replace ile atomic commit. Çökme/yazma kesintisi
-        # yarım JSON'u ana save dosyasının üstüne bırakmaz.
+
+
         _v34_json_atomic_write(aktif_kayit, veri, indent=4)
         _v34_json_atomic_write(SON_KAYIT_DOSYASI, {"path": aktif_kayit}, indent=4)
         kayit_animasyon_bitis = pygame.time.get_ticks() + 1500
@@ -597,9 +597,9 @@ def oyun_kaydet():
 # <POTBO_STAGE S0324>
 
 
-# =========================================================
-# KAYIT ADI EKRANI
-# =========================================================
+
+
+
 
 
 def kayit_adi_ekrani_ciz():
@@ -636,8 +636,8 @@ def kayit_adi_ekrani_ciz():
         normal_font,
     )
 
-    # Kayıt adı ekranında yönlendirme / kullanım metni gösterilmez.
-    # Yalnız gerçek bir doğrulama hatası oluşursa ``kayit_mesaji`` görünür.
+
+
     if kayit_mesaji:
         yazi_yaz(
             kayit_mesaji,
@@ -746,7 +746,7 @@ def karakter_olusturma_ciz():
     )
 
     baslat_rect = pygame.Rect(orta_panel.x + 72, 553, orta_panel.width - 144, 52)
-    # V37: karakter seçimi onayında START GAME de ana menüyle aynı click dilini kullanır.
+
     baslat_rect = buton_click_anim_rect(baslat_rect, True)
 
     pygame.draw.rect(ekran, (62, 4, 16), baslat_rect, border_radius=0)
@@ -770,8 +770,8 @@ def karakter_olusturma_ciz():
             True,
         )
 
-    # Onaydan sonra seçili kart vurgulanır; geçiş toplam yaklaşık 2.2 saniyede
-    # kontrollü biçimde siyaha ulaşır. Loading bu fade'i devralmaz.
+
+
     if karakter_onay_gecisi_aktif:
         gecen = max(
             0,
@@ -932,8 +932,8 @@ def secili_itemi_one_cikana_ata(item_index, hedef_slot):
 
     hedefteki_item = one_cikan_slotlar[hedef_slot]
 
-    # Önce itemin bütün eski referanslarını kaldır: bozuk/eski kayıtlarda bile
-    # aynı item iki hızlı slotta kalamaz.
+
+
     for i, bagli in enumerate(one_cikan_slotlar):
         if bagli == item_index:
             one_cikan_slotlar[i] = None
@@ -1067,12 +1067,12 @@ def one_cikan_item_paneli_ciz():
     panel = hud_sag_rect()
     gotik_panel(panel, KAN_KIRMIZISI, 225)
 
-    # 1-5 aynı grup; Q slotu aynı panel içinde fakat ince ayraçla bağımsız altıncı
-    # slot olarak okunur. Böylece spell hotbar ile consumable seçimleri karışmaz.
+
+
     slot_boyut = 68
     bosluk = 12
     grup_w = slot_boyut * 5 + bosluk * 4
-    # Q, öne çıkan 1-5 slotlarıyla birebir aynı fiziksel boyutta.
+
     q_boyut = slot_boyut
     ayirici_bosluk = 30
     toplam = grup_w + ayirici_bosluk + q_boyut
@@ -1128,8 +1128,8 @@ def one_cikan_item_paneli_ciz():
         True,
     )
     if q_debug_spell:
-        # Debug override envanteri/save'i kirletmez; yalnız Q yüzeyinde Sphaera'yı
-        # sanal olarak gösterir ve inputu fire_magic_kullan'a yönlendirir.
+
+
         item_ikonu_ciz("fire_magic", q_rect.inflate(-12, -12), False)
         spell_okulu_sembol_ciz(
             "IGNIS",
@@ -1158,8 +1158,8 @@ def one_cikan_item_paneli_ciz():
                     ),
                 )
 
-    # Fire Magic cooldown, iconu yok eden yüzde/metin yerine aşağıdan yukarı
-    # kapanan yarı saydam bir perde ile gösterilir. Hazır olduğunda tamamen kaybolur.
+
+
     if q_is_magic and not q_debug_spell:
         kalan = max(
             0,
@@ -1249,9 +1249,9 @@ def one_cikan_atama_penceresi_ciz(panel):
 # <POTBO_STAGE S0405>
 
 
-# =========================================================
-# BİLDİRİM
-# =========================================================
+
+
+
 
 
 def bildirim_ciz():
@@ -1291,7 +1291,7 @@ def bildirim_ciz():
             yazi_rengi = BEYAZ
             cerceve_rengi = KAN_KIRMIZISI
 
-        # Yalnızca en üstteki/ilk mesaj yavaşça silinir ve hafif yukarı akar.
+
         if index == 0 and gecen > bildirim_suresi - bildirim_son_fade:
             kalan = max(
                 0.0,
@@ -1357,8 +1357,8 @@ class PersistentBloodDecal:
                 self.sprite_index % len(BLOOD_DECAL_SPRITELERI)
             ]
             factor = self.scale * KAMERA_YAKINLASTIRMA
-            # Statik decal'lerde 2 px boy ve 15 derece açı kovası görsel fark yaratmaz,
-            # fakat yüzlerce benzersiz transform Surface'i üretmeyi engeller.
+
+
             raw_h = max(2, int(src.get_height() * factor))
             qh = max(2, int(round(raw_h / 2.0)) * 2)
             oran = src.get_width() / max(1.0, float(src.get_height()))
@@ -1412,9 +1412,9 @@ class BloodParticle:
         self.v *= math.exp(-1.65 * dt)
         self.z += self.vz * dt
         self.vz -= self.gravity * dt
-        # Yere değmek üzere olan damlayı 1-2 piksel erken decal'e çevir. Bu,
-        # karakter ayağının önünde kalan son kırmızı sprite karesinin düşmanın
-        # gövdesinin üstüne yapışmış gibi görünmesini de engeller.
+
+
+
         if self.z <= 1.5 and self.vz < 0.0:
             self.z = 0.0
             self.active = False
@@ -1482,9 +1482,9 @@ class GoreChunk:
         self.rotation = random.uniform(0.0, 360.0)
         self.angular = random.uniform(-280.0, 280.0)
         self.scale = random.uniform(0.28, 0.50) if small else random.uniform(0.46, 0.78)
-        # atlas kaynaklarının doğal piksel boyu birbirinden çok farklı. Önce kaba
-        # çarpanla kemiği küçült, ciz() içinde de karakterin ~66 px gövdesine göre
-        # mutlak yükseklik tavanı uygula. Böylece kafatası/ribcage hiçbir assette devleşmez.
+
+
+
         kemik_carpani = {
             "ribcage": 0.26,
             "spinal_cord": 0.14,
@@ -1497,8 +1497,8 @@ class GoreChunk:
             "bone_cluster_b": 0.40,
         }.get(self.kind, 1.0)
         self.scale *= kemik_carpani
-        # Organ atlasları kaynak oyunlarda karakterimize göre iri. Çok gore
-        # kullanmaya devam ediyoruz fakat tek bir karaciğer/organ gövdeyi kaplamıyor.
+
+
         doku_carpani = {
             "liver": 0.58,
             "intestine": 0.62,
@@ -1524,9 +1524,9 @@ class GoreChunk:
         self.vz -= 500.0 * dt
         self.v *= math.exp(-1.35 * dt)
         self.rotation = (self.rotation + self.angular * dt) % 360.0
-        # Her uçan organın çok sık decal bırakması yoğun patlamalarda maliyeti büyütür.
-        # Bu nedenle kalıcı kan izi üretimi zaman ve adet bakımından sınırlandırılır.
-        # uçuş izi korunur ama parça başına en fazla iki küçük yer izi vardır.
+
+
+
         if (
             self.trail_count < 2
             and simdi >= self.trail_ms
@@ -1569,8 +1569,8 @@ class GoreChunk:
             max(3, int(src.get_width() * factor)),
             max(3, int(src.get_height() * factor)),
         )
-        # Kemiği assetin doğal çözünürlüğüne göre değil, karakterin ekrandaki anatomik
-        # oranına göre sınırla. Değerler ~66 px oyuncu gövdesi baz alınarak seçildi.
+
+
         max_h_world = {
             "skull": 10.0,
             "ribcage": 13.0,
@@ -1601,8 +1601,8 @@ class GoreChunk:
                     max(3, int(round(size[0] * oran))),
                     max_h,
                 )
-        # Hareketli gore için 15 derecelik dönüş kovası yeterince akıcıdır ve
-        # 5 derecelik eski sistemin cache patlamasını yaklaşık üçte bire indirir.
+
+
         qrot = int(round(self.rotation / 15.0)) * 15
         if size[1] > 4:
             qh = max(3, int(round(size[1] / 2.0)) * 2)
@@ -1671,7 +1671,7 @@ class BloodMaggot:
         to = self.target - here
         if to.length_squared() > 0.3:
             d = to.normalize()
-            # Minik sinus yalpa, düz nokta kayması gibi görünmesini engeller.
+
             d = d.rotate_rad(math.sin(simdi * 0.011 + self.phase) * 0.22)
             hedef_v = d * self.speed
             self.v += (hedef_v - self.v) * (1.0 - math.exp(-9.0 * dt))
@@ -1751,7 +1751,7 @@ def _v28_maggot_dalgalari_uret(simdi):
             )
             continue
 
-        # Her uygun eski kan lekesi otomatik olarak kurtçuklanmaz; çoğu sessiz kalır.
+
         if random.random() < 0.34:
             blood_maggots.append(BloodMaggot(decal, simdi))
             kalan -= 1
@@ -1860,8 +1860,8 @@ def gore_patlama_infazi(x, y, merkez_x, merkez_y):
             guc=random.uniform(1.70, 2.35),
             small=small,
         )
-        # Ana blast konisi + yaklaşık %18 ters/yan jet, patlamayı tek yönlü saç kurutma
-        # makinesi gibi görünmekten çıkarır.
+
+
         if random.random() < 0.18:
             d = ana_yon.rotate(random.uniform(105.0, 255.0))
         else:
@@ -1875,9 +1875,9 @@ def gore_patlama_infazi(x, y, merkez_x, merkez_y):
         parca.angular = random.uniform(-980.0, 980.0)
         gore_chunks.append(parca)
 
-    # Tek karede yoğun başlangıç bulutu; sonradan arter fountain yoktur.
+
     kan_parcacigi_patlat(x, y - 8.0, random.randint(150, 188), 2.72, yon=ana_yon)
-    # Blast doğrultusunda ikinci, daha dar hızlı jet ağırlığı hissettirir.
+
     kan_parcacigi_patlat(
         x,
         y - 10.0,
@@ -1909,8 +1909,8 @@ def kanli_darbe_efekti(x, y, profil="slash", lethal=False, yon=None):
         base = pygame.Vector2(1.0, 0.0).rotate(random.uniform(-35.0, 35.0))
     base = base.normalize()
 
-    # Ölüm anında yoğunluk artar fakat parçacık sayısını körlemesine katlamayız.
-    # Algısal ağırlığın büyük kısmı kalıcı/asimetrik zemin kanından gelir.
+
+
     if lethal:
         parcacik = int(parcacik * 1.16)
         leke += 4
@@ -1928,7 +1928,7 @@ def kanli_darbe_efekti(x, y, profil="slash", lethal=False, yon=None):
     kan_parcacigi_patlat(x, y, parcacik, guc, yon=base)
 
     if lethal:
-        # Birincil, yönlü arter boşalması.
+
         kan_parcacigi_patlat(
             x,
             y - random.uniform(2.0, 5.0),
@@ -1938,7 +1938,7 @@ def kanli_darbe_efekti(x, y, profil="slash", lethal=False, yon=None):
             arterial=True,
         )
 
-        # İkincil yan saçılma steril koni/halka hissini kırar.
+
         kan_parcacigi_patlat(
             x + random.uniform(-2.0, 2.0),
             y - random.uniform(0.0, 4.0),
@@ -1948,7 +1948,7 @@ def kanli_darbe_efekti(x, y, profil="slash", lethal=False, yon=None):
             arterial=False,
         )
 
-        # Havada uçmaktan ziyade zemine yapışan geniş, asimetrik sonuç.
+
         v73_ground_splatter(
             x,
             y + 2.0,
@@ -1961,7 +1961,7 @@ def kanli_darbe_efekti(x, y, profil="slash", lethal=False, yon=None):
             source="lethal_ground",
         )
 
-        # Gövde yakınında farklı boyutlarda küçük damlalar.
+
         for _ in range(random.randint(4, 8)):
             kan_lekesi_ekle(
                 x + random.uniform(-16.0, 16.0),
@@ -2024,21 +2024,21 @@ def _stage1__v30_ozel_olum_ilk_efekti(alt_tur, x, y, yon):
         base = pygame.Vector2(1.0, 0.0)
     base = base.normalize()
     if alt == "crawler":
-        # Lethal temas anlık kalır; asıl parçalama ceset 340 ms'de yere oturduktan
-        # sonra gelen altı hızlı saldırıda oluşur.
+
+
         kan_parcacigi_patlat(x, y, random.randint(8, 12), 0.82, yon=base)
         return True
     if alt == "berserker":
         kan_parcacigi_patlat(x, y, random.randint(12, 18), 0.96, yon=base)
         return True
     if alt == "headshot":
-        # Taş kafa hizasında dağıtır; beden ilk anda tam gore bulutuna dönüşmez.
+
         kan_parcacigi_patlat(x, y - 24.0, random.randint(48, 66), 1.52, yon=base)
         _v30_kucuk_gore_jet(x, y - 24.0, random.randint(9, 14), base, 1.24, True)
         return True
     if alt == "tarkard_crush":
-        # İlk ölüm karesi yalnız teması taşır; Tarkard'ın whirl/crush hareketi
-        # ceset yerleştikten sonra tek ve ağır bir ikinci beat olarak oynar.
+
+
         kan_parcacigi_patlat(x, y, random.randint(16, 22), 1.10, yon=base)
         return True
     if alt.startswith("torrmund_"):
@@ -2109,8 +2109,8 @@ def _stage1_oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_a
     oyuncu_son_darbe_kaynagi = str(kaynak_adi or "")
     lethal = oyuncu_hp <= 0 and not oyuncu_olum_gore_uretildi
 
-    # ölüm darbeleri tek karede okunur fakat ağırlığı kamera ivmesinde kalır.
-    # Uzun freeze-frame yok: akıcılığı kesmeden temas enerjisi profil bazlı büyür.
+
+
     if lethal:
         _olum_sarsinti = {
             "light_slash": (4.2, 120),
@@ -2124,9 +2124,9 @@ def _stage1_oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_a
         }.get(oyuncu_son_darbe_profili, (5.4, 145))
         kamera_hit_sarsintisi_baslat(*_olum_sarsinti)
 
-    # Yanma hasarı deriyi "kanlı slash" gibi yorumlamaz. Burn tick'lerinde hiç kan
-    # parçacığı üretmeyiz; lethal burn ise ölüm sahnesi ateş moduna geçer. Böylece
-    # daha önce her 500 ms burn tick'inde kan fışkırması problemi de ortadan kalkar.
+
+
+
     if oyuncu_son_darbe_profili in (
         "burn",
         "fire_burn",
@@ -2138,8 +2138,8 @@ def _stage1_oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_a
             oyuncu_olum_ates_seed = random.randint(1, 2_000_000)
             oyuncu_olum_ikiye_bolundu = False
             oyuncu_olum_gore_uretildi = True
-            # Yanma kanlı bir parçalanma değildir; yine de dokunun çatlayıp akmasını
-            # gösterecek küçük, tek seferlik bir kan sızıntısı bırakır.
+
+
             kan_parcacigi_patlat(
                 oyuncu_x,
                 oyuncu_y - 7.0,
@@ -2168,9 +2168,9 @@ def _stage1_oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_a
                 oyuncu_olum_katil_kan_sonraki_ms = 0
         return
 
-    # blast merkezi ve birinci halka artık aynı ölüm sunumunu paylaşmaz.
-    # Merkez bedeni düzinelerce runtime sprite parçasına böler; birinci halka
-    # gövdeyi çoğunlukla korur ve yalnız birkaç bölüm koparır.
+
+
+
     if (
         lethal
         and oyuncu_son_darbe_profili == "magic_heavy"
@@ -2280,8 +2280,8 @@ def kan_gore_guncelle():
 
 
 def kan_lekelerini_ciz(silhouette=False):
-    # Kalıcı kan silinmez; yalnız kamera dışında olan binlerce eski decal render
-    # çağrısına sokulmaz. Bu persistence davranışını değiştirmez.
+
+
     marj = 90.0 / max(0.01, KAMERA_YAKINLASTIRMA)
     left = float(kamera_x) - marj
     top = float(kamera_y) - marj
@@ -2329,8 +2329,8 @@ dunya_aktorlerini_derinlige_gore_ciz = _stage1_dunya_aktorlerini_derinlige_gore_
 
 
 def duraklatma_menusu_ciz():
-    # Arkadaki oyun ekranı sabit kalır. Butonların geometrisi/tepki dili ana
-    # menüyle aynıdır; pause için ayrı dikdörtgen UI dili kullanılmaz.
+
+
     oyun_ekrani_ciz()
     koyu_kaplama(185)
 
@@ -2498,7 +2498,7 @@ def tam_ayarlar_ciz():
             True,
         )
 
-    # Kontroller, genel ayar kart tasarımını bilinçli olarak kullanmaz.
+
     if kategori == "kontroller":
         kontrol_atamalari_paneli_ciz(secenek_panel, secenekler)
         return
@@ -2564,9 +2564,9 @@ def tam_ayarlar_ciz():
 # <POTBO_STAGE S0488>
 
 
-# =========================================================
-# CREDITS
-# =========================================================
+
+
+
 
 
 def credits_ciz():
@@ -2576,7 +2576,7 @@ def credits_ciz():
     panel = pygame.Rect(190, 48, 900, 624)
     gotik_panel(panel, KAN_KIRMIZISI, 244)
 
-    # Küçük kapital üst başlık.
+
     harf_aralikli_yazi_yaz(
         t("credits_title"),
         panel.centerx,
@@ -2597,7 +2597,7 @@ def credits_ciz():
     )
 
     harf_aralikli_yazi_yaz(
-        "FAKE KING STUDIOS",
+        "AGRAPHON STUDIOS",
         panel.centerx,
         panel.y + 132,
         (180, 44, 62),
@@ -2635,7 +2635,7 @@ def credits_ciz():
     etiket_x = panel.x + 92
     icerik_x = panel.x + 390
 
-    # Bilgiler değiştirilmeden yalnızca tipografik hiyerarşi yenilenir.
+
     harf_aralikli_yazi_yaz(
         bt("GELİŞTİRME VE YAPIM", "DEVELOPMENT AND PRODUCTION"),
         etiket_x,
@@ -2646,7 +2646,7 @@ def credits_ciz():
         False,
     )
 
-    isimler = ["Mırmır Cahit", "Çaydöken Hüsnü", "Düdüklü Efe"]
+    isimler = ["Agraphon Studios"]
     for index, isim in enumerate(isimler):
         yazi_yaz(
             isim,
@@ -2675,7 +2675,7 @@ def credits_ciz():
         False,
     )
     yazi_yaz(
-        "Python  •  Pygame  •  Visual Studio Code",
+        "Python  •  Pygame",
         icerik_x,
         panel.y + 394,
         BEYAZ,
@@ -2769,9 +2769,9 @@ def oyuncu_olum_durumu_guncelle():
         oyuncu_olum_arter_sonraki_ms = simdi
         oyuncu_saldiri_durumunu_sifirla()
 
-        # Ölüm, locomotion fiziğini de kesin biçimde öldürür. Yalnız key eventlerini
-        # yutmak yeterli değildir: held W/S, aktif dash ve önceki knockback momentumları
-        # koordinatı değiştirebilirdi. Burada bütün hareket kanalları tek karede sıfırlanır.
+
+
+
         oyuncu_hareket_hiz_vektoru.update(0.0, 0.0)
         oyuncu_hareket_ediyor = False
         oyuncu_zorlanmis_hiz.update(0.0, 0.0)
@@ -2787,11 +2787,11 @@ def oyuncu_olum_durumu_guncelle():
                 "blast_core",
                 "blast_inner",
             ):
-                # Fire ve blast ölümleri kendi özel üretim yollarını kullanır; burada
-                # ikinci kez normal lethal gore üretmeyiz.
+
+
                 oyuncu_olum_gore_uretildi = True
             else:
-                # Lethal darbe başka bir sistemden geldiyse burada tek kez yoğun kan/gore.
+
                 kanli_darbe_efekti(
                     oyuncu_x,
                     oyuncu_y - 8,
@@ -2800,37 +2800,37 @@ def oyuncu_olum_durumu_guncelle():
                 )
                 oyuncu_olum_gore_uretildi = True
 
-    # Fade-out tamamlanmadan hedef durum açılmaz.
+
     if oyuncu_olum_cikis_baslangic_ms > 0:
         if simdi - oyuncu_olum_cikis_baslangic_ms >= OLU_CIKIS_FADE_MS:
             hedef = oyuncu_olum_cikis_hedefi
             if hedef == "restart":
                 if not oyuncu_olum_restart_yap():
-                    # Save yoksa load listesine düş; ESC aynı YOU ARE DEAD
-                    # tablosuna geri dönebilsin. Ölüm state'ini burada silme.
+
+
                     oyuncu_olum_cikis_baslangic_ms = 0
                     oyuncu_olum_cikis_hedefi = None
                     load_game_donus_durumu = OYUN
                     oyun_durumu = LOAD_GAME
             elif hedef == "load":
-                # Load ekranı modal bir sapmadır. Ölüm tablosu korunur; ESC ile
-                # birebir aynı sahneye dönülür.
+
+
                 oyuncu_olum_cikis_baslangic_ms = 0
                 oyuncu_olum_cikis_hedefi = None
                 load_game_donus_durumu = OYUN
                 oyun_durumu = LOAD_GAME
             elif hedef == "main_menu":
-                # Death -> MAIN MENU doğrudan ışınlanmaz; aynı sahnenin üzerinde
-                # ARE YOU SURE? açılır.
+
+
                 oyuncu_olum_cikis_baslangic_ms = 0
                 oyuncu_olum_cikis_hedefi = None
                 ana_menu_onay_index = 1
                 ana_menu_onay_donus_durumu = OYUN
                 oyun_durumu = ANA_MENU_ONAY
             elif hedef == "quit":
-                # Eski BAŞARAMAYACAĞIM davranışının yerine QUIT gelir; doğrudan
-                # kapanmak yerine aynı ARE YOU SURE? panelini ölüm tablosunun üzerinde açar.
-                # NO seçilirse ölüm menüsüne geri dönülebilmesi için ölüm sahnesi korunur.
+
+
+
                 oyuncu_olum_cikis_baslangic_ms = 0
                 oyuncu_olum_cikis_hedefi = None
                 cikis_index = 1
@@ -2841,8 +2841,8 @@ def oyuncu_olum_durumu_guncelle():
     _v30_olum_koreografi_guncelle(simdi)
 
     if oyuncu_olum_turu == "blood" and simdi >= oyuncu_olum_arter_sonraki_ms:
-        # Ölüm sonrası basınç ritmi daha sık fakat küçük darbeler halinde akar. İki jet
-        # birebir ayna değildir; açı, güç ve parçacık sayıları her atımda ayrışır.
+
+
         oyuncu_olum_arter_sonraki_ms = simdi + random.randint(90, 145)
         ana_yon = _adefo_yon_vektoru(oyuncu_yonu)
         for side in (-1, 1):
@@ -2887,8 +2887,8 @@ def _v24_katil_silah_kan_noktasi(actor):
         yon = pygame.Vector2(1.0, 0.0)
     yon = yon.normalize()
 
-    # Torrmund'un uzun kılıcı en uzakta; ağır blunt aktörlerde el, küçük düşmanda
-    # gövde önü kullanılır. Bunlar world-space ofsetlerdir, kamera zoom'u sonradan gelir.
+
+
     ileri = {
         "torrmund": 58.0,
         "tarkard": 29.0,
@@ -2917,7 +2917,7 @@ def _v24_katil_silah_kanini_ciz(actor):
     sy = float(dunya_ekran_y(nokta.y))
     simdi = pygame.time.get_ticks()
 
-    # Silaha yapışık kısa kan izi.
+
     pygame.draw.line(
         ekran,
         (245, 12, 34),
@@ -2926,8 +2926,8 @@ def _v24_katil_silah_kanini_ciz(actor):
         max(1, int(round(2 * KAMERA_YAKINLASTIRMA))),
     )
 
-    # Üç fazlı damla. p=(t mod T)/T denklemiyle her damla aşağı doğru hızlanır;
-    # son %12'de alpha düşer. Sprite gerektirmez ve silhouette dilini bozmaz.
+
+
     periyot = 820.0
     for i, faz in enumerate((0.0, 0.34, 0.68)):
         p = ((simdi / periyot) + faz) % 1.0
@@ -2945,11 +2945,11 @@ def _v24_katil_silah_kanini_ciz(actor):
 
 
 def _stage1_oyuncu_olum_sahnesi_ciz():
-    # arka plan %100 siyahtır. Harita/zemin silüeti dahi çizilmez; kırmızı yalnız
-    # oyuncu, kan ve gore'da bulunur. Böylece ölüm kompozisyonu gerçek iki-renkli kalır.
+
+
     ekran.fill(SIYAH)
-    # Diğer karakterler bilinçli olarak çizilmez; tek istisna ölümcül darbeyi
-    # yapan aktördür: o da kurbanla aynı kırmızı silhouette dilinde görünür.
+
+
     katil = _v24_olum_katil_actor_bul()
     katil_arkada = katil is not None and float(getattr(katil, "y", oyuncu_y)) <= float(
         oyuncu_y
@@ -2958,14 +2958,14 @@ def _stage1_oyuncu_olum_sahnesi_ciz():
         _v24_olum_katilini_ciz()
 
     if oyuncu_olum_turu == "fire":
-        # Yanarak ölüm: gore yok; küçük kan sızıntısı + tamamen kırmızı alevler kalır.
+
         kan_lekelerini_ciz(silhouette=True)
         for p in blood_particles:
             p.ciz(silhouette=True)
         _oyuncu_yatay_siluet_ciz()
         _v25_oyuncu_olum_ates_ciz()
     elif oyuncu_olum_turu == "blast_core":
-        # Merkez: beden bütünüyle runtime shard'lara ayrılır.
+
         kan_lekelerini_ciz(silhouette=True)
         for parca in sorted(gore_chunks, key=lambda g: g.y):
             parca.ciz(silhouette=True)
@@ -2973,7 +2973,7 @@ def _stage1_oyuncu_olum_sahnesi_ciz():
             p.ciz(silhouette=True)
         _v26_oyuncu_patlama_siluet_parcalari_ciz()
     elif oyuncu_olum_turu == "blast_inner":
-        # Birinci halka da parçalar; merkezden daha iri ve daha az shard kullanır.
+
         kan_lekelerini_ciz(silhouette=True)
         for parca in sorted(gore_chunks, key=lambda g: g.y):
             parca.ciz(silhouette=True)
@@ -3007,8 +3007,8 @@ def _stage1_oyuncu_olum_sahnesi_ciz():
         layer.set_alpha(int(round(255 * menu_alpha * (1.0 - cikis_p))))
         ekran.blit(layer, (0, 0))
 
-    # Restart/load/main-menu/quit seçiminin ardından sahne siyaha erir. Hedef ekran ancak
-    # bu fade tamamlanınca state değiştirir; dolayısıyla tek-frame sıçrama yoktur.
+
+
     if cikis_p > 0.0:
         kapanis = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
         kapanis.fill((0, 0, 0, int(round(255 * cikis_p))))
@@ -3045,12 +3045,12 @@ def _stage1__v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
         cols, rows = (
             6,
             5,
-        )  # 30 sprite parçası; anatomi gore'u ayrıca vardır.
+        )
         speed_rng = (250.0, 500.0)
         spread = 78.0
         ground_spread = 1.0
     elif tur == "blast_inner":
-        cols, rows = 5, 4  # 20 iri parça.
+        cols, rows = 5, 4
         speed_rng = (190.0, 385.0)
         spread = 62.0
         ground_spread = 0.82
@@ -3058,7 +3058,7 @@ def _stage1__v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
         cols, rows = (
             4,
             3,
-        )  # 224-230 halkasında da patlama dili görünür.
+        )
         speed_rng = (135.0, 270.0)
         spread = 48.0
         ground_spread = 0.64
@@ -3074,7 +3074,7 @@ def _stage1__v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
             shard = sil.subsurface((x0, y0, x1 - x0, y1 - y0)).copy()
             mw, mh = shard.get_size()
             pmask = pygame.Surface((mw, mh), pygame.SRCALPHA)
-            # Dört köşeli crop yerine 7-9 düzensiz noktalı alpha polygon.
+
             rr = random.Random(rng.randint(1, 2_000_000))
             pts = _v32_tirtikli_polygon(
                 mw,
@@ -3109,7 +3109,7 @@ def _stage1__v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
             )
             start_y = sy + local_pos.y
 
-            # y(t)=y0+vy*t+0.5*g*t² = ground. Pozitif kök gerçek iniş zamanıdır.
+
             c = start_y - ground_y
             disc = max(0.0, vy * vy - 2.0 * gravity * c)
             land_t = max(
@@ -3135,9 +3135,9 @@ def _stage1__v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
 # <POTBO_STAGE S0589>
 
 
-# ---------------------------------------------------------
-# KILLER-SPECIFIC INITIAL GORE; Tarkard has NO post-mortem second hit
-# ---------------------------------------------------------
+
+
+
 _v32_ozel_ilk_v33 = _v30_ozel_olum_ilk_efekti
 
 
@@ -3149,8 +3149,8 @@ def _v30_ozel_olum_ilk_efekti(alt_tur, x, y, yon):
     base = base.normalize()
 
     if alt == "tarkard_crush":
-        # Bütün şiddet ölümcül ilk whirl/heavy darbesindedir; ölümden sonra ikinci
-        # saldırı YOK. Beden çok kanar ve tırtıklı parçalanır ama boss tekrar vurmaz.
+
+
         kan_parcacigi_patlat(
             x,
             y - 6.0,
@@ -3192,9 +3192,9 @@ def _v30_ozel_olum_ilk_efekti(alt_tur, x, y, yon):
 # <POTBO_STAGE S0592>
 
 
-# ---------------------------------------------------------
-# TRUE SPRITE DISMEMBERMENT -- cropped alpha pieces, NO rectangle/shadow surface
-# ---------------------------------------------------------
+
+
+
 def _v33_alpha_crop(full_surface):
     if full_surface is None:
         return None, pygame.Vector2(0.0, 0.0)
@@ -3219,8 +3219,8 @@ def _v33_alpha_crop(full_surface):
 # <POTBO_STAGE S0597>
 
 
-# Bombada kare grid'in kendisi görünmesin: her shard jagged alpha maskeyle crop edilir;
-# core/inner sayıları arttırılır ama persistent gore entity sayısı ayrı tutulur.
+
+
 def _v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
     sil = _v30_oyuncu_base_siluet()
     if sil is None:
@@ -3244,12 +3244,12 @@ def _v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
     base = base.normalize()
 
     if tur == "blast_core":
-        cols, rows = 7, 6  # 42 gerçek sprite parçası
+        cols, rows = 7, 6
         speed_rng = (285.0, 555.0)
         spread = 82.0
         ground_spread = 1.0
     elif tur == "blast_inner":
-        cols, rows = 6, 5  # 30 parça; merkezden daha iri
+        cols, rows = 6, 5
         speed_rng = (215.0, 425.0)
         spread = 66.0
         ground_spread = 0.84
@@ -3295,7 +3295,7 @@ def _v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
                 (x0 + x1) * 0.5 - sw * 0.5,
                 (y0 + y1) * 0.5 - sh * 0.5,
             )
-            # Crop merkez kaymasını da gerçek shard merkezine ekle.
+
             local_pos += crop_local
             d = base.rotate(rng.uniform(-spread, spread))
             speed = rng.uniform(*speed_rng) + max(0.0, local_pos.dot(base)) * 1.9
@@ -3331,9 +3331,9 @@ def _v32_patlama_siluet_parcalari_ciz(tur="blast_core"):
 # <POTBO_STAGE S0600>
 
 
-# ---------------------------------------------------------
-# COMPACT BLAST RESOLVER: only core/inner may immediately kill
-# ---------------------------------------------------------
+
+
+
 def _v33_enemy_blast_extra_gore(dusman, shell_id, merkez):
     if dusman is None:
         return
@@ -3370,20 +3370,20 @@ def _v33_enemy_blast_extra_gore(dusman, shell_id, merkez):
 # <POTBO_STAGE S0602>
 
 
-# ---------------------------------------------------------
-# DEATH SCENE: blood always behind characters + slower title/music fade
-# ---------------------------------------------------------
+
+
+
 def _stage2_oyuncu_olum_sahnesi_ciz():
     ekran.fill(SIYAH)
 
-    # Blood splatter mutlak zemin katmanıdır: önce çizilir. Katil ve kurban bundan
-    # sonra gelir; böylece hiçbir yerde düşman sprite'ına yapışmış gibi görünmez.
+
+
     kan_lekelerini_ciz(silhouette=True)
     for p in blood_particles:
         if p.active:
             p.ciz(silhouette=True)
 
-    # Gore fiziksel parça olduğu için corpse ile aynı world kompozisyonunda kalır.
+
     for parca in sorted(gore_chunks, key=lambda g: g.y):
         parca.ciz(silhouette=True)
 
@@ -3435,8 +3435,8 @@ def _stage2_oyuncu_olum_sahnesi_ciz():
 def oyuncu_olum_sahnesi_ciz():
     ekran.fill(SIYAH)
 
-    # Bütün kan splatter/parçacık katmanı aktörlerden önce. Zemindeki kan hiçbir
-    # koşulda killer/corpse sprite'ının üstüne yapışmış gibi görünmez.
+
+
     kan_lekelerini_ciz(silhouette=True)
     for p in blood_particles:
         if p.active:
@@ -3550,20 +3550,20 @@ def ana_menu_onay_ciz():
 # <POTBO_STAGE S0678>
 
 
-# =========================================================
-# END V34 PROFESSIONAL POLISH
-# =========================================================
 
 
-# =========================================================
-# V34B RESPONSIVENESS / PAUSE SAFETY / SAVE SAFETY / FX BUDGET
-# =========================================================
-# Bu alt katman doğrudan "oyuncu hissi" ve uzun oturum güvenilirliği içindir.
-# - Attack/dash input buffer: recovery'nin son 100-150 ms'sinde basılan komut kaybolmaz.
-# - Pause compensation: special move pause menüsünde gerçek zamanla ilerlemez.
-# - Atomic save: yarım yazılmış JSON kaydı elektrik/çökme durumunda ana save'i bozmaz.
-# - Autosave transient authored motion sırasında snapshot almaz.
-# - FX budget: uzun gore/combat oturumlarında transient efekt listeleri sınırsız büyümez.
+
+
+
+
+
+
+
+
+
+
+
+
 
 V34_ATTACK_BUFFER_MS = 145
 # </POTBO_STAGE S0678>
@@ -3578,7 +3578,7 @@ V34_MAX_BLOOD_PARTICLES = 900
 def _v34f_echo_segment(slot, center, direction, radius):
     direction = _v34f_direction_safe(direction)
     if slot == 0:
-        # Entry echo yalnız kısa bir doğrusal scar; asıl X slash 2/3'te okunur.
+
         half = radius * 0.46
         return (
             center - direction * half,
@@ -3615,7 +3615,7 @@ def _v34f_draw_echoes(layer, simdi):
             alpha = int(42 * fade)
             pygame.draw.line(layer, (235, 220, 225, alpha), sa, sb, 2)
             continue
-        # Koyu dış scar + beyaz core. Final X birkaç yüz ms sahnede "imza" olarak kalır.
+
         outer_alpha = int((72 + slot * 18) * fade)
         core_alpha = int((112 + slot * 26) * fade * (0.65 + 0.35 * strong))
         pygame.draw.line(
@@ -3640,9 +3640,9 @@ def _v34f_draw_echoes(layer, simdi):
 # <POTBO_STAGE S0844>
 
 
-# ---------------------------------------------------------
-# V35 HUD / SIGNATURE FEEDBACK
-# ---------------------------------------------------------
+
+
+
 def _v35_flow_hud_ciz():
     if oyun_durumu != OYUN or oyun_alt_durumu != HARITA or oyuncu_hp <= 0:
         return
@@ -3652,8 +3652,8 @@ def _v35_flow_hud_ciz():
     pulse = 1.0
     if simdi < v35_flow_pulse_until:
         pulse = 1.0 + 0.18 * ((v35_flow_pulse_until - simdi) / 160.0)
-    # Sağ alt köşede üç küçük diyagonal scar. Sayaç değil; combat ritmini sezdiren
-    # bir hareket dili. Metin yalnız ilk iki saniyede çok küçük görünür.
+
+
     x0 = GENISLIK - 92
     y0 = YUKSEKLIK - 52
     layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
@@ -3692,8 +3692,8 @@ v37_special_gore_next_ms = 0
 
 # <POTBO_STAGE S0913>
 
-# Special hasar anında kanı daha az parçacıkla, daha yüksek hızla okutur.
-# Böylece şiddet korunur; yüzlerce transient obje tek frame'de doğmaz.
+
+
 _v37_kan_parcacigi_patlat_original = kan_parcacigi_patlat
 
 
@@ -3711,8 +3711,8 @@ _v37_gore_olum_patlamasi_original = gore_olum_patlamasi
 
 def gore_olum_patlamasi(x, y, profil="slash", yon=None):
     if v37_special_damage_context:
-        # Güncel 24-32 parça yerine eski directional 14-20 parça profili:
-        # daha az obje, aynı okunabilir kesme momentumu.
+
+
         return _stage1_gore_olum_patlamasi(x, y, profil, yon=yon)
     return _v37_gore_olum_patlamasi_original(x, y, profil, yon=yon)
 # </POTBO_STAGE S0913>
@@ -3724,8 +3724,8 @@ _v37_kan_gore_guncelle_original = kan_gore_guncelle
 
 
 def kan_gore_guncelle():
-    # Special sırasında dekoratif fizik 30 Hz; combat/body motion ise 60 FPS kalır.
-    # Skip edilen frame'lerde dt tüketilmediği için sonraki 30 Hz tick fiziksel zamanı telafi eder.
+
+
     global v37_special_gore_next_ms
     now = pygame.time.get_ticks()
     if gelistirici_x_skill_aktif_mi(now):
@@ -3740,9 +3740,9 @@ def kan_gore_guncelle():
 # <POTBO_STAGE S0934>
 
 
-# ---------------------------------------------------------
-# DIAGNOSTICS
-# ---------------------------------------------------------
+
+
+
 def v37_diagnostics():
     base = v36_diagnostics()
     base["v37"] = {
@@ -3770,7 +3770,7 @@ def v37_diagnostics():
 
 # <POTBO_STAGE S1049>
 
-# Kurtçuklar biraz daha iri ama çok daha seyrek.
+
 BLOOD_MAGGOT_MAX = 4
 # </POTBO_STAGE S1049>
 
@@ -4207,7 +4207,7 @@ def karakter_olusturma_ciz():
 
 # <POTBO_STAGE S1075>
 
-# Blood/render bütçesi: vahşet görünür kalır fakat transient sayısı sınırsız büyümez.
+
 V34_MAX_BLOOD_PARTICLES = 300
 V37_MAX_VISIBLE_GORE = 72
 V40_BLOOD_GRID_CELL = 96.0
@@ -4221,8 +4221,8 @@ v40_blood_grid = {}
 v40_blood_cleanup_next_ms = 0
 v40_gore_cleanup_next_ms = 0
 
-# V50+: tekil harici blood-sheet entegrasyonu kaldırıldı. Kan/gore hattı mevcut
-# decal/bleed atlasları ve procedural hemodinamik katmanlarla çalışır.
+
+
 
 
 def _v40_rat_sheet_reload():
@@ -4315,8 +4315,8 @@ def karakter_olusturma_ciz():
     about_label = bt("HAKKINDA", "ABOUT")
     yazi_yaz(about_label, orta_panel.x + 34, 250, SARI, mini_font)
 
-    # Orijinal bio artık hiçbir [:N] kesmesine uğramaz. Alan yetmezse yalnız line-height
-    # daralır; içerik kaybolmaz.
+
+
     bio_lines = metni_satirlara_bol(
         bilgi["bio"], v40_char_bio_font, orta_panel.width - 68
     )
@@ -4370,9 +4370,9 @@ def karakter_olusturma_ciz():
             )
         y += line_h
 
-    # İçerik beklenmedik localization genişliğinde dahi footer'a taşmasın: son birkaç
-    # profil satırı panelin kendi clip alanında kalır, bio ise daima tamdır.
-    # V77: statik klavye/kısayol rehberi kaldırıldı. Panel yalnız karakter bilgisi taşır.
+
+
+
 
     if karakter_mesaji:
         yazi_yaz(
@@ -4389,7 +4389,7 @@ def karakter_olusturma_ciz():
             0,
             pygame.time.get_ticks() - karakter_onay_gecisi_baslangic,
         )
-        # İlk 2.65 saniye kart seçiminin ağırlığı görünür; sonra yavaş siyah fade.
+
         fade_sure = max(
             1,
             KARAKTER_ONAY_GECIS_SURESI - KARAKTER_ONAY_FADE_BASLANGICI,
@@ -4408,9 +4408,9 @@ def karakter_olusturma_ciz():
             ekran.blit(fade, (0, 0))
 
 
-# ---------------------------------------------------------
-# BLOOD SPATIAL GRID + COLLISION-SAFE STAINS
-# ---------------------------------------------------------
+
+
+
 _v40_kan_gore_temizle_original = kan_gore_dunyasini_temizle
 
 
@@ -4451,7 +4451,7 @@ def _v40_blood_safe_floor(x, y):
     p = pygame.Vector2(float(x), float(y))
     if not harita_pikseli_engel_mi(p.x, p.y):
         return p
-    # Collision yüzeyine decal yapıştırma; yalnız yakın temiz zemine kaydır.
+
     for radius in V40_BLOOD_SAFE_SEARCH[1:]:
         for angle in range(0, 360, 45):
             q = p + pygame.Vector2(radius, 0).rotate(angle)
@@ -4468,8 +4468,8 @@ def kan_lekesi_ekle(x, y, scale=None):
     bucket = v40_blood_grid.setdefault(cell, [])
     incoming = float(scale if scale is not None else random.uniform(0.70, 1.72))
 
-    # Bir hücre doyduğunda yeni Surface/obje eklemek yerine mevcut kan havuzunu
-    # büyütüp ömrünü uzat. Görsel vahşet artar, obje sayısı artmaz.
+
+
     if (
         len(bucket) >= V40_BLOOD_PER_CELL_MAX
         or len(blood_decals) >= V40_BLOOD_GLOBAL_MAX
@@ -4511,8 +4511,8 @@ def kan_lekelerini_ciz(silhouette=False):
         for cx in range(cx0, cx1 + 1):
             visible.extend(v40_blood_grid.get((cx, cy), ()))
     if len(visible) > V40_BLOOD_VISIBLE_MAX:
-        # En yeni kan + rastgele eski lekeler; yoğun savaş alanı kırmızı kalır ama
-        # her frame yüzlerce aynı overlap blit'i yapılmaz.
+
+
         recent = visible[-220:]
         older = visible[:-220]
         if older:
@@ -4569,9 +4569,9 @@ class BloodMaggot(_v40_bloodmaggot_parent):
         self.speed = random.uniform(2.8, 5.0)
 
 
-# ---------------------------------------------------------
-# RAT ECOLOGY: KOKU, AV, BESLENME, TEMİZLEME
-# ---------------------------------------------------------
+
+
+
 V40_RAT_EDIBLE_GORE = {
     "intestine",
     "liver",
@@ -4620,7 +4620,7 @@ class AmbientRat(_v40_ambient_rat_parent):
 
     def _find_food(self, here, simdi):
         candidates = []
-        # Canlı av: kurtçuk en yüksek biyolojik değer; fare gerçekten peşine düşer.
+
         for maggot in blood_maggots:
             if not maggot.active:
                 continue
@@ -4629,7 +4629,7 @@ class AmbientRat(_v40_ambient_rat_parent):
             if dist <= 430.0:
                 candidates.append((dist * 0.52, "maggot", maggot, pos))
 
-        # Organ/doku kana göre daha değerlidir. Kemik ve skull yenmez.
+
         for gore in gore_chunks[-160:]:
             if getattr(gore, "v40_consumed", False):
                 continue
@@ -4648,7 +4648,7 @@ class AmbientRat(_v40_ambient_rat_parent):
                     )
                 )
 
-        # Kan kokusu uzağa taşınır fakat besin skoru daha düşüktür.
+
         for decal in _v40_blood_nearby(here, 520.0):
             pos = pygame.Vector2(float(decal.x), float(decal.y))
             dist = here.distance_to(pos)
@@ -4672,7 +4672,7 @@ class AmbientRat(_v40_ambient_rat_parent):
             self.food_obj = None
             return
         candidates.sort(key=lambda item: item[0])
-        # Tok fare her gördüğü kana dönmez; kurtçuk/organ yine ilgisini çeker.
+
         best = candidates[0]
         if self.hunger < 0.22 and best[1] == "blood" and random.random() < 0.72:
             self.food_kind = None
@@ -4713,7 +4713,7 @@ class AmbientRat(_v40_ambient_rat_parent):
                 float(obj.scale) - random.uniform(0.012, 0.026),
             )
             self.hunger = max(0.0, self.hunger - 0.020)
-            # Fare kanı bir anda yok etmez; kuruma/temizlenme takvimini öne çeker.
+
             obj.fade_after_ms = min(int(obj.fade_after_ms), int(simdi) + 65000)
             obj.vanish_after_ms = min(int(obj.vanish_after_ms), int(simdi) + 125000)
             self.feed_until = int(simdi) + 220
@@ -4729,7 +4729,7 @@ class AmbientRat(_v40_ambient_rat_parent):
         player_dist = here.distance_to((oyuncu_x, oyuncu_y))
         self.hunger = min(1.0, self.hunger + max(0.0, dt) * 0.010)
 
-        # Korku her beslenme davranışını keser; gerçek fare önce hayatta kalır.
+
         if player_dist < 128.0:
             self.food_obj = None
             self.food_kind = None
@@ -4752,7 +4752,7 @@ class AmbientRat(_v40_ambient_rat_parent):
             self.behavior = "investigate"
             self.target = food_pos
             self.target_refresh_ms = int(simdi) + 850
-            # Parent'ın eski generic food taramasının aynı frame hedefi ezmesini engelle.
+
             self.food_refresh_ms = int(simdi) + 900
 
         super().guncelle(dt, simdi)
@@ -4788,9 +4788,9 @@ def ambient_rats_guncelle(dt, simdi):
         ]
 
 
-# ---------------------------------------------------------
-# BLOOD UPDATE: PER-FRAME O(N) DECAL FILTER YOK
-# ---------------------------------------------------------
+
+
+
 def kan_gore_guncelle():
     global kan_gore_son_guncelleme, v40_blood_cleanup_next_ms
     simdi = pygame.time.get_ticks()
@@ -4822,26 +4822,26 @@ def kan_gore_guncelle():
 
 # <POTBO_STAGE S1090>
 
-# İlk blood grid boş dünyada ucuzdur; reload/transition ile mevcut decal kalmışsa toparlar.
+
 _v40_blood_grid_rebuild()
 
-# =========================================================
-# END V40
-# =========================================================
 
 
-# =========================================================
-# V41 - CONTROL DOCTRINE + IMMOBILE BLOOD DECALS
-# =========================================================
+
+
+
+
+
+
 V41_VERSION = "41.0"
 # </POTBO_STAGE S1090>
 
 # <POTBO_STAGE S1097>
 
 
-# ---------------------------------------------------------
-# BLOOD: NO RADIAL RELOCATION
-# ---------------------------------------------------------
+
+
+
 V41_BLOOD_MAX_VERTICAL_SNAP = 2
 V41_BLOOD_MERGE_RADIUS = 7.0
 
@@ -4874,8 +4874,8 @@ def kan_lekesi_ekle(x, y, scale=None):
     bucket = v40_blood_grid.setdefault(cell, [])
     incoming = float(scale if scale is not None else random.uniform(0.70, 1.72))
 
-    # Yalnız neredeyse aynı noktadaki damlalar tek havuzda birleşebilir. Hücrenin
-    # başka ucundaki eski decal büyütülmez; böylece kanın 'yer değiştirdiği' hissi yoktur.
+
+
     nearest = None
     nearest_d2 = V41_BLOOD_MERGE_RADIUS * V41_BLOOD_MERGE_RADIUS
     for decal in bucket:
@@ -4899,7 +4899,7 @@ def kan_lekesi_ekle(x, y, scale=None):
             nearest.vanish_after_ms = max(int(nearest.vanish_after_ms), now + 290000)
         return nearest
 
-    # Obje bütçesi doluysa uzaktaki başka lekeyi büyütmek yerine yeni damlayı atla.
+
     if (
         len(bucket) >= V40_BLOOD_PER_CELL_MAX
         or len(blood_decals) >= V40_BLOOD_GLOBAL_MAX
@@ -4912,9 +4912,9 @@ def kan_lekesi_ekle(x, y, scale=None):
     return decal
 
 
-# ---------------------------------------------------------
-# CENTRAL CONTROL LEGEND ON PAUSE
-# ---------------------------------------------------------
+
+
+
 def duraklatma_menusu_ciz():
     oyun_ekrani_ciz()
     koyu_kaplama(185)
@@ -5024,12 +5024,12 @@ def v41_control_snapshot():
 
 # <POTBO_STAGE S1102>
 
-# V41'de x ekseni sabitlenmişti fakat iki ayrı mekanizma hâlâ kan şeklinin
-# yer değiştirmiş gibi görünmesine yol açabiliyordu:
-# 1) yeni damla yakın lekeye merge olunca mevcut decal.scale büyüyordu,
-# 2) fare kan yerken decal.scale küçülüyordu.
-# Düzensiz sprite merkezden ölçeklenince dünya koordinatı aynı kalsa da optik merkez
-# değişir. V42'de yere oturan decal'ın x/y/scale/rotation/sprite geometrisi immutable'dır.
+
+
+
+
+
+
 V42_BLOOD_MERGE_RADIUS = 5.5
 V42_BLOOD_VISIBLE_RECENT = 190
 V42_BLOOD_VISIBLE_OLDER = max(0, V40_BLOOD_VISIBLE_MAX - V42_BLOOD_VISIBLE_RECENT)
@@ -5048,7 +5048,7 @@ def _v42_blood_render_key(decal):
     key = getattr(decal, "v42_render_key", None)
     if key is not None:
         return int(key)
-    # Python hash randomizasyonundan bağımsız, oturum boyunca stabil seçim anahtarı.
+
     xi = int(round(float(decal.x) * 17.0))
     yi = int(round(float(decal.y) * 19.0))
     created = int(getattr(decal, "created_ms", 0))
@@ -5080,8 +5080,8 @@ def kan_lekesi_ekle(x, y, scale=None):
             nearest_d2 = d2
             nearest = decal
 
-    # Aynı birkaç piksel içine düşen ek kan geometrinin boyutunu/merkezini değiştirmez.
-    # Yalnız "kütle" ve kalıcılık artar. Böylece yoğun katliam hâlâ daha uzun iz bırakır.
+
+
     if nearest is not None and (
         len(bucket) >= V40_BLOOD_PER_CELL_MAX
         or len(blood_decals) >= V40_BLOOD_GLOBAL_MAX
@@ -5137,8 +5137,8 @@ def kan_lekelerini_ciz(silhouette=False):
             visible.extend(v40_blood_grid.get((cx, cy), ()))
 
     if len(visible) > V40_BLOOD_VISIBLE_MAX:
-        # En yeni kanın çoğu daima görünür. Eski havuz ise koordinat tabanlı sabit
-        # render_key ile seçilir; önceki step-sampling gibi bütün desen yer değiştirmez.
+
+
         visible_by_age = sorted(
             visible,
             key=lambda d: int(getattr(d, "created_ms", 0)),
@@ -5157,7 +5157,7 @@ def kan_lekelerini_ciz(silhouette=False):
 # <POTBO_STAGE S1108>
 
 
-# V42 diagnostics: kanın geometrisi runtime boyunca değiştirilmiyor mu hızlı kontrol.
+
 def v42_blood_geometry_snapshot(limit=24):
     out = []
     for decal in blood_decals[-max(1, int(limit)) :]:
@@ -5180,13 +5180,13 @@ def v42_blood_geometry_snapshot(limit=24):
 # <POTBO_STAGE S1111>
 
 
-# ---------------------------------------------------------
-# BLOOD AGING: MINUTES, NOT SECONDS
-# ---------------------------------------------------------
-# Yeni kan uzun süre ıslak/koyu kalır. Kuruma ilk olarak 7-11 dakika civarında
-# başlar; gözle görünür solma onlarca dakika sonra gelir. Yoğun katliam lekeleri
-# cluster_factor ile daha da uzun yaşar. Spatial-grid/global bütçeler aynı kaldığı
-# için bu süre artışı render obje sayısını sınırsız büyütmez.
+
+
+
+
+
+
+
 V43_BLOOD_DRY_MIN_MS = 7 * 60 * 1000
 V43_BLOOD_DRY_MAX_MS = 11 * 60 * 1000
 V43_BLOOD_FADE_MIN_MS = 22 * 60 * 1000
@@ -5234,13 +5234,13 @@ def v43_camera_zoom_cycle():
             next_zoom = step
             break
     else:
-        # Tek kısayol yeterli olsun: 6x'ten sonraki basış varsayılan zoom'a döner.
+
         next_zoom = V43_CAMERA_ZOOM_STEPS[0]
 
     KAMERA_YAKINLASTIRMA = min(V43_CAMERA_ZOOM_MAX, float(next_zoom))
     _v43_camera_recenter()
 
-    # Farklı zoom seviyelerinin dönüştürülmüş sprite'larını aynı anda bellekte tutma.
+
     sprite_olcek_onbellegi.clear()
     blood_decal_onbellegi.clear()
     gore_sprite_onbellegi.clear()
@@ -5309,9 +5309,9 @@ def v43_diagnostics():
 
 # <POTBO_STAGE S1123>
 
-# Bu sürümde önceki harici blood-sheet entegrasyonu tamamen kaldırılmıştır. Kan dili artık
-# yalnız mevcut bleed/decal assetleri + procedural fizik/renk/specular katmanından gelir.
-# Amaç daha koyu, birbirinden belirgin şekilde farklı ve vuruş fiziğine bağlı kan üretmektir.
+
+
+
 V44_BLOOD_PALETTE = (
     (44, 1, 5),
     (52, 2, 7),
@@ -5352,9 +5352,9 @@ V44_BLOOD_ASYMMETRY_BIAS = 0.62
 
 # <POTBO_STAGE S1131>
 
-# Runtime context; CommonEnemy.hasar_al wrapper'ı darbe bilgilerini global effect
-# fonksiyonlarına taşır. Context stack kullanılmasının sebebi friendly-fire ve magic
-# çağrılarının iç içe girebilmesidir.
+
+
+
 v44_blood_context_stack = []
 # </POTBO_STAGE S1131>
 
@@ -5546,7 +5546,7 @@ class V44BloodParticle(BloodParticle):
 
         speed = self.v.length()
         drag = V44_BLOOD_AIR_DRAG * self.drag_bias
-        # Yüksek viskozite küçük damlaları daha tutarlı; mikro damla hava direncine daha duyarlı.
+
         drag *= 1.18 if self.micro else 1.0
         drag *= 1.0 + max(0.0, self.viscosity - 1.0) * 0.16
         self.x += self.v.x * dt
@@ -5611,7 +5611,7 @@ class V44BloodParticle(BloodParticle):
         )
         rect = pygame.Rect(pad, pad, length, width * 2)
         pygame.draw.ellipse(surf, (*tone, 244), rect)
-        # Hızlı damlada arka uç incelir; tek renk kapsül yerine çekilmiş sıvı hissi.
+
         if length >= 8:
             tail_h = max(1, width)
             pygame.draw.polygon(
@@ -5630,8 +5630,8 @@ class V44BloodParticle(BloodParticle):
                 ],
             )
 
-        # Kullanıcının istediği beyaz yansıma çizgisi: yalnız ıslak ve yeterince hızlı
-        # damlalarda, çok ince ve kısa. Blood'un kendisini pembeleştirmez.
+
+
         if (
             not silhouette
             and self.wetness > 0.52
@@ -5750,7 +5750,7 @@ class PersistentBloodDecal(_v44_decal_parent):
             img = blood_decal_onbellegi.get(key)
             if img is None:
                 img = pygame.transform.scale(src, size).convert_alpha()
-                # Kaynak sprite'ın luminance yapısını koruyup rengi karart.
+
                 tint = pygame.Surface(img.get_size(), pygame.SRCALPHA)
                 tint.fill((*tone_bucket, 255))
                 img.blit(
@@ -5769,7 +5769,7 @@ class PersistentBloodDecal(_v44_decal_parent):
             rect = img.get_rect(center=(int(sx), int(sy)))
             ekran.blit(img, rect)
 
-            # Specular yalnız taze kan: beyaz çizgi opak bir kontur değil, kısa yüzey yansıması.
+
             if not silhouette and now < self.v44_sheen_end_ms and self.v44_gloss > 0.0:
                 life = v44_clamp01(
                     (self.v44_sheen_end_ms - now)
@@ -5800,7 +5800,7 @@ class PersistentBloodDecal(_v44_decal_parent):
                     ekran.blit(glint, rect)
             return
 
-        # Assetsiz fallback de artık açık kırmızı değil, koyu/ıslak bir damla.
+
         radius_x = max(3, int(6 * self.scale * KAMERA_YAKINLASTIRMA))
         radius_y = max(2, int(3 * self.scale * KAMERA_YAKINLASTIRMA))
         pygame.draw.ellipse(
@@ -5829,8 +5829,8 @@ class PersistentBloodDecal(_v44_decal_parent):
             )
 
 
-# V43 init timing monkey-patch'ini yeni subclass'a da uygula; super zincirinde zaten
-# çağrılır ama explicit isim gelecekte refactor sırasında kontratı görünür tutar.
+
+
 
 
 def v44_blood_spawn_context(
@@ -5864,7 +5864,7 @@ def v44_blood_spawn_context(
     }
 
 
-# Final V44 particle emitter. Eski çağrı imzasını korur, ek bağlamı global stack'ten alır.
+
 def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     global v44_microdrop_budget, v44_last_blood_debug
     ctx = v44_context_current() or {}
@@ -5881,7 +5881,7 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     ).normalize()
     count = v44_particle_count_shape(adet, shape, lethal=lethal)
 
-    # Global transient budget taşarsa ilk olarak mikro ayrışmayı ve dekoratif damlayı kes.
+
     room = max(0, V44_BLOOD_MAX_PARTICLES - len(blood_particles))
     count = min(count, room)
     if count <= 0:
@@ -5895,8 +5895,8 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     for i in range(count):
         d = v44_directional_sample(base, shape, arterial=arterial)
         speed = v44_speed_sample(shape, power, arterial=arterial)
-        # Longitudinal spray'in ilk üçte biri gerçekten çok hızlı gider; geri kalan
-        # kısa damlalar kesme hattını doldurur.
+
+
         if shape == "longitudinal" and i < max(1, count // 3):
             speed *= random.uniform(1.14, 1.48)
         if shape == "radial_asymmetric" and random.random() < 0.30:
@@ -5946,7 +5946,7 @@ def kan_gore_guncelle():
     v44_microdrop_budget = max(0, v44_microdrop_budget - 2)
     result = _v44_kan_gore_update_original()
     v44_arterial_emitters_update(pygame.time.get_ticks())
-    # Çok yoğun sahnede en eski transientleri kontrollü at. Kalıcı decal bütçesi V40 grid'de.
+
     if len(blood_particles) > V44_BLOOD_MAX_PARTICLES:
         del blood_particles[:-V44_BLOOD_MAX_PARTICLES]
     return result
@@ -6023,8 +6023,8 @@ def _v44_commonenemy_damage(self, miktar, kaynak=None):
             (oyuncu_x, oyuncu_y)
         )
 
-    # Base lethal effect zaten gore + blood üretir. Burada yalnız ölüm momentini
-    # vuruş hızına daha net bağlayan ikinci, kontrollü ve daha yönsel bir sıçrama vardır.
+
+
     if before_hp > 0 and after_hp <= 0 and str(context.get("profile")) != "burn":
         speed = float(context.get("speed", 0.0))
         shape = v44_impact_shape_from_speed(speed, lethal=True)
@@ -6051,7 +6051,7 @@ def _v44_commonenemy_damage(self, miktar, kaynak=None):
                 arterial=False,
             )
             if shape == "longitudinal":
-                # Çok hızlı kesikte uzun bir ana şerit ve küçük karşı-lob.
+
                 kan_parcacigi_patlat(
                     self.x,
                     self.y - 8.0,
@@ -6061,7 +6061,7 @@ def _v44_commonenemy_damage(self, miktar, kaynak=None):
                     arterial=False,
                 )
             else:
-                # Yavaş ölümde dairesel ama simetrik olmayan ikinci küçük lob.
+
                 kan_parcacigi_patlat(
                     self.x,
                     self.y - 7.0,
@@ -6078,9 +6078,9 @@ def _v44_commonenemy_damage(self, miktar, kaynak=None):
 # <POTBO_STAGE S1159>
 
 
-# =========================================================
-# V45 - MELEE DEPTH / COMBO / EDGE ALIGNMENT / HEMORRHAGE SKILLS
-# =========================================================
+
+
+
 V45_VERSION = "45.0"
 # </POTBO_STAGE S1159>
 
@@ -6258,8 +6258,8 @@ def v45_bleed_tick():
             entry["expires_ms"] = now + int(V45_HEMORRHAGE_DECAY_MS * 0.72)
         if entry["stacks"] > 0 and now >= int(entry.get("next_tick_ms", 0)):
             entry["next_tick_ms"] = now + V45_HEMORRHAGE_TICK_MS
-            # DoT doğrudan hasar_al çağırırsa yeni combo/blood context açılırdı; küçük
-            # hemoraji hasarı burada kontrollü şekilde HP'ye yazılır ve lethal yapmaz.
+
+
             damage = V45_HEMORRHAGE_BASE_DAMAGE + int(entry["stacks"] >= 5)
             if int(getattr(enemy, "hp", 0)) > 1:
                 enemy.hp = max(1, int(enemy.hp) - damage)
@@ -6307,7 +6307,7 @@ def _v45_commonenemy_damage(self, miktar, kaynak=None):
     direction = pygame.Vector2(float(self.x) - oyuncu_x, float(self.y) - oyuncu_y)
     heavy = str(oyuncu_saldiri_modu) == "hold_release"
 
-    # Heavy rupture önceki stack'in bir kısmını gerçek extra damage'e çevirir.
+
     burst = v45_bleed_burst_if_ready(self, profile) if heavy else 0
     if burst > 0:
         adjusted += burst
@@ -6317,7 +6317,7 @@ def _v45_commonenemy_damage(self, miktar, kaynak=None):
     if before_hp > 0:
         v45_bleed_apply(self, profile, direction, heavy=heavy)
 
-    # İyi sweetspot'ta stamina'nın küçük bölümü geri gelir; spam'i bedavaya çevirmez.
+
     if v45_skill_unlocked("tempo_chain") and v45_last_sweetspot > 1.045:
         idx = max(0, min(len(V45_COMBO_STAMINA_REFUND) - 1, stage - 1))
         refund = float(V45_COMBO_STAMINA_REFUND[idx])
@@ -6343,7 +6343,7 @@ def common_enemy_guncelle():
 # <POTBO_STAGE S1192>
 
 
-# Blood calibration test; gerçek asset gerektirmez ve tüm shape ailelerini aynı anda gösterir.
+
 def v46_blood_calibration_burst():
     origin = pygame.Vector2(oyuncu_x, oyuncu_y - 10.0)
     facing = v44_player_facing_vector()
@@ -6559,7 +6559,7 @@ def v49_runtime_audit(force=False):
     if repaired:
         warnings.extend("trim:" + item for item in repaired)
 
-    # Spatial grid ile decal listesi tamamen kopmuşsa rebuild et.
+
     grid_count = sum(len(items) for items in v40_blood_grid.values())
     if blood_decals and abs(grid_count - len(blood_decals)) > max(
         8, len(blood_decals) // 8
@@ -6567,7 +6567,7 @@ def v49_runtime_audit(force=False):
         _v40_blood_grid_rebuild()
         warnings.append("blood_grid_rebuilt")
 
-    # Skill state ölü düşman referanslarını tutmasın.
+
     stale_bleed = [
         uid
         for uid, entry in v45_bleed_state.items()
@@ -6698,9 +6698,9 @@ V51_RIPOSTE_BLOOD_SPEED_BONUS = 120.0
 
 # <POTBO_STAGE S1242>
 
-# Skill ağacı yeni bir menü zorunluluğu doğurmaz; level eşiklerinde pasif teknikler
-# devreye girer. Böylece save şemasını kırmadan karakter kimliği ve saldırı derinliği
-# artar. Her teknik tek bir fiziksel parametreyi küçük ölçüde etkiler.
+
+
+
 V52_SKILL_CATALOG = {
     "shared_edge_familiarity": {
         "branch": "shared",
@@ -6997,7 +6997,7 @@ def v52_hemorrhage_duration_multiplier():
 # <POTBO_STAGE S1254>
 
 
-# Blood emitter scales speed/count a little through learned technique, not through gore spam.
+
 _v52_blood_emit_original = kan_parcacigi_patlat
 
 
@@ -7198,7 +7198,7 @@ _v53_decal_parent = PersistentBloodDecal
 # <POTBO_STAGE S1273>
 
 
-# V53 keeps name global so kan_lekesi_ekle creates the new material-aware decal.
+
 
 
 _v53_blood_emit_original = kan_parcacigi_patlat
@@ -7716,7 +7716,7 @@ def v57_reset():
 # <POTBO_STAGE S1337>
 
 
-# Blood emission kinematik ritmi görür. Count şişirilmez; esas değişiklik hız/güçtür.
+
 _v57_blood_emit_original = kan_parcacigi_patlat
 
 
@@ -7755,9 +7755,9 @@ def v57_diagnostics():
 
 # <POTBO_STAGE S1347>
 
-# Ana kan damlacıkları V44 fizik parçacıklarıdır. Bu katman onların arasında eksik
-# kalan üç ölçeği üretir: çok küçük aerosol, ipliksi hızlı çizgi ve yüzeye yaklaşan
-# asimetrik lobe. Hepsi transienttir; kalıcı decal bütçesini patlatmaz.
+
+
+
 V58_MIST_MAX = 150
 # </POTBO_STAGE S1347>
 
@@ -7770,7 +7770,7 @@ def v58_color(arterial=False, dark_bias=0.0):
     upper = max(0, len(palette) - 1 - index_bias)
     idx = random.randint(0, upper) if upper > 0 else 0
     color = palette[idx]
-    # V58 aerosol ana damladan da koyu kalır; yalnız hızlı filmde beyaz specular çizgi kullanılır.
+
     scalar = random.uniform(0.72, 0.98)
     return tuple(max(0, min(255, int(c * scalar))) for c in color)
 # </POTBO_STAGE S1350>
@@ -7882,7 +7882,7 @@ class V58BloodFilament:
             dunya_ekran_y(self.head.y),
         )
         width = max(1, int(round(self.width * KAMERA_YAKINLASTIRMA)))
-        # SRCALPHA ekran üstünde doğrudan çizgi için ufak lokal surface daha güvenlidir.
+
         min_x = min(p1[0], p2[0]) - 4
         min_y = min(p1[1], p2[1]) - 4
         max_x = max(p1[0], p2[0]) + 4
@@ -7957,10 +7957,10 @@ def kan_lekelerini_ciz(silhouette=False):
 
 # <POTBO_STAGE S1361>
 
-# V52 level tabanlı teknikleri pasif bonus olarak açıyordu. V59 aynı skill kimliğini
-# vuruş davranışına bağlar: belirli koşullar sağlandığında kısa süreli bir teknik
-# okunur. Yeni tuş istemez; oyuncunun mevcut J/K, yön, heavy ve riposte kararları
-# daha anlamlı hale gelir. Her technique'in cooldown'u ve küçük bir fizik etkisi vardır.
+
+
+
+
 V59_TECHNIQUES = {
     "measured_opening": {
         "branch": "shared",
@@ -8250,7 +8250,7 @@ def v59_technique_score(technique_id, definition, enemy, now, before_hp):
     level_gap = max(0, int(oyuncu_level) - int(definition.get("level", 1)))
     damage = float(definition.get("damage", 1.0)) - 1.0
     blood = float(definition.get("blood_speed", 1.0)) - 1.0
-    # Daha spesifik, geç açılan teknik generic erken teknikten öne geçer.
+
     return 1.0 + damage * 6.0 + blood * 2.0 + min(0.18, level_gap * 0.002)
 # </POTBO_STAGE S1374>
 
@@ -8298,7 +8298,7 @@ def v59_reset():
 # <POTBO_STAGE S1380>
 
 
-# Technique aktif olduğu kısa frame aralığında kanın hız/count karakteri hafifçe değişir.
+
 _v59_blood_emit_original = kan_parcacigi_patlat
 
 
@@ -8356,19 +8356,19 @@ def v59_diagnostics():
 # <POTBO_STAGE S1403>
 
 
-# =========================================================
-# END V61
-# =========================================================
 
 
-# =========================================================
-# V62 - COAGULATION / EDGE MENISCUS / DECAL MICROSTRUCTURE
-# =========================================================
+
+
+
+
+
+
 V62_VERSION = "62.0"
 
-# Taze kan yalnız daha parlak değildir: yüzey gerilimi kenarda ince menisküs, ortada
-# düzensiz koyu clot adaları üretir. Kurudukça beyaz yansıma kaybolur, kenar koyulaşır.
-# Bu katman yeni büyük sprite istemeden her decal'e deterministik mikro-doku ekler.
+
+
+
 V62_CLOT_MIN_AGE = 0.18
 # </POTBO_STAGE S1403>
 
@@ -8452,7 +8452,7 @@ def v62_draw_microstructure(decal, silhouette=False):
     gloss = float(getattr(decal, "v44_gloss", 0.55))
     layer = pygame.Surface(rect.size, pygame.SRCALPHA)
 
-    # Meniscus: en ıslak ilk dakikalarda üst kenarda kısa, kırık beyaz çizgiler.
+
     if wet > 0.12 and rect.width >= 12:
         alpha = int(V62_MENISCUS_MAX_ALPHA * wet * gloss * (1.0 - absorption * 0.28))
         if alpha > 7:
@@ -8477,7 +8477,7 @@ def v62_draw_microstructure(decal, silhouette=False):
                 )
                 v62_stats["meniscus_draws"] += 1
 
-    # Clot adaları kuruma ortasında belirginleşip son aşamada tekrar zemine karışır.
+
     if V62_CLOT_MIN_AGE <= age <= V62_CLOT_MAX_AGE:
         phase_in = v44_smoothstep((age - V62_CLOT_MIN_AGE) / 0.24)
         phase_out = 1.0 - v44_smoothstep(max(0.0, age - 0.67) / 0.21)
@@ -8508,7 +8508,7 @@ def v62_draw_microstructure(decal, silhouette=False):
             )
             v62_stats["clot_draws"] += 1
 
-    # Kurudukça dış kenar koyulaşır; tam kontur yerine iki asimetrik arc hissi.
+
     if age > 0.34:
         edge_alpha = int(V62_EDGE_DARK_ALPHA * v44_smoothstep((age - 0.34) / 0.48))
         if edge_alpha > 5 and rect.width >= 12 and rect.height >= 6:
@@ -8546,7 +8546,7 @@ class PersistentBloodDecal(_v62_decal_parent):
             rotation=rotation,
             sprite_index=sprite_index,
         )
-        # Aynı decal save/load sonrası farklı görünmesin diye konum + temel seed karışımı.
+
         base_seed = int(getattr(self, "v44_seed", random.randrange(1, 2**30)))
         pos_seed = int(abs(float(x) * 73.0 + float(y) * 151.0))
         self.v62_seed = (base_seed ^ pos_seed) & 0x7FFFFFFF
@@ -8573,14 +8573,14 @@ def v62_diagnostics():
 # <POTBO_STAGE S1409>
 
 
-# =========================================================
-# END V62
-# =========================================================
 
 
-# =========================================================
-# V63 - ADAPTIVE GORE BUDGET / LOCAL DRAW OPTIMIZATION
-# =========================================================
+
+
+
+
+
+
 V63_VERSION = "63.0"
 # </POTBO_STAGE S1409>
 
@@ -8645,7 +8645,7 @@ def v65_emit_jet(emitter, now, pressure, direction, secondary=False):
 
 def v66_check_contracts():
     issues = []
-    # Kaldırılmış tekil blood entegrasyonu için runtime key/loader tutulmaz.
+
     try:
         nr, nw, hr, hw = _v38_player_reach_values()
         if nr < 49 or hr < 64:
@@ -8688,7 +8688,7 @@ def v66_check_contracts():
 def v66_repair_runtime():
     global v66_repairs
     repairs = 0
-    # Non-finite temel kaynaklar önceki V49 guard'a ek güvenlik.
+
     numeric_pairs = (
         ("oyuncu_stamina", 0.0, float(oyuncu_max_stamina)),
         ("stamina_gorunen", 0.0, float(oyuncu_max_stamina)),
@@ -8712,7 +8712,7 @@ def v66_repair_runtime():
             g[name] = max(lo, min(hi, float(value)))
             repairs += 1
 
-    # Eski/ölmüş enemy referansları transient dictionary'lerde büyümesin.
+
     active_ids = {
         str(getattr(e, "uid", ""))
         for e in common_enemies
@@ -8902,9 +8902,9 @@ def v72_release_checks():
 # <POTBO_STAGE S1462>
 
 
-# =========================================================
-# END V72
-# =========================================================
+
+
+
 
 
 def v72_release_summary_lines():
@@ -8924,21 +8924,21 @@ def v72_release_summary_lines():
 # <POTBO_STAGE S1464>
 
 
-# =========================================================
-# V73 - GROUND-WEIGHTED BLOOD / BALANCED GORE / BLAST DISMEMBERMENT
-# =========================================================
-# Hedef: havada gereğinden uzun kalan kanı azaltırken kaybolan hacmi zemine taşımak.
-# Kan toplam etkisi yükselir ama ekranı partikül konfetisine çevirmemek için artışın
-# çoğu kalıcı decal, küçük uydu damla ve gore landing izleri üzerinden yapılır.
-# Patlama ölümleri arter fountain kullanmaz; beden blast yönüne göre parçalanır.
+
+
+
+
+
+
+
 V73_VERSION = "73.0"
 # </POTBO_STAGE S1464>
 
 # <POTBO_STAGE S1466>
 V73_GORE_LANDING_SATELLITE_MAX = 4
 
-# Kalıcı kanın yoğun savaşta gerçekten birikmesine izin ver. Render bütçesi ayrı
-# kaldığı için simülasyon yoğunlaşsa bile bütün lekeler aynı frame çizilmez.
+
+
 V40_BLOOD_PER_CELL_MAX = max(int(V40_BLOOD_PER_CELL_MAX), 26)
 V40_BLOOD_GLOBAL_MAX = max(int(V40_BLOOD_GLOBAL_MAX), 1240)
 V40_BLOOD_VISIBLE_MAX = max(int(V40_BLOOD_VISIBLE_MAX), 360)
@@ -8999,7 +8999,7 @@ def v73_ground_splatter(
             mode = -9.0 if (i % 3) else 12.0
             angle = random.triangular(-float(cone_deg), float(cone_deg), mode)
         d = base.rotate(angle)
-        # Çok düzenli halka yerine köke yakın daha yoğun, uzak uçta seyrek dağılım.
+
         r01 = random.random() ** 1.55
         dist = lo_dist + (hi_dist - lo_dist) * r01
         lateral = random.uniform(-1.6, 1.6)
@@ -9018,9 +9018,9 @@ def v73_ground_splatter(
     return created
 
 
-# ---------------------------------------------------------
-# AIR -> GROUND BLOOD CONVERSION
-# ---------------------------------------------------------
+
+
+
 _v73_blood_emit_original = kan_parcacigi_patlat
 
 
@@ -9064,7 +9064,7 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     result = _v73_blood_emit_original(x, y, air_count, guc, yon=yon, arterial=arterial)
     created = list(blood_particles[before:])
 
-    # Havada daha az asılı kalma: planarı öldürmeden yalnız dikey uçuşu aşağı çek.
+
     for particle in created:
         if not hasattr(particle, "vz"):
             continue
@@ -9078,7 +9078,7 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
         particle.z *= random.uniform(0.90, 1.00)
         if hasattr(particle, "gravity"):
             particle.gravity *= V73_GRAVITY_SCALE * random.uniform(0.97, 1.04)
-        # Jet hızını tamamen öldürme; yalnız arterlerin sonsuz ileri çizgi hissini kır.
+
         if arterial and hasattr(particle, "v"):
             particle.v *= random.uniform(0.90, 0.97)
         try:
@@ -9113,17 +9113,17 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     return result
 
 
-# Her gerçek landing bir ana decal bırakmaya devam eder. Buna çarpma enerjisine göre
-# 0-5 küçük uydu leke eklenir; böylece havadaki güçlü jet zeminde karşılığını bulur.
+
+
 _v73_v44_particle_update_original = V44BloodParticle.guncelle
 # </POTBO_STAGE S1471>
 
 # <POTBO_STAGE S1473>
 
 
-# ---------------------------------------------------------
-# GORE LANDING BLOOD
-# ---------------------------------------------------------
+
+
+
 _v73_gore_chunk_update_original = GoreChunk.guncelle
 
 
@@ -9134,7 +9134,7 @@ def _v73_gore_chunk_update(self, dt, simdi):
     pre_speed = pre_v.length()
     result = _v73_gore_chunk_update_original(self, dt, simdi)
 
-    # İlk sert temasın küçük bir kan izi olabilir; her parçada garanti değil.
+
     if (
         not was_settled
         and not bool(getattr(self, "settled", False))
@@ -9192,18 +9192,18 @@ def _v73_gore_chunk_update(self, dt, simdi):
 GoreChunk.guncelle = _v73_gore_chunk_update
 
 
-# ---------------------------------------------------------
-# MODEST EXTRA PHYSICAL GORE
-# ---------------------------------------------------------
+
+
+
 _v73_gore_death_original = gore_olum_patlamasi
 # </POTBO_STAGE S1473>
 
 # <POTBO_STAGE S1475>
 
 
-# ---------------------------------------------------------
-# BLAST DISMEMBERMENT
-# ---------------------------------------------------------
+
+
+
 def v73_blast_gore_burst(x, y, merkez_x, merkez_y, tier="core"):
     """Patlama öldürürse okunabilir ama kuvvetli parçalanma.
 
@@ -9299,7 +9299,7 @@ def v73_blast_gore_burst(x, y, merkez_x, merkez_y, tier="core"):
         gore_chunks.append(chunk)
         v73_stats["blast_chunks"] += 1
 
-    # Patlamada arter fountain yok. Kısa bir kan bulutu + asıl olarak zeminsel dağılım.
+
     context = v44_blood_spawn_context(
         profile="magic_heavy",
         lethal=True,
@@ -9337,7 +9337,7 @@ def v73_blast_gore_burst(x, y, merkez_x, merkez_y, tier="core"):
     )
     v73_stats["ground_conversion_decals"] += made
 
-    # Gövdenin merkezinde birkaç iri ama sınırlı pooling seed'i.
+
     pool_seeds = random.randint(4, 7) if tier == "core" else random.randint(2, 4)
     for _ in range(pool_seeds):
         kan_lekesi_ekle(
@@ -9376,9 +9376,9 @@ def oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_adi=""):
     if tier is None:
         return result
 
-    # V44 generic lethal wrapper arter emitter'ı kurmuş olabilir. Patlama ölümünde
-    # bu anatomik olarak yanlış ve görsel olarak gereksiz fountain yaptığı için frame
-    # başlamadan iptal edilir.
+
+
+
     v44_arterial_emitters.clear()
     v44_player_death_arterial_done = True
 
@@ -9396,9 +9396,9 @@ def oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_adi=""):
     oyuncu_olum_katil_tur = ""
     oyuncu_olum_katil_kan_sonraki_ms = 0
 
-    # Eski core/inner kaynakları zaten kendi handler'ları içinde yukarıdaki V73
-    # gore_patlama_* fonksiyonlarını çağırır. Self-damage/generic bomb kaynakları ise
-    # eski sistemde normal kanlı ölüme düşüyordu; onları burada gerçekten parçala.
+
+
+
     already_routed = str(kaynak_adi or "").lower() in {
         "fire_magic_explosion_core",
         "fire_magic_explosion_inner",
@@ -9440,26 +9440,26 @@ def v73_diagnostics():
 # <POTBO_STAGE S1482>
 
 
-# =========================================================
-# END V73
-# =========================================================
 
 
-# =========================================================
-# V74 - ABSOLUTE BLOOD PERSISTENCE / COLLISION-SAFE LANDING
-# =========================================================
-# Tasarım kontratı:
-# 1) Havada görünen ana damla yere ulaşınca mutlaka kalıcı bir decal bırakır.
-# 2) Landing noktası collision içindeyse collision üzerine kan basılmaz. Damla,
-#    kendi uçuş doğrultusundaki son temiz zemin noktasına sabitlenir; radyal snap yoktur.
-# 3) Yere oturan decal x/y/scale/rotation değiştirmez ve zamanla silinmez.
-# 4) Ölüm ekranında kamera sabitlenir ve görünür bütün decal'ler çizilir; yeni kan
-#    eski kanı render bütçesinden düşürüp "yer değiştirmiş/kaybolmuş" göstermez.
-# 5) V58 aerosol / filament / lobe kanı süre bitince yok olmak yerine zeminde iz bırakır.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 V74_VERSION = "74.0"
 
-# Bu mod bilinçli olarak kalıcıdır. blood_decals dünya temizlenene kadar büyüyebilir.
-# Spatial grid yalnız arama/render hızlandırmasıdır; artık kalıcı kanı elemez.
+
+
 V74_COLLISION_BACKTRACE_PX = 180.0
 # </POTBO_STAGE S1482>
 
@@ -9478,9 +9478,9 @@ def v74_create_persistent_decal(x, y, scale=None, rotation=None):
         scale=incoming,
         rotation=rotation,
     )
-    # V39/V43/V53 yaşlanma alanları başka sistemler tarafından okunmaya devam edebilir;
-    # onları sonsuza taşımak yerine expired() kontratını aşağıda kapatıyoruz. Böylece
-    # kuruma/renk evrimi sürer, geometri ve görünürlük kaybolmaz.
+
+
+
     decal.v74_permanent = True
     decal.v74_fixed_geometry = (
         float(decal.x),
@@ -9497,7 +9497,7 @@ def v74_create_persistent_decal(x, y, scale=None, rotation=None):
     return decal
 
 
-# Kalıcı kan artık hiçbir yaşam süresi/rat cleanup takvimi yüzünden listeden çıkmaz.
+
 def _v74_decal_never_expired(self, simdi):
     return False
 
@@ -9505,9 +9505,9 @@ def _v74_decal_never_expired(self, simdi):
 PersistentBloodDecal.expired = _v74_decal_never_expired
 
 
-# Global landing API. Normal ground-splatter çağrısı collision'a denk gelirse reddedilir.
-# Ana BloodParticle landing çağrısında ise yalnız parçacığın kendi geliş hattına backtrack
-# uygulanır; bu, duvar/engel üstüne decal basmadan damlanın tamamen kaybolmasını önler.
+
+
+
 def kan_lekesi_ekle(x, y, scale=None):
     global v74_current_particle
     p = v74_current_particle
@@ -9572,7 +9572,7 @@ def _v74_particle_update(self, dt):
             )
         return result
 
-    # Normal landing ana decal'i kan_lekesi_ekle() üzerinden zaten commit etti.
+
     if pid not in v74_particle_primary_committed:
         safe = v74_trace_clean_floor(
             getattr(self, "x", 0.0),
@@ -9629,7 +9629,7 @@ def _v74_filament_update(self, dt, now):
     pre_tail = pygame.Vector2(self.tail)
     result = _v74_filament_update_original(self, dt, now)
     if was_alive and not self.alive:
-        # Baş ucunda ana iz; yeterince uzun filamentte kuyrukta ikinci küçük iz.
+
         safe = v74_trace_clean_floor(
             self.head.x,
             self.head.y,
@@ -9689,9 +9689,9 @@ def _v74_lobe_update(self, dt, now):
 # <POTBO_STAGE S1493>
 
 
-# Bütün görünür kalıcı kan çizilir. Önceki recent/older sampling yeni bir decal geldiğinde
-# bazı eski lekeleri görünmez yapabiliyordu; ölüm ekranındaki "kan yer değiştirdi" hissinin
-# ana nedenlerinden biri buydu. Grid sayesinde yalnız kamera hücreleri gezilir.
+
+
+
 def kan_lekelerini_ciz(silhouette=False):
     margin = V74_DEATH_DRAW_MARGIN / max(0.01, float(KAMERA_YAKINLASTIRMA))
     left = float(kamera_x) - margin
@@ -9717,8 +9717,8 @@ def kan_lekelerini_ciz(silhouette=False):
                 if left <= float(decal.x) <= right and top <= float(decal.y) <= bottom:
                     visible.append(decal)
 
-    # Zemin lekeleri her zaman sabit dünya geometrisidir. created_ms sırası yalnız
-    # overlap painter order'ını deterministik tutar; konum/ölçek değiştirmez.
+
+
     visible.sort(
         key=lambda d: (
             int(getattr(d, "created_ms", 0)),
@@ -9728,13 +9728,13 @@ def kan_lekelerini_ciz(silhouette=False):
     for decal in visible:
         decal.ciz(silhouette=silhouette)
 
-    # V58 havadaki transientler ayrıca görünür; ömürleri bitince yukarıdaki kalıcı
-    # zemin decal'lerine dönüşür.
+
+
     v58_draw(ekran, silhouette=silhouette)
 
 
-# Ölüm tablosunda kamera sabit. Böylece dünya koordinatına bağlı kan/gore, kamera lead
-# veya post-mortem actor hareketi yüzünden ekranda kayıyormuş gibi görünmez.
+
+
 _v74_camera_original = kamerayi_guncelle
 # </POTBO_STAGE S1493>
 
@@ -9754,30 +9754,30 @@ def v74_diagnostics():
 # <POTBO_STAGE S1499>
 
 
-# =========================================================
-# END V74
-# =========================================================
 
 
-# =========================================================
-# V75 - BLOOD ECOSYSTEM / 20-MINUTE DRYING / FAUNA CLEANUP
-# =========================================================
-# Ekolojik kontrat:
-# 1) Kan kendi kendine yok olmaz. V74 kalıcılık kontratı korunur.
-# 2) Her kan lekesi oluşturulduğu andan tam 20 dakika sonra tamamen kurudur.
-#    Kuruma görsel/kimyasal yaştır; decal yalnız ekosistem tarafından tüketilirse kaldırılır.
-# 3) Fare -> kurtçuk > yenebilir organ/doku > kan önceliğiyle beslenir.
-# 4) Fare kan lekesinin x/y/scale/rotation geometrisini değiştirmez. Bir kan kümesinin
-#    görünür izi ancak ekolojik kütlesi gerçekten sıfıra indiğinde kaldırılır.
-# 5) Küçük bir kan kümesi tek bir farenin düzenli erişiminde yaklaşık 9-14 dakikalık
-#    ölçektedir. Aynı kümeye birden fazla fare gelirse crowd damping nedeniyle hız doğrusal
-#    katlanmaz; üç fare yaklaşık üç kat hızlı temizlik yapamaz.
-# 6) Kurtçuklar yaşlanmış fakat hâlâ nemli kanda ortaya çıkar. Kanın bir bölümünü tüketir,
-#    küçük bir bölümünü yakın temiz zemine taşıyarak yayar. Fareler kurtçukları avlayarak
-#    bu yayılım vektörünü keser.
-# 7) Yerdeki yumuşak organ/dokular farelerce dakika ölçeğinde yenir; kemik/skull yenmez.
-# 8) Ölüm ekranında ekolojik kan tüketimi durur. Böylece ölüm anında zemin lekeleri
-#    canlı simülasyon yüzünden kaybolmaz veya değişmez.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 V75_VERSION = "75.0"
 
 V75_BLOOD_FULL_DRY_MS = 20 * 60 * 1000
@@ -9786,8 +9786,8 @@ V75_BLOOD_POST_DRY_COLOR_MS = 16 * 60 * 1000
 
 # <POTBO_STAGE S1501>
 
-# Tek fare için küçük kümede hedef süre ~9-14 dakika. Decal başına ekolojik kütle
-# scale'den ayrıdır; böylece temizlik sırasında kan lekesi optik olarak küçülüp kaymaz.
+
+
 V75_RAT_BLOOD_GROUP_RADIUS = 34.0
 V75_RAT_BLOOD_BITE_MIN = 0.00120
 V75_RAT_BLOOD_BITE_MAX = 0.00155
@@ -9798,7 +9798,7 @@ V75_RAT_DRY_BLOOD_RATE = 0.64
 
 # <POTBO_STAGE S1503>
 
-# Organ temizliği saniyelik değil, dakika ölçeğinde gerçekleşir.
+
 V75_RAT_GORE_BITE_MIN = 0.0024
 V75_RAT_GORE_BITE_MAX = 0.0036
 V75_RAT_GORE_FEED_MIN_MS = 420
@@ -9815,7 +9815,7 @@ v75_stats = {
     "rat_blood_consumed": 0.0,
 }
 
-# Eski üretici bu global sabitleri runtime'da okuyor; yeni ekolojik zamanları ona bağla.
+
 BLOOD_MAGGOT_MAX = V75_MAGGOT_MAX
 BLOOD_MAGGOT_FIRST_MIN_MS = V75_MAGGOT_FIRST_MIN_MS
 BLOOD_MAGGOT_FIRST_MAX_MS = V75_MAGGOT_FIRST_MAX_MS
@@ -9833,7 +9833,7 @@ def v75_blood_mass(decal):
         0.55,
         min(2.25, float(getattr(decal, "v42_stain_mass", 1.0))),
     )
-    # Tiny satellite bile anlık silinmesin; büyük splat gerçekten daha uzun yaşasın.
+
     mass = (0.28 + scale * 0.52) * (0.72 + stain * 0.28)
     decal.v75_ecology_mass = float(mass)
     decal.v75_ecology_mass_initial = float(mass)
@@ -9859,7 +9859,7 @@ def v75_blood_is_dry(decal, now=None):
     return int(now) >= created + V75_BLOOD_FULL_DRY_MS
 
 
-# V62 final decal sınıfının init'ine tam 20 dakikalık kuruma kontratını ekle.
+
 _v75_decal_init_original = PersistentBloodDecal.__init__
 
 
@@ -9867,8 +9867,8 @@ def _v75_decal_init(self, *args, **kwargs):
     _v75_decal_init_original(self, *args, **kwargs)
     created = int(getattr(self, "created_ms", pygame.time.get_ticks()))
     self.dry_after_ms = created + V75_BLOOD_FULL_DRY_MS
-    # V44 renk yaşını dry_after -> fade_after aralığında hesaplıyor. Tam kuruma 20:00;
-    # sonrasında yalnız renk koyulaşır. V74 nedeniyle vanish hiçbir zaman otomatik değildir.
+
+
     self.fade_after_ms = self.dry_after_ms + V75_BLOOD_POST_DRY_COLOR_MS
     self.vanish_after_ms = 2**62
     self.maggot_next_ms = created + random.randint(
@@ -9881,7 +9881,7 @@ def _v75_decal_init(self, *args, **kwargs):
 PersistentBloodDecal.__init__ = _v75_decal_init
 
 
-# V74'ün "asla zaman aşımıyla silme" garantisi aynen sürer.
+
 def _v75_decal_never_expired(self, simdi):
     return False
 
@@ -9921,13 +9921,13 @@ def _v75_maggot_update(self, dt, simdi):
     if not self.active:
         return
 
-    # Ölüm ekranında kan ekolojisini dondur. Kurtçuk animasyonu/movement parent'ta
-    # sürmüş olabilir ama hiçbir leke tüketilemez veya yeni leke üretilemez.
+
+
     if oyuncu_hp <= 0:
         return
 
-    # Kurtçuk kanın bir kısmını metabolize eder. Bu hız tek başına hızlı temizlik yapmaz;
-    # koloni varsa birkaç dakikada anlamlı fakat sınırlı bir azalma yaratır.
+
+
     if int(simdi) >= int(getattr(self, "v75_feed_next_ms", 0)):
         self.v75_feed_next_ms = int(simdi) + V75_MAGGOT_FEED_INTERVAL_MS
         mass = v75_blood_mass(source)
@@ -9936,8 +9936,8 @@ def _v75_maggot_update(self, dt, simdi):
             v75_set_blood_mass(source, mass - consumed)
             v75_stats["maggot_blood_consumed"] += consumed
 
-    # Yayılım yalnız kaynak kan 20 dakikadan genç/nemliyken olur. Kurtçuk kaynaktan
-    # bir miktar kan taşır; yeni leke "ücretsiz" üretilmez, kaynak kütle azalır.
+
+
     if int(simdi) >= int(getattr(self, "v75_spread_next_ms", 0)):
         self.v75_spread_next_ms = int(simdi) + random.randint(
             V75_MAGGOT_SPREAD_MIN_MS, V75_MAGGOT_SPREAD_MAX_MS
@@ -9951,7 +9951,7 @@ def _v75_maggot_update(self, dt, simdi):
                     random.uniform(0.012, 0.026),
                 )
                 if moved >= 0.006:
-                    # Taşıma sırasında yaklaşık %28'i metabolize olur; kalan yakın zemine yayılır.
+
                     deposited = moved * 0.72
                     v75_set_blood_mass(source, mass - moved)
                     satellite = v74_create_persistent_decal(
@@ -9968,7 +9968,7 @@ def _v75_maggot_update(self, dt, simdi):
                         self.v75_spread_count += 1
                         v75_stats["maggot_spreads"] += 1
                     else:
-                        # Zemin son anda geçersizleşirse taşınan kanı yok etmeyelim.
+
                         v75_set_blood_mass(
                             source,
                             v75_blood_mass(source) + moved,
@@ -10002,13 +10002,13 @@ def v75_consume_blood_group(rat, target, simdi):
     crowd = 1.0 + V75_RAT_CROWD_DAMPING * max(0, feeders - 1)
     amount = random.uniform(V75_RAT_BLOOD_BITE_MIN, V75_RAT_BLOOD_BITE_MAX) / crowd
 
-    # Kurumuş kan yenebilir/temizlenebilir fakat yüzeye bağlandığı için belirgin daha yavaştır.
+
     if v75_blood_is_dry(target, simdi):
         amount *= V75_RAT_DRY_BLOOD_RATE
 
     remaining = amount
     consumed_total = 0.0
-    # Hedef önce; sonra aynı küçük havuzdaki komşu damlalar. Geometriye dokunulmaz.
+
     for decal in group:
         if remaining <= 1e-9:
             break
@@ -10054,7 +10054,7 @@ def _v75_rat_consume_tick(self, simdi):
     kind = self.food_kind
     obj = self.food_obj
 
-    # Kurtçuk kanı yaydığı için en yüksek öncelikli avdır; temas varsa hızlıca yenir.
+
     if kind == "maggot":
         if simdi < self.feed_tick_ms:
             return
@@ -10085,8 +10085,8 @@ def _v75_rat_consume_tick(self, simdi):
         self.hunger = max(0.0, self.hunger - 0.008)
         self.feed_until = int(simdi) + 300
 
-        # Organ fiziksel olarak gerçekten yenildiği için küçülmesi doğaldır. Kan decal'lerinde
-        # yaptığımız immutable-geometri garantisi organlara uygulanmaz.
+
+
         initial_mass = max(
             0.001,
             float(getattr(obj, "v75_ecology_mass_initial", mass + take)),
@@ -10131,8 +10131,8 @@ def _v75_rat_consume_tick(self, simdi):
 # <POTBO_STAGE S1514>
 
 
-# Food scoring mevcut V40 davranışının biyolojik önceliğini koruyor; yalnız artık tüketilmiş
-# decal/gore adaylarının tekrar hedef seçilmesini engelliyoruz ve kuru kana hafif ceza ekliyoruz.
+
+
 _v75_rat_find_food_original = AmbientRat._find_food
 
 
@@ -10150,9 +10150,9 @@ def _v75_rat_find_food(self, here, simdi):
 # <POTBO_STAGE S1516>
 
 
-# ---------------------------------------------------------
-# ECOLOGY CLEANUP: SADECE GERÇEKTEN TÜKETİLEN NESNELER
-# ---------------------------------------------------------
+
+
+
 def v75_cleanup_consumed_blood(simdi):
     global v75_cleanup_next_ms
     if int(simdi) < int(v75_cleanup_next_ms):
@@ -10187,8 +10187,8 @@ _v75_kan_gore_update_original = kan_gore_guncelle
 
 def kan_gore_guncelle():
     result = _v75_kan_gore_update_original()
-    # Ölüm ekranında kan görünümü immutable kalır. Normal canlı dünya simülasyonunda
-    # yalnız fauna tarafından gerçekten tüketilmiş lekeler periyodik olarak kaldırılır.
+
+
     if oyuncu_hp > 0:
         v75_cleanup_consumed_blood(pygame.time.get_ticks())
     return result
@@ -10221,31 +10221,31 @@ def v75_ecology_diagnostics():
 # <POTBO_STAGE S1518>
 
 
-# =========================================================
-# END V75
-# =========================================================
 
-# =========================================================
-# V76 - CLEAN COMBAT UI / THREE-COLOR DEATH / WORM ASSET CONTRACT
-# =========================================================
-# Bu katman dört görünür kontratı tek yerde sabitler:
-# 1) blood_worms.png canonical olarak assets/ambient altında okunur.
-# 2) Loading ipuçları kısa, doğrudan ve oynanışta uygulanabilir cümlelerdir.
-# 3) Hit/combo sayaçları ve sol-alt combat-rhythm paneli çizilmez.
-# 4) Ölüm sahnesi gerçek üç-renk paletidir: mutlak siyah, koyu kan kırmızısı,
-#    kurban/katil için daha açık tek kırmızı. UI de bu paletin dışına çıkmaz.
-# 5) Gotik menü butonunun click parlaması uç süslerin içine çizgi sızdırmaz.
+
+
+
+
+
+
+
+
+
+
+
+
+
 V76_VERSION = "76.0"
 
-# ---------------------------------------------------------
-# CANONICAL BLOOD WORM ASSET
-# ---------------------------------------------------------
+
+
+
 V76_BLOOD_WORM_PRIMARY = os.path.join(ASSETS, "ambient", "blood_worms.png")
 if V76_BLOOD_WORM_PRIMARY in BLOOD_WORM_SHEET_ADAYLARI:
     BLOOD_WORM_SHEET_ADAYLARI.remove(V76_BLOOD_WORM_PRIMARY)
 BLOOD_WORM_SHEET_ADAYLARI.insert(0, V76_BLOOD_WORM_PRIMARY)
-# Sheet bu katmandan önce yüklenmiş olsa da canonical dosya sonradan projeye eklendiyse
-# V76 başlangıcında bir kez daha oku. 76x24 / 6-frame loader mevcut kontratı kullanır.
+
+
 if os.path.isfile(V76_BLOOD_WORM_PRIMARY):
     _v76_worm_frames = _v28_blood_worm_spriteleri_yukle()
     if _v76_worm_frames:
@@ -10281,7 +10281,7 @@ def _v76_killer_draw(actor):
         ).convert_alpha()
         ekran.blit(flat, rect)
 
-    # Katilin el/silah kanı da yalnız koyu-kan rengindedir; alpha/fade kullanılmaz.
+
     if oyuncu_olum_turu == "fire":
         return
     point = _v24_katil_silah_kan_noktasi(actor)
@@ -10325,9 +10325,9 @@ def oyuncu_olum_sahnesi_ciz():
     if killer_behind:
         _v76_killer_draw(killer)
 
-    # Kan her zaman koyu kırmızı.
+
     _v76_flat_layer(_v76_death_blood_draw, V76_DEATH_BLOOD)
-    # Organ/gore kurbanın beden parçalarıdır; öldürülenle aynı açık kırmızı.
+
     _v76_flat_layer(_v76_death_gore_draw, V76_DEATH_BODY)
     _v76_flat_layer(
         _v76_death_victim_draw,
@@ -10338,7 +10338,7 @@ def oyuncu_olum_sahnesi_ciz():
     if killer is not None and not killer_behind:
         _v76_killer_draw(killer)
 
-    # Transition alpha ile yeni ton üretme. Seçimden sonra ekran doğrudan mutlak siyaha geçer.
+
     if oyuncu_olum_cikis_orani(pygame.time.get_ticks()) > 0.0:
         ekran.fill(V76_DEATH_BLACK)
         return
@@ -10367,29 +10367,29 @@ def v76_diagnostics():
 # <POTBO_STAGE S1536>
 
 
-# =========================================================
-# END V76
-# =========================================================
 
 
-# =========================================================
-# V77 - DEATH TABLEAU RESTORE / USEFUL HINTS / NO STATIC KEY GUIDES
-# =========================================================
-# V76'nin üç-renk hedefi korunur; ancak sahnenin tamamını tek maskeye çeviren
-# yaklaşım kaldırılır. Her semantik katman ayrı renklendirilir:
-#   - mutlak siyah: arka plan ve UI boşlukları
-#   - koyu kırmızı: kan / damla / kan izi
-#   - açık kırmızı: öldürülen, öldüren, gore ve game-over arayüz çizgileri
-# Böylece ölüm koreografisi korunur ve hiçbir katman ekranı düz kırmızıya boyayamaz.
+
+
+
+
+
+
+
+
+
+
+
+
 V77_VERSION = "77.0"
 # </POTBO_STAGE S1536>
 
 # <POTBO_STAGE S1542>
 
 
-# ---------------------------------------------------------
-# PAUSE: KONTROL ŞEMASI YOK; PANEL YALNIZ MENÜDÜR
-# ---------------------------------------------------------
+
+
+
 def duraklatma_menusu_ciz():
     oyun_ekrani_ciz()
     koyu_kaplama(185)
@@ -10462,7 +10462,7 @@ def _v77_death_killer_draw(actor):
         ).convert_alpha()
         ekran.blit(flat, rect)
 
-    # Katilin silah/eli üzerindeki kan ayrı, koyu kan renginde kalır.
+
     if oyuncu_olum_turu == "fire":
         return
     point = _v24_katil_silah_kan_noktasi(actor)
@@ -10497,7 +10497,7 @@ def _v77_death_killer_draw(actor):
 def oyuncu_olum_sahnesi_ciz():
     ekran.fill(V77_DEATH_BLACK)
 
-    # Orijinal death tableau painter order korunur.
+
     _v77_semantic_layer(_v77_death_blood_layer, V77_DEATH_BLOOD, 0.60)
     _v77_semantic_layer(_v77_death_gore_layer, V77_DEATH_BODY, 0.30)
 
@@ -10512,7 +10512,7 @@ def oyuncu_olum_sahnesi_ciz():
     if not victim_ok:
         _v77_death_fallback_victim()
 
-    # Yanarak ölümde eski alev koreografisi de korunur; yalnız açık kırmızıya indirgenir.
+
     _v77_semantic_layer(_v77_death_fire_layer, V77_DEATH_BODY, 0.25)
 
     if killer is not None and not killer_behind:
@@ -10525,7 +10525,7 @@ def oyuncu_olum_sahnesi_ciz():
     title_p = oyuncu_olum_baslik_fade_orani(now)
     _v34_gameover_music_tick(title_p, now)
 
-    # Çıkış sırasında ara ton üretmek yerine sahne siyaha kesilir.
+
     if oyuncu_olum_cikis_orani(now) > 0.0:
         ekran.fill(V77_DEATH_BLACK)
         return
@@ -10536,12 +10536,12 @@ def oyuncu_olum_sahnesi_ciz():
 # <POTBO_STAGE S1559>
 
 
-# V78 eski HUD renderer kaldırıldı. Aşağıdaki V79 oyuncu_paneli_ciz()
-# kanonik HUD değişkenlerini kullanır; bu eski blok Pylance undefined-variable
-# uyarıları üretiyordu.
 
 
-# Çerçeveler aynı tasarım dilinde kalsın; Q slotu ve test arayüzü korunur.
+
+
+
+
 def one_cikan_item_paneli_ciz():
     panel = hud_sag_rect()
     gotik_panel(panel, KAN_KIRMIZISI, 238)
@@ -10691,9 +10691,9 @@ def duraklatma_menusu_ciz():
 # <POTBO_STAGE S1567>
 
 
-# -----------------------
-# Death tableau refinement.
-# -----------------------
+
+
+
 v78_death_snapshot = {
     "start_ms": 0,
     "blood": [],
@@ -10818,7 +10818,7 @@ def _v78_capture_death_snapshot():
     gore.sort(key=lambda e: (pygame.Vector2(e["x"], e["y"]) - center).length())
     gore = gore[:28]
 
-    # Eğer parçalar azsa, cesedin etrafında rahatsız edici ama yakın mesafe birkaç ek parça üret.
+
     if len(gore) < 10:
         for i in range(10 - len(gore)):
             ang = (i / max(1, 10)) * math.tau
@@ -10872,7 +10872,7 @@ def _v77_death_blood_layer():
             )
         else:
             pygame.draw.circle(ekran, V77_DEATH_BLOOD, (sx, sy), r)
-    # Cesedin hemen çevresindeki ağır kan, daha uzun kalır.
+
     body_x = int(round(dunya_ekran_x(oyuncu_x)))
     body_y = int(round(dunya_ekran_y(oyuncu_y + 6)))
     core_r = max(10, int(round(18 * (0.55 + keep * 0.45))))
@@ -10910,7 +10910,7 @@ def _v77_death_gore_layer():
                 (rect.right - 2, rect.centery),
                 1,
             )
-    # Yakın organ yığını: rahatsız edici ama uzağa taşmayan, daha gerçekçi etki.
+
     cx = int(round(dunya_ekran_x(oyuncu_x)))
     cy = int(round(dunya_ekran_y(oyuncu_y - 6)))
     pygame.draw.ellipse(
@@ -10950,8 +10950,8 @@ V79_DEATH_GORE_FADE_END_MS = 11800
 # <POTBO_STAGE S1601>
 
 
-# Kan/gore artık indeks indeks pop ederek kaybolmaz. Bütün tablo birlikte çözülür;
-# dither sayesinde ölüm paleti yine sadece siyah/koyu kırmızı/açık kırmızıdır.
+
+
 def _v79_fade_progress(start_ms, end_ms):
     if oyuncu_olum_baslangic_ms <= 0:
         return 1.0
@@ -10985,7 +10985,7 @@ def _v77_death_blood_layer():
         sx = int(round(dunya_ekran_x(float(e["x"])))) - bounds.x
         sy = int(round(dunya_ekran_y(float(e["y"])))) - bounds.y
         base_r = max(1, int(round(float(e.get("r", 2.0)))))
-        # Son safhada önce hacim kaybeder, sonra dither ile çözülür.
+
         size_mul = 0.62 + 0.38 * _v79_smoothstep(progress)
         r = max(1, int(round(base_r * size_mul)))
         if e.get("kind") == "pool":
@@ -11057,9 +11057,9 @@ def _v77_death_gore_layer():
 # <POTBO_STAGE S1609>
 
 
-# ----------------------
-# Death tableau V80
-# ----------------------
+
+
+
 v80_death_fx = {
     "start_ms": 0,
     "emitters": [],
@@ -11121,7 +11121,7 @@ def _v80_make_death_fx():
             }
         )
 
-    # Kanlı ölüm: boyun/gövde hattından iki ana spurt, zemin lekeleri sonradan büyür.
+
     if dtype == "blood":
         o1 = _v80_world_from_local(-2, -2, base_world)
         o2 = _v80_world_from_local(4, -7, base_world)
@@ -11161,7 +11161,7 @@ def _v80_make_death_fx():
             1600,
         )
 
-    # Patlama: üç yöne saçılan kan/gore; ileri + iki yan kol. Aşırı uzak değil, yakın ve yoğun.
+
     elif dtype in ("blast_core", "blast_inner", "blast_mid"):
         origins = [
             _v80_world_from_local(0, -4, base_world),
@@ -11189,7 +11189,7 @@ def _v80_make_death_fx():
                     220 + i * 70 + j * 160,
                     1180 + j * 160,
                 )
-        # Patlama parça kümeleri: üç lobe.
+
         for i, d in enumerate(dirs):
             for j in range(3):
                 pos = center + d * (14 + j * 12) + side * ((j - 1) * 7.0)
@@ -11208,7 +11208,7 @@ def _v80_make_death_fx():
                     }
                 )
 
-    # Yanma: az kan, daha çok yanan parça hissi.
+
     elif dtype == "fire":
         o = _v80_world_from_local(0, -4, base_world)
         add_emitter(
@@ -11236,7 +11236,7 @@ def _v80_make_death_fx():
                 }
             )
 
-    # Eski snapshot gore'undan yakın olanları koru; ölüm ekranı yoksullaşmasın.
+
     snap = (
         globals().get("v78_death_snapshot", {}).get("gore", [])
         if isinstance(globals().get("v78_death_snapshot", {}), dict)
@@ -11289,13 +11289,13 @@ def oyuncu_olum_sahnesini_sifirla():
     _v80_death_reset_original()
 
 
-# V79'un bütün tabloyu birlikte çözdüren fade mantığı korunur.
+
 def _v77_death_blood_layer():
     age = _v80_death_age_ms()
     if age <= 0:
         return
 
-    # Önce yerde yavaş büyüyen kan birikimleri.
+
     for pool in v80_death_fx.get("pools", []):
         t = _v80_clamp01((age - int(pool["delay"])) / max(1.0, float(pool["grow_ms"])))
         if t <= 0.0:
@@ -11308,7 +11308,7 @@ def _v77_death_blood_layer():
             V77_DEATH_BLOOD,
         )
 
-    # Sonra yara hattından fışkıran atardamar kanı; doğrudan havuza dönüşmez.
+
     for em in v80_death_fx.get("emitters", []):
         local_age = age - int(em.get("delay", 0))
         if local_age <= 0:
@@ -11350,7 +11350,7 @@ def _v77_death_blood_layer():
                 prev = pos
 
 
-# Gore parçaları yakın kalır; blast/fire türlerinde yanma hissi siyah-kırmızı flicker ile verilir.
+
 def _v77_death_gore_layer():
     age = _v80_death_age_ms()
     if age <= 0:
@@ -11449,8 +11449,8 @@ def _v81_draw_stain(drop, now):
         )
 
     if not drop.get("decal_added") and grow >= 0.18:
-        # Aynı damla gerçek dünyada da kalıcı bir decal olur. V74 collision-safe API
-        # duvar/engel üstüne yapıştırmaz.
+
+
         scale = max(
             0.11,
             min(
@@ -11472,12 +11472,12 @@ def _v81_draw_stain(drop, now):
 
 def _v77_death_blood_layer():
     if int(v81_death_blood.get("start_ms", 0)) <= 0:
-        # V81 henüz kurulmadıysa önceki güvenli renderer fallback'i.
+
         return
 
     now = pygame.time.get_ticks()
 
-    # Zemine düşmüş kan önce çizilir; havadaki damlalar onun üstüne gelir.
+
     for seep in v81_death_blood.get("seeps", []):
         _v81_draw_seep(seep, now)
 
@@ -11489,8 +11489,8 @@ def _v77_death_blood_layer():
             _v81_draw_stain(drop, now)
             continue
 
-        # Pseudo-height yalnız ekran y'sine uygulanır; dünya yönü ve yere düşeceği nokta
-        # korunur. Çok kısa tail, damlayı lazer çizgisine çevirmeden hız hissi verir.
+
+
         age = int(now) - int(drop["birth_ms"])
         flight = max(1, int(drop["flight_ms"]))
         p = _v81_clamp01(age / float(flight))
@@ -11522,12 +11522,12 @@ def _v77_death_blood_layer():
         )
 
 
-# Yakın gore davranışı V80'den korunur. Blood layer artık tamamen V81'in damla fiziğidir.
 
 
-# ---------------------------------------------------------
-# Post-mortem saldırı disiplini
-# ---------------------------------------------------------
+
+
+
+
 _v81_katil_frame_original = _v30_katil_koreografi_frame
 # </POTBO_STAGE S1628>
 
@@ -11543,9 +11543,9 @@ def _v30_olum_koreografi_guncelle(simdi):
         return
     alt = str(oyuncu_olum_alt_turu or "")
 
-    # Heads Thrower, Tarkard ve normal Torrmund finisher'ları ölümden sonra tekrar vurmaz.
-    # Yalnız Crawler/Berserker cesede saldırmayı sürdürür. Torrmund'un sadece ilk
-    # öldürücü darbesi bedeni ikiye ayırmadıysa decap_cleave dalında TEK ikinci vuruşu vardır.
+
+
+
     if alt not in (
         "crawler",
         "berserker",
@@ -11574,8 +11574,8 @@ def _v30_olum_koreografi_guncelle(simdi):
             return False
         oyuncu_olum_koreografi_vuruslari.add(key)
 
-        # Gerçek dünyadaki particle sistemi de çalışır; bunların landing'i kalıcı decal'e
-        # dönüşür. Sayı kontrollü, death renderer'daki yoğunluk ise V81 analitik damlalardır.
+
+
         kan_parcacigi_patlat(
             oyuncu_x,
             oyuncu_y - 10.0,
@@ -12333,8 +12333,8 @@ def one_cikan_item_paneli_ciz():
 
 
 def _v81_death_player_drips():
-    # Eski V81'in frame-frame random jitter'ı kaldırıldı. Ana kan zaten gerçek V81 damla
-    # fiziğinden geliyor; cesette sadece iki ağır, sakin sızıntı kalır.
+
+
     if oyuncu_olum_turu == "fire" or oyuncu_olum_baslangic_ms <= 0:
         return
     now = pygame.time.get_ticks()
@@ -12390,7 +12390,7 @@ def _v77_death_killer_draw(actor):
     direction = str(getattr(actor, "direction", "right"))
     sign = 1 if direction == "right" else -1
 
-    # El/silah üzerinde yapışık kan: tek parça kırmızı çizgi değil, piksel kümeli smear.
+
     pygame.draw.line(
         ekran,
         V77_DEATH_BLOOD,
@@ -12400,7 +12400,7 @@ def _v77_death_killer_draw(actor):
     )
     pygame.draw.circle(ekran, V77_DEATH_BLOOD, (sx + 3 * sign, sy + 2), 2)
 
-    # Stabil fazlı dört damla. Random seed her frame değişmediği için titreme/flicker yok.
+
     periods = (820, 1030, 1240, 1470)
     for i, period in enumerate(periods):
         p = ((now + i * 271) % period) / float(period)
@@ -12422,9 +12422,9 @@ def _v77_death_killer_draw(actor):
 # <POTBO_STAGE S1680>
 
 
-# V81 topmost HUD wrapper'ını atlayıp aynı temel world zincirini kullanıyoruz; sonra yeni
-# hit accents, developer paneli ve en son iki HUD paneli çizilir. Böylece hiçbir actor
-# gölgesi/particle HP veya mana barının üstüne çıkamaz.
+
+
+
 def oyun_ekrani_ciz():
     result = _v81_game_draw_original()
     if oyun_durumu == OYUN and oyuncu_hp > 0:
@@ -12549,7 +12549,7 @@ def kanli_darbe_efekti(x, y, profil="slash", lethal=False, yon=None):
     base = base.normalize()
     _v83_kanli_darbe_efekti_original(x, y, profil, lethal, base)
 
-    # Her hit daha belirgin olsun: ana sıçramadan sonra ikinci bir kısa 'wet follow-through'.
+
     extra = random.randint(5, 8) if not lethal else random.randint(10, 16)
     kan_parcacigi_patlat(
         x + random.uniform(-1.5, 1.5),
@@ -13010,8 +13010,8 @@ def v84_execution_tableau_draw():
         v84_execution_trace_draw(trace, now)
     v84_execution_threats_draw()
 
-    # Minimal authored-sequence readout.  No rounded plate and no persistent
-    # tutorial string; the shrinking blade line communicates remaining time.
+
+
     total = V84_EXECUTION_BEAT_TIMES[-1] + V84_EXECUTION_END_LINGER_MS
     remaining = 1.0 - v84_clamp01(state.elapsed_ms / float(total))
     bar = pygame.Rect(GENISLIK // 2 - 132, 54, 264, 4)
@@ -13086,18 +13086,18 @@ V84_STARTUP_OK = all(
     )
 )
 
-# =========================================================
-# END V84
-# =========================================================
 
 
-# =========================================================
-# V85 - GROUND-WEIGHTED DISMEMBERMENT / AUTHORED EXECUTION
-# =========================================================
-# V85 does not introduce a new player ability or resource family.  It refines
-# existing combat, blood, death and HUD contracts only.  The execution director
-# deliberately reuses the X-special movement vocabulary: collision-safe scripted
-# positions, ease-out dashes, curved transfers and short-lived afterimages.
+
+
+
+
+
+
+
+
+
+
 
 V85_VERSION = "85.0"
 # </POTBO_STAGE S1823>
@@ -13147,7 +13147,7 @@ def v84_execution_tableau_draw():
         return
     ekran.fill(V84_BLACK)
 
-    # V74's permanent, collision-safe world blood is the ground truth here too.
+
     kan_lekelerini_ciz(silhouette=True)
     for particle in blood_particles:
         if getattr(particle, "active", False):
@@ -13207,9 +13207,9 @@ def v84_execution_tableau_draw():
 
 # <POTBO_STAGE S1840>
 
-# The V65 pressure model and V74 landing model remain authoritative.  The longer
-# curve produces a readable severed-artery rhythm while the reduced airborne
-# scalar transfers most of that volume to permanent ground decals.
+
+
+
 V44_PLAYER_DEATH_ARTERIAL_DURATION_MS = V85_DEATH_ARTERIAL_MS
 # </POTBO_STAGE S1840>
 
@@ -13240,8 +13240,8 @@ def v85_death_tissue_spawn(state):
         if key in GORE_SPRITELERI
     ]
     if not keys:
-        # GoreChunk has a procedural physical fallback, so missing optional art
-        # never removes tissue, organs, flight, bounce or permanent blood landing.
+
+
         keys = [
             "flesh_shard_a",
             "flesh_shard_b",
@@ -13428,8 +13428,8 @@ GoreChunk.ciz = _v85_gore_chunk_draw
 def oyuncu_olum_sahnesi_ciz():
     ekran.fill(V84_BLACK)
 
-    # V74 is intentionally used directly: every airborne particle settles into a
-    # collision-safe permanent decal, and every visible decal stays in world space.
+
+
     kan_lekelerini_ciz(silhouette=True)
     for particle in blood_particles:
         if getattr(particle, "active", False):
@@ -13597,7 +13597,7 @@ def v84_execution_tableau_draw():
         v84_execution_trace_draw(trace, now)
     v84_execution_threats_draw()
 
-    # No progress bar: the rhythm, retreat and final dash communicate duration.
+
     if int(now) < int(v85_execution_flash_until_ms):
         duration = max(
             1,
@@ -13799,8 +13799,8 @@ def v86_death_scene_begin(killer, source_x, source_y, profile, damage, source_na
         oyuncu_olum_turu = "blood"
         oyuncu_olum_alt_turu = state.death_kind
 
-    # Start with an empty analytic blood field.  Blood appears at authored impact
-    # beats, never as a ready-made puddle before the killer moves.
+
+
     v81_death_blood = {
         "start_ms": now,
         "seed": state.seed,
@@ -14203,7 +14203,7 @@ def v86_update_heads_thrower(state, now, dt):
             ).normalize()
             state.approach_target = state.body_anchor + away * 164.0
 
-    # After the first rock breaks, the thrower visibly makes space before pickup.
+
     if killer is not None and attack <= now < attack + 520:
         current = pygame.Vector2(float(killer.x), float(killer.y))
         delta = state.approach_target - current
@@ -14281,7 +14281,7 @@ def oyuncu_olum_sahnesi_ciz():
     now = pygame.time.get_ticks()
     ekran.fill(V84_BLACK)
 
-    # Persistent world consequences are rendered before every actor and corpse.
+
     kan_lekelerini_ciz(silhouette=True)
     _v77_death_blood_layer()
     for particle in blood_particles:
@@ -14307,7 +14307,7 @@ def oyuncu_olum_sahnesi_ciz():
         return
     title_progress = oyuncu_olum_baslik_fade_orani(now)
     _v34_gameover_music_tick(title_progress, now)
-    # Exact V79/V85 title and control dithering contracts are preserved.
+
     v85_death_menu_draw(now)
     exit_progress = oyuncu_olum_cikis_orani(now)
     if exit_progress > 0.0:
@@ -14319,9 +14319,9 @@ def oyuncu_olum_sahnesi_ciz():
 # <POTBO_STAGE S1965>
 
 
-# ---------------------------------------------------------
-# PERSISTENT AUTHORED BLOOD LANDINGS
-# ---------------------------------------------------------
+
+
+
 V87_PENDING_BLOOD_LIMIT = 960
 v87_pending_blood_landings = []
 v87_persistent_blood_stats = {
@@ -14378,8 +14378,8 @@ def v87_schedule_blood_landings(
             "satellite": rng.random() < 0.36,
         }
         if len(v87_pending_blood_landings) >= V87_PENDING_BLOOD_LIMIT:
-            # Never discard a promised landing: commit the oldest before admitting
-            # a new one, preserving the permanence contract under stress.
+
+
             oldest = min(
                 v87_pending_blood_landings,
                 key=lambda entry: int(entry["due_ms"]),
@@ -14588,7 +14588,7 @@ def kan_gore_guncelle():
 
 
 def oyuncu_olum_sahnesini_sifirla():
-    # A menu transition cannot cancel blood that was already visibly airborne.
+
     v87_persistent_blood_update(force=True)
     return _v87_death_reset_original()
 
@@ -14615,36 +14615,36 @@ def v87_diagnostics():
 # <POTBO_STAGE S1981>
 
 
-# =========================================================
-# END V87
-# =========================================================
 
 
-# =========================================================
-# V88 - AUTHORITATIVE DEATH IMPACT / ASSET CONTRACT / BLOOD FLOW
-# =========================================================
-# This layer does not replace the V74 persistent ecology or the V86 authored
-# death director.  It closes three remaining seams between them:
-#
-#   * the lethal source is an immutable damage event, never a nearest-enemy guess;
-#   * the strike which reaches zero HP is the visual impact for heavy/projectile
-#     deaths, so the director cannot replay that strike after an artificial pause;
-#   * death blood grows along short floor-bound streams and is progressively
-#     committed to the existing permanent decal ecology.
-#
-# Dialogue, settings, title/menu fade curves and the normal combat rules remain
-# owned by their previous systems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 V88_VERSION = "88.0"
 
 
-# ---------------------------------------------------------
-# Exact asset layout supplied with the project
-# ---------------------------------------------------------
-# The canonical folders are assets/effects/{particles,decals,gore}.  The older
-# assets/effects/blood/... layout remains a fallback so existing installations
-# do not break.  `upload` is a development fallback for the attached review
-# bundle and is never preferred over the project's own asset tree.
+
+
+
+
+
+
+
 
 V88_EFFECTS_ROOT = os.path.join(ASSETS, "effects")
 # </POTBO_STAGE S1981>
@@ -14705,7 +14705,7 @@ def v88_reload_blood_assets():
             decals.append(image)
             decal_paths.append(path)
 
-    # A partial directory must not silently discard a complete legacy set.
+
     if len(particles) == 6:
         BLOOD_PARTICLE_SPRITELERI[:] = particles
         BLOOD_PARTICLE_YOLLARI[:] = particle_paths
@@ -14858,9 +14858,9 @@ def v86_death_scene_begin(
         return result
 
     state = v86_death_state
-    # Dynamic scheduler fields are not dataclass members in older saves.  Reset
-    # them explicitly so two consecutive deaths by the same enemy type cannot
-    # inherit a completed hit index or a timestamp from the previous scene.
+
+
+
     state.v88_hit_scheduler_kind = ""
     state.v88_hits_done = 0
     state.v88_next_hit_ms = 0
@@ -14895,9 +14895,9 @@ def v86_death_scene_begin(
         return result
 
     now = int(state.started_ms)
-    # Tarkard and Torrmund have already connected their lethal active frame.  The
-    # body response belongs to that same frame; only a deliberate second cleave
-    # in Torrmund's multi-hit variant remains scheduled later.
+
+
+
     if state.death_kind == "tarkard":
         state.ready_ms = now
         state.attack_ms = now
@@ -14925,9 +14925,9 @@ def v86_death_scene_begin(
         state.v88_source_kind == "projectile"
         or "rock" in str(source_name or "").lower()
     ):
-        # The incoming gameplay rock is the first impact.  The authored sequence
-        # continues from the retreat/pickup, rather than spawning a duplicate rock
-        # after a one-second dead pause.
+
+
+
         state.ready_ms = now
         state.attack_ms = now
         state.phase = "linked_heads_first_impact"
@@ -14939,7 +14939,7 @@ def v86_death_scene_begin(
             state.approach_target = state.body_anchor + away * 164.0
         v86_update_heads_thrower(state, now, 0.0)
     elif state.death_kind == "bomb":
-        # An explosion cannot visually wait after its damage has already landed.
+
         state.ready_ms = now
         state.attack_ms = now
         state.phase = "linked_blast_impact"
@@ -15003,8 +15003,8 @@ def v88_flow_add(state, direction, severity, zone, tag, arterial):
         v88_flow_stats["fed"] += 1
         return target
 
-    # Keep multiple readable streams, but never turn eighteen bites into eighteen
-    # independent puddles.  Once the cap is reached, the most aligned stream feeds.
+
+
     same_scene = [
         flow
         for flow in v88_death_blood_flows
@@ -15038,7 +15038,7 @@ def v88_flow_draw(flow, now):
     if len(inner) >= 3:
         pygame.draw.polygon(ekran, V84_BLOOD, inner)
 
-    # Fresh leading edge is a short wet line, not a detached circular drop.
+
     head = v88_flow_center(flow, 1.0)
     neck = v88_flow_center(flow, 0.91)
     pygame.draw.line(
@@ -15148,9 +15148,9 @@ def v86_blood_event(
     return result
 
 
-# V87 committed a single center decal when a seep reached 24%.  Keep V81's
-# growing polygon, but let V88's stream stages own persistence.  This removes the
-# one-frame "one drop becomes a puddle" discontinuity.
+
+
+
 def _v81_draw_seep(seep, now):
     _v87_draw_seep_original(seep, now)
     if v86_death_state.active:
@@ -15203,9 +15203,9 @@ def _v77_death_blood_layer():
 def oyuncu_olum_sahnesini_sifirla():
     global v88_lethal_event
     if v88_death_blood_flows:
-        # Every visible stream is rasterised into several existing V74 decals
-        # before the transient tableau disappears.  Nothing evaporates on load,
-        # restart or main-menu transition.
+
+
+
         v88_death_flows_update(force=True)
     result = _v88_death_reset_original()
     v88_death_blood_flows.clear()
@@ -15251,12 +15251,12 @@ def v88_diagnostics():
 # <POTBO_STAGE S2064>
 
 
-# ---------------------------------------------------------
-# PERMANENT BLOOD: CHUNKED RENDERING + WET FOOTPRINTS
-# ---------------------------------------------------------
-# Settled stains are immutable world data.  They are composited into transparent
-# world tiles and those tiles are blitted as a batch.  Cost therefore follows the
-# number of visible tiles, not the historical number of blood drops.
+
+
+
+
+
+
 V89_BLOOD_TILE_WORLD = 192.0
 V89_BLOOD_TILE_PAD = 68.0
 V89_BLOOD_TILE_CACHE_LIMIT = 96
@@ -15644,7 +15644,7 @@ def v89_maybe_start_rivulet(decal, scale):
     cell = v89_blood_tile_key_at(decal.x, decal.y)
     if now < int(v89_rivulet_cell_next_ms.get(cell, 0)):
         return
-    # Large pools often run; small droplets stay discrete.
+
     chance = min(0.52, 0.11 + float(scale) * 0.16)
     if random.random() > chance:
         return
@@ -15680,7 +15680,7 @@ _v89_set_blood_mass_raw = v75_set_blood_mass
 
 
 def v75_set_blood_mass(decal, mass):
-    # Fauna and fire may remove nutrients/moisture, never the visible residue.
+
     value = _v89_set_blood_mass_raw(
         decal,
         max(V89_BLOOD_RESIDUE_MASS, float(mass)),
@@ -15692,8 +15692,8 @@ def v75_set_blood_mass(decal, mass):
 # <POTBO_STAGE S2074>
 
 
-# V49 used deletion as an emergency performance valve.  V89 removes the need for
-# that destructive path; transient particles retain their independent limits.
+
+
 V49_DECAL_HARD_LIMIT = 2**60
 
 
@@ -15840,8 +15840,8 @@ V89_FIRE_BLOOD_RADIUS = 34.0
 
 # <POTBO_STAGE S2078>
 
-# The ecosystem must become visible during a normal session, without turning
-# fresh blood into an instant arcade spawn effect.
+
+
 BLOOD_MAGGOT_MAX = V89_MAGGOT_MAX
 BLOOD_MAGGOT_FIRST_MIN_MS = 90_000
 BLOOD_MAGGOT_FIRST_MAX_MS = 180_000
@@ -15859,8 +15859,8 @@ def v89_fire_affect_world(x, y, radius=V89_FIRE_BLOOD_RADIUS, now=None):
     radius = max(4.0, float(radius))
     radius2 = radius * radius
 
-    # Heat removes moisture and usable serum, then chars the stain.  The mineral/
-    # pigment residue remains in the same immutable geometry forever.
+
+
     for decal in _v40_blood_nearby(center, radius + 12.0):
         dx = float(decal.x) - center.x
         dy = float(decal.y) - center.y
@@ -15900,9 +15900,9 @@ def v89_fire_affect_world(x, y, radius=V89_FIRE_BLOOD_RADIUS, now=None):
                 print_item.dry_after_ms = min(int(print_item.dry_after_ms), int(now))
                 v89_blood_tile_dirty_at(print_item.x, print_item.y)
 
-    # Larvae cannot cross active fire.  Soft organs are cooked/charred and stop
-    # being reproductive substrate, but their visual remains until fauna has
-    # actually eaten them before charring.
+
+
+
     for maggot in blood_maggots:
         if not getattr(maggot, "active", False):
             continue
@@ -16100,9 +16100,9 @@ def _v89_ground_fire_update(self, simdi):
 # <POTBO_STAGE S2095>
 
 
-# ---------------------------------------------------------
-# TRANSIENT BUDGET: COLLAPSE AIRBORNE COST, KEEP FLOOR BLOOD
-# ---------------------------------------------------------
+
+
+
 _v89_blood_emit_raw = kan_parcacigi_patlat
 
 
@@ -16125,9 +16125,9 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     if len(created) <= keep_count:
         return result
 
-    # Stratified retention keeps the full velocity fan instead of preserving only
-    # the first RNG samples.  Collapsed particles become delayed permanent floor
-    # landings, so optimization does not erase blood volume from the world.
+
+
+
     if keep_count > 0:
         kept = []
         for index in range(keep_count):
@@ -16183,9 +16183,9 @@ def kan_gore_guncelle():
     return result
 
 
-# ---------------------------------------------------------
-# SAVE/LOAD: PERMANENT MEANS ACROSS GAME SESSIONS AS WELL
-# ---------------------------------------------------------
+
+
+
 V89_BLOOD_SAVE_KEY = "blood_ecology_v89"
 
 
@@ -16436,8 +16436,8 @@ def v89_smoke_test(output_prefix):
     global oyun_durumu, ekran
     started = pygame.time.get_ticks()
     print("[V89 SMOKE] seed")
-    # Fullscreen dummy drivers may expose their native 1024x768 surface despite
-    # the game's 1280x720 logical contract.  The preview uses the exact game canvas.
+
+
     ekran = pygame.display.set_mode((GENISLIK, YUKSEKLIK))
     original_state = oyun_durumu
     center = pygame.Vector2(
@@ -16471,8 +16471,8 @@ def v89_smoke_test(output_prefix):
         point = center + pygame.Vector2(index * 13.0 - 82.0, 54.0 + (index % 2) * 7.0)
         v89_add_footprint(point.x, point.y, 90.0, -1 if index % 2 else 1, 0.92 - index * 0.05, pygame.time.get_ticks())
 
-    # Exercise the compact persistence format before rendering.  This catches
-    # regressions where a stain survives a frame but disappears after reload.
+
+
     snapshot = v89_blood_snapshot()
     persistence_before = (
         len(blood_decals),
@@ -16506,8 +16506,8 @@ def v89_smoke_test(output_prefix):
     first_render_started = time.perf_counter()
     kan_lekelerini_ciz(False)
     first_blood_render_ms = (time.perf_counter() - first_render_started) * 1000.0
-    # Draw once more from warm tiles: the steady-state render cost is the metric
-    # that matters after thousands of permanent stains accumulate.
+
+
     ekran.fill((39, 31, 24))
     warm_render_started = time.perf_counter()
     kan_lekelerini_ciz(False)
@@ -16556,9 +16556,9 @@ def v89_smoke_test(output_prefix):
 # <POTBO_STAGE S2138>
 
 
-# ---------------------------------------------------------
-# SOMATIC INJURY: TISSUE TRAUMA, HAEMORRHAGE, SHOCK, EXERTION
-# ---------------------------------------------------------
+
+
+
 
 V90_BASE_WALK_SPEED = float(OYUNCU_YURUYUS_HIZI)
 # </POTBO_STAGE S2138>
@@ -16638,8 +16638,8 @@ def v90_injury_register_damage(actual_damage, profile, now=None):
     v90_injury.exertion = v90_clamp(v90_injury.exertion + ratio * 0.44)
     v90_injury.last_damage_ms = int(now)
     v90_injury.last_hp = float(oyuncu_hp)
-    # A hit is also cardiorespiratory disruption: large blunt hits remove more
-    # immediately available stamina without permanently changing max stamina.
+
+
     stamina_loss = actual_damage * (0.12 + 0.11 * shock_factor)
     oyuncu_stamina = max(0.0, float(oyuncu_stamina) - stamina_loss)
     stamina_son_harcama = int(now)
@@ -16684,8 +16684,8 @@ def v90_critical_bleed(now):
         yon=direction,
         arterial=blood_drive > 0.72,
     )
-    # A direct, permanent drip makes standing critical bleeding legible; the
-    # transient spray may still be airborne for several frames.
+
+
     point = pygame.Vector2(oyuncu_x, oyuncu_y) + direction * 6.0
     if v74_floor_clean(point.x, point.y):
         decal = _v89_create_decal_raw(
@@ -16822,7 +16822,7 @@ def v90_ash_draw(now=None):
                 (21, 17, 15, int(106 * fade_bucket / 8.0)),
                 points,
             )
-            # Sparse embers remain embedded in the ash.  No area light is drawn.
+
             if ember_bucket < 6:
                 ember_alpha = int(150 * (1.0 - ember_bucket / 6.0))
                 for _ in range(2):
@@ -16913,8 +16913,8 @@ def oyuncu_paneli_ciz():
             False,
         )
 
-    # The brass notch is physiological capacity, not current stamina.  It makes
-    # shock/tissue trauma legible without adding another modern resource bar.
+
+
     bar = pygame.Rect(panel.x + 22, panel.y + 84, panel.width - 44, 12)
     cap_x = bar.x + int(round(bar.width * v90_injury.effective_stamina_ratio))
     pygame.draw.line(
@@ -17077,7 +17077,7 @@ def v90_smoke_test(output_prefix):
     calcinatio_ticked = v90_draco_stats["calcinatio_ticks"] > calcinatio_before
     no_ground_fire = len(player_magic_ground_fires) == fires_before
 
-    # Authored phase strip: every light pass is a flame-alpha silhouette.
+
     v90_calcinatio.clear()
     v90_embers.clear()
     v90_draco_state.active = True
@@ -17144,7 +17144,7 @@ def v90_smoke_test(output_prefix):
     preview_path = str(output_prefix) + "_draco_sequence.png"
     pygame.image.save(ekran, preview_path)
 
-    # Inventory image validates alpha-cropping of the supplied 1448x1086 icon.
+
     envanter_itemleri[0] = draco_calcinans_olustur()
     q_hizli_item_index = 0
     oyun_durumu = ENVANTER
@@ -17239,7 +17239,7 @@ def oyuncu_paneli_ciz():
         pygame.draw.rect(ekran, V91_UI_BLACK, box)
         pygame.draw.rect(ekran, V91_UI_RED, box, 1)
         yazi_yaz(label, box.centerx, box.centery, color, mini_font, True)
-    # Capacity notch remains at the same physiological value.
+
     bar = pygame.Rect(panel.x + 22, panel.y + 84, panel.width - 44, 12)
     cap_x = bar.x + int(round(bar.width * v90_injury.effective_stamina_ratio))
     pygame.draw.line(
@@ -17272,16 +17272,16 @@ def _v91_draco_bind_target(self, actor, now):
 # <POTBO_STAGE S2242>
 
 
-# ---------------------------------------------------------
-# BLOOD: FEWER AIRBORNE OBJECTS, DENSE NEAR-SOURCE LANDINGS
-# ---------------------------------------------------------
+
+
+
 V89_BLOOD_TRANSIENT_LIMIT = 112
 V89_BLOOD_BURST_LIMIT = 16
 V89_BLOOD_ARTERIAL_BURST_LIMIT = 24
 V37_MAX_VISIBLE_GORE = 44
 V49_BLOOD_HARD_LIMIT = 128
-# Settled blood is permanent. Rendering is tile-cached, so the inherited
-# emergency audit must never erase historical stains.
+
+
 V49_DECAL_HARD_LIMIT = 10**9
 V49_GORE_HARD_LIMIT = 140
 # </POTBO_STAGE S2242>
@@ -17409,8 +17409,8 @@ def v91_decal_contact_color(decal, now):
     color = v89_color_mix(
         color, (18, 10, 7), scorch
     )
-    # This is the same bucket used by v89_decal_image, so the print starts
-    # with exactly the rendered blood color under the boot.
+
+
     return tuple(
         int(channel // 8 * 8) for channel in color
     )
@@ -17493,8 +17493,8 @@ def v89_add_footprint(
     item.v91_source_freshness = v89_clamp01(
         freshness
     )
-    # A print from nearly dry blood sets quickly. Fresh blood remains active
-    # longer, while the resulting mark itself still never disappears.
+
+
     item.dry_after_ms = int(now) + int(
         8_000
         + 48_000 * item.v91_source_freshness
@@ -17690,8 +17690,8 @@ def v89_player_footprints_update(now):
             color=v91_player_sole_color,
             freshness=v91_player_sole_freshness,
         )
-        # Fresh blood travels through several steps; semi-dry residue sheds
-        # in only two or three.
+
+
         loss = (
             0.10
             + (1.0 - v91_player_sole_freshness)
@@ -17861,8 +17861,8 @@ _v91_world_update_raw = kan_gore_guncelle
 
 def kan_gore_guncelle():
     result = _v91_world_update_raw()
-    # Compact newly spawned anatomy once, then hard-cap residual velocity.
-    # Nothing is teleported or visually deleted; it simply lands near the body.
+
+
     for chunk in gore_chunks:
         if getattr(chunk, "settled", False):
             continue
@@ -18038,8 +18038,8 @@ def oyuncu_olum_sahnesi_ciz():
         "ui", now // 65, draw_ui, V91_DEATH_BODY
     )
     ekran.blit(ui, (0, 0))
-    # A hard black cut preserves the exact three-color contract. Alpha
-    # blending would synthesize many unintended intermediate reds.
+
+
     if oyuncu_olum_cikis_orani(now) >= 0.52:
         ekran.fill(V91_DEATH_BLACK)
 # </POTBO_STAGE S2251>
@@ -18172,7 +18172,7 @@ def v89_player_footprints_update(now):
         if v89_player_sole_load <= 0.045:
             continue
         if dash_like and v92_foot_rng.random() < 0.23:
-            # Fast dashes do not stamp a perfect train on every cadence.
+
             continue
         if v92_foot_rng.random() > 0.12:
             v89_player_foot_side = 1 - int(v89_player_foot_side)
@@ -18224,9 +18224,9 @@ def v90_draco_draw(now=None):
     result = _v92_draco_draw_raw(now)
     if now is None:
         now = pygame.time.get_ticks()
-    # A second, very small core layer makes the old identical vertical streaks
-    # read as irregular incandescent cinders. Geometry is deterministic per ember
-    # seed so they do not flicker randomly from frame to frame.
+
+
+
     for ember in v90_embers:
         age = max(0, int(now) - int(ember.born_ms))
         fade = 1.0 - v90_clamp(age / max(1.0, float(ember.ttl_ms)))
@@ -18253,8 +18253,8 @@ def v90_draco_draw(now=None):
 def _v92_draco_update(self, now):
     global V90_DRACO_MAX_TRAVEL
     old_limit = V90_DRACO_MAX_TRAVEL
-    # The old finite 720px timer is disabled for flight. Dissipation now begins
-    # only once the head itself clears the viewport margin.
+
+
     V90_DRACO_MAX_TRAVEL = 100000.0
     try:
         result = _v92_draco_update_raw(self, now)
@@ -18277,8 +18277,8 @@ def _v92_draco_update(self, now):
 
 def oyun_ekrani_ciz():
     result = _v92_game_draw_raw()
-    # Reinald is drawn by dunya_aktorlerini_derinlige_gore_ciz() now; do not
-    # paint him a second time as a late overlay.
+
+
     if v92_chain_state.active and v92_chain_state.execution:
         v92_chain_execution_draw()
     return result
@@ -18296,10 +18296,10 @@ def oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_adi=""):
         protection = min(0.38, protection + 0.055)
     original = max(0, int(hasar))
     adjusted = max(1, int(round(float(original) * (1.0 - protection)))) if original > 0 else original
-    # The inherited combat resolvers subtract HP immediately before publishing
-    # this canonical damage event. Refund the mitigated portion *before* passing
-    # the event down so lethal attribution, injury severity and gore all observe
-    # the same post-armor damage rather than merely changing the diagnostics.
+
+
+
+
     refund = max(0, original - adjusted)
     if refund > 0:
         oyuncu_hp = min(int(oyuncu_max_hp), int(oyuncu_hp) + refund)
@@ -18317,7 +18317,7 @@ def v92_chain_execution_draw():
     elapsed = max(0, now - state.started_ms)
     p = min(1.0, elapsed / max(1.0, state.duration_ms))
     ekran.fill((0, 0, 0))
-    # Red-only world grammar: bodies and gore are legible, scenery disappears.
+
     for index, (actor, silhouette, center) in enumerate(state.silhouettes):
         if silhouette is None:
             continue
@@ -18332,7 +18332,7 @@ def v92_chain_execution_draw():
             setcolor=(151, 18, 34, 255), unsetcolor=(0, 0, 0, 0)
         ).convert_alpha()
         ekran.blit(darker, darker.get_rect(midbottom=(int(dunya_ekran_x(oyuncu_x)), int(dunya_ekran_y(oyuncu_y)))))
-    # Fast cutting traces; geometry follows the true target-to-target zig-zag.
+
     trace_progress = min(1.0, p / 0.46)
     visible_segments = int(math.ceil(trace_progress * max(1, len(state.points) - 1)))
     for i in range(min(visible_segments, len(state.points) - 1)):
@@ -18352,7 +18352,7 @@ def v92_chain_execution_draw():
         sx = int(dunya_ekran_x(head.position.x))
         sy = int(dunya_ekran_y(head.position.y) - max(0.0, head.z))
         ekran.blit(image, image.get_rect(center=(sx, sy)))
-    # Blood/gore already present in the world is drawn as dark red silhouettes.
+
     for particle in blood_particles:
         if getattr(particle, "active", False):
             try:
@@ -18444,10 +18444,10 @@ def v55_pool_scan(now=None):
     return clusters
 
 
-# ---------------------------------------------------------
-# Gore update: V91 previously rescanned every settled chunk every frame. Compact only
-# the newest moving tail; older chunks have already passed through the same rule.
-# ---------------------------------------------------------
+
+
+
+
 def kan_gore_guncelle():
     result = _v91_world_update_raw()
     for chunk in gore_chunks[-72:]:
@@ -18527,10 +18527,10 @@ v95_ember_sprite_cache = {}
 # <POTBO_STAGE S2391>
 
 
-# ---------------------------------------------------------
-# Runtime performance: preserve gore language, reduce overdraw and allocations.
-# No UI timing is touched.
-# ---------------------------------------------------------
+
+
+
+
 V37_MAX_VISIBLE_GORE = min(int(V37_MAX_VISIBLE_GORE), 36)
 V40_BLOOD_VISIBLE_MAX = min(int(V40_BLOOD_VISIBLE_MAX), 240)
 if "V42_BLOOD_VISIBLE_RECENT" in globals():
@@ -18545,9 +18545,9 @@ if "V42_BLOOD_VISIBLE_OLDER" in globals():
 # <POTBO_STAGE S2399>
 
 
-# ---------------------------------------------------------
-# Top quick-access HUD: larger slots, no title above them.
-# ---------------------------------------------------------
+
+
+
 def one_cikan_item_paneli_ciz():
     if oyuncu_hp <= 0:
         return
@@ -18584,24 +18584,24 @@ def one_cikan_item_paneli_ciz():
 
 # <POTBO_STAGE S2502>
 
-# =========================================================
-# END V103
-# =========================================================
 
 
-# =========================================================
-# V105 - CORONA TEST / SPRITE MAGGOTS / BLOOD-GORE REPAIR
-# =========================================================
+
+
+
+
+
+
 V105_VERSION = "105.0"
 # </POTBO_STAGE S2502>
 
 # <POTBO_STAGE S2508>
 
-# ---------------------------------------------------------
-# BLOOD RIVULETS: completely removed.
-# The old system drew a thick pygame line and then committed a row of decals,
-# which is exactly the unwanted straight/snake-like blood geometry.
-# ---------------------------------------------------------
+
+
+
+
+
 def v89_maybe_start_rivulet(decal, scale):
     return None
 
@@ -18626,8 +18626,8 @@ v89_rivulet_cell_next_ms.clear()
 
 def v89_tile_objects(tile_x, tile_y):
     decals, footprints = _v105_tile_objects_previous(tile_x, tile_y)
-    # Historical rivulet decals are hidden too, so an old in-memory blood line does
-    # not survive after this patch is loaded.
+
+
     decals = [d for d in decals if not bool(getattr(d, "v89_rivulet", False))]
     return decals, footprints
 
@@ -18656,11 +18656,11 @@ def v105_prune_historical_rivulets(now):
     v89_blood_tile_revision.clear()
 
 
-# ---------------------------------------------------------
-# BLOOD MAGGOTS: use the existing blood_worms sprite only.
-# No procedural ellipse fallback. Spawn scan remains budgeted (0.9 s / max 72
-# decals) and world render still uses V103 camera culling.
-# ---------------------------------------------------------
+
+
+
+
+
 V105_MAGGOT_FIRST_MIN_MS = 45_000
 # </POTBO_STAGE S2510>
 
@@ -18676,8 +18676,8 @@ _v105_decal_init_previous = PersistentBloodDecal.__init__
 def _v105_decal_init(self, *args, **kwargs):
     _v105_decal_init_previous(self, *args, **kwargs)
     created = int(getattr(self, "created_ms", pygame.time.get_ticks()))
-    # V75 had hard-coded 6-10 minutes in __init__; make the existing sprite ecology
-    # visible during a normal test session without turning it into an instant effect.
+
+
     self.maggot_next_ms = created + random.randint(
         V105_MAGGOT_FIRST_MIN_MS,
         V105_MAGGOT_FIRST_MAX_MS,
@@ -18764,10 +18764,10 @@ def _v105_maggot_sprite_draw(self):
 
 # <POTBO_STAGE S2514>
 
-# ---------------------------------------------------------
-# AIRBORNE BLOOD: use the supplied bleed sprites instead of procedural long
-# capsules/triangles. This eliminates another source of straight thick streaks.
-# ---------------------------------------------------------
+
+
+
+
 def _v105_blood_particle_sprite_draw(self, silhouette=False):
     if not getattr(self, "active", False):
         return
@@ -18777,8 +18777,8 @@ def _v105_blood_particle_sprite_draw(self, silhouette=False):
         return
 
     if not BLOOD_PARTICLE_SPRITELERI:
-        # A missing optional particle atlas should not invent a long geometric
-        # streak. Use only a tiny droplet fallback.
+
+
         radius = max(1, min(3, int(round(1.25 * float(getattr(self, "scale", 0.7))))))
         pygame.draw.circle(
             ekran,
@@ -18793,7 +18793,7 @@ def _v105_blood_particle_sprite_draw(self, silhouette=False):
     ]
     zoom = max(0.50, float(KAMERA_YAKINLASTIRMA))
     scale = max(0.24, min(1.05, float(getattr(self, "scale", 0.70))))
-    # Preserve the real sprite silhouette, but keep a transient droplet compact.
+
     target_h = max(3, min(11, int(round(src.get_height() * scale * zoom * 0.58))))
     ratio = src.get_width() / max(1.0, float(src.get_height()))
     target_w = max(3, min(13, int(round(target_h * ratio))))
@@ -18827,11 +18827,11 @@ def _v105_blood_particle_sprite_draw(self, silhouette=False):
 V44BloodParticle.ciz = _v105_blood_particle_sprite_draw
 BloodParticle.ciz = _v105_blood_particle_sprite_draw
 
-# ---------------------------------------------------------
-# BODY-ANCHORED BLOOD ORIGIN
-# Damage events often pass an actor's ground/foot coordinate. Lift only those
-# context-backed hit emissions to the body, leaving landing splats on the floor.
-# ---------------------------------------------------------
+
+
+
+
+
 def v105_blood_body_anchor(x, y, context):
     if not context:
         return float(x), float(y)
@@ -18895,8 +18895,8 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
         arterial=arterial,
     )
     created = blood_particles[before:]
-    # The emitter now starts visually from torso height rather than the soil.
-    # Do not extend flight time excessively: V73's gravity/ground weighting stays intact.
+
+
     for particle in created:
         if hasattr(particle, "z"):
             particle.z += random.uniform(5.0, 11.0) if context else 0.0
@@ -18905,11 +18905,11 @@ def kan_parcacigi_patlat(x, y, adet, guc=1.0, yon=None, arterial=False):
     return result
 
 
-# ---------------------------------------------------------
-# GORE: restore impact momentum that V91 flattened, while retaining the optimized
-# last-72-chunk update budget. New generic chunks originate above the body and are
-# biased by the actual hit direction when that context exists.
-# ---------------------------------------------------------
+
+
+
+
+
 _v105_gore_init_previous = GoreChunk.__init__
 
 
@@ -18928,8 +18928,8 @@ def _v105_gore_init(self, kind, x, y, guc=1.0, small=False):
                 base *= -1.0
             speed = random.uniform(82.0, 176.0) * max(0.70, min(1.55, float(guc)))
             self.v = base * speed
-    # Anatomical pieces should emerge from the victim volume, not appear to erupt
-    # from the dirt at the actor's feet.
+
+
     self.z = max(float(getattr(self, "z", 0.0)), random.uniform(19.0, 34.0))
     self.vz = max(float(getattr(self, "vz", 0.0)), random.uniform(120.0, 225.0) * max(0.72, min(1.40, float(guc))))
     self.angular = max(-560.0, min(560.0, float(getattr(self, "angular", 0.0)) * 1.16))
@@ -18950,9 +18950,9 @@ def v105_gore_motion_soft_cap(chunk):
         chunk.angular = max(-620.0, min(620.0, float(chunk.angular)))
 
 
-# Use the pre-V91 world update (all ecology/landing logic preserved) and retain the
-# optimized tail scan. The old 0.40 velocity multiplication + 74 px/s hard cap made
-# physical gore feel dead immediately after spawning.
+
+
+
 def kan_gore_guncelle():
     result = _v91_world_update_raw()
     now = pygame.time.get_ticks()
@@ -18979,8 +18979,8 @@ def kan_gore_guncelle():
 # <POTBO_STAGE S2519>
 
 
-# Override the old critical-only bleed emitter. This function is called from the
-# existing injury update, so no extra full-world scan is introduced.
+
+
 def v90_critical_bleed(now):
     condition = v106_player_condition()
     if condition == "healthy" or oyuncu_hp <= 0:
@@ -18998,8 +18998,8 @@ def v90_critical_bleed(now):
 
     movement = pygame.Vector2(oyuncu_hareket_hiz_vektoru)
     for _ in range(count):
-        # BloodParticle already owns sprite rendering, gravity and decal landing.
-        # Start it at torso/hip height instead of on the floor.
+
+
         planar = pygame.Vector2(random.uniform(-4.0, 4.0), random.uniform(-2.0, 2.0))
         if movement.length_squared() > 9.0:
             planar -= movement * random.uniform(0.05, 0.12)
@@ -19033,13 +19033,13 @@ def dunya_aktorlerini_derinlige_gore_ciz():
 # <POTBO_STAGE S2573>
 
 
-# ---------------------------------------------------------
-# TRUE FINAL UI COMPOSITOR
-# High-level UI functions are suppressed while the inherited world/screen-FX chain
-# renders, then restored and drawn exactly once at the end. This makes HUD/dialogue/
-# important-item surfaces a genuine top layer instead of allowing blood, actor markers,
-# Corona, vignette or critical-red screen effects to be painted over them.
-# ---------------------------------------------------------
+
+
+
+
+
+
+
 V108_TOP_UI_NAMES = (
     "oyuncu_paneli_ciz",
     "one_cikan_item_paneli_ciz",
@@ -19071,7 +19071,7 @@ def oyun_ekrani_ciz():
         for name, fn in saved.items():
             g[name] = fn
 
-    # Top UI ordering: general HUD first, modal interfaces last.
+
     if oyuncu_hp > 0:
         saved.get("seviye_animasyonu_ciz", _v108_ui_noop)()
         saved.get("oyuncu_paneli_ciz", _v108_ui_noop)()
@@ -19181,7 +19181,7 @@ def dunya_aktorlerini_derinlige_gore_ciz():
 # <POTBO_STAGE S2669>
 
 
-# Daha uzun kalan karartı + daha uzun yaşayan, daha uçuşkan közler.
+
 def v115_spawn_scorch(center, seed=0):
     center = pygame.Vector2(center)
     rng = random.Random(int(seed) ^ 0x15C0)

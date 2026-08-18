@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0028>
 
@@ -13,7 +13,7 @@ MERCHANT_VERI_YOLU = os.path.join(BASE_DIR, "data", "merchant_medoli.json")
 # </POTBO_STAGE S0028>
 
 # <POTBO_STAGE S0046>
-# Tüccar arayüzü için ikinci buton ses ailesi.
+
 BUTTON_HOVER2_SES_ADAYLARI = [
     os.path.join(ASSETS, "ui", "buttonHover2.wav"),
     os.path.join(ASSETS, "sounds", "ui", "buttonHover2.wav"),
@@ -23,15 +23,15 @@ BUTTON_HOVER2_SES_ADAYLARI = [
 # </POTBO_STAGE S0046>
 
 # <POTBO_STAGE S0048>
-# =========================================================
-# TİCARET SES KONTRATI
-# =========================================================
-# İşlem sesi UI click sesinden ayrıdır. Standart isimler birincil kabul edilir:
-# buySound.wav -> para çıkan HER başarılı satın alma
-# sellSound.wav -> para gelen HER başarılı satış
-# noCoinSound.wav -> yalnız yetersiz coin nedeniyle reddedilen satın alma
-# Eski merchantBuy/merchantSell adları geriye dönük uyumluluk için fallback'tir.
-# Böylece mevcut proje klasörünü kırmadan yeni isim düzenine geçilebilir.
+
+
+
+
+
+
+
+
+
 MERCHANT_BUY_SES_ADAYLARI = [
     os.path.join(ASSETS, "ui", "buySound.wav"),
     os.path.join(ASSETS, "sounds", "ui", "buySound.wav"),
@@ -57,8 +57,8 @@ MERCHANT_SELL_SES_ADAYLARI = [
 # </POTBO_STAGE S0048>
 
 # <POTBO_STAGE S0050>
-# Eski projelerdeki ortak işlem sesi yalnız son fallback olarak tutulur;
-# yeni sistem buy+shared gibi iki sesi aynı anda çalmaz. Tek işlem = tek ses olayı.
+
+
 MERCHANT_BUY_SELL_SES_ADAYLARI = [
     os.path.join(ASSETS, "ui", "merchantBuySell.wav"),
     os.path.join(ASSETS, "sounds", "ui", "merchantBuySell.wav"),
@@ -75,9 +75,9 @@ MERCHANT_BUY_SELL_SES_YOLU = mevcut_ilk_dosya(MERCHANT_BUY_SELL_SES_ADAYLARI)
 # </POTBO_STAGE S0052>
 
 # <POTBO_STAGE S0076>
-# =========================================================
-# DİL METİNLERİ
-# =========================================================
+
+
+
 METINLER = {
     "TR": {
         "continue": "DEVAM ET",
@@ -158,8 +158,8 @@ METINLER = {
         "game_design": "Oyun Tasarımı",
         "programming": "Programlama",
         "visual_design": "Görsel Tasarım",
-        "team": "PATH OF THE BLOODIED ONE EKİBİ",
-        "made_with": "Python, Pygame ve Visual Studio Code kullanılarak geliştirildi.",
+        "team": "AGRAPHON STUDIOS",
+        "made_with": "Agraphon Studios tarafından Python ve Pygame ile geliştirildi.",
         "thanks": "Oynadığınız için teşekkürler.",
         "level": "SEVİYE",
         "damage": "HASAR",
@@ -248,8 +248,8 @@ METINLER = {
         "game_design": "Game Design",
         "programming": "Programming",
         "visual_design": "Visual Design",
-        "team": "PATH OF THE BLOODIED ONE TEAM",
-        "made_with": "Developed using Python, Pygame and Visual Studio Code.",
+        "team": "AGRAPHON STUDIOS",
+        "made_with": "Developed by Agraphon Studios with Python and Pygame.",
         "thanks": "Thank you for playing.",
         "level": "LEVEL",
         "damage": "DAMAGE",
@@ -269,13 +269,13 @@ MERCHANT = "merchant"
 # <POTBO_STAGE S0167>
 
 
-# =========================================================
-# ARKA PLAN DÜNYA DURUMU / OLAY İŞLEME
-# =========================================================
-# Bu katman doğrudan yeni bir oyun mekaniği dayatmaz. Oyuncunun hareketi,
-# savaş baskısı, eşya ve ticaret olaylarını tek bir normalize edilmiş durum
-# içinde toplar; kayıtla birlikte taşınır ve atmosfer vinyetini çok hafif
-# biçimde besler. Böylece ekran mantığı ile veri mantığı birbirinden kopmaz.
+
+
+
+
+
+
+
 def varsayilan_dunya_durumu():
     return {
         "version": 2,
@@ -296,8 +296,8 @@ def varsayilan_dunya_durumu():
 # </POTBO_STAGE S0167>
 
 # <POTBO_STAGE S0196>
-# Merchant Hanus durumu. Ana tasarım korunur; tüccar kendi modal ekranında çalışır.
-# merchant_sayfa: "menu", "sell" veya "buy"
+
+
 merchant_sayfa = "menu"
 merchant_menu_index = 0
 merchant_index = 0
@@ -313,7 +313,7 @@ merchant_buy_sayfasi_goruldu = False
 # </POTBO_STAGE S0196>
 
 # <POTBO_STAGE S0199>
-# Merchant işlem ve geri satın alma durumu.
+
 merchant_modal = None
 merchant_onay_index = 1
 merchant_bekleyen_islem = None
@@ -362,8 +362,8 @@ def map_ambience_guncelle():
         OYUNDAN_CIKIS_ONAY,
         ANA_MENU_ONAY,
     )
-    # Ana menüdeki EXIT ile pause/death EXIT aynı CIKIS_ONAY state'ini kullanır.
-    # Yalnız gerçekten oyun dünyasından gelindiyse ambience'i koru.
+
+
     if oyun_durumu == CIKIS_ONAY and cikis_donus_durumu in (
         DURAKLATMA,
         OYUN,
@@ -372,8 +372,8 @@ def map_ambience_guncelle():
     aktif = bool(dunya_acik and oyuncu_hp > 0)
     if aktif:
         vol = _v35_ambience_ses_orani()
-        # İki kanala da aynı gain: stereo dosya kendi sahnesini korur, mono dosya
-        # ortada kalır.
+
+
         map_ambience_kanali.set_volume(vol, vol)
         if not map_ambience_kanali.get_busy():
             map_ambience_kanali.play(map_ambience_sesi, loops=-1, fade_ms=650)
@@ -400,7 +400,7 @@ def aktif_buton_ses_turu():
         return "menu1"
     if oyun_durumu == MERCHANT:
         return "merchant2"
-    # Genel UI de ana menü/pause/death ile aynı birinci ses ailesini kullanır.
+
     return "menu1"
 
 
@@ -415,7 +415,7 @@ def button_hover_sesi_cal(tur=None):
         "merchant2": button_hover2_sesi,
     }.get(tur, button_hover1_sesi)
 
-    # Genel button_hover.wav artık kontratın parçası değildir.
+
     if ses is None and tur == "merchant2":
         ses = button_hover1_sesi
     if ses is None:
@@ -467,8 +467,8 @@ def merchant_islem_sesi_cal(islem_turu):
     else:
         return
 
-    # Yeni özel dosya yoksa eski ortak işlem sesi, o da yoksa merchant click
-    # güvenli fallback'tir. Aynı işlemde iki sample üst üste bindirilmez.
+
+
     ses = ses or merchant_buy_sell_sesi or button_click2_sesi or button_click1_sesi
     if ses is None:
         return
@@ -513,7 +513,7 @@ def secim_imzasi_al():
             )
         if merchant_modal is None and merchant_sayfa == "menu":
             return ("merchant_menu_button", merchant_menu_index)
-        # AL/SAT listeleri artık tüccarın hover2 ses ailesine dahildir.
+
         if merchant_modal is None and merchant_sayfa in (
             "sell",
             "buy",
@@ -560,7 +560,7 @@ merchant_y = float(MERCHANT_VERI.get("y", 330))
 # <POTBO_STAGE S0289>
 
 if merchant_resmi_orijinal is not None:
-    # Görseli genişletip ezme. Orijinal oran korunarak küçük çizilir.
+
     merchant_orijinal_w = max(1, merchant_resmi_orijinal.get_width())
     merchant_orijinal_h = max(1, merchant_resmi_orijinal.get_height())
 
@@ -694,8 +694,8 @@ def hareket_gecerli_mi(yeni_x, yeni_y):
 
         return True
 
-    # Bir karedeki hareketi ara adımlarla test etmek, ince kaya
-    # kenarlarından veya polygon köşelerinden taşmayı engeller.
+
+
     fark_x = yeni_x - oyuncu_x
     fark_y = yeni_y - oyuncu_y
     mesafe = max(abs(fark_x), abs(fark_y))
@@ -726,8 +726,8 @@ def envanter_aksiyonlari(item_index, kaynak="grid"):
     buyu = item_buyu_mu(item)
     q_uygun = item_q_hizli_kullanima_uygun_mu(item)
 
-    # Büyüler yalnız Q ile cast edilir. Diğer kullanılabilir itemlerde hem doğrudan
-    # KULLAN hem Q'YA ATA görünür.
+
+
     if not buyu and item.get("id") in (
         "health_potion",
         "aurum_potabile",
@@ -779,7 +779,7 @@ def envanter_aksiyonlari(item_index, kaynak="grid"):
 # <POTBO_STAGE S0393>
 
 
-# Merchant fiyat ve işlem sabitleri
+
 MERCHANT_KAPANIS_SURESI = 1000
 MERCHANT_STOK_FIYATLARI = {
     "aurum_potabile": 160,
@@ -870,8 +870,8 @@ def merchant_buy_listesi():
             if kayit.get("id") == "health_potion":
                 continue
             if kayit.get("id") == "fire_magic":
-                # İlk kopya yalnız Eadric'ten gelir. Hanus ancak oyuncunun sattığı
-                # aynı kopyayı buyback listesinde 800 coin'e geri sunabilir.
+
+
                 continue
             kopya = dict(kayit)
             kopya["source"] = "stock"
@@ -983,7 +983,7 @@ def merchant_kapat():
             "Safe travels. May your choices, not your gold, keep you alive.",
         )
     )
-    # Sayaç cümle yazılırken değil, son harf ekrana geldikten sonra başlar.
+
     merchant_kapanis_isteniyor = True
     merchant_kapanis_zamani = 0
 
@@ -1089,7 +1089,7 @@ def merchant_satis_fiyati_girisi_baslat():
         "item_id": item_id,
     }
     if item_id == "fire_magic":
-        # Ateş Büyüsü pazarlığa açık değildir: satış 746, geri alış 800.
+
         merchant_bekleyen_islem["price"] = FIRE_MAGIC_SATIS_FIYATI
         merchant_onay_index = 1
         merchant_modal = "confirm"
@@ -1640,9 +1640,9 @@ def merchant_modal_ciz(panel):
 def merchant_ekrani_ciz():
     merchant_guncelle()
 
-    # Kapanış süresi bu karede bittiyse merchant katmanını bir kez daha çizme.
-    # Oyuncu doğrudan temiz haritayı görür; bekleyen item sunumu sonraki
-    # karelerde kendi kısa gecikmesiyle devreye girer.
+
+
+
     if oyun_durumu != MERCHANT:
         oyun_ekrani_ciz()
         return
@@ -1682,8 +1682,8 @@ def merchant_ekrani_ciz():
     merchant_diyalog_kutusu_ciz(panel)
     merchant_modal_ciz(panel)
 
-    # Arayüz, dünya görüntüsünün üstüne yumuşakça oturur; oyun sahnesi kendi
-    # parlaklığını korurken yalnız merchant katmanı görünür hâle gelir.
+
+
     if merchant_taban is not None:
         merchant_taban.set_alpha(int(round(255 * (1.0 - oran))))
         ekran.blit(merchant_taban, (0, 0))
@@ -1820,13 +1820,13 @@ def common_enemy_sistemi_sifirla():
         x, y = common_enemy_guvenli_spawn_bul(tur, common_enemies)
         common_enemies.append(common_enemy_olustur(f"{tur}_{index + 1}", tur, x, y))
 
-    # Tarkard common listeden ayrı spawn olur; aynı güvenli-spawn doğrulayıcısı
-    # collision, NPC, merchant, oyuncu ve mevcut düşman gövdelerini test eder.
+
+
     tx, ty = common_enemy_guvenli_spawn_bul("tarkard", common_enemies)
     tarkard_actor = TarkardEnemy("tarkard_unique", tx, ty)
 
-    # Torrmund mevcut tüm aktörleri blocker olarak görür; aynı collision-free spawn
-    # sistemi hem statik haritayı hem NPC/merchant/player hem de diğer gövdeleri test eder.
+
+
     torr_blockers = list(common_enemies) + [tarkard_actor]
     sx, sy = common_enemy_guvenli_spawn_bul("torrmund", torr_blockers)
     torrmund_actor = SirTorrmundEnemy("torrmund_unique", sx, sy)
@@ -1871,29 +1871,29 @@ def _magic_hedefleri():
 
 
 def _stage1_dunya_aktorlerini_derinlige_gore_ciz():
-    # Kan lekesi gerçek zemin katmanıdır ve restart/load fiziklerinden bağımsızdır.
+
     kan_lekelerini_ciz()
-    # Kurtçuklar da kan lekesinin üstünde fakat karakterlerin altında kalan gerçek
-    # zemin canlılarıdır. Karakter yürürken üzerlerine basıyormuş gibi görünür.
+
+
     for kurt in blood_maggots:
         if kurt.active:
             kurt.ciz()
-    # Yere yaklaşmış kan damlaları da artık ground pass'tedir. Havada yükselen
-    # damlalar aşağıdaki foreground pass'te kalır.
+
+
     for p in blood_particles:
         if p.zemin_katmani_mi():
             p.ciz()
-    # Around-caster büyü halkası karakterlerden her zaman aşağı katmandadır.
+
     fire_magic_alt_katman_ciz()
-    # Painter's algorithm: world-y küçük olan arkada, büyük olan önde.
+
     komutlar = [
         (float(npc_y), 0, npc_ciz),
         (float(merchant_y), 1, merchant_sprite_ciz),
         (float(oyuncu_y), 2, oyuncu_sprite_ciz),
     ]
 
-    # Reinald is a real world actor, not a late overlay.  He participates in the
-    # same painter/depth order as NPC, merchant, player and enemies.
+
+
     if "blacksmith_y" in globals() and "blacksmith_world_ciz" in globals():
         komutlar.append((float(blacksmith_y), 2, blacksmith_world_ciz))
 
@@ -1918,10 +1918,10 @@ def _stage1_dunya_aktorlerini_derinlige_gore_ciz():
             )
         )
 
-    # Fare küçük de olsa world-y sırasına katılır; oyuncunun "üstünde yürüyor" gibi
-    # görünmez. Uçan taş ground-y üzerinden sıralanır, kendi z yüksekliğini ciz() çözer.
-    # Kalıcı gore silinmez, fakat painter listesine yalnız kamera civarındaki
-    # parçalar girer. Böylece eski savaşların yüzlerce eti her frame sort edilmez.
+
+
+
+
     marj = 100.0 / max(0.01, KAMERA_YAKINLASTIRMA)
     gx0 = float(kamera_x) - marj
     gy0 = float(kamera_y) - marj
@@ -1932,9 +1932,9 @@ def _stage1_dunya_aktorlerini_derinlige_gore_ciz():
         gorunen_gore = gorunen_gore[-V37_MAX_VISIBLE_GORE:]
     for index, parca in enumerate(gorunen_gore):
         komutlar.append((float(parca.y), 34 + index, parca.ciz))
-    # Havada sıçrayan kan painter'dan bilinçli olarak çıkarıldı. Zemin kanı her zaman
-    # aktörlerin altında kalırken uçan damlalar aktörlerin üzerine sıçrayabilsin diye
-    # sorted world pass bittikten sonra ayrı foreground FX katmanında çizilir.
+
+
+
     for index, rat in enumerate(ambient_rats):
         if rat.active:
             komutlar.append((float(rat.y), 40 + index, rat.ciz))
@@ -1948,9 +1948,9 @@ def _stage1_dunya_aktorlerini_derinlige_gore_ciz():
                 )
             )
 
-    # Zemin alevleri gerçekten world-y painter'a katılır. Böylece oyuncunun üst
-    # tarafındaki alev arkada, alt tarafındaki alev önde görünür; tek bir HUD/FX
-    # katmanı gibi karakterlerin üzerinden yapışmaz.
+
+
+
     for index, patch in enumerate(player_magic_ground_fires):
         if patch.active:
             komutlar.append((float(patch.y), 65 + index, patch.ciz))
@@ -1971,18 +1971,18 @@ def _stage1_dunya_aktorlerini_derinlige_gore_ciz():
     for _, _, cizim in sorted(komutlar, key=lambda kayit: (kayit[0], kayit[1])):
         cizim()
 
-    # Sıçrayan kan foreground FX'tir: düşmanın/oyuncunun üstüne gelebilir. Yere düşüp
-    # decal olduğunda ise bir sonraki kareden itibaren en alttaki zemin katmanına geçer.
+
+
     for p in blood_particles:
         if p.active and not p.zemin_katmani_mi():
             p.ciz()
 
-    # Taş zemine çarpınca oluşan kısa debris world katmanında, HUD'dan önce çizilir.
+
     _simdi_fx = pygame.time.get_ticks()
     for _fx in enemy_rock_impacts:
         _fx.ciz(_simdi_fx)
 
-    # World-space health bars depth'ten sonra UI katmanına çıkar; sprite altında kalmaz.
+
     for dusman in common_enemies:
         dusman.ciz_ui()
         dusman.ciz_debug_nav()
@@ -1996,8 +1996,8 @@ def _stage1_dunya_aktorlerini_derinlige_gore_ciz():
 
 # <POTBO_STAGE S0495>
 
-# button_hover.wav / buttonClickSound.wav zorunlu değildir.
-# Standart UI buttonHover1/buttonClick1, merchant ise buttonHover2/buttonClick2 kullanır.
+
+
 for ses_adi, ses_yolu in (
     ("buttonHover1.wav", BUTTON_HOVER1_SES_YOLU),
     ("buttonClick1.wav", BUTTON_CLICK1_SES_YOLU),
@@ -2021,7 +2021,7 @@ for ses_adi, ses_yolu in (
     elif ses_adi == "noCoinSound.wav":
         debug_log("noCoinSound.wav henüz yok; eklendiğinde otomatik kullanılacak.")
     elif "legacy fallback" in ses_adi:
-        # Legacy dosya yalnız eski projeler içindir; bulunmaması hata değildir.
+
         pass
     else:
         print(f"{ses_adi} bulunamadı. ilgili assets/sounds klasörünü kontrol et.")
@@ -2030,12 +2030,12 @@ for ses_adi, ses_yolu in (
 # <POTBO_STAGE S0599>
 
 
-# ---------------------------------------------------------
-# TRUE GROUND BLOOD LAYER: ALL splatter below ALL characters
-# ---------------------------------------------------------
+
+
+
 def dunya_aktorlerini_derinlige_gore_ciz():
-    # Kan lekeleri + sıçrama sprite'ları mutlak zemin pass'i. Artık tek bir blood
-    # sprite bile oyuncu/düşman gövdesinin üstüne çizilmez.
+
+
     kan_lekelerini_ciz()
     for p in blood_particles:
         if p.active:
@@ -2162,8 +2162,8 @@ def _v34_static_position_valid(x, y, allow_static_escape=False, baseline=None):
     if blocked > 0:
         if not allow_static_escape or baseline is None:
             return False
-        # Kayaya gömülmüş eski save / forced-motion durumunda yalnız daha iyi veya
-        # eşit örnek sayısına izin verilir. Tam dışarı çıkana kadar oyuncu kilitlenmez.
+
+
         if baseline_map <= 0 or blocked > baseline_map:
             return False
     return True
@@ -2193,8 +2193,8 @@ def _v34_special_scripted_position_apply(desired, previous=None):
         if _v34_static_position_valid(p.x, p.y):
             last = p
             continue
-        # Axis slide yalnız setup/switch gibi kıvrımlı transferlerde işe yarar;
-        # slash'ın yönünü duvarda anlamsızca kırmaz fakat küçük köşe takılmalarını çözer.
+
+
         x_try = pygame.Vector2(p.x, last.y)
         y_try = pygame.Vector2(last.x, p.y)
         x_ok = _v34_static_position_valid(x_try.x, x_try.y)
@@ -2303,8 +2303,8 @@ V90_DRACO_MERCHANT_PRICE = 1850
 # <POTBO_STAGE S2137>
 
 
-# Hanus stocks one authored copy at a time.  A sold copy moves through the
-# existing buyback ledger rather than generating duplicate spell objects.
+
+
 MERCHANT_STOK_FIYATLARI["draco_calcinans"] = V90_DRACO_MERCHANT_PRICE
 MERCHANT_SATIS_REFERANSI["draco_calcinans"] = V90_DRACO_SELL_PRICE
 MERCHANT_MAKSIMUM_TEKLIF["draco_calcinans"] = V90_DRACO_SELL_PRICE
@@ -2355,7 +2355,7 @@ def merchant_buy_listesi():
 # <POTBO_STAGE S2241>
 
 
-# Exact requested merchant price; existing stock rows migrate in place.
+
 V90_DRACO_MERCHANT_PRICE = 2300
 MERCHANT_STOK_FIYATLARI["draco_calcinans"] = 2300
 for _v91_stock in MERCHANT_VERI.setdefault("stock", []):
@@ -2369,9 +2369,9 @@ for _v91_stock in MERCHANT_VERI.setdefault("stock", []):
 # <POTBO_STAGE S2253>
 
 
-# ---------------------------------------------------------
-# V91 DIAGNOSTICS / HEADLESS REGRESSION PREVIEWS
-# ---------------------------------------------------------
+
+
+
 def v91_diagnostics():
     stock_prices = [
         int(record.get("price", -1))
@@ -2500,27 +2500,27 @@ V91_STARTUP_OK = all(
 
 # <POTBO_STAGE S2259>
 
-# =========================================================
-# END V91
-# =========================================================
 
-# =========================================================
-# V92 - UNIFIED HUD / LEVEL ECOLOGY / MEDOLI HAGGLING /
-# BLACKSMITH TRAINING / DRACO EXTENSION / IRREGULAR TRACKS
-# =========================================================
-# This layer deliberately wraps the existing systems rather than replacing the
-# combat/world stack.  Save compatibility, enemy AI, blood ecology and the
-# authored Ignis renderers remain intact.
+
+
+
+
+
+
+
+
+
+
 
 V92_VERSION = "92.0"
 BLACKSMITH = "blacksmith"
 
-# ---------------------------------------------------------
-# ASSETS: Hanus now reads the shared merchant sheet path.
-# The supplied file named as a blacksmith sheet is visibly a spell/effects atlas,
-# so it is not mis-loaded as an NPC. A real smith sprite can be dropped into the
-# canonical path below; until then a compact code-drawn smith silhouette is used.
-# ---------------------------------------------------------
+
+
+
+
+
+
 MERCHANT_SHARED_YOLU = os.path.join(ASSETS, "npcs", "merchant", "merchant.png")
 BLACKSMITH_YOLU = os.path.join(ASSETS, "npcs", "blacksmith", "blacksmith.png")
 # </POTBO_STAGE S2259>
@@ -2532,8 +2532,8 @@ def _v92_merchant_frames_load():
     sheet = _v92_load_alpha(MERCHANT_SHARED_YOLU)
     if sheet is None:
         return []
-    # 168x113 supplied sheet: three walk frames on row one, two front/idle
-    # frames below. Rects are clipped so later revised sheets degrade safely.
+
+
     specs = (
         (8, 0, 45, 55),
         (53, 0, 45, 55),
@@ -2575,7 +2575,7 @@ def oyuncu_seviye_kazanclarini_uygula(eski_level, yeni_level):
         return
     for lv in range(int(eski_level) + 1, int(yeni_level) + 1):
         curve = v92_level_curve(lv)
-        # Strength: mostly continuous internal stat, damage only every few levels.
+
         v92_level_stats["strength"] += curve["strength"]
         v92_level_stats["speed"] += curve["speed"]
         v92_level_stats["endurance"] += curve["endurance"]
@@ -2594,10 +2594,10 @@ def oyuncu_seviye_kazanclarini_uygula(eski_level, yeni_level):
 # <POTBO_STAGE S2275>
 
 
-# ---------------------------------------------------------
-# Draco: smaller inventory icon, longer travel to screen exit, more embers,
-# longer Calcinatio and materially greater damage.
-# ---------------------------------------------------------
+
+
+
+
 V90_DRACO_MERCHANT_PRICE = 3000
 # </POTBO_STAGE S2275>
 
@@ -2615,9 +2615,9 @@ MERCHANT_GERI_ALIM_FIYATI["fire_magic"] = max(1120, FIRE_MAGIC_GERI_ALIM_FIYATI)
 # <POTBO_STAGE S2297>
 
 
-# ---------------------------------------------------------
-# MEDOLI STOCK, QUANTITY, SOLD ROWS AND 20-PATH HAGGLING
-# ---------------------------------------------------------
+
+
+
 V92_MERCHANT_LEVEL_UNLOCKS = {
     "aurum_potabile": 1,
     "quinta_essentia": 2,
@@ -2645,9 +2645,9 @@ V92_MERCHANT_PRICES = {
 for _id, _price in V92_MERCHANT_PRICES.items():
     MERCHANT_STOK_FIYATLARI[_id] = _price
 
-# Exactly twenty distinct negotiation approaches. Leverage is positive when the
-# tactic can improve the player's side of the deal; risk increases Hanus's chance
-# to reverse pressure or present a misleading quote.
+
+
+
 V92_MERCHANT_HAGGLE_PATHS = (
     {"tr": "Kusurları tek tek göster.", "en": "List every defect.", "lev": 1.30, "risk": 0.24},
     {"tr": "Peşin ödeme teklif et.", "en": "Offer immediate payment.", "lev": 0.95, "risk": 0.10},
@@ -2712,14 +2712,14 @@ def v92_merchant_restock_for_level(level):
     rng = random.Random((level * 9176) ^ 0x4D3D0)
     arrivals = []
     for lv in range(old_level + 1, level + 1):
-        # Newly unlocked products arrive immediately.
+
         for item_id, unlock in V92_MERCHANT_LEVEL_UNLOCKS.items():
             record = v92_merchant_stock[item_id]
             if not record.get("unlocked") and lv >= unlock:
                 record["unlocked"] = True
                 record["remaining"] = V92_MERCHANT_BASE_STOCK[item_id]
                 arrivals.append(item_id)
-        # One or two existing consumables can arrive on the same level.
+
         pool = [
             item_id
             for item_id in ("aurum_potabile", "quinta_essentia")
@@ -2929,8 +2929,8 @@ def v92_merchant_haggle_choose():
 
     counter_pool = V92_MEDOLI_COUNTERS_TR if dil == "TR" else V92_MEDOLI_COUNTERS_EN
     counter = rng.choice(counter_pool)
-    # Sometimes Hanus deliberately shows a quote slightly better than the one
-    # he intends to write into the transaction. The confirm line reveals it.
+
+
     if rng.random() < 0.20 + risk * 0.16:
         v92_merchant_fake_quote = True
         counter += bt(" Teklifinin altına küçük bir rakam karalıyor; fazla hızlı davranıyor.", " He scribbles a smaller number under the offer, a little too quickly.")
@@ -2950,8 +2950,8 @@ def v92_merchant_haggle_finalize(counter_text=""):
     txn = merchant_bekleyen_islem or {}
     base_unit = max(1, int(txn.get("unit_price", txn.get("price", 1))))
     quantity = max(1, int(txn.get("quantity", 1)))
-    # Bounded economics: skillful bargaining matters, but does not destroy the
-    # economy. Hanus's deceptive adjustment can claw back 2-5 percentage points.
+
+
     if v92_merchant_haggle_mode == "buy":
         discount = max(-0.08, min(0.24, v92_merchant_haggle_score * 0.037))
         if v92_merchant_fake_quote:
@@ -3180,8 +3180,8 @@ def merchant_diyalog_kutusu_ciz(panel):
 
 
 def merchant_modal_ciz(panel):
-    # Quantity/haggling deliberately live inside the dialogue area. Confirmation
-    # is also text-first; no detached numeric pop-up remains.
+
+
     if merchant_modal != "confirm":
         return
     txn = merchant_bekleyen_islem or {}
@@ -3258,7 +3258,7 @@ def v92_merchant_handle_event(olay):
     elif merchant_sayfa in ("buy", "sell") and olay.key == pygame.K_f:
         v92_merchant_haggle_begin()
     elif merchant_sayfa == "sell" and olay.key == pygame.K_e:
-        # Direct selection uses the reference offer; F opens the negotiation tree.
+
         sale = v92_merchant_current_record()
         if isinstance(sale, tuple) and len(sale) == 2:
             slot, item = sale
@@ -3268,14 +3268,14 @@ def v92_merchant_handle_event(olay):
             merchant_diyalog_yaz(bt(f"Teklifim {base} coin. E ile kabul et, F ile pazarlık yap.", f"My offer is {base} coins. E accepts; F haggles."))
 
 
-# ---------------------------------------------------------
-# BLACKSMITH: upgrade / skills / exit; twenty bargaining paths.
-# ---------------------------------------------------------
+
+
+
 blacksmith_x = float(MERCHANT_VERI.get("blacksmith_x", merchant_x + 248.0))
 blacksmith_y = float(MERCHANT_VERI.get("blacksmith_y", merchant_y + 28.0))
 blacksmith_resmi_orijinal = _v92_load_alpha(BLACKSMITH_YOLU)
 if blacksmith_resmi_orijinal is not None:
-    # Remove flat green backgrounds if an indexed/preview sheet is used.
+
     converted = blacksmith_resmi_orijinal.copy()
     for px in range(converted.get_width()):
         for py in range(converted.get_height()):
@@ -3334,7 +3334,7 @@ def blacksmith_yakin_mi():
 def v92_blacksmith_actor_surface():
     if blacksmith_resmi_orijinal is not None:
         return blacksmith_resmi_orijinal
-    # Fallback is deliberately a compact smith silhouette, not another merchant.
+
     surf = pygame.Surface((42, 68), pygame.SRCALPHA)
     pygame.draw.circle(surf, (78, 72, 73, 255), (21, 12), 9)
     pygame.draw.polygon(surf, (53, 49, 51, 255), [(10, 22), (32, 22), (38, 60), (4, 60)])
@@ -3651,9 +3651,9 @@ def v92_blacksmith_handle_event(olay):
 # <POTBO_STAGE S2333>
 
 
-# ---------------------------------------------------------
-# Blacksmith ambience continuity.
-# ---------------------------------------------------------
+
+
+
 _v92_ambience_raw = map_ambience_guncelle
 
 
@@ -3765,9 +3765,9 @@ def yeni_oyun_baslat(loadinge_gec=True):
 # <POTBO_STAGE S2350>
 
 
-# ---------------------------------------------------------
-# Merchant / blacksmith sheet selection: normalized mathematical crops, idle only.
-# ---------------------------------------------------------
+
+
+
 def _v94_load_alpha(path):
     if not path or not os.path.isfile(path):
         return None
@@ -3784,8 +3784,8 @@ def _v94_merchant_idle_load():
     sheet = _v94_load_alpha(MERCHANT_SHARED_YOLU)
     if sheet is None:
         return None
-    # The idle bank occupies the lower half of the supplied sheet. Coordinates are
-    # ratios of the sheet, so resizing the atlas does not break the extraction.
+
+
     frames = [
         _v94_normalized_crop(sheet, 21 / 168.0, 55 / 113.0, 58 / 168.0, 58 / 113.0),
         _v94_normalized_crop(sheet, 80 / 168.0, 55 / 113.0, 58 / 168.0, 58 / 113.0),
@@ -3802,7 +3802,7 @@ def _v94_blacksmith_idle_load():
         return None
     mask = pygame.mask.from_surface(sheet, 8)
     sw, sh = sheet.get_size()
-    # Restrict the search to the bottom 30%, where the supplied atlas stores idle.
+
     y_start = int(sh * 0.70)
     row_counts = []
     for y in range(y_start, sh):
@@ -3813,8 +3813,8 @@ def _v94_blacksmith_idle_load():
     row_bands = _v94_projection_bands(row_counts, max(7, int(sw * 0.07)), 9)
     if not row_bands:
         return _v94_normalized_crop(sheet, 0.0, 0.82, 1.0, 0.18)
-    # Prefer the last four dense animation rows (idle bank), but gracefully accept
-    # fewer if the sheet is cropped.
+
+
     row_bands = row_bands[-4:]
     frames = []
     for local_y0, local_y1 in row_bands:
@@ -3880,10 +3880,10 @@ def v92_blacksmith_actor_surface():
 # <POTBO_STAGE S2359>
 
 
-# ---------------------------------------------------------
-# Blacksmith: merchant-like list grammar. Upgrade keeps the requested smith-left /
-# upgrades-centre / player-right composition. Skills use explicit placeholder icons.
-# ---------------------------------------------------------
+
+
+
+
 def _v94_blacksmith_icon(rect, symbol, selected=False):
     merchant_panel_ciz(rect, V91_UI_RED_HOT if selected else V91_UI_GREY, 2 if selected else 1)
     yazi_yaz(symbol, rect.centerx, rect.centery, V91_UI_GOLD if selected else V91_UI_WHITE, normal_font, True)
@@ -3946,7 +3946,7 @@ def blacksmith_ekrani_ciz():
             yazi_yaz(value, row.right - 12, row.y + 16, V91_UI_GOLD, mini_font, False)
 
         if blacksmith_sayfa == "upgrade":
-            # Requested composition: player is shown on the right only on upgrade.
+
             player = v84_player_silhouette()
             if player is not None:
                 image = resmi_oranli_sigdir(player, right.inflate(-34, -44), 0, 1.0, True)
@@ -3992,25 +3992,25 @@ def blacksmith_ekrani_ciz():
 # <POTBO_STAGE S2371>
 
 
-# =========================================================
-# END V94
-# =========================================================
 
 
-# =========================================================
-# V95 - UNIVERSAL VENDOR UI / SPRITES / LOCALIZATION / DRACO / PERFORMANCE
-# =========================================================
+
+
+
+
+
+
 V95_VERSION = "95.0"
 # </POTBO_STAGE S2371>
 
 # <POTBO_STAGE S2378>
 
 
-# Merchant: merchant.png içindeki SADECE alt iki frontal idle frame kullanılır.
-# Sheet referansı 168x113'tür. Gerçek sprite sınırları yaklaşık olarak:
-#   idle_1 -> x=2..30,  y=61..110
-#   idle_2 -> x=36..64, y=61..110
-# Birkaç piksellik güvenli payla aşağıdaki iki crop alınır.
+
+
+
+
+
 V95_MERCHANT_IDLE_FRAME_MS = 420
 
 
@@ -4056,9 +4056,9 @@ def _v95_merchant_current_idle():
     ) % len(v95_merchant_idle_frames)
     return v95_merchant_idle_frames[index]
 
-# Blacksmith: öne bakan gerçek idle karesi.
-# İlk sprite (y≈8) karakterin sırtı dönük olduğu için kullanılmaz.
-# 322x1775 sheet'te y≈295 civarındaki kare yüzü kameraya dönük idle'dır.
+
+
+
 v95_blacksmith_idle = _v95_idle_crop(
     BLACKSMITH_YOLU,
     (322, 1775),
@@ -4090,8 +4090,8 @@ def v92_blacksmith_actor_surface():
 
 
 def merchant_sprite_ciz():
-    # Yalnız merchant.png'nin alt iki idle karesi arasında geçiş yapar.
-    # Üst sıradaki üç walking frame hiçbir zaman kullanılmaz.
+
+
     frame = _v95_merchant_current_idle()
     image = _v95_pixel_actor(frame, 68)
     if image is None:
@@ -4133,13 +4133,13 @@ def _v95_vendor_portrait(rect, frame, title=None):
     target = rect.inflate(-34, -42)
     image = resmi_oranli_sigdir(frame, target, 0, 1.0, True)
     if image is not None:
-        # Slightly lower center makes the feet read as planted rather than floating.
+
         target_center = (target.centerx, target.centery + 8)
         ekran.blit(image, image.get_rect(center=target_center))
 
 
 def merchant_karakter_ciz(rect):
-    # Merchant panelinde de walking frame kullanma; aynı iki idle frame'i göster.
+
     _v95_vendor_portrait(
         pygame.Rect(rect),
         _v95_merchant_current_idle(),
@@ -4147,9 +4147,9 @@ def merchant_karakter_ciz(rect):
     )
 
 
-# ---------------------------------------------------------
-# Universal vendor grammar: Merchant and Blacksmith use the SAME panel geometry.
-# ---------------------------------------------------------
+
+
+
 def _v95_vendor_main_geometry(panel):
     top = panel.y + 74
     bottom = panel.bottom - 208
@@ -4201,8 +4201,8 @@ def merchant_ana_menu_ciz(panel):
     )
 
 
-# Merchant listing: keep the economy, sold state and item detail, remove keyboard
-# manuals from the visual layer.
+
+
 def merchant_alt_sayfa_ciz(panel):
     portrait, list_rect, info = _v95_vendor_sub_geometry(panel)
     _v95_vendor_portrait(
@@ -4376,13 +4376,13 @@ def merchant_diyalog_kutusu_ciz(panel):
 
 
 def merchant_modal_ciz(panel):
-    # Quantity, haggle and confirmation all live in the dialogue strip.
+
     return None
 
 
-# ---------------------------------------------------------
-# Blacksmith uses the exact same universal vendor geometry.
-# ---------------------------------------------------------
+
+
+
 def _v95_blacksmith_rows():
     if blacksmith_sayfa == "skills":
         return (
@@ -4531,7 +4531,7 @@ def _v95_blacksmith_info(rect, row_data):
             V91_UI_GOLD,
             mini_font,
         )
-        # The ONLY vendor shortcut guide intentionally shown.
+
         yazi_yaz(
             row_data["shortcut"],
             rect.x + 17,
@@ -4632,7 +4632,7 @@ def _v95_blacksmith_dialogue(panel):
         )
         return
 
-    # Do not echo legacy E/F/ESC manuals that may exist in old state messages.
+
     msg = str(blacksmith_mesaji or "...")
     for fragment in (
         " F pazarlık, E kabul.",
@@ -4716,20 +4716,20 @@ def blacksmith_ekrani_ciz():
 # <POTBO_STAGE S2394>
 
 
-# =========================================================
-# END V95
-# =========================================================
 
-# =========================================================
-# V96 - UNIVERSAL VENDOR UI / HANUS + REINALD / PERSUASION
-# =========================================================
-# Both vendors now share one visual shell. Dialogue is first-person/direct speech.
-# Hanus is intentionally dishonest: during bargaining he can alter the written
-# figure unless the player's persuasion/read succeeds. Reinald bargains honestly.
+
+
+
+
+
+
+
+
+
 
 V96_VERSION = "96.0"
 
-# Shared persuasion progression for vendor negotiations in this run.
+
 v96_ikna_xp = 0
 # </POTBO_STAGE S2394>
 
@@ -4749,7 +4749,7 @@ def v96_ikna_sansi(tactic, vendor="hanus"):
     return max(0.18, min(0.90, chance))
 
 
-# Direct player lines. No third-person narration in the negotiation choices.
+
 V92_MERCHANT_HAGGLE_PATHS = (
     {"tr": "Şu kusurlara bak. Bu mal o fiyat etmez.", "en": "Look at those flaws. This is not worth that price.", "lev": 1.30, "risk": 0.24},
     {"tr": "Coini şimdi veririm; peşin fiyatını söyle.", "en": "I pay now. Give me the cash price.", "lev": 0.95, "risk": 0.10},
@@ -4792,7 +4792,7 @@ V92_BLACKSMITH_HAGGLE_PATHS = (
 # <POTBO_STAGE S2398>
 
 
-# Visible name updates. Internal save/asset identifiers deliberately remain unchanged.
+
 _v96_merchant_ac_original = merchant_ac
 
 
@@ -4900,7 +4900,7 @@ def v92_merchant_haggle_choose():
     else:
         v92_merchant_reputation = max(-3.0, v92_merchant_reputation - 0.07)
 
-    # Hanus may try to alter the written figure. A skilled player can catch him.
+
     cheat_chance = min(0.52, 0.17 + risk * 0.38 + max(0.0, -v92_merchant_reputation) * 0.025)
     tried_cheat = rng.random() < cheat_chance
     caught = False
@@ -5044,9 +5044,9 @@ def v92_blacksmith_haggle_choose():
     blacksmith_mesaji = response
 
 
-# ---------------------------------------------------------
-# Universal vendor shell. Hanus and Reinald use the same frame geometry.
-# ---------------------------------------------------------
+
+
+
 def _v96_vendor_shell(name, role):
     panel = pygame.Rect(32, 24, GENISLIK - 64, YUKSEKLIK - 48)
     merchant_panel_ciz(panel, KOYU_KIRMIZI, 3)
@@ -5169,7 +5169,7 @@ def _v95_blacksmith_dialogue(panel):
         return
 
     msg = str(blacksmith_mesaji or "...")
-    # Strip legacy control manuals from spoken dialogue.
+
     for fragment in (
         " F pazarlık, E kabul.", " F haggles; E accepts.",
         "E: seç · F: pazarlık", "E: select · F: haggle",
@@ -5246,18 +5246,18 @@ def blacksmith_ekrani_ciz():
 # <POTBO_STAGE S2400>
 
 
-# =========================================================
-# END V96
-# =========================================================
 
 
 
-# =========================================================
-# V97 - TRUE UNIVERSAL VENDOR UI / WORLD-INTEGRATED VENDORS
-# =========================================================
-# Hanus and Reinald now use one visual grammar.  The only content difference is
-# what the middle list represents: Hanus trades items; Reinald teaches skills or
-# applies upgrades.  Vendor names live in dialogue; the top header shows role only.
+
+
+
+
+
+
+
+
+
 
 V97_VERSION = "97.0"
 # </POTBO_STAGE S2400>
@@ -5265,16 +5265,16 @@ V97_VERSION = "97.0"
 # <POTBO_STAGE S2402>
 
 
-# ---------------------------------------------------------
-# UNIVERSAL VENDOR SHELL
-# ---------------------------------------------------------
+
+
+
 def _v97_vendor_shell(role):
     panel = pygame.Rect(32, 24, GENISLIK - 64, YUKSEKLIK - 48)
     merchant_panel_ciz(panel, KOYU_KIRMIZI, 3)
     pygame.draw.rect(ekran, PARLAK_KIRMIZI, panel.inflate(-10, -10), 1)
 
-    # Only the profession is shown here.  Hanus/Reinald already identify
-    # themselves in the dialogue strip, so the header is not duplicated.
+
+
     yazi_yaz(
         role,
         panel.x + 28,
@@ -5311,13 +5311,13 @@ def _v97_vendor_main(panel, frame, options, selected, new_badge_index=None):
 
 
 def _v97_vendor_sub_geometry(panel):
-    # One single definition used by Hanus AND Reinald.
+
     return _v95_vendor_sub_geometry(panel)
 
 
-# ---------------------------------------------------------
-# HANUS: universal vendor presentation, item content
-# ---------------------------------------------------------
+
+
+
 def _v97_hanus_main(panel):
     _v97_vendor_main(
         panel,
@@ -5329,8 +5329,8 @@ def _v97_hanus_main(panel):
 
 
 def _v97_hanus_subpage(panel):
-    # Hanus keeps the merchant economy/list logic, but inside the same universal
-    # portrait/list/info geometry used by Reinald below.
+
+
     portrait, list_rect, info = _v97_vendor_sub_geometry(panel)
     _v95_vendor_portrait(portrait, _v95_merchant_current_idle())
     merchant_panel_ciz(list_rect, V91_UI_RED, 1)
@@ -5421,9 +5421,9 @@ def _v97_hanus_subpage(panel):
     merchant_item_bilgi_ciz(info, item, price)
 
 
-# ---------------------------------------------------------
-# REINALD: exact merchant interface, upgrade/skill content
-# ---------------------------------------------------------
+
+
+
 def _v97_reinald_row(rect, row_data, selected):
     """Merchant row grammar: price left, name center, compact icon right."""
     rect = pygame.Rect(rect)
@@ -5721,9 +5721,9 @@ def _v95_blacksmith_dialogue(panel):
         yazi_yaz(line, box.x + 20, box.y + 58 + i * 21, ACIK_GRI, oyun_kucuk_font)
 
 
-# ---------------------------------------------------------
-# Final vendor screen renderers: one shell, one geometry.
-# ---------------------------------------------------------
+
+
+
 def merchant_ekrani_ciz():
     merchant_guncelle()
     if oyun_durumu != MERCHANT:
@@ -5763,9 +5763,9 @@ def blacksmith_ekrani_ciz():
     _v95_blacksmith_dialogue(panel)
 
 
-# ---------------------------------------------------------
-# WORLD COLLISION: both vendors use the same ground-body doctrine as other NPCs.
-# ---------------------------------------------------------
+
+
+
 def _v97_vendor_carpisma_rect(x, y, width=42, height=22):
     return pygame.Rect(
         int(round(float(x))) - int(width // 2),
@@ -5776,7 +5776,7 @@ def _v97_vendor_carpisma_rect(x, y, width=42, height=22):
 
 
 def merchant_carpisma_rect():
-    # Narrow ground footprint, aligned to the feet; no full-sprite invisible wall.
+
     return _v97_vendor_carpisma_rect(merchant_x, merchant_y, 40, 21)
 
 
@@ -5798,7 +5798,7 @@ def blacksmith_yakin_mi():
 
 
 def _v34_static_blockers():
-    # Player normal movement + scripted movement share these blockers.
+
     return (
         npc_carpisma_rect(),
         merchant_carpisma_rect(),
@@ -5838,7 +5838,7 @@ def _common_enemy_hizli_statik_gecerli_mi(tur, x, y):
     return not rect.colliderect(blacksmith_carpisma_rect())
 
 
-# Projectile/melee sight lines treat Reinald exactly like the other solid vendors.
+
 def _v97_segment_blocked_by_rect(a, b, blocker):
     a = (int(round(float(a[0]))), int(round(float(a[1]))))
     b = (int(round(float(b[0]))), int(round(float(b[1]))))
@@ -5901,11 +5901,11 @@ def oyun_ekrani_ciz():
 # <POTBO_STAGE S2424>
 
 
-# ---------------------------------------------------------
-# REINALD - GERÇEK ÖNE BAKAN IDLE + CANONICAL WORLD ACTOR
-# 322x1775 sheet'te ilk yaşlı demirci grubunun öne bakan idle karesi:
-# x=6..33, y=294..333. Üstteki ilk kare sırt görünümüdür ve kullanılmaz.
-# ---------------------------------------------------------
+
+
+
+
+
 V98_BLACKSMITH_ADAYLARI = (
     os.path.join(ASSETS, "npcs", "blacksmith", "blacksmith.png"),
     os.path.join(ASSETS, "npcs", "blacksmith", "blacksmith(1).png"),
@@ -5960,11 +5960,11 @@ def blacksmith_world_ciz():
 # <POTBO_STAGE S2433>
 
 
-# ---------------------------------------------------------
-# FINAL WORLD PAINTER
-# Reinald burada, SON kullanılan painter listesine eklenir. Önceki görünmezlik
-# sorununun nedeni eski painter fonksiyonunun daha sonra override edilmesiydi.
-# ---------------------------------------------------------
+
+
+
+
+
 def dunya_aktorlerini_derinlige_gore_ciz():
     kan_lekelerini_ciz()
     for p in blood_particles:
@@ -6047,7 +6047,7 @@ def dunya_aktorlerini_derinlige_gore_ciz():
         torrmund_actor.ciz_ui()
         torrmund_actor.ciz_debug_nav()
 
-    # V90 Draco katmanı önceki final wrapper'da world draw sonrasında çiziliyordu.
+
     if "v90_draco_draw" in globals():
         v90_draco_draw(pygame.time.get_ticks())
 # </POTBO_STAGE S2433>
@@ -6055,11 +6055,11 @@ def dunya_aktorlerini_derinlige_gore_ciz():
 # <POTBO_STAGE S2459>
 
 
-# ---------------------------------------------------------
-# BLACKSMITH SKILL DATA: canonical descriptions from the design brief.
-# Generic key manuals are removed; only the technique's own activation is kept
-# in its detail card because these passive belt slots cannot activate skills.
-# ---------------------------------------------------------
+
+
+
+
+
 def _v95_blacksmith_rows():
     if blacksmith_sayfa == "skills":
         return (
@@ -6196,7 +6196,7 @@ def _v95_blacksmith_info(rect, row_data):
             V91_UI_GOLD,
             mini_font,
         )
-        # This is technique metadata, not a generic screen-control guide.
+
         yazi_yaz(
             bt(f"Kullanım: {row_data['shortcut']}", f"Use: {row_data['shortcut']}"),
             rect.x + 17,
@@ -6231,12 +6231,12 @@ def _v95_blacksmith_info(rect, row_data):
 # <POTBO_STAGE S2473>
 
 
-# ---------------------------------------------------------
-# UNIVERSAL VENDOR NEGOTIATION
-# Hanus and Reinald now share one conversation state machine. The player speaks,
-# the NPC answers, and only after that answer can the next line be chosen.
-# Vendor personality changes the counters, patience and Hanus's cheating only.
-# ---------------------------------------------------------
+
+
+
+
+
+
 @dataclass
 class V100NegotiationState:
     active: bool = False
@@ -6293,8 +6293,8 @@ def v100_negotiation_choices(vendor, round_index):
             "tone": "catch",
             "catch": True,
         }
-        # Persuasion mastery makes the attempted trick easier to notice, but an
-        # attentive player can still receive the line at low mastery.
+
+
         detect = min(0.92, 0.42 + v96_ikna_ustaligi() * 0.055)
         if rng.random() < detect:
             choices[-1] = catch
@@ -6409,8 +6409,8 @@ def v100_negotiation_choose():
         elif state.vendor == "hanus":
             v92_merchant_reputation = max(-3.0, float(v92_merchant_reputation) - 0.05)
 
-    # Hanus can actively alter a quote between turns. The player must catch him
-    # through the next dialogue option; this is not an invisible percentage tax.
+
+
     if state.vendor == "hanus" and not caught and state.round_index < state.max_rounds - 1:
         cheat_chance = min(0.46, 0.19 + max(0.0, -state.trust) * 0.04)
         if rng.random() < cheat_chance:
@@ -6475,7 +6475,7 @@ def v100_negotiation_advance():
     if state.phase == "player":
         return v100_negotiation_choose()
 
-    # NPC has spoken. Only now does the next player response become available.
+
     if state.phase == "npc":
         if state.round_index + 1 >= state.max_rounds or state.patience <= 0:
             v100_negotiation_finalize()
@@ -6532,8 +6532,8 @@ def v100_negotiation_draw(box, vendor):
             y += 22
         return True
 
-    # The NPC's previous sentence remains visible as context; player responses are
-    # direct speech, not third-person narration.
+
+
     context = metni_satirlara_bol(state.npc_line, mini_font, box.width - 40)
     if context:
         yazi_yaz(context[0], box.x + 20, box.y + 53, V91_UI_GREY, mini_font)
@@ -6542,7 +6542,7 @@ def v100_negotiation_draw(box, vendor):
         selected = index == state.selected
         text = choice["tr" if dil == "TR" else "en"]
         prefix = "> " if selected else "  "
-        # Dialogue strip is wide; keep each response to one line to prevent spill.
+
         font = mini_font
         if font.size(prefix + text)[0] > box.width - 42:
             text = text[: max(24, int(len(text) * (box.width - 42) / max(1, font.size(prefix + text)[0])) - 2)] + "…"
@@ -6573,9 +6573,9 @@ def _v95_blacksmith_dialogue(panel):
     return _v100_blacksmith_dialogue_base(panel)
 
 
-# ---------------------------------------------------------
-# BLACKSMITH UI parity: same merchant2 button sound family and same fade-in.
-# ---------------------------------------------------------
+
+
+
 blacksmith_acilis_zamani = 0
 _v100_blacksmith_ac_base = blacksmith_ac
 
@@ -6646,7 +6646,7 @@ def v92_merchant_handle_event(olay):
 def v92_blacksmith_handle_event(olay):
     global blacksmith_modal
     if olay.type == pygame.KEYDOWN:
-        # Input is blocked during the same opening fade used by Hanus.
+
         if pygame.time.get_ticks() - int(blacksmith_acilis_zamani) < MERCHANT_ACILIS_FADE_SURESI:
             return
         if blacksmith_modal == "haggle" and v100_negotiation.active and v100_negotiation.vendor == "reinald":
@@ -6666,8 +6666,8 @@ def v92_blacksmith_handle_event(olay):
                 v100_negotiation_advance()
             return
 
-        # Audible buttons use Hanus's merchant2 family. Economic confirmation
-        # still owns its buy/no-coin sound and is not doubled here.
+
+
         if blacksmith_modal is None:
             if blacksmith_sayfa == "menu" and olay.key in (pygame.K_e, pygame.K_RETURN, pygame.K_SPACE):
                 button_click_sesi_cal("merchant2")
@@ -6716,10 +6716,10 @@ def _v102_reinald_payload_icon_draw(row_data, rect, selected=True):
     )
 
 
-# ---------------------------------------------------------
-# FINAL REINALD RENDERER OVERRIDES
-# V97 vendor shell son kullanılan arayüzdür; ikon değişikliği burada yapılmalıdır.
-# ---------------------------------------------------------
+
+
+
+
 def _v97_reinald_row(rect, row_data, selected):
     """Hanus ile aynı satır grameri; sağ tarafta gerçek skill/upgrade ikonu."""
     rect = pygame.Rect(rect)
@@ -6748,7 +6748,7 @@ def _v97_reinald_row(rect, row_data, selected):
 
     name_x = rect.x + 112
     icon = pygame.Rect(rect.right - 48, rect.y + 6, 40, 40)
-    # İkon bölgesine taşmaması için isim genişliği dinamik sınırlandırılır.
+
     name_max_w = max(40, icon.x - 12 - name_x)
     _v100_draw_row_name(row_data.get("name", ""), name_x, rect.y + 13, name_max_w)
 
@@ -6837,10 +6837,10 @@ def _v97_reinald_info(rect, row_data):
 # <POTBO_STAGE S2525>
 
 
-# ---------------------------------------------------------
-# REINALD: one authored x2 power forging. Its price is based on the character's
-# current level, so delaying the work is substantially more expensive.
-# ---------------------------------------------------------
+
+
+
+
 _v106_blacksmith_cost_previous = v92_blacksmith_upgrade_cost
 _v106_blacksmith_apply_previous = v92_blacksmith_upgrade_apply
 _v106_blacksmith_haggle_previous = v92_blacksmith_haggle_begin

@@ -1,16 +1,16 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0489>
 
 
-# =========================================================
-# AÇILIŞ / SPLASH EKRANI
-# =========================================================
+
+
+
 
 
 def alfa_metin_ciz(metin, x, y, font, renk, alfa):
@@ -74,7 +74,7 @@ def sinematik_menu_gecisi(tetikleyen_tus=None):
             ):
                 tetikleyen_tus_birakildi = True
 
-    # 1) ORİJİNAL 2400 ms başlık çekilişi.
+
     baslangic = pygame.time.get_ticks()
     sure = 2400
 
@@ -172,7 +172,7 @@ def sinematik_menu_gecisi(tetikleyen_tus=None):
         if oran >= 1.0:
             break
 
-    # 2) ORİJİNAL 650 ms siyah bekleme.
+
     bekleme_baslangic = pygame.time.get_ticks()
     while pygame.time.get_ticks() - bekleme_baslangic < 650:
         _gecis_olaylarini_isle()
@@ -180,7 +180,7 @@ def sinematik_menu_gecisi(tetikleyen_tus=None):
         pygame.display.flip()
         saat.tick(FPS)
 
-    # 3) ORİJİNAL 2300 ms merkezden yukarı/aşağı açılma.
+
     menu_yuzeyi = menu_onizleme_yuzeyi_olustur()
     gecis_baslangic = pygame.time.get_ticks()
     gecis_suresi = 2300
@@ -224,7 +224,7 @@ def sinematik_menu_gecisi(tetikleyen_tus=None):
         if oran >= 1.0:
             break
 
-    # Yalnız input bug fix: pygame.key.get_pressed() ITERATE EDİLMEZ.
+
     if not tetikleyen_tus_birakildi and tetikleyen_tus is not None:
         release_deadline = pygame.time.get_ticks() + 260
         while pygame.time.get_ticks() < release_deadline:
@@ -252,7 +252,7 @@ def sinematik_menu_gecisi(tetikleyen_tus=None):
 
 def splash_ekrani_goster():
     """
-    İlk üç aşama toplam yaklaşık 15 saniye sürer.
+    Agraphon Studios kartı ve oyun başlığı gösterilir.
     Son aşamada herhangi bir tuşa basılana kadar bekler.
     """
 
@@ -274,12 +274,12 @@ def splash_ekrani_goster():
 
         ekran.fill(SIYAH)
 
-        # 0.0 - 4.8 saniye: Stüdyo adı
+
         if gecen < 4800:
             alfa = splash_alfa(gecen, 0, 4800, 1200)
 
             alfa_metin_ciz(
-                "FAKE KING",
+                "AGRAPHON",
                 GENISLIK // 2,
                 YUKSEKLIK // 2 - 24,
                 menu_baslik_font,
@@ -296,15 +296,13 @@ def splash_ekrani_goster():
                 alfa,
             )
 
-        # 4.8 - 9.5 saniye: VS Code işareti
-        elif gecen < 9500:
-            alfa = splash_alfa(gecen, 4800, 9500, 1100)
 
-            vscode_isareti_ciz(GENISLIK // 2, YUKSEKLIK // 2, alfa)
+        elif gecen < 6000:
+            pass
 
-        # 9.5 - 15 saniye: Oyun adı ani giriş + hafif fade
+
         else:
-            sahne_gecen = gecen - 9500
+            sahne_gecen = gecen - 6000
 
             if sahne_gecen < 250:
                 baslik_alfa = int(sahne_gecen / 250 * 255)
@@ -329,13 +327,13 @@ def splash_ekrani_goster():
                 baslik_alfa,
             )
 
-            # Press any key yazısı 15. saniyede fade ile gelir.
-            if gecen >= 15000:
+
+            if gecen >= 11500:
                 son_asama_hazir = True
 
-                press_alfa = min(255, (gecen - 15000) / 1200 * 255)
+                press_alfa = min(255, (gecen - 11500) / 1000 * 255)
 
-                # Hafif nefes alan görünüm.
+
                 nabiz = 0.72 + 0.28 * (0.5 + 0.5 * math.sin(simdi / 430))
 
                 alfa_metin_ciz(
@@ -352,9 +350,7 @@ def splash_ekrani_goster():
 # </POTBO_STAGE S0493>
 
 # <POTBO_STAGE S0496>
-
-if not os.environ.get("PATH_BLOODIED_SKIP_SPLASH", "").strip():
-    splash_ekrani_goster()
+pass
 # </POTBO_STAGE S0496>
 
 # <POTBO_STAGE S1127>
@@ -508,12 +504,12 @@ def _v77_death_blood_layer():
         return
     now = pygame.time.get_ticks()
 
-    # 1) ağır sızıntılar / pooling
+
     for seep in v81_death_blood.get("seeps", []):
         _v81_draw_seep(seep, now)
         _v82_draw_seep_wet_edge(seep, now)
 
-    # 2) balistik damlalar, iniş sıçraması, ardından viskoz creep
+
     for index, drop in enumerate(v81_death_blood.get("drops", [])):
         pos, height, landed = _v81_drop_position(drop, now)
         if pos is None:
@@ -532,7 +528,7 @@ def _v77_death_blood_layer():
         sx = float(dunya_ekran_x(pos.x))
         sy = float(dunya_ekran_y(pos.y)) - float(height) * KAMERA_YAKINLASTIRMA
 
-        # Hızlı damlada ince kuyruk, yavaş damlada yuvarlak baş: teardrop hissi.
+
         tail_p = max(
             0.0,
             p - (0.034 + min(0.040, float(drop["size"]) * 0.009)),

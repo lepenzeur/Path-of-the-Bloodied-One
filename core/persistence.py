@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0012>
 otomatik_kayit = True
@@ -11,9 +11,17 @@ otomatik_kayit = True
 
 # <POTBO_STAGE S0018>
 
-AYAR_DOSYASI = os.path.join(BASE_DIR, "settings.json")
+AYAR_DOSYASI = os.path.join(USER_DATA_DIR, "settings.json")
 
 SON_KAYIT_DOSYASI = os.path.join(SAVES, "last_save.json")
+
+_legacy_settings = os.path.join(BASE_DIR, "settings.json")
+if not os.path.exists(AYAR_DOSYASI) and os.path.isfile(_legacy_settings):
+    try:
+        os.makedirs(USER_DATA_DIR, exist_ok=True)
+        shutil.copy2(_legacy_settings, AYAR_DOSYASI)
+    except OSError:
+        pass
 # </POTBO_STAGE S0018>
 
 # <POTBO_STAGE S0085>
@@ -30,8 +38,8 @@ KAYIT_SIL_ONAY = "kayit_sil_onay"
 
 # <POTBO_STAGE S0100>
 load_index = 0
-# LOAD GAME hangi ekrandan açıldıysa ESC o ekrana döner. Ölüm ekranı ayrı bir
-# oyun_durumu olmadığı için OYUN + hp<=0 kombinasyonu da geçerli dönüş hedefidir.
+
+
 load_game_donus_durumu = ANA_MENU
 # </POTBO_STAGE S0100>
 
@@ -51,7 +59,7 @@ kayit_mesaji = ""
 
 # <POTBO_STAGE S0119>
 son_otomatik_kayit = 0
-otomatik_kayit_araligi = 900000
+otomatik_kayit_araligi = 300000
 
 aktif_kayit = None
 # </POTBO_STAGE S0119>
@@ -102,9 +110,9 @@ def tus_girdisi_kabul(olay):
 # <POTBO_STAGE S0305>
 
 
-# =========================================================
-# AYARLAR KAYDI
-# =========================================================
+
+
+
 
 
 def ayarlari_yukle():
@@ -125,8 +133,8 @@ def ayarlari_yukle():
     global tus_atamalari
 
     try:
-        # Ana settings bozulmuşsa önceki sağlıklı atomic yedeği kullan. Bu kod
-        # V34F helper'larından önce çalıştığı için startup bağımsız tutulur.
+
+
         veri = None
         son_hata = None
         for aday in (AYAR_DOSYASI, AYAR_DOSYASI + ".bak"):
@@ -269,7 +277,7 @@ def bildirim_goster(metin, renk=BEYAZ, kenar_rengi=None, tur="genel"):
     bildirim_kuyrugu.append(kayit)
     del bildirim_kuyrugu[:-5]
     if kuyruk_bostu:
-        # Modal/diyalog altında geçen süre bildirimin ömründen yenmez.
+
         bildirim_aktif_baslangic = (
             pygame.time.get_ticks() if yeni_item_sahnesi_musait_mi() else 0
         )
@@ -315,9 +323,9 @@ def kayitlari_listele():
     return sonuc
 
 
-# =========================================================
-# ANA MENÜ
-# =========================================================
+
+
+
 
 
 def menu_secenekleri():
@@ -355,8 +363,8 @@ def menu_secimini_calistir():
     global ayar_odak
     global cikis_donus_durumu
 
-    # 0 CONTINUE, 1 NEW GAME, 2 LOAD GAME,
-    # 3 SETTINGS, 4 CREDITS, 5 EXIT
+
+
 
     if menu_index == 0:
         if son_kaydi_yukle():
@@ -458,9 +466,9 @@ def ganimeti_al():
 
 # <POTBO_STAGE S0470>
 
-# =========================================================
-# KAYIT SİLME ONAYI
-# =========================================================
+
+
+
 
 
 def kayit_sil_onay_ciz():
@@ -613,9 +621,9 @@ def ayari_degistir(yon):
     ayarlari_kaydet()
 
 
-# =========================================================
-# LOAD GAME
-# =========================================================
+
+
+
 
 
 def load_game_ciz():
@@ -699,8 +707,8 @@ def _stage1__oyuncu_olum_menu_layer_ciz():
             title_s.get_rect(center=(GENISLIK // 2, 142)),
         )
 
-        # Kullanıcının istediği dört sabit seçenek; oyun dili ne olursa olsun
-        # bu game-over komutları aynı kısa isimlerle kalır.
+
+
         secenekler = [
             t("restart"),
             t("load_game"),
@@ -744,9 +752,9 @@ def kayit_animasyonu_ciz():
 # <POTBO_STAGE S0615>
 
 
-# ---------------------------------------------------------
-# GAME OVER LAYER: title and buttons have independent alpha timelines
-# ---------------------------------------------------------
+
+
+
 def _oyuncu_olum_menu_layer_ciz():
     global ekran
     gercek_ekran = ekran
@@ -755,7 +763,7 @@ def _oyuncu_olum_menu_layer_ciz():
     title_alpha = oyuncu_olum_baslik_fade_orani(simdi)
     button_alpha = oyuncu_olum_menu_fade_orani(simdi)
 
-    # Başlık kesin metin: dil seçimine bağlı değildir.
+
     if title_alpha > 0.0:
         title_s = gameover_font.render(t("game_over_title"), True, (230, 10, 30))
         title_s.set_alpha(int(round(255 * title_alpha)))
@@ -797,9 +805,9 @@ def _oyuncu_olum_menu_layer_ciz():
 # <POTBO_STAGE S0676>
 
 
-# ---------------------------------------------------------
-# LOAD/STATE SAFETY
-# ---------------------------------------------------------
+
+
+
 _v33_oyun_yukle = oyun_yukle
 
 
@@ -821,9 +829,9 @@ v34_atomic_save_count = 0
 # <POTBO_STAGE S0697>
 
 
-# ---------------------------------------------------------
-# ATOMIC SAVE HELPERS
-# ---------------------------------------------------------
+
+
+
 def _v34_json_atomic_write(path, payload, indent=4):
     """JSON dosyasını sibling temp dosyaya yazıp os.replace ile atomik commit eder."""
     path = os.path.abspath(path)
@@ -848,8 +856,8 @@ def _v34_save_allowed_now():
         return False
     if simdi < oyuncu_zorlanmis_bitis:
         return False
-    # Hold-release dash veya normal dash ortasında snapshot almak da load sonrası
-    # beklenmedik body overlap üretebilir. Birkaç yüz ms sonra autosave tekrar dener.
+
+
     if oyuncu_dash_aktif_mi(simdi):
         return False
     if oyuncu_saldiriyor and oyuncu_saldiri_modu == "hold_release":
@@ -857,9 +865,9 @@ def _v34_save_allowed_now():
     return True
 
 
-# Orijinal oyun_kaydet çok büyük state dict'i kurduğu için onu tamamen kopyalamak
-# bakım borcu yaratır. Bunun yerine kaynak fonksiyonun dosya yazma bölümünü aşağıda
-# startup'ta patchlenmiş sürümle değiştiriyoruz; bu wrapper yalnız transient guard sağlar.
+
+
+
 _v34a_oyun_kaydet_guarded = oyun_kaydet
 
 
@@ -870,7 +878,7 @@ def oyun_kaydet():
     try:
         result = _v34a_oyun_kaydet_guarded()
         v34_last_save_error = ""
-        # Eski fonksiyon başarıda None döndüğü için caller'lara net bool kontratı ver.
+
         return True if result is None else bool(result)
     except OSError as exc:
         v34_last_save_error = str(exc)
@@ -966,9 +974,9 @@ def _v34f_backup_existing_valid_json(path):
         return False
 
 
-# Save katmanı zaten atomic commit yapıyor. Burada bir üst kontrat olarak son sağlıklı
-# JSON'u .bak'ta tutuyoruz. oyun_kaydet() global lookup kullandığı için bu redefinition
-# tüm sonraki manual/autosave yazımlarına uygulanır.
+
+
+
 _v34f_previous_json_atomic_write = _v34_json_atomic_write
 
 
@@ -977,9 +985,9 @@ def _v34_json_atomic_write(path, payload, indent=4):
     _v34f_previous_json_atomic_write(path, payload, indent=indent)
 
 
-# ---------------------------------------------------------
-# SETTINGS: SAME ATOMIC CONTRACT AS SAVE FILES
-# ---------------------------------------------------------
+
+
+
 def ayarlari_kaydet():
     """Settings için de temp + fsync + replace + valid backup kontratı."""
     npc_ses_seviyesini_guncelle()
@@ -1009,15 +1017,15 @@ def ayarlari_kaydet():
         return False
 
 
-# ---------------------------------------------------------
-# SAVE RECOVERY / CORRUPTION QUARANTINE
-# ---------------------------------------------------------
+
+
+
 def _v34f_save_payload_plausible(payload):
     """Version-spanning load'u bozmadan yalnız bariz yanlış JSON'u reddeder."""
     if not isinstance(payload, dict):
         return False
-    # Çok eski save'lerde bazı alanlar olmayabilir. İsim/level/position ailesinden
-    # en az bir anlamlı oyun anahtarı bulunması recovery için yeterlidir.
+
+
     known = {
         "name",
         "player_name",
@@ -1046,7 +1054,7 @@ def _v34f_restore_backup_to_main(path):
     if not _v34f_save_payload_plausible(payload):
         return False
     try:
-        # Bozuk ana dosyayı kaybetme: inceleme için timestamp'li quarantine kopyası.
+
         if os.path.isfile(path):
             try:
                 with open(path, "rb") as f:
@@ -1055,7 +1063,7 @@ def _v34f_restore_backup_to_main(path):
                     _v34f_write_bytes_atomic(_v34f_corrupt_path(path), bad)
             except OSError:
                 pass
-        # Recovery sırasında backup'ı tekrar backup etmeyen alt atomic writer kullanılır.
+
         _v34f_previous_json_atomic_write(path, payload, indent=4)
         v34f_backup_restore_count += 1
         v34f_last_restore_error = ""
@@ -1091,7 +1099,7 @@ def oyun_yukle(dosya_yolu, *args, **kwargs):
                 "error",
             )
     result = _v34f_previous_oyun_yukle(path, *args, **kwargs)
-    # Load sonrasında transient director hiçbir zaman save'den miras alınmaz.
+
     try:
         _v34f_reset_transient_combat_state(after_load=True)
         _v34_player_depenetrate(False)
@@ -1119,9 +1127,9 @@ def _v34f_save_path_contract():
 # <POTBO_STAGE S0806>
 
 
-# ---------------------------------------------------------
-# RUNTIME AUDIT
-# ---------------------------------------------------------
+
+
+
 def v34f_runtime_audit_tick(force=False):
     global \
         v34f_last_audit_ms, \
@@ -1219,9 +1227,9 @@ def v34f_runtime_audit_tick(force=False):
 # <POTBO_STAGE S0811>
 
 
-# ---------------------------------------------------------
-# STARTUP SELF-CHECK
-# ---------------------------------------------------------
+
+
+
 def _v34f_startup_self_check():
     """Import/startup anında filesystem'e test dosyası yazmadan pure contract kontrolü."""
     phase_ok, phase_detail = _v34f_special_phase_contract()
@@ -1329,7 +1337,7 @@ _v39_oyun_yukle_original = oyun_yukle
 
 
 def _v76_death_menu_draw():
-    # Fade yerine binary görünürlük kullanılır; ara alpha tonları üçüncü/dördüncü renk üretmez.
+
     now = pygame.time.get_ticks()
     if oyuncu_olum_menu_fade_orani(now) < 0.985:
         return
@@ -1357,11 +1365,11 @@ def _v76_death_menu_draw():
 
 # <POTBO_STAGE S1540>
 
-# ---------------------------------------------------------
-# STATİK KONTROL / KISAYOL REHBERLERİ KAPALI
-# ---------------------------------------------------------
-# Bağlamsal 'E ile konuş' gibi dünya etkileşim işaretleri korunur; yalnız menülerin
-# altında duran statik klavye ezberleri ve geliştirici kısayol paneli kaldırılır.
+
+
+
+
+
 for _v77_lang in ("TR", "EN"):
     for _v77_key in (
         "menu_help",
@@ -1380,8 +1388,8 @@ for _v77_lang in ("TR", "EN"):
 
 
 def _v77_death_menu_draw(now):
-    # Exact üç RGB korumak için alpha blending yapılmaz. Fade zamanlaması korunur,
-    # elemanlar fade başlar başlamaz kendi tam palette rengiyle görünür.
+
+
     title_p = oyuncu_olum_baslik_fade_orani(now)
     menu_p = oyuncu_olum_menu_fade_orani(now)
 
@@ -1434,7 +1442,7 @@ def _v77_death_menu_draw(now):
 
 
 def _v79_death_menu_content(now):
-    # UI normal menu_susleme geometrisinin ölüm-paleti karşılığıdır.
+
     scratch = pygame.Surface((440, 260), pygame.SRCALPHA)
     global ekran
     old = ekran
@@ -1607,9 +1615,9 @@ _v84_save_original = oyun_kaydet
 
 def oyun_kaydet(*args, **kwargs):
     if v84_execution_state.active:
-        # The target is render-suspended during the authored sequence.  Saving that
-        # transient inactive flag would turn an interrupted execution into a false
-        # permanent kill, so autosave/manual save waits for control to return.
+
+
+
         return False
     return _v84_save_original(*args, **kwargs)
 
@@ -1744,8 +1752,8 @@ def _v92_load_alpha(path):
 # <POTBO_STAGE S2296>
 
 
-# Remove static shortcut manuals without touching contextual E/F prompts,
-# rebinding, pause semantics or settings.
+
+
 for _lang in ("TR", "EN"):
     for _key in (
         "menu_help",
@@ -1763,10 +1771,10 @@ for _lang in ("TR", "EN"):
 # <POTBO_STAGE S2334>
 
 
-# ---------------------------------------------------------
-# Persistence for new stock, smith upgrades/training and armor profile.
-# Developer casts/spawns remain transient by design.
-# ---------------------------------------------------------
+
+
+
+
 V92_SAVE_KEY = "systems_v92"
 # </POTBO_STAGE S2334>
 
@@ -1811,8 +1819,8 @@ def oyun_yukle(*args, **kwargs):
 
 # <POTBO_STAGE S2372>
 
-# Save-name input follows the selected language and explicitly documents that
-# whitespace is not part of a save name.
+
+
 METINLER["TR"]["save_name_help"] = "Kayıt adını yaz; SPACE veya ENTER ile onayla. Boşluk kullanılamaz."
 METINLER["EN"]["save_name_help"] = "Type a save name; confirm with SPACE or ENTER. Spaces are not allowed."
 # </POTBO_STAGE S2372>
@@ -1820,18 +1828,18 @@ METINLER["EN"]["save_name_help"] = "Type a save name; confirm with SPACE or ENTE
 # <POTBO_STAGE S2377>
 
 
-# ---------------------------------------------------------
-# Pixel-art NPC extraction: deterministic normalized idle crops.
-# Supplied sheets are treated as atlases, not sliding images.
-# ---------------------------------------------------------
+
+
+
+
 def _v95_idle_crop(path, reference_size, pixel_rect):
     sheet = _v94_load_alpha(path)
     if sheet is None:
         return None
     ref_w, ref_h = reference_size
     x, y, w, h = pixel_rect
-    # Mathematical normalized crop so the same atlas can be scaled without the
-    # frame drifting.
+
+
     return _v94_normalized_crop(
         sheet,
         float(x) / float(ref_w),
@@ -1921,8 +1929,8 @@ def v107_corona_asset_ensure_loaded():
     global V106_CORONA_FRAMES, v107_corona_asset_reload_attempted
     if V106_CORONA_FRAMES:
         return True
-    # Try again at cast time. This also catches projects where the asset was copied
-    # into the canonical directory after the process was initially launched.
+
+
     V106_CORONA_FRAMES = v106_corona_frames_load(force_resolve=True)
     v107_corona_asset_reload_attempted = True
     v106_corona_transform_cache.clear()
@@ -1943,10 +1951,10 @@ def v110_load_alpha(path):
 
 # <POTBO_STAGE S2675>
 
-# Optimized final save transaction (behavior-preserving payload).
+
 def oyun_kaydet():
-    # Refactor: the final save is a single transaction instead of repeatedly
-    # reopening and rewriting the same JSON through legacy wrapper layers.
+
+
     if not _v34_save_allowed_now():
         return False
     if getattr(v84_execution_state, "active", False):
@@ -1955,8 +1963,8 @@ def oyun_kaydet():
     global aktif_kayit
     global kayit_animasyon_bitis
 
-    # Ölüm anını autosave ile kalıcı bir soft-lock'a dönüştürme. Sir Torrmund gibi
-    # ölümcül özel düşmanlarda son yaşayan kayıt korunur; oyuncu menüden yükleyebilir.
+
+
     if oyuncu_hp <= 0:
         return False
 
@@ -2007,29 +2015,29 @@ def oyun_kaydet():
         "important_items_seen": sorted(onemli_item_gorulenler),
         "merchant_buyback": merchant_geri_alim_listesi,
         "merchant_products_seen": sorted(merchant_gorulen_urunler),
-        # Arka plan simülasyonu sürümler arası güvenli, sınırlı veri taşır.
+
         "world_state": dict(dunya_durumu),
         "world_event_log": list(dunya_olay_gunlugu)[-72:],
-        # Common enemy durumları: can, konum ve aggro kayıtla birlikte yaşar.
+
         "common_enemy_version": COMMON_ENEMY_SAVE_VERSION,
         "common_enemies": [dusman.to_save() for dusman in common_enemies],
-        # Özel aktörler common_enemies içine seri hale getirilmez.
+
         "tarkard": tarkard_actor.to_save() if tarkard_actor is not None else None,
         "torrmund": torrmund_actor.to_save() if torrmund_actor is not None else None,
-        # Oyuncunun bölümde kaldığı son koordinatlar.
+
         "x": oyuncu_x,
         "y": oyuncu_y,
     }
 
-    # Final extension payloads are serialized into the same commit.
+
     veri[V89_BLOOD_SAVE_KEY] = v89_blood_snapshot()
     veri[V90_INJURY_SAVE_KEY] = v90_injury_snapshot()
     veri[V92_SAVE_KEY] = v92_save_payload()
     pygame.event.pump()
 
     try:
-        # V34: sibling temp + os.replace ile atomic commit. Çökme/yazma kesintisi
-        # yarım JSON'u ana save dosyasının üstüne bırakmaz.
+
+
         _v34_json_atomic_write(aktif_kayit, veri, indent=4)
         pygame.event.pump()
         _v34_json_atomic_write(SON_KAYIT_DOSYASI, {"path": aktif_kayit}, indent=4)

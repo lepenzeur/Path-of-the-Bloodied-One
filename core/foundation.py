@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0001>
 import heapq
@@ -12,6 +12,7 @@ import math
 import os
 import random
 import re
+import shutil
 import sys
 import time
 from collections import deque
@@ -23,7 +24,7 @@ import pygame
 
 # <POTBO_STAGE S0003>
 
-# Bu oyunda menüler ve oyun klavye ile kontrol edilir.
+
 pygame.mouse.set_visible(False)
 # </POTBO_STAGE S0003>
 
@@ -42,7 +43,7 @@ dil = "TR"
 
 fps_goster = False
 parlaklik = 100
-# Piksel sunumu oyunun zorunlu görsel dilidir; kullanıcı tarafından kapatılamaz.
+
 ekran_sarsintisi = True
 etkilesim_ipuclari = True
 # </POTBO_STAGE S0011>
@@ -51,9 +52,9 @@ etkilesim_ipuclari = True
 az_hareket = False
 metin_hizi = "normal"
 
-# Geliştirici teşhisleri. Normal oyuncu çalıştırmalarında konsolu temiz tutar.
+
 DEBUG_LOGS = False
-GELISTIRICI_MODU = True
+GELISTIRICI_MODU = os.environ.get("PATH_BLOODIED_DEV", "1").strip().lower() not in {"0", "false", "no", "off"}
 
 
 def debug_log(*args):
@@ -78,21 +79,45 @@ def ekran_olustur():
     except pygame.error:
         ekran = pygame.display.set_mode((GENISLIK, YUKSEKLIK))
 
-    pygame.display.set_caption("Path of the Bloodied One")
+    pygame.display.set_caption("Path of the Bloodied One — Agraphon Studios")
 
 
 ekran_olustur()
 
-# =========================================================
-# KLASÖR VE DOSYA YOLLARI
-# =========================================================
+
+
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def kullanici_veri_klasoru():
+    """Return a writable per-user data directory without external dependencies."""
+    if sys.platform.startswith("win"):
+        kok = os.environ.get("LOCALAPPDATA") or os.environ.get("APPDATA")
+        if not kok:
+            kok = os.path.join(os.path.expanduser("~"), "AppData", "Local")
+        return os.path.join(kok, "Agraphon Studios", "Path of the Bloodied One")
+    if sys.platform == "darwin":
+        return os.path.join(
+            os.path.expanduser("~"),
+            "Library",
+            "Application Support",
+            "Agraphon Studios",
+            "Path of the Bloodied One",
+        )
+    kok = os.environ.get("XDG_DATA_HOME") or os.path.join(
+        os.path.expanduser("~"), ".local", "share"
+    )
+    return os.path.join(kok, "agraphon-studios", "path-of-the-bloodied-one")
+
+
+USER_DATA_DIR = kullanici_veri_klasoru()
 # </POTBO_STAGE S0014>
 
 # <POTBO_STAGE S0017>
 
-SAVES = os.path.join(BASE_DIR, "saves")
+SAVES = os.path.join(USER_DATA_DIR, "saves")
 # </POTBO_STAGE S0017>
 
 # <POTBO_STAGE S0041>
@@ -109,9 +134,24 @@ def mevcut_ilk_dosya(yollar):
 # <POTBO_STAGE S0068>
 
 os.makedirs(SAVES, exist_ok=True)
-# =========================================================
-# RENKLER
-# =========================================================
+
+
+_legacy_saves = os.path.join(BASE_DIR, "saves")
+if os.path.isdir(_legacy_saves) and os.path.abspath(_legacy_saves) != os.path.abspath(SAVES):
+    for _legacy_name in os.listdir(_legacy_saves):
+        if not _legacy_name.endswith(".json"):
+            continue
+        _legacy_src = os.path.join(_legacy_saves, _legacy_name)
+        _legacy_dst = os.path.join(SAVES, _legacy_name)
+        if not os.path.exists(_legacy_dst):
+            try:
+                shutil.copy2(_legacy_src, _legacy_dst)
+            except OSError:
+                pass
+
+
+
+
 SIYAH = (0, 0, 0)
 BEYAZ = (242, 240, 244)
 
@@ -174,9 +214,9 @@ OYUNDAN_CIKIS_ONAY = "oyundan_cikis_onay"
 ayar_index = 0
 ayar_kategori_index = 0
 ayar_odak = "kategori"
-# Uzun ayar listelerinde seçimin görünür pencere içindeki gerçek konumunu
-# koruyan ayrı kaydırma ofseti. Seçim aşağı inerken pencere ancak beşinci
-# satıra ulaşıldıktan sonra kayar.
+
+
+
 ayar_scroll_baslangic = 0
 # </POTBO_STAGE S0099>
 
@@ -191,7 +231,7 @@ oyundan_cikis_onay_index = 1
 # </POTBO_STAGE S0105>
 
 # <POTBO_STAGE S0111>
-# Önemli eşya sunumu: temiz oyun sahnesi -> ses -> 1 sn -> kart.
+
 onemli_item_kuyrugu = []
 onemli_item_acilis_zamani = 0
 onemli_item_gosterim_aktif = False
@@ -201,7 +241,7 @@ ONEMLI_ITEM_SAHNE_GECIKMESI = 260
 # </POTBO_STAGE S0111>
 
 # <POTBO_STAGE S0113>
-# Progress bar beş saniye sürer; süre bitince kart tuş bekler.
+
 ONEMLI_ITEM_GOSTERIM_SURESI = 5000
 ONEMLI_ITEM_GIRIS_KILIDI = ONEMLI_ITEM_GOSTERIM_SURESI
 # </POTBO_STAGE S0113>
@@ -214,9 +254,9 @@ bonus_mana = 0
 bonus_kalan = 10
 
 karakter_mesaji = ""
-# Karakter onayında seçili kart önce belirginleşir. characterSelected.wav ile
-# başlayan geçiş yaklaşık 2.2 saniyede siyaha ulaşır; loading sonraki karede
-# fade olmadan açılır.
+
+
+
 karakter_onay_gecisi_aktif = False
 karakter_onay_gecisi_baslangic = 0
 KARAKTER_ONAY_GECIS_SURESI = 2200
@@ -255,7 +295,7 @@ OLU_CIKIS_FADE_MS = 720
 
 # <POTBO_STAGE S0164>
 
-# Seviye atlama artık bildirim kuyruğuna girmez; merkezde animasyon oynar.
+
 seviye_anim_level = 0
 seviye_anim_baslangic = 0
 SEVIYE_ANIM_SURESI_MS = 1850
@@ -268,7 +308,7 @@ animasyon_zamani = 0
 # </POTBO_STAGE S0174>
 
 # <POTBO_STAGE S0177>
-# NPC, üstteki yan yolun taşlarda bittiği noktada durur.
+
 npc_x = 860.0
 npc_y = 330.0
 # </POTBO_STAGE S0177>
@@ -287,18 +327,18 @@ eadric_tasi_alindi = False
 # </POTBO_STAGE S0182>
 
 # <POTBO_STAGE S0185>
-# Ganimet, sağ alttaki yuvarlak kayalığın yere yakın çıkıntısında.
-# Dünya üzerinde ayrıca bir ganimet sembolü çizilmez.
+
+
 ganimet_x = 1605.0
 ganimet_y = 520.0
-# Bildirimler tek tek işlenir. Yalnızca en üstteki mesajın süresi akar;
-# o kaybolunca alttakiler bir sıra yukarı çıkar.
+
+
 bildirim_kuyrugu = []
 bildirim_aktif_baslangic = 0
-# Mesajlar okunabilecek kadar uzun kalır; son bölümde yumuşakça kaybolur.
+
 bildirim_suresi = 4200
 bildirim_son_fade = 900
-# Menü ve aksiyon tuşlarında istemsiz çift basmayı engelleyen giriş dengesi.
+
 son_tus_zamanlari = {}
 TUS_BEKLEME_YON = 105
 TUS_BEKLEME_AKSIYON = 180
@@ -378,7 +418,7 @@ def tus_atamalarini_dogrula():
         )
         if gecersiz:
             aday = varsayilan
-            # Varsayılan da daha önce kapılmışsa, güvenli biçimde ilk boş varsayılanı bul.
+
             if aday in kullanilan:
                 for alternatif in VARSAYILAN_TUS_ATAMALARI.values():
                     if (
@@ -392,13 +432,13 @@ def tus_atamalarini_dogrula():
     tus_atamalari = temiz
 
 
-# Seçim değiştiğinde çalacak hover sesi için son seçim imzası.
+
 son_secim_durumu = None
 son_secim_imzasi = None
 # </POTBO_STAGE S0195>
 
 # <POTBO_STAGE S0198>
-# Önemli eşya kartı her eşya kimliği için yalnızca bir kez gösterilir.
+
 onemli_item_gorulenler = set()
 # </POTBO_STAGE S0198>
 
@@ -718,7 +758,7 @@ def _v28_beyaz_fon_temizle(src):
                 r, g, b, a = temiz.get_at((x, y))
                 if a <= 8:
                     continue
-                # Kaynağın beyaz fonu farklı encoder'larda 248-255 aralığına kayabilir.
+
                 if r >= 244 and g >= 244 and b >= 244:
                     temiz.set_at((x, y), (r, g, b, 0))
     finally:
@@ -737,10 +777,10 @@ _bers_idle = {}
 
 # <POTBO_STAGE S0287>
 
-# =========================================================
-# NPC ARKA PLAN TEMİZLEME
-# Checkerboard veya açık renkli arka planı saydamlaştırır.
-# =========================================================
+
+
+
+
 
 
 def acik_arka_plani_saydam_yap(kaynak):
@@ -870,9 +910,9 @@ def varsayilan_gotik_arka_plan():
 # <POTBO_STAGE S0307>
 ekran_olustur()
 
-# =========================================================
-# SAVE / LOAD
-# =========================================================
+
+
+
 
 
 def dosya_adi_temizle(metin):
@@ -904,11 +944,11 @@ def oyun_sinematik_kilitli_mi():
 
 
 LEVEL_RENK_PALETI = [
-    (224, 196, 96),  # 10–19: soluk altın
-    (92, 196, 126),  # 20–29: zümrüt
-    (92, 154, 224),  # 30–39: soğuk mavi
-    (173, 105, 211),  # 40–49: mor
-    (214, 52, 72),  # 50: kan kırmızısı
+    (224, 196, 96),
+    (92, 196, 126),
+    (92, 154, 224),
+    (173, 105, 211),
+    (214, 52, 72),
 ]
 
 
@@ -962,9 +1002,9 @@ def resmi_oranli_sigdir(
 
     olcek = min(oran_x, oran_y)
 
-    # Karakteri kutu içinde biraz daha yakından göstermek için
-    # sınırlı bir yakınlaştırma uygulanır. Ekran clip alanı sayesinde
-    # kılıç veya pelerin kutunun dışına taşmaz.
+
+
+
     olcek *= max(1.0, yakinlastirma)
 
     yeni_genislik = max(1, int(kaynak.get_width() * olcek))
@@ -996,9 +1036,9 @@ def resmi_oranli_doldur(kaynak, hedef_rect):
     return pygame.transform.smoothscale(kaynak, (yeni_genislik, yeni_yukseklik))
 
 
-# =========================================================
-# KARAKTER OLUŞTURMA
-# =========================================================
+
+
+
 
 
 def karakter_secenekleri():
@@ -1506,7 +1546,7 @@ def _kesik_cizgi_ciz(
     dik = pygame.Vector2(-yon.y, yon.x)
     c = pygame.Vector2(merkez) + dik * float(kaydir)
     half = float(uzunluk) * 0.5
-    # Uçlara doğru incelen üç segment.
+
     noktalar = [
         c - yon * half,
         c - yon * half * 0.22,
@@ -1605,7 +1645,7 @@ def _v32_tirtikli_polygon(w, h, cx, cy, rx, ry, rng, nokta=13):
     for i in range(max(8, int(nokta))):
         a = faz + math.tau * i / float(max(8, int(nokta)))
         radial = rng.uniform(0.68, 1.26)
-        # İki farklı frekans tırtığı kesik çizgisi gibi steril bir çevreyi önler.
+
         radial *= (
             1.0
             + 0.10 * math.sin(a * 3.0 + faz * 7.0)
@@ -1677,8 +1717,8 @@ def _v33_full_piece_ciz(
     if crop is None:
         return
     _, _, angle, center = _v33_corpse_pose(simdi)
-    # pygame.transform.rotate(+a) görselde CCW; ekran y ekseni aşağı olduğu için
-    # local merkez vektörü aynı dönüşü Vector2.rotate(-a) ile izler.
+
+
     local_rot = local.rotate(-angle)
     target = center + local_rot + pygame.Vector2(extra_offset)
     draw = pygame.transform.rotate(crop, angle + float(extra_rot))
@@ -1691,7 +1731,7 @@ def _v33_full_piece_ciz(
 # <POTBO_STAGE S0596>
 
 
-# Aynı renderer diğer dispatch fonksiyonları tarafından da kullanılır.
+
 def _v32_tirtikli_ceset_ciz(mod="generic"):
     return _v33_tirtikli_ceset_ciz(mod)
 # </POTBO_STAGE S0596>
@@ -1901,9 +1941,9 @@ def _v34_special_screen_flash_ciz(simdi):
 # <POTBO_STAGE S0674>
 
 
-# ---------------------------------------------------------
-# GAME-SCREEN POLISH WRAPPER
-# ---------------------------------------------------------
+
+
+
 _v33_oyun_ekrani_ciz = oyun_ekrani_ciz
 # </POTBO_STAGE S0674>
 
@@ -1929,9 +1969,9 @@ v34_fx_budget_last_check = pygame.time.get_ticks()
 # <POTBO_STAGE S0695>
 
 
-# ---------------------------------------------------------
-# TRANSIENT FX BUDGET
-# ---------------------------------------------------------
+
+
+
 def _v34_trim_oldest_in_place(seq, maximum):
     excess = len(seq) - int(maximum)
     if excess <= 0:
@@ -1943,9 +1983,9 @@ def _v34_trim_oldest_in_place(seq, maximum):
 # <POTBO_STAGE S0698>
 
 
-# ---------------------------------------------------------
-# SESSION QUALITY TICK
-# ---------------------------------------------------------
+
+
+
 def v34_quality_tick():
     """Her frame çağrılan düşük maliyetli kalite orchestrator'ı."""
     v34_special_pause_tick()
@@ -1974,18 +2014,18 @@ v34_crowd_pair_separations = 0
 # <POTBO_STAGE S0718>
 
 
-# ---------------------------------------------------------
-# GAME SCREEN COMPOSITOR EXTENSION
-# ---------------------------------------------------------
+
+
+
 _v34c_oyun_ekrani_ciz = oyun_ekrani_ciz
 # </POTBO_STAGE S0718>
 
 # <POTBO_STAGE S0720>
 
 
-# ---------------------------------------------------------
-# QUALITY TICK EXTENSION
-# ---------------------------------------------------------
+
+
+
 _v34c_quality_tick = v34_quality_tick
 # </POTBO_STAGE S0720>
 
@@ -2292,9 +2332,9 @@ v34f_static_recovery_count = 0
 v34f_runtime_started_ms = pygame.time.get_ticks()
 
 
-# ---------------------------------------------------------
-# SMALL ROBUSTNESS HELPERS
-# ---------------------------------------------------------
+
+
+
 def _v34f_now():
     return int(pygame.time.get_ticks())
 
@@ -2392,9 +2432,9 @@ def _v34f_special_target_alive(target):
 # <POTBO_STAGE S0787>
 
 
-# ---------------------------------------------------------
-# SPECIAL HIT MASTER FEEDBACK
-# ---------------------------------------------------------
+
+
+
 def _v34f_direction_safe(direction, fallback=(1.0, 0.0)):
     d = _v34f_vector(direction, fallback)
     if d.length_squared() <= 1e-6:
@@ -2491,9 +2531,9 @@ _v34f_previous_game_draw = oyun_ekrani_ciz
 # <POTBO_STAGE S0805>
 
 
-# ---------------------------------------------------------
-# FRAME HEALTH PROBE
-# ---------------------------------------------------------
+
+
+
 def v34f_frame_health_tick():
     global v34f_last_frame_probe_ms, v34f_frame_spike_count
     simdi = _v34f_now()
@@ -2518,14 +2558,14 @@ def _v34f_frame_percentile(percent=0.95):
 # <POTBO_STAGE S0808>
 
 
-# ---------------------------------------------------------
-# SPECIAL MOVE COMPLETION INVARIANT
-# ---------------------------------------------------------
+
+
+
 def _v34f_special_completion_check():
     """Tamamlanan move normal durumda 3 hit üretmeli; QA için sessiz assertion yerine event."""
     if v34f_special_finished_ms <= 0:
         return
-    # Finish event yalnız bir kez serial bazında raporlansın.
+
     serial = int(v34_special_move_serial)
     if serial in v34f_special_checked_serials:
         return
@@ -2534,7 +2574,7 @@ def _v34f_special_completion_check():
     if count == 3 and times[0] <= times[1] <= times[2]:
         v34f_special_checked_serials.add(serial)
         return
-    # Special hedefsiz/erken cancel gibi bariz senaryolarda yanlış alarm verme.
+
     if v34f_special_started_seen:
         _v34f_report_issue(
             "special_incomplete_hits",
@@ -2548,9 +2588,9 @@ def _v34f_special_completion_check():
 # <POTBO_STAGE S0810>
 
 
-# ---------------------------------------------------------
-# QUALITY ORCHESTRATOR EXTENSION
-# ---------------------------------------------------------
+
+
+
 _v34f_previous_quality_tick = v34_quality_tick
 
 
@@ -2590,7 +2630,7 @@ V34_SPECIAL_IMPACT_RING_MS = 300
 V34_SPECIAL_RECOVERY_GRACE_MS = 125
 V34_SPECIAL_TARGET_LOCK_EXTRA_MS = 72
 
-# V34F feedback tuning: daha kısa fakat daha kuvvetli impulse.
+
 V34F_SPECIAL_ECHO_LIFE_MS = 820
 V34F_SPECIAL_ECHO_STRONG_MS = 230
 V34F_SPECIAL_SPARK_LIFE_MS = (135, 190, 265)
@@ -2602,9 +2642,9 @@ V34F_SPECIAL_FINAL_CUT_ALPHA = 118
 # <POTBO_STAGE S0826>
 
 
-# ---------------------------------------------------------
-# HEAVY HOLD: NARROW-CONE KINETIC ASSIST
-# ---------------------------------------------------------
+
+
+
 V35_HEAVY_ASSIST_RANGE = 240.0
 V35_HEAVY_ASSIST_MAX_LATERAL = 72.0
 V35_HEAVY_ASSIST_BLEND = 0.26
@@ -2626,9 +2666,9 @@ v35_flow_hits = 0
 # <POTBO_STAGE S0838>
 
 
-# ---------------------------------------------------------
-# SPECIAL MOVE RHYTHM / VIOLENCE RETUNE
-# ---------------------------------------------------------
+
+
+
 def _v34_special_phase_values(p):
     """V35: 1.66 saniyede üç net fiziksel hit ve çok kısa impact holds."""
     return {
@@ -2644,9 +2684,9 @@ def _v34_special_phase_values(p):
     }
 
 
-# ---------------------------------------------------------
-# ENEMY INTENT READABILITY
-# ---------------------------------------------------------
+
+
+
 V35_INTENT_MAX_RANGE = 245.0
 V35_INTENT_ALPHA = 88
 # </POTBO_STAGE S0838>
@@ -2660,16 +2700,16 @@ _v35_game_draw_original = oyun_ekrani_ciz
 # <POTBO_STAGE S0848>
 
 
-# ---------------------------------------------------------
-# QUALITY TICK EXTENSION / DIAGNOSTICS
-# ---------------------------------------------------------
+
+
+
 _v35_quality_tick_original = v34_quality_tick
 # </POTBO_STAGE S0848>
 
 # <POTBO_STAGE S0851>
 
 
-# Startup contract: special hâlâ üç hit penceresine sahip ve süre QA minimumunun üstünde.
+
 V35_SPECIAL_PHASE_OK, V35_SPECIAL_PHASE_DETAIL = _v34f_special_phase_contract()
 # </POTBO_STAGE S0851>
 
@@ -2682,8 +2722,8 @@ V34F_SPECIAL_LANDING_LIFE_MS = 280
 V34F_SPECIAL_FINAL_CUT_MS = 82
 V34F_SPECIAL_FINAL_CUT_ALPHA = 96
 
-# Eski büyük deque'leri daha küçük transient bütçelerle değiştir. Bu yalnız dekoratif
-# geçmişi azaltır; authored special state'i ve hit maskesi başka değişkenlerde tutulur.
+
+
 v34_special_trail = deque(list(v34_special_trail)[-18:], maxlen=18)
 # </POTBO_STAGE S0854>
 
@@ -2746,11 +2786,11 @@ _v37_tus_girdisi_kabul_original = tus_girdisi_kabul
 # <POTBO_STAGE S0886>
 
 
-# ---------------------------------------------------------
-# CACHED / REUSABLE GLOBAL OVERLAYS
-# ---------------------------------------------------------
-# Tek full-screen alpha buffer genel karartmalar için tekrar kullanılır.
-# Aynı karede fill->blit tamamlandığı için eşzamanlı sahiplik gerektirmez.
+
+
+
+
+
 v37_dark_overlay = pygame.Surface(
     (GENISLIK, YUKSEKLIK), pygame.SRCALPHA
 ).convert_alpha()
@@ -2803,7 +2843,7 @@ def _v37_cached_vignette(bucket):
     bucket = max(0, min(6, int(bucket)))
     if bucket in v37_vignette_cache:
         return v37_vignette_cache[bucket]
-    # Bir önceki bucket artık gereksiz; full-screen cache büyümesin.
+
     v37_vignette_cache.clear()
     tension = bucket / 6.0
     surf = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
@@ -2868,13 +2908,13 @@ def parlaklik_kaplamasi_ciz():
 # <POTBO_STAGE S0899>
 
 
-# ---------------------------------------------------------
-# SPECIAL MOVE: PREVALIDATED MOTION + SINGLE-LAYER VFX
-# ---------------------------------------------------------
+
+
+
 V37_SPECIAL_STATIC_SANITY_MS = 120
 V37_SPECIAL_PREFLIGHT_STEP = 5.5
 V37_SPECIAL_PREFLIGHT_CURVE_SAMPLES = 10
-# Daha az radius adayı: dar alanda dokuz tam corridor taraması yerine beş kontrollü deneme.
+
 V34_SPECIAL_RADIUS_STEPS = (132.0, 116.0, 100.0, 84.0, 68.0)
 V37_SPECIAL_TRAIL_INTERVAL_MS = 54
 V37_SPECIAL_TRAIL_LIFE_MS = 145
@@ -2882,8 +2922,8 @@ V37_SPECIAL_AFTERGLOW_MS = 170
 V37_SPECIAL_MAX_SPARKS = (2, 3, 4)
 V37_SPECIAL_AI_RECOVERY_MS = 130
 
-# Uzun oturum render bütçesi. Sayıyı değil momentumu öne çıkarır: ekranda yüzlerce
-# düşük değerli transient obje taşımak yerine daha az, hızlı ve okunaklı efekt tutulur.
+
+
 V34_FX_BUDGET_CHECK_MS = 300
 # </POTBO_STAGE S0899>
 
@@ -2920,7 +2960,7 @@ v37_special_ai_pause_frames = 0
 
 # <POTBO_STAGE S0912>
 
-# Tek bir reusable alpha buffer. Special boyunca Surface allocate/free yapılmaz.
+
 V37_SPECIAL_LAYER_SIZE = (400, 350)
 v37_special_layer = pygame.Surface(
     V37_SPECIAL_LAYER_SIZE, pygame.SRCALPHA
@@ -2990,7 +3030,7 @@ def _v34f_spawn_hit_sparks(slot, center, direction, simdi):
 
 
 def _v34f_add_special_echo(slot, center, direction, simdi):
-    # V37 final X'i ana compositor çiziyor; ayrı echo datası tutulmaz.
+
     return
 
 
@@ -3021,12 +3061,12 @@ def _v37_draw_special_sparks(layer, rect, now):
 
 
 def _v34f_special_master_vfx_ciz():
-    # V37: tüm gerekli special VFX tek compositor'da çiziliyor.
+
     return
 
 
 def _v35_special_signature_ciz():
-    # V37: final X signature tek special compositor'a taşındı.
+
     return
 # </POTBO_STAGE S0922>
 
@@ -3078,17 +3118,17 @@ _v38_ayari_degistir_original = ayari_degistir
 # <POTBO_STAGE S0945>
 
 
-# ---------------------------------------------------------
-# PHYSICALLY-INSPIRED FIREBALL TUNING
-# ---------------------------------------------------------
-# Kelvin değerleri görsel/denklem tutarlılığı içindir; oyun dünyasında doğrudan joule
-# çözülmez. Birim dönüşümü yapılmadığı için bunlar "reduced-order" coefficients'tir.
+
+
+
+
+
 V38_FIRE_AIR_TEMPERATURE_K = 293.15
 V38_FIRE_CORE_TEMPERATURE_K = 1880.0
 V38_FIRE_MIN_VISIBLE_TEMPERATURE_K = 780.0
 V38_FIRE_THERMAL_COOLING_K = 0.42
 
-# Projectile: ilk hız saldırgan, terminal-benzeri confinement hızı hâlâ yüksektir.
+
 V38_FIRE_PROJECTILE_V0 = 900.0
 V38_FIRE_PROJECTILE_VINF = 760.0
 V38_FIRE_PROJECTILE_DRAG_K = 1.18
@@ -3103,7 +3143,7 @@ V38_FIRE_PROJECTILE_ARM_DISTANCE = 72.0
 
 # <POTBO_STAGE S0950>
 
-# Explosion reduced-order fields.
+
 V38_FIRE_PRESSURE_SIGMA = 68.0
 V38_FIRE_THERMAL_R50 = 104.0
 # </POTBO_STAGE S0950>
@@ -3126,9 +3166,9 @@ V38_FIRE_SELF_BURN_SCALE = 0.22
 # <POTBO_STAGE S0960>
 
 
-# ---------------------------------------------------------
-# MATHEMATICAL HELPERS
-# ---------------------------------------------------------
+
+
+
 def _v38_clamp01(x):
     return max(0.0, min(1.0, float(x)))
 
@@ -3193,8 +3233,8 @@ def _v38_blackbody_visual_intensity(temp_k):
 
 def _v38_effective_distance(center, target_pos, target_radius):
     geometric = pygame.Vector2(center).distance_to(pygame.Vector2(target_pos))
-    # Hedef yarıçapının tamamını indirmek büyük boss'ları aşırı avantajlı yapar;
-    # %42 footprint correction, görsel kenar temasını merkeze yaklaştırır.
+
+
     return max(0.0, geometric - max(0.0, float(target_radius)) * 0.42), geometric
 # </POTBO_STAGE S0960>
 
@@ -3223,7 +3263,7 @@ v38_fire_explosion_core_cache = {}
 def _v38_cache_limit(cache, limit=220):
     if len(cache) <= limit:
         return
-    # insertion-order dict: eski yarısını bırakmak yerine en eski yaklaşık %40'ı sil.
+
     remove = max(1, len(cache) - int(limit * 0.72))
     for key in list(cache.keys())[:remove]:
         cache.pop(key, None)
@@ -3243,7 +3283,7 @@ def _v38_glow_surface(radius, intensity_bucket):
     surf = pygame.Surface((size, size), pygame.SRCALPHA)
     c = size // 2
     strength = bucket / 10.0
-    # Dört halka yeterli; her frame üretim yok, cache'e bir kez girer.
+
     for i, frac in enumerate((1.0, 0.72, 0.46, 0.24)):
         rr = max(1, int(radius * frac))
         alpha = int((12 + 38 * strength) * (1.0 - i * 0.13))
@@ -3270,9 +3310,9 @@ FireMagicExplosion._detonate = _v38_fire_explosion_detonate
 FireMagicExplosion.ciz = _v38_fire_explosion_draw
 
 
-# ---------------------------------------------------------
-# FIRE SYSTEM BUDGET HYGIENE
-# ---------------------------------------------------------
+
+
+
 V38_MAX_PROJECTILES = 6
 V38_MAX_EXPLOSIONS = 5
 V38_MAX_GROUND_FIRES = 72
@@ -3427,9 +3467,9 @@ def v38_projectile_equation_samples():
 # <POTBO_STAGE S1019>
 
 
-# ---------------------------------------------------------
-# STARTUP CONTRACTS
-# ---------------------------------------------------------
+
+
+
 def _v38_monotonic_nonincreasing(values, eps=1e-6):
     vals = [float(x) for x in values]
     return all(vals[i + 1] <= vals[i] + eps for i in range(len(vals) - 1))
@@ -3489,15 +3529,15 @@ def v38_cross_system_ok():
 # <POTBO_STAGE S1029>
 
 
-# Extend diagnostics once, using a frozen reference to avoid wrapper recursion.
+
 _v38_diagnostics_base = v38_diagnostics
 # </POTBO_STAGE S1029>
 
 # <POTBO_STAGE S1032>
 
 
-# V38 startup summary immutable-ish constants. Bunlar normal oyuncuya yazdırılmaz;
-# debug console veya hata raporunda okunabilir.
+
+
 V38_TUNING_BOUNDS_OK = v38_tuning_bounds_ok()
 V38_CROSS_SYSTEM_OK = v38_cross_system_ok()
 V38_EQUATION_CATALOG_OK = all(
@@ -3527,7 +3567,7 @@ def v38_build_profile():
 
 # <POTBO_STAGE S1042>
 
-# Karakter seçimi Mortal Kombat benzeri daha ağır bir onay temposu taşır.
+
 KARAKTER_ONAY_GECIS_SURESI = 2950
 KARAKTER_ONAY_FADE_BASLANGICI = 980
 # </POTBO_STAGE S1042>
@@ -3823,13 +3863,13 @@ FireMagicProjectile.ciz = _v39_fire_projectile_draw
 # <POTBO_STAGE S1074>
 
 
-# =========================================================
-# V40 - CHARACTER SELECT / BLOOD ECOLOGY / FIRE POLISH
-# =========================================================
+
+
+
 V40_VERSION = "40.0"
 
-# Character Select: MK-benzeri ağır seçim kilidi. Generic buttonClick yoktur;
-# yalnız characterSelected sample'ı ve kartın kendi uzun onay hareketi duyulur/görülür.
+
+
 KARAKTER_ONAY_GECIS_SURESI = 4400
 KARAKTER_ONAY_FADE_BASLANGICI = 2650
 # </POTBO_STAGE S1074>
@@ -3874,14 +3914,14 @@ def gelistirici_test_girdisi_uygula(olay):
 # <POTBO_STAGE S1101>
 
 
-# =========================================================
-# END V41
-# =========================================================
 
 
-# =========================================================
-# V42 - IMMUTABLE BLOOD GEOMETRY / EXPANDED HINT POOL
-# =========================================================
+
+
+
+
+
+
 V42_VERSION = "42.0"
 # </POTBO_STAGE S1101>
 
@@ -3906,7 +3946,7 @@ def _v42_rat_consume_tick(self, simdi):
     obj.v42_stain_mass = mass
     self.hunger = max(0.0, self.hunger - 0.020)
     self.feed_until = int(simdi) + 220
-    # Görsel geometri sabit; yalnız kuruma/solma takvimi öne gelir.
+
     if hasattr(obj, "fade_after_ms"):
         obj.fade_after_ms = min(
             int(obj.fade_after_ms),
@@ -3946,7 +3986,7 @@ def _v43_rat_consume_tick(self, simdi):
     self.hunger = max(0.0, self.hunger - 0.018)
     self.feed_until = int(simdi) + 240
 
-    # Fare varlığı gerçek bir temizlik etkisi yaratır fakat dakika ölçeğinde.
+
     if hasattr(obj, "fade_after_ms"):
         obj.fade_after_ms = min(
             int(obj.fade_after_ms),
@@ -3981,13 +4021,13 @@ _v43_dev_input_original = gelistirici_test_girdisi_uygula
 # <POTBO_STAGE S1122>
 
 
-# =========================================================
-# END V43
-# =========================================================
 
-# =========================================================
-# V44 - HEMODYNAMIC BLOOD / IMPACT MORPHOLOGY
-# =========================================================
+
+
+
+
+
+
 V44_VERSION = "44.0"
 # </POTBO_STAGE S1122>
 
@@ -4114,7 +4154,7 @@ def v44_directional_sample(base, shape, arterial=False):
     base = v44_safe_vec(base).normalize()
     cone = v44_impact_cone(shape, arterial)
     if shape == "radial_asymmetric":
-        # Tam simetrik daire yerine darbenin ileri yarısında yoğunlaşan iki lob.
+
         if random.random() < 0.67:
             angle = random.triangular(-cone, cone, random.choice((-26.0, 18.0)))
         else:
@@ -4155,7 +4195,7 @@ def v44_particle_count_shape(base_count, shape, lethal=False):
 # <POTBO_STAGE S1147>
 
 
-# Bundan sonra tüm kan parçacığı üretimleri V44 sınıfını kullanır.
+
 BloodParticle = V44BloodParticle
 # </POTBO_STAGE S1147>
 
@@ -4193,9 +4233,9 @@ v45_last_alignment = 0.0
 
 # <POTBO_STAGE S1183>
 
-# Paylaşılan waveform ekran görüntüsü 2.5 saniyelik sample gösteriyor: ilk düşük enerji,
-# ~0.25 s küçük yükseliş, ~0.40-0.85 s ana kütle, sonra uzun sönüm. Kart onayı buna
-# göre ağır ama akıcı bir envelope kullanır; generic click sesi yoktur.
+
+
+
 KARAKTER_ONAY_GECIS_SURESI = 2850
 KARAKTER_ONAY_FADE_BASLANGICI = 2080
 V46_CHARACTER_SAMPLE_MS = 2500
@@ -4250,8 +4290,8 @@ _v46_character_card_original = karakter_karti_ciz
 
 def karakter_karti_ciz(rect, cinsiyet, secili, onay_animasyonu=False):
     energy = v46_character_selection_energy(cinsiyet, onay_animasyonu)
-    # Ağır kart önce çok küçük bir içeri gömülme yaşar; sonra waveform ana vuruşunda
-    # 2-6 px büyür. Ölçek çok küçük tutulduğu için portre bulanık/pompalı görünmez.
+
+
     if onay_animasyonu:
         elapsed = pygame.time.get_ticks() - int(karakter_onay_gecisi_baslangic)
         env = v46_envelope_value(elapsed)
@@ -4264,7 +4304,7 @@ def karakter_karti_ciz(rect, cinsiyet, secili, onay_animasyonu=False):
         )
     _v46_character_card_original(draw_rect, cinsiyet, secili, onay_animasyonu)
 
-    # Seçili kartın altına ağır metal/plaka hissi veren ikinci çerçeve.
+
     if secili:
         frame_alpha = int(75 + 92 * min(1.0, energy))
         plate = pygame.Surface(
@@ -4296,7 +4336,7 @@ _v46_dev_input_original = gelistirici_test_girdisi_uygula
 # <POTBO_STAGE S1195>
 
 
-# Test key filter'e B/H de eklenir; modal/input gate bu tuşları yanlışlıkla yutmasın.
+
 GELISTIRICI_TEST_TUSLARI.update({pygame.K_b, pygame.K_h, pygame.K_1})
 # </POTBO_STAGE S1195>
 
@@ -4321,9 +4361,9 @@ v47_last_confirm_quality = 1.0
 # <POTBO_STAGE S1205>
 
 
-# =========================================================
-# V48 - CHARACTER SELECT HEAVY MOTION / UI MICRO-POLISH
-# =========================================================
+
+
+
 V48_VERSION = "48.0"
 
 V48_CHARACTER_DRIFT_PX = 4.0
@@ -4342,9 +4382,9 @@ v48_character_switch_started_ms = pygame.time.get_ticks()
 # <POTBO_STAGE S1210>
 
 
-# =========================================================
-# V49 - RUNTIME AUDIT / FAILURE GUARDS / PERFORMANCE BUDGETS
-# =========================================================
+
+
+
 V49_VERSION = "49.0"
 
 V49_AUDIT_INTERVAL_MS = 2300
@@ -4388,9 +4428,9 @@ def v34_quality_tick():
     return result
 
 
-# =========================================================
-# V50 - INTEGRATION DIAGNOSTICS / FINAL POLISH CONTRACT
-# =========================================================
+
+
+
 V50_VERSION = "50.0"
 
 V50_REQUIRED_TEST_KEYS = (
@@ -4409,14 +4449,14 @@ V50_REQUIRED_TEST_KEYS = (
 
 V50_STARTUP_OK = v50_startup_sanity()
 
-# =========================================================
-# END V50
-# =========================================================
 
 
-# =========================================================
-# V51 - PARRY / RIPOSTE / BLADE TEMPO / CONTACT DISCIPLINE
-# =========================================================
+
+
+
+
+
+
 V51_VERSION = "51.0"
 
 V51_PARRY_WINDOW_MS = 118
@@ -4502,7 +4542,7 @@ def v51_blade_trails_prune(now):
 # <POTBO_STAGE S1240>
 
 
-# CTRL+J: hitbox debug. Panel satırı aşağıdaki V51 test row wrapper'ında görünür.
+
 _v51_dev_input_original = gelistirici_test_girdisi_uygula
 
 
@@ -4550,7 +4590,7 @@ def v46_test_rows():
     return rows
 
 
-# Final required key list follows the actual panel.
+
 V50_REQUIRED_TEST_KEYS = (
     "CTRL+I",
     "CTRL+L",
@@ -4599,7 +4639,7 @@ def v52_fan_bias():
 # <POTBO_STAGE S1260>
 
 
-# Extend final diagnostics without breaking prior key names.
+
 _v52_v50_diagnostics_original = v50_full_diagnostics
 
 
@@ -4609,14 +4649,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V52
-# =========================================================
 
 
-# =========================================================
-# V53 - TISSUE / VESSEL / SURFACE RESPONSE MODEL
-# =========================================================
+
+
+
+
+
+
 V53_VERSION = "53.0"
 # </POTBO_STAGE S1260>
 
@@ -4654,7 +4694,7 @@ def v53_zone_for_profile(profile, direction=None, lethal=False, speed=0.0):
         )
     )
     d = v44_safe_vec(direction or (1.0, 0.0)).normalize()
-    # Yukarı yönlü swing boyun/kafa, aşağı yönlü swing abdomen/leg olasılığını artırır.
+
     if d.y < -0.35:
         weights["head"] *= 1.28
         weights["neck"] *= 1.34
@@ -4772,14 +4812,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V53
-# =========================================================
 
 
-# =========================================================
-# V54 - BLADE BIOMECHANICS / INSTANTANEOUS SWING VELOCITY
-# =========================================================
+
+
+
+
+
+
 V54_VERSION = "54.0"
 # </POTBO_STAGE S1274>
 
@@ -4900,14 +4940,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V54
-# =========================================================
 
 
-# =========================================================
-# V55 - BLOOD FILM / SMEAR / FOOT-TRANSFER / CLUSTER POOLING
-# =========================================================
+
+
+
+
+
+
 V55_VERSION = "55.0"
 
 V55_SMEAR_MIN_SPEED = 22.0
@@ -4957,14 +4997,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V55
-# =========================================================
 
 
-# =========================================================
-# V56 - ENEMY MELEE RHYTHM / LANE COMMITMENT / ANTI-ORBIT AI
-# =========================================================
+
+
+
+
+
+
 V56_VERSION = "56.0"
 # </POTBO_STAGE S1301>
 
@@ -5030,7 +5070,7 @@ def v56_repeat_penalty(actor, state):
 # <POTBO_STAGE S1314>
 
 
-# V43 tactical slot gets prediction + anti-orbit lane without widening actual hitboxes.
+
 _v56_inward_slot_original = _v43_inward_melee_slot
 # </POTBO_STAGE S1314>
 
@@ -5046,14 +5086,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V56
-# =========================================================
 
 
-# =========================================================
-# V57 - MELEE CADENCE / RECOVERY / EDGE COMMITMENT
-# =========================================================
+
+
+
+
+
+
 V57_VERSION = "57.0"
 # </POTBO_STAGE S1319>
 
@@ -5116,14 +5156,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V57
-# =========================================================
 
 
-# =========================================================
-# V58 - BLOOD AEROSOL / FILAMENT / IMPACT LOBE MORPHOLOGY
-# =========================================================
+
+
+
+
+
+
 V58_VERSION = "58.0"
 # </POTBO_STAGE S1346>
 
@@ -5515,14 +5555,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V58
-# =========================================================
 
 
-# =========================================================
-# V59 - TECHNIQUE LATTICE / CONDITIONAL SKILL EXPRESSION
-# =========================================================
+
+
+
+
+
+
 V59_VERSION = "59.0"
 # </POTBO_STAGE S1360>
 
@@ -5627,20 +5667,20 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V59
-# =========================================================
 
 
-# =========================================================
-# V60 - CHARACTER SELECT WAVEFORM LOCK / HEAVY INERTIA
-# =========================================================
+
+
+
+
+
+
 V60_VERSION = "60.0"
 
-# characterSelected.wav ekran görüntüsündeki 2.5 s waveform'a göre tekrar örneklenmiş
-# görsel envelope. İlk küçük transient ~0.20-0.31 s, ana gövde ~0.36-0.62 s,
-# ardından 0.9 s civarına kadar düzensiz kuyruk; kalan süre neredeyse sessizdir.
-# Onay ekranı sesi bitmeden kesmez fakat kartın hareketi kuyruğa doğru ağırlaşır.
+
+
+
+
 V60_CHARACTER_WAVEFORM_MS = 2500
 V60_CHARACTER_ENVELOPE = (
     (0, 0.000),
@@ -5677,8 +5717,8 @@ V60_CHARACTER_ENVELOPE = (
     (2500, 0.000),
 )
 
-# Eski 4.4 s geçiş gereksiz sessiz bekleme yaratıyordu. 2.5 s sample + 0.35 s ağır
-# fade güvenlik payı: hızlı değil, ama waveform bittikten sonra da boşta asılı kalmaz.
+
+
 KARAKTER_ONAY_GECIS_SURESI = 2850
 KARAKTER_ONAY_FADE_BASLANGICI = 2075
 V60_FADE_END_MS = 2850
@@ -5720,7 +5760,7 @@ def v60_envelope_value(ms):
         if ms <= x1:
             x0, y0 = points[idx - 1]
             p = (ms - x0) / max(1.0, float(x1 - x0))
-            # Waveform transientleri kaybolmasın diye smootherstep değil cubic ease kullanılır.
+
             p = p * p * (3.0 - 2.0 * p)
             return float(y0 + (y1 - y0) * p)
     return 0.0
@@ -5740,7 +5780,7 @@ def v60_envelope_impulse(ms):
     return v44_clamp(value * 0.72 + rising * 0.23 + falling * 0.05, 0.0, 1.28)
 
 
-# V46 dahil tüm kart hareketleri bundan sonra görsel waveform'u V60'dan okur.
+
 def v46_envelope_value(ms):
     return v60_envelope_value(ms)
 
@@ -5766,7 +5806,7 @@ def v60_motion_step(cinsiyet, selected, confirm, now=None):
         target_offset = 1.5
         target_scale = 0.004
     if confirm:
-        # Ana peak'te kart aniden zıplamak yerine kütleli biçimde aşağı oturur.
+
         target_offset += impulse * V60_CARD_MAX_OFFSET
         target_scale += env * V60_CARD_MAX_SCALE
 
@@ -5809,7 +5849,7 @@ def karakter_karti_ciz(rect, cinsiyet, secili, onay_animasyonu=False):
         now = pygame.time.get_ticks()
         elapsed = now - int(karakter_onay_gecisi_baslangic) if onay_animasyonu else 0
         env = v60_envelope_value(elapsed) if onay_animasyonu else 0.12
-        # İnce beyaz specular sweep sesin ana vuruşuna bağlıdır; kalıcı neon değildir.
+
         if env >= V60_BEAT_ACCENT_THRESHOLD:
             sweep_progress = v44_clamp01((elapsed - 360.0) / 520.0)
             sweep_x = int(
@@ -5842,7 +5882,7 @@ def v60_confirm_vignette_ciz():
         return
     elapsed = pygame.time.get_ticks() - int(karakter_onay_gecisi_baslangic)
     env = v60_envelope_value(elapsed)
-    # Ana ses gövdesinde hafif ağırlaşır; sample tail'de fade sistemine teslim eder.
+
     darkness = int(10 + 28 * env)
     if elapsed >= KARAKTER_ONAY_FADE_BASLANGICI:
         fade_t = v44_clamp01(
@@ -5905,14 +5945,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V60
-# =========================================================
 
 
-# =========================================================
-# V61 - STRIKE RESOLUTION / POISE / CONTACT DEPTH
-# =========================================================
+
+
+
+
+
+
 V61_VERSION = "61.0"
 # </POTBO_STAGE S1388>
 
@@ -6043,7 +6083,7 @@ def v62_hash01(seed, index, salt=0):
 def v62_budget_take():
     global v62_detail_draw_budget, v62_last_budget_reset_ms
     now = pygame.time.get_ticks()
-    # Her render frame'ini ayırt etmek için 8 ms bucket yeterli; 60 FPS'te kesin resetlenir.
+
     bucket = now // 8
     if bucket != v62_last_budget_reset_ms:
         v62_last_budget_reset_ms = bucket
@@ -6069,8 +6109,8 @@ def v50_full_diagnostics():
 
 # <POTBO_STAGE S1410>
 
-# Karmaşık kan sistemi frame pacing'i bozmasın diye yalnız dekoratif katmanlar adaptif
-# budget kullanır. Core blood particle, ölüm arterial pulse ve hit feedback korunur.
+
+
 V63_FRAME_TARGET_MS = 1000.0 / FPS
 V63_FRAME_EWMA_ALPHA = 0.055
 V63_TIER_HYSTERESIS_MS = 900
@@ -6200,18 +6240,18 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V64
-# =========================================================
 
 
-# =========================================================
-# V65 - ARTERIAL PRESSURE DECAY / DEATH-JET REFINEMENT
-# =========================================================
+
+
+
+
+
+
 V65_VERSION = "65.0"
 
-# Player ölüm fışkırması artık eşit aralıklı particle burst değil. Basınç eğrisi ilk
-# iki nabızda güçlü, sonra hızla çöker; jet yönü yara ekseninden yavaşça aşağı düşer.
+
+
 V65_PRESSURE_CURVE = (
     (0.00, 1.00),
     (0.10, 0.96),
@@ -6279,14 +6319,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V65
-# =========================================================
 
 
-# =========================================================
-# V66 - INVARIANT AUDIT / SELF-REPAIR CONTRACT
-# =========================================================
+
+
+
+
+
+
 V66_VERSION = "66.0"
 V66_AUDIT_INTERVAL_MS = 3100
 V66_HISTORY_LIMIT = 20
@@ -6327,14 +6367,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V66
-# =========================================================
 
 
-# =========================================================
-# V67 - MEASURED BLADE TRAJECTORY / SPLATTER VECTOR SAMPLING
-# =========================================================
+
+
+
+
+
+
 V67_VERSION = "67.0"
 V67_HISTORY = 18
 V67_SAMPLE_MIN_MS = 6
@@ -6366,14 +6406,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V67
-# =========================================================
 
 
-# =========================================================
-# V68 - PER-TARGET BLOOD SIGNATURE / DARK TONE VARIATION
-# =========================================================
+
+
+
+
+
+
 V68_VERSION = "68.0"
 # </POTBO_STAGE S1436>
 
@@ -6408,14 +6448,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V68
-# =========================================================
 
 
-# =========================================================
-# V69 - MELEE DEBUG GEOMETRY / RANGE CALIBRATION
-# =========================================================
+
+
+
+
+
+
 V69_VERSION = "69.0"
 V69_TRAJECTORY_ALPHA = 150
 V69_REACH_MARK_ALPHA = 190
@@ -6453,14 +6493,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V69
-# =========================================================
 
 
-# =========================================================
-# V70 - FINAL INTEGRATION AUDIT / POLISH CONTRACT
-# =========================================================
+
+
+
+
+
+
 V70_VERSION = "70.0"
 
 V70_REQUIRED_SYSTEMS = (
@@ -6519,7 +6559,7 @@ def v70_refresh_startup_report():
     global v70_startup_report, v70_startup_ok, V50_STARTUP_OK
     v70_startup_report = v70_final_contract()
     v70_startup_ok = bool(v70_startup_report.get("all_ok", False))
-    # V50 flag eski patch sırasındaki değeri taşıyordu; final graph kurulduktan sonra yenile.
+
     V50_STARTUP_OK = v70_startup_ok
     return v70_startup_report
 # </POTBO_STAGE S1451>
@@ -6540,18 +6580,18 @@ def v50_full_diagnostics():
     return data
 
 
-# Final graph tamamlandıktan sonra import/startup anında yalnız saf kontrat kontrolleri.
+
 v70_refresh_startup_report()
 
 
-# =========================================================
-# END V70
-# =========================================================
 
 
-# =========================================================
-# V71 - SPLATTER METROLOGY / SHAPE QUALITY MEASUREMENT
-# =========================================================
+
+
+
+
+
+
 V71_VERSION = "71.0"
 V71_HISTORY = 64
 V71_MIN_SAMPLE = 3
@@ -6669,7 +6709,7 @@ def v71_shape_quality(shape, anisotropy, spread_deg, asymmetry):
         return False
     if spread_deg > float(expected["spread_max_deg"]):
         return False
-    # Asimetrik aileler tam simetrik olmamalı. Çok küçük fark procedural tekrar hissi verir.
+
     if shape in ("fan_asymmetric", "radial_asymmetric") and asymmetry < 0.06:
         return False
     return True
@@ -6779,18 +6819,18 @@ def v50_full_diagnostics():
     return data
 
 
-# Final startup flag after metrology layer is installed.
+
 V50_STARTUP_OK = bool(v70_refresh_startup_report().get("all_ok", False))
 
 
-# =========================================================
-# END V71
-# =========================================================
 
 
-# =========================================================
-# V72 - FINAL QA SNAPSHOT / RELEASE GUARD
-# =========================================================
+
+
+
+
+
+
 V72_VERSION = "72.0"
 # </POTBO_STAGE S1457>
 
@@ -6843,7 +6883,7 @@ V72_RELEASE_SUMMARY = v72_release_summary_lines()
 
 # <POTBO_STAGE S1465>
 
-# Aerial kanı frenle; zemine dönüşen kanı ve kalıcı iz bütçesini büyüt.
+
 V73_NORMAL_AIR_COUNT = 0.92
 V73_ARTERIAL_AIR_COUNT = 0.68
 V73_DEATH_ARTERY_AIR_COUNT = 0.62
@@ -6964,8 +7004,8 @@ v74_particle_last_clean = {}
 # <POTBO_STAGE S1488>
 
 
-# Final V73 particle update'in üstüne bağlanır. max_age yüzünden havada silinen bir
-# damla da son temiz trajectory noktasında zemine dönüştürülür.
+
+
 _v74_particle_update_original = V44BloodParticle.guncelle
 # </POTBO_STAGE S1488>
 
@@ -6975,7 +7015,7 @@ _v74_particle_update_original = V44BloodParticle.guncelle
 V44BloodParticle.guncelle = _v74_particle_update
 
 
-# V58 transient kanın son görünür karesi artık zemin iziyle sonuçlanır.
+
 _v74_mist_update_original = V58MistParticle.update
 _v74_filament_update_original = V58BloodFilament.update
 _v74_lobe_update_original = V58ImpactLobe.update
@@ -7003,7 +7043,7 @@ def v50_full_diagnostics():
 
 # <POTBO_STAGE S1500>
 
-# Kurtçukların erken arcade efekti gibi 45-80 saniyede çıkmasını engelle.
+
 V75_MAGGOT_FIRST_MIN_MS = 6 * 60 * 1000
 V75_MAGGOT_FIRST_MAX_MS = 10 * 60 * 1000
 V75_MAGGOT_WAVE_MIN_MS = 4 * 60 * 1000
@@ -7029,9 +7069,9 @@ v75_cleanup_next_ms = 0
 # <POTBO_STAGE S1506>
 
 
-# ---------------------------------------------------------
-# BLOOD MAGGOTS: YAVAŞ TÜKETİM + KONTROLLÜ YAYILIM
-# ---------------------------------------------------------
+
+
+
 _v75_maggot_init_original = BloodMaggot.__init__
 _v75_maggot_update_original = BloodMaggot.guncelle
 # </POTBO_STAGE S1506>
@@ -7052,7 +7092,7 @@ def v75_maggot_spread_point(maggot):
     else:
         outward = outward.normalize()
 
-    # Birkaç aday denenir; hiçbiri temiz değilse kan yoktan bir collider üstüne basılmaz.
+
     for _ in range(9):
         direction = outward.rotate(random.uniform(-72.0, 72.0))
         dist = random.uniform(10.0, 28.0)
@@ -7096,7 +7136,7 @@ def v50_full_diagnostics():
 # <POTBO_STAGE S1522>
 
 
-# X-special üzerindeki I / II / III hit göstergesi de sayaç olarak görünmez.
+
 def _v34_special_hit_counter_ciz(simdi):
     return
 # </POTBO_STAGE S1522>
@@ -7104,16 +7144,16 @@ def _v34_special_hit_counter_ciz(simdi):
 # <POTBO_STAGE S1524>
 
 
-# ---------------------------------------------------------
-# ÖLÜM EKRANI: GERÇEK ÜÇ RENK
-# ---------------------------------------------------------
+
+
+
 V76_DEATH_BLACK = (0, 0, 0)
-V76_DEATH_BLOOD = (72, 0, 8)  # kan / sıvı izler
+V76_DEATH_BLOOD = (72, 0, 8)
 V76_DEATH_BODY = (
     142,
     12,
     24,
-)  # öldürülen + öldüren (+ minimal menü metni)
+)
 _v76_death_scratch = pygame.Surface(
     (GENISLIK, YUKSEKLIK), pygame.SRCALPHA
 ).convert_alpha()
@@ -7132,7 +7172,7 @@ def _v76_flat_layer(draw_fn, color, remove_black=False):
 
     src = _v76_death_scratch
     if remove_black:
-        # Ceset renderer'ındaki saf siyah gölgeyi maskeden çıkar; arka plan zaten siyahtır.
+
         src = _v76_death_scratch.copy()
         src.set_colorkey(V76_DEATH_BLACK)
     mask = pygame.mask.from_surface(src, 1)
@@ -7148,7 +7188,7 @@ def _v76_flat_layer(draw_fn, color, remove_black=False):
 # <POTBO_STAGE S1532>
 
 
-# Parlaklık overlay'i üç-renk ölüm paletini bozmasın.
+
 _v76_brightness_original = parlaklik_kaplamasi_ciz
 # </POTBO_STAGE S1532>
 
@@ -7181,9 +7221,9 @@ def gelistirici_test_paneli_ciz():
 # <POTBO_STAGE S1543>
 
 
-# ---------------------------------------------------------
-# ÜÇ RENKLİ ÖLÜM TABLOSU - KOREOGRAFİ KORUNUR
-# ---------------------------------------------------------
+
+
+
 def _v77_semantic_layer(draw_fn, color, max_coverage=V77_LAYER_MAX_COVERAGE):
     """Bir sahne katmanını yeni, temiz bir yüzeyde çizip tek palette rengine indirger.
 
@@ -7201,8 +7241,8 @@ def _v77_semantic_layer(draw_fn, color, max_coverage=V77_LAYER_MAX_COVERAGE):
     finally:
         ekran = old_screen
 
-    # Alpha yüzeyini siyah zemin üzerine kompoze edip saf siyahı colorkey yapıyoruz.
-    # Bu, corpse renderer'larının siyah zemin gölgesini açık kırmızıya dönüşmekten korur.
+
+
     opaque = pygame.Surface((GENISLIK, YUKSEKLIK)).convert()
     opaque.fill(V77_DEATH_BLACK)
     opaque.blit(scratch, (0, 0))
@@ -7234,14 +7274,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V77
-# =========================================================
 
 
-# =========================================================
-# V78 - UNIVERSAL UI / DEATH REFINEMENT / ENEMY RAGE
-# =========================================================
+
+
+
+
+
+
 V78_VERSION = "78.0"
 # </POTBO_STAGE S1552>
 
@@ -7377,11 +7417,11 @@ def _v79_sharp_bar(
         shown_ratio = ratio
     shown_ratio = _v79_clamp01(shown_ratio)
 
-    # Tek katmanlı, düz ve keskin. Bıçak ucu/level dişi yok.
+
     pygame.draw.rect(ekran, (2, 2, 3), rect.inflate(4, 4))
     pygame.draw.rect(ekran, back, rect)
 
-    # Gecikmeli değer yalnız gerçek değerin arkasında ince bir gölge olarak kalır.
+
     if shown_ratio > ratio + 0.003:
         trail_w = int(round(rect.width * shown_ratio))
         if trail_w > 0:
@@ -7415,16 +7455,16 @@ def _v79_sharp_bar(
 # <POTBO_STAGE S1587>
 
 
-# ---------------------------------------------------------
-# 3) Ölüm ekranı: başlık müzikle aynı anda yavaş fade, menü müzik bitince
-# ---------------------------------------------------------
+
+
+
 V79_DEATH_TITLE_DELAY_MS = 2500
 V79_DEATH_TITLE_FADE_MS = 2700
 # </POTBO_STAGE S1587>
 
 # <POTBO_STAGE S1591>
 
-# Dither cache: fade sırasında ara RGB üretmeden algısal olarak yumuşak geçiş.
+
 V79_BAYER_4 = (
     (0, 8, 2, 10),
     (12, 4, 14, 6),
@@ -7457,7 +7497,7 @@ def _v79_dither_pattern(size, level):
     for yy in range(0, h, 4):
         for xx in range(0, w, 4):
             pat.blit(tile, (xx, yy))
-    # Yalnız birkaç sabit UI boyutu kullanılır; cache kontrollü kalır.
+
     if len(_v79_dither_cache) > 96:
         _v79_dither_cache.clear()
     _v79_dither_cache[key] = pat
@@ -7494,7 +7534,7 @@ def v50_full_diagnostics():
 
 # <POTBO_STAGE S1607>
 
-# Character select onayı biraz daha ağır aksın.
+
 KARAKTER_ONAY_GECIS_SURESI = 3400
 KARAKTER_ONAY_FADE_BASLANGICI = 2360
 # </POTBO_STAGE S1607>
@@ -7533,14 +7573,14 @@ def v50_full_diagnostics():
     return data
 
 
-# =========================================================
-# END V80
-# =========================================================
 
 
-# =========================================================
-# V81 - POST-MORTEM DISCIPLINE / ASYMMETRIC ARTERIAL BLOOD
-# =========================================================
+
+
+
+
+
+
 V81_VERSION = "81.0"
 V81_MAX_DROPLETS = 280
 V81_MAX_SEEPS = 26
@@ -7637,8 +7677,8 @@ def _v81_add_burst(
         ),
     )
 
-    # Her burst tek bir düzgün koni değildir. Bir taraf hafif baskın, birkaç damla
-    # ana eksenin tersine/yanına kaçar. Bu, matematiksel fan görünümünü kırar.
+
+
     side_bias = rng.uniform(-0.42, 0.42) * float(spread_deg)
     long_tail_side = -1.0 if rng.random() < 0.5 else 1.0
     now = pygame.time.get_ticks()
@@ -7659,7 +7699,7 @@ def _v81_add_burst(
                 -spread_deg * 1.18,
                 min(spread_deg * 1.18, angle),
             )
-            # Çoğu damla yakın, azı uzakta: kan daha organik kümelenir.
+
             dist_scale = min(1.55, max(0.18, rng.lognormvariate(-0.12, 0.38)))
 
         d = direction.rotate(angle)
@@ -7672,7 +7712,7 @@ def _v81_add_burst(
         lateral_noise = pygame.Vector2(-d.y, d.x) * rng.uniform(-5.5, 5.5)
         landing = origin + d * travel + lateral_noise
 
-        # Collision üstüne leke basma. Nihai dünya decal'i de aynı güvenli API'den geçer.
+
         if not v74_floor_clean(landing.x, landing.y):
             safe = v74_trace_clean_floor(
                 landing.x,
@@ -7735,7 +7775,7 @@ def _v81_add_arterial_sequence(
     height=22.0,
     tag=0,
 ):
-    # İlk iki nabız güçlü; sonrakiler basınç kaybederek düzensizleşir.
+
     pulse_plan = (
         (0, 27, 1.00, 30.0, 1.00),
         (145, 22, 0.90, 34.0, 0.96),
@@ -7746,7 +7786,7 @@ def _v81_add_arterial_sequence(
     for i, (delay, count, pressure, spread, dist) in enumerate(pulse_plan):
         if len(v81_death_blood["drops"]) >= V81_MAX_DROPLETS:
             break
-        # Nabızlar aynı açıya kilitlenmez; yara basıncı düşerken eksen hafifçe çöker.
+
         rng = _v81_rng(tag * 17 + i)
         pulse_dir = pygame.Vector2(direction).rotate(
             rng.uniform(-7.0, 7.0) + i * rng.uniform(-2.5, 3.5)
@@ -7788,7 +7828,7 @@ def _v81_draw_seep(seep, now):
     if age <= 0:
         return
     p = _v81_smooth(age / max(1.0, float(seep["grow_ms"])))
-    # İlk anda leke yok denecek kadar küçük; yara çevresinden ağır ağır açılır.
+
     scale = 0.10 + 0.90 * p
     pts = _v81_polygon_points(
         seep["origin"],
@@ -7984,7 +8024,7 @@ def _v82_gothic_bar(
     ratio = _v82_clamp01(ratio)
     shown_ratio = ratio if shown_ratio is None else _v82_clamp01(shown_ratio)
 
-    # Sivri gotik uçlar + içte sade dolgu. Rivet/industrial ağırlık kaldırıldı.
+
     inner = _v82_gothic_shell(
         rect.inflate(8, 6),
         PARLAK_KIRMIZI if warning else border,
@@ -8007,7 +8047,7 @@ def _v82_gothic_bar(
     if fw > 0:
         fr = pygame.Rect(inner.x, inner.y, fw, inner.height)
         pygame.draw.rect(ekran, fill, fr)
-        # Islak metal değil: ince iki tonlu keskin piksel yüzeyi.
+
         hi = tuple(min(255, int(c) + 31) for c in fill)
         lo = tuple(max(0, int(c) - 28) for c in fill)
         pygame.draw.line(
@@ -8026,7 +8066,7 @@ def _v82_gothic_bar(
                 1,
             )
 
-    # Düz grid yerine seyrek gotik dişler; bar okunurluğunu bozmaz.
+
     step = 34
     for x in range(inner.left + step, inner.right, step):
         pygame.draw.line(
@@ -8056,7 +8096,7 @@ def _v82_gothic_bar(
                 ],
             )
 
-    # Sağ uçta küçük bıçak ağzı; doluluk yönünü sezdirir.
+
     pygame.draw.line(
         ekran,
         border,
@@ -8087,9 +8127,9 @@ def _v82_slot_polygon(rect, cut=5):
 # <POTBO_STAGE S1667>
 
 
-# ---------------------------------------------------------
-# DEATH: V81'in gerçek damla fiziğini geri al + sıvı/viskoz detay
-# ---------------------------------------------------------
+
+
+
 def _v82_drop_seed(drop, salt=0):
     return (
         int(drop.get("birth_ms", 0)) * 17
@@ -8202,7 +8242,7 @@ _v83_hit_feedback_original = _v82_apply_hit_feedback
 # <POTBO_STAGE S1698>
 
 
-# --- death screen ---------------------------------------------------------
+
 def _v83_death_split_surface(surface, center, rot_deg, gap_px):
     draw = pygame.transform.rotate(surface, rot_deg)
     w, h = draw.get_size()
@@ -8482,8 +8522,8 @@ def v84_guard_quality(now=None):
     if elapsed < 0 or elapsed > window:
         return 0.0
     normalized = elapsed / float(window)
-    # Contact around 35-62% of the window feels deliberate.  The edges remain
-    # valid, but do not receive the strongest poise response.
+
+
     center_distance = abs(normalized - 0.48) / 0.52
     return v84_clamp(
         1.0 - 0.24 * v84_smoothstep(center_distance),
@@ -8730,8 +8770,8 @@ def _v85_fragment_update(self, dt):
     if self.settled:
         return
 
-    # Position is a ground-plane offset.  Height is a separate component, so a
-    # fragment never reads as a platformer object falling toward screen-bottom.
+
+
     self.position += self.velocity * dt
     self.height_z += self.vertical_velocity * dt
     self.vertical_velocity -= 520.0 * dt
@@ -8852,10 +8892,10 @@ def v85_fracture_cut_one(
         return 0
 
     for candidate_index, fragment in candidates[:5]:
-        # The old centre-based line could miss a silhouette after several pieces
-        # had already been removed.  Quantiles are measured over the remaining
-        # opaque pixels instead: every authored impact can therefore shave one
-        # real, bounded piece while the largest connected mass stays upright.
+
+
+
+
         angle_offsets = (
             0.0,
             6.0,
@@ -8960,9 +9000,9 @@ def v85_fracture_cut_one(
 # <POTBO_STAGE S1837>
 
 
-# ---------------------------------------------------------
-# MORTAL FOLLOW-THROUGH / 3-4 GROUND DEATH
-# ---------------------------------------------------------
+
+
+
 V85_MORTAL_FINAL_HIT_MS = 780
 # </POTBO_STAGE S1837>
 
@@ -9107,9 +9147,9 @@ def v85_death_release(state):
 # <POTBO_STAGE S1873>
 
 
-# ---------------------------------------------------------
-# HOLD-RELEASE: ONE CONTACT, EXIT BEHIND THE TARGET
-# ---------------------------------------------------------
+
+
+
 V85_HOLD_CROSS_MS = 178
 V85_HOLD_EXIT_CLEARANCE = 54.0
 # </POTBO_STAGE S1873>
@@ -9182,9 +9222,9 @@ V85_STARTUP_CONTRACT = v85_diagnostics()
 # <POTBO_STAGE S1899>
 
 
-# ---------------------------------------------------------
-# PERFECT GUARD: forgiving input edge, unchanged threat rules
-# ---------------------------------------------------------
+
+
+
 V84_PERFECT_GUARD_STRICT_MS = 184
 V84_PERFECT_GUARD_STANDARD_MS = 212
 V84_PERFECT_GUARD_FRONT_DOT_STRICT = 0.04
@@ -9421,8 +9461,8 @@ def v86_bite_mask(state, fraction, rng):
             boundary.append(point)
     if not boundary:
         boundary = points
-    # Alternating vertical bands keeps repeated bites asymmetrical instead of
-    # eroding the same limb until it becomes a regular staircase.
+
+
     preferred_band = rng.randrange(4)
     banded = [
         point
@@ -9484,8 +9524,8 @@ def v86_partition_mask(mask, count, seed):
     rng = random.Random(int(seed) ^ 0x86B0B)
     count = max(1, min(int(count), len(points)))
     seeds = [rng.choice(points)]
-    # Farthest-point seeds create legible, non-sliver regions.  A small random
-    # perturbation keeps the pieces irregular rather than a perfect grid.
+
+
     while len(seeds) < count:
         sample = points if len(points) < 420 else rng.sample(points, 420)
         candidate = max(
@@ -9574,8 +9614,8 @@ def v86_head_region_shatter(state, now):
                 rng.uniform(-790.0, 790.0),
                 delay=index * 0.008,
             )
-    # A distinct eye uses the same ground-plane physics and the three-colour
-    # palette; it is not a screen-space particle pasted onto the tableau.
+
+
     eye_direction = direction.rotate(-31.0)
     state.debris.append(
         V86Debris(
@@ -9677,9 +9717,9 @@ def _v30_olum_koreografi_guncelle(simdi):
     return _v86_old_death_choreography_update(simdi)
 
 
-# =========================================================
-# END V86 DEATH CHOREOGRAPHY
-# =========================================================
+
+
+
 
 
 def v86_ground_shadow(center, width, height):
@@ -9764,9 +9804,9 @@ V87_SPECIAL_RING = (250, 235, 239)
 
 # <POTBO_STAGE S1948>
 
-# The attached 155x145 source atlas is embedded losslessly.  Normal Ignis ground
-# fire retains its original colours; death-tableau flames use only its alpha
-# silhouette and the same light-red body colour as the victim.
+
+
+
 V87_GROUND_FIRE_ATLAS_SHA256 = (
     "e89cd0d2f3b6e62b0167310deb4119b9728e872a33e2a279d2a36d551aff1c97"
 )
@@ -9936,8 +9976,8 @@ def v86_root_draw(state, now):
     if not state.burning_root or state.root_surface is None:
         return
 
-    # The original three anchors remain, then nine smaller atlas flames wrap the
-    # torso and limbs.  Their positions rotate with the fallen top-down body.
+
+
     anchor = v86_body_anchor_screen(state)
     width, height = state.base_size
     fall = 0.0
@@ -10117,9 +10157,9 @@ _v88_death_actor_frame_original = v86_death_actor_frame
 # <POTBO_STAGE S2029>
 
 
-# ---------------------------------------------------------
-# Continuous floor flow: blood grows while it runs, then remains in the world
-# ---------------------------------------------------------
+
+
+
 
 V88_DEATH_FLOW_LIMIT = 9
 V88_DEATH_FLOW_COMMIT_STAGES = 7
@@ -10181,7 +10221,7 @@ class V88DeathBloodFlow:
         if dt <= 0.0:
             return
         remaining = max(0.0, self.target_length - self.visible_length)
-        # Flow slows as it spreads but never teleports to its final footprint.
+
         pressure = 0.34 + 0.66 * min(1.0, remaining / 14.0)
         self.visible_length = min(
             self.target_length,
@@ -10212,8 +10252,8 @@ def v88_next_flow_id():
 
 
 def v88_flow_ground_origin(state, zone):
-    # Wound height belongs to airborne spray; floor flow starts where the body
-    # meets the map plane in this 3/4 top-down projection.
+
+
     side = {
         "head": -3.0,
         "neck": -2.0,
@@ -10413,15 +10453,15 @@ V88_STARTUP_CONTRACT = v88_diagnostics()
 # <POTBO_STAGE S2056>
 
 
-# =========================================================
-# END V88
-# =========================================================
 
 
-# =========================================================
-# V89 - PATH OF THE BLOODIED ONE
-# PERMANENT BLOOD / BALANCED CARRION ECOLOGY / MEDIEVAL UI
-# =========================================================
+
+
+
+
+
+
+
 
 
 V89_VERSION = "89.0"
@@ -10479,16 +10519,16 @@ class V89BloodFootprint:
 
 
 def v75_cleanup_consumed_blood(simdi):
-    # Permanent stains are never list-pruned.  Rendering is tile-batched instead.
+
     return 0
 # </POTBO_STAGE S2073>
 
 # <POTBO_STAGE S2075>
 
 
-# ---------------------------------------------------------
-# FIRE / BLOOD INTERACTION AND CARRION FOOD WEB
-# ---------------------------------------------------------
+
+
+
 V89_MAGGOT_MAX = 10
 V89_MAGGOT_REPRODUCTION_MIN_MS = 28_000
 V89_MAGGOT_REPRODUCTION_MAX_MS = 48_000
@@ -10617,9 +10657,9 @@ def slot_ciz(
 # <POTBO_STAGE S2112>
 
 
-# ---------------------------------------------------------
-# PLAYER-FACING ECOLOGY TEXT + INTEGRATION DIAGNOSTICS
-# ---------------------------------------------------------
+
+
+
 def v89_replace_ecology_hints(mapping):
     if not isinstance(mapping, dict):
         return
@@ -10761,9 +10801,9 @@ _v90_item_use_raw = secili_itemi_kullan
 # <POTBO_STAGE S2161>
 
 
-# ---------------------------------------------------------
-# DRACO CALCINANS: FORM -> BITE -> COIL -> IMPLOSION
-# ---------------------------------------------------------
+
+
+
 
 V90_DRACO_CAST_MS = 260
 V90_DRACO_SPEED = 520.0
@@ -10843,9 +10883,9 @@ v90_draco_state = V90DracoState()
 # <POTBO_STAGE S2185>
 
 
-# ---------------------------------------------------------
-# RUNTIME INTEGRATION / UI / PERSISTENCE
-# ---------------------------------------------------------
+
+
+
 
 _v90_q_use_raw = q_hizli_itemi_kullan
 # </POTBO_STAGE S2185>
@@ -10887,7 +10927,7 @@ if _v90_smoke_prefix:
 # </POTBO_STAGE S2209>
 
 # <POTBO_STAGE S2211>
-pygame.display.set_caption("Path of the Bloodied One")
+pygame.display.set_caption("Path of the Bloodied One — Agraphon Studios")
 # </POTBO_STAGE S2211>
 
 # <POTBO_STAGE S2213>
@@ -10899,9 +10939,9 @@ V91_DEATH_BLACK = (0, 0, 0)
 # <POTBO_STAGE S2217>
 
 
-# ---------------------------------------------------------
-# DEVELOPER TEST BELT: QUOTE TOGGLE, INSTANT SPELL SWITCHES
-# ---------------------------------------------------------
+
+
+
 v91_test_panel_visible = False
 # </POTBO_STAGE S2217>
 
@@ -10947,9 +10987,9 @@ GroundFirePatch.__init__ = _v91_ground_fire_init
 GroundFirePatch.ciz = _v91_ground_fire_draw
 
 
-# ---------------------------------------------------------
-# DRACO: LONG-DISTANCE AUTHORED FORMS + HARDER IMPLOSION
-# ---------------------------------------------------------
+
+
+
 V91_DRACO_LONG_RECTS = (
     (0, 72, 153, 49),
     (181, 73, 160, 49),
@@ -11021,9 +11061,9 @@ V89_FIRE_ECOLOGY_INTERVAL_MS = 360
 # <POTBO_STAGE S2248>
 
 
-# ---------------------------------------------------------
-# DEATH SCREEN: EXACT THREE-COLOR PALETTE + MANY SMALL FLAMES
-# ---------------------------------------------------------
+
+
+
 v91_death_layer_cache = {}
 v91_death_flame_cache = {}
 
@@ -11123,8 +11163,8 @@ v92_level_stats = {
 def v92_level_curve(level):
     level = max(1, min(MAKSIMUM_LEVEL, int(level)))
     p = (level - 1) / max(1.0, float(MAKSIMUM_LEVEL - 1))
-    # Concave curves deliberately front-load readability while preventing late
-    # game exponential drift.
+
+
     return {
         "strength": 0.18 + 0.22 * math.sqrt(p),
         "speed": 0.0042 + 0.0031 * math.sqrt(p),
@@ -11135,9 +11175,9 @@ def v92_level_curve(level):
 # <POTBO_STAGE S2273>
 
 
-# ---------------------------------------------------------
-# Footprints: smaller and stochastic rather than metronomic.
-# ---------------------------------------------------------
+
+
+
 v92_next_footprint_distance = 13.0
 v92_foot_rng = random.Random(0xB10D92)
 # </POTBO_STAGE S2273>
@@ -11190,11 +11230,11 @@ V90DracoState.apply_rupture = _v92_draco_apply_rupture
 # <POTBO_STAGE S2290>
 
 
-# ---------------------------------------------------------
-# Developer shortcuts: only the requested test contract survives. No overlay.
-# CTRL+1/2 cast directly, so normal acquired spells retain mana/cooldown costs.
-# CTRL+I gives 1000 coin; CTRL+U gives +1 level; CTRL+O spawns passive test heads.
-# ---------------------------------------------------------
+
+
+
+
+
 def gelistirici_test_paneli_ciz():
     return None
 
@@ -11294,9 +11334,9 @@ def oyun_sinematik_kilitli_mi():
 # <POTBO_STAGE S2332>
 
 
-# ---------------------------------------------------------
-# Death screen body slightly darker.
-# ---------------------------------------------------------
+
+
+
 V91_DEATH_BODY = (168, 31, 47)
 V84_BODY = (178, 16, 34)
 V84_BODY_HOT = (205, 34, 48)
@@ -11311,7 +11351,7 @@ _v92_new_game_raw = yeni_oyun_baslat
 # <POTBO_STAGE S2339>
 
 
-# Initialize economy after all wrappers exist.
+
 v92_resource_balance_refresh()
 # </POTBO_STAGE S2339>
 
@@ -11339,10 +11379,10 @@ def v63_choose_tier(frame_ms):
 # <POTBO_STAGE S2347>
 
 
-# ---------------------------------------------------------
-# O(n^2) blood-pool scan -> spatial bins. Same cluster payload, substantially fewer
-# distance checks when the floor is heavily stained.
-# ---------------------------------------------------------
+
+
+
+
 V55_POOL_SCAN_INTERVAL_MS = 760
 # </POTBO_STAGE S2347>
 
@@ -11370,8 +11410,8 @@ def _v94_frame_score(frame):
     w, h = frame.get_size()
     if area <= 0 or w <= 0 or h <= 0:
         return -1.0
-    # Horizontal mirror overlap rewards readable frontal idle frames without using
-    # hand-authored pixel offsets.
+
+
     flipped = pygame.transform.flip(frame, True, False)
     mirror = pygame.mask.from_surface(flipped, 1)
     overlap = mask.overlap_area(mirror, (0, 0)) / max(1.0, area)
@@ -11408,8 +11448,8 @@ def _v94_projection_bands(values, threshold, min_len):
 # <POTBO_STAGE S2357>
 
 
-# Draco flight always retains a complete dragon frame.  Long half-head/beam frames
-# are never substituted; the underlying spell state machine remains intact.
+
+
 def v91_draco_distance_form(travelled):
     return None
 # </POTBO_STAGE S2357>
@@ -11429,9 +11469,9 @@ _v94_chain_start_previous = v92_chain_start
 # <POTBO_STAGE S2369>
 
 
-# ---------------------------------------------------------
-# Developer panel. Ctrl+1/2 ASSIGN the spell to Q instead of casting it.
-# ---------------------------------------------------------
+
+
+
 v94_test_panel_visible = False
 _v94_dev_previous = gelistirici_test_girdisi_uygula
 # </POTBO_STAGE S2369>
@@ -11453,10 +11493,10 @@ def v95_currency(amount):
 # <POTBO_STAGE S2382>
 
 
-# ---------------------------------------------------------
-# Draco: complete-head frames only, brighter mask silhouettes, faster flight,
-# more natural formation and harder impact. Spell economy/state machine stays.
-# ---------------------------------------------------------
+
+
+
+
 V90_DRACO_CAST_MS = 430
 V90_DRACO_SPEED = 690.0
 V90_DRACO_BITE_MS = 135
@@ -11464,8 +11504,8 @@ V90_DRACO_COIL_MS = 355
 V90_DRACO_COLLAPSE_MS = 145
 V90_DRACO_RUPTURE_MS = 330
 
-# Safe full-dragon frames from the authored first row. Long beam/half-head rows are
-# never sampled.
+
+
 V95_DRACO_FLIGHT_INDICES = tuple(
     i for i in (6, 7, 8) if 0 <= i < len(V90_DRACO_FRAMES)
 )
@@ -11500,7 +11540,7 @@ V90DracoState.apply_rupture = _v95_draco_apply_rupture
 
 # <POTBO_STAGE S2392>
 
-# Dense floor stain clustering need not run almost every half-second.
+
 V55_POOL_SCAN_INTERVAL_MS = 980
 # </POTBO_STAGE S2392>
 
@@ -11575,9 +11615,9 @@ V97_REINALD_NAME = "REINALD"
 # <POTBO_STAGE S2414>
 
 
-# ---------------------------------------------------------
-# E INTERACTION ICON: Reinald uses the same interaction target system.
-# ---------------------------------------------------------
+
+
+
 _v97_game_draw_raw = oyun_ekrani_ciz
 # </POTBO_STAGE S2414>
 
@@ -11646,14 +11686,14 @@ FireMagicProjectile.guncelle = _v98_fire_projectile_update
 # <POTBO_STAGE S2434>
 
 
-# =========================================================
-# END V98
-# =========================================================
 
-# =========================================================
-# V99 - USEFUL LOADING HINTS / CATENA INPUT BUFFER /
-#       COMPACT STATUS ICONS / IMPACT-ONLY FIRE FIELD
-# =========================================================
+
+
+
+
+
+
+
 V99_VERSION = "99.0"
 # </POTBO_STAGE S2434>
 
@@ -11688,7 +11728,7 @@ V100_CATENA_MIN_TARGETS = 2
 
 
 FireMagicProjectile.ciz = _v100_fire_projectile_draw
-# V98/V99 trail storage is presentation-only and must stay empty.
+
 v98_projectile_trail_fires.clear()
 # </POTBO_STAGE S2472>
 
@@ -11736,7 +11776,7 @@ def _v102_upgrade_fallback(kind, size):
     t = max(2, size // 14)
 
     if kind == "weapon":
-        # Çapraz kılıç.
+
         pygame.draw.line(surf, gold, (size * 0.23, size * 0.78), (size * 0.76, size * 0.20), t + 2)
         pygame.draw.line(surf, white, (size * 0.26, size * 0.75), (size * 0.74, size * 0.22), max(1, t // 2))
         pygame.draw.line(surf, red, (size * 0.20, size * 0.65), (size * 0.36, size * 0.81), t)
@@ -11752,7 +11792,7 @@ def _v102_upgrade_fallback(kind, size):
         pygame.draw.polygon(surf, gold, pts, t)
         pygame.draw.line(surf, white, (c, int(size * 0.21)), (c, int(size * 0.72)), max(1, t // 2))
     else:
-        # Dayanıklılık: nabız/enerji çizgisi.
+
         pts = [
             (int(size * 0.12), c),
             (int(size * 0.30), c),
@@ -11781,10 +11821,10 @@ def _v103_renk_anahtari(renk):
 # <POTBO_STAGE S2495>
 
 
-# ---------------------------------------------------------
-# Ground-contact shadow cache
-# The old function allocated one alpha Surface per actor, every frame.
-# ---------------------------------------------------------
+
+
+
+
 V103_SHADOW_CACHE = {}
 
 
@@ -11846,15 +11886,15 @@ V105_MAGGOT_FIRST_MAX_MS = 90_000
 # <POTBO_STAGE S2516>
 
 
-# =========================================================
-# END V105
-# =========================================================
 
 
-# =========================================================
-# V107 - CORONA CAST FIX + CONDITION / FORGE / EADRIC /
-#        CORONA AETHERICA RUNTIME
-# =========================================================
+
+
+
+
+
+
+
 V106_VERSION = "107.0"
 # </POTBO_STAGE S2516>
 
@@ -11879,10 +11919,10 @@ def oyun_ekrani_ciz():
 # <POTBO_STAGE S2528>
 
 
-# ---------------------------------------------------------
-# EADRIC'S STONE: natural mana regeneration is disabled. The stone is the only
-# passive source and restores mana slowly while the player is actively in-world.
-# ---------------------------------------------------------
+
+
+
+
 V106_EADRIC_MANA_BASE_PER_SEC = 0.72
 V106_EADRIC_MANA_POOL_FACTOR = 0.0026
 v106_mana_tick_ms = pygame.time.get_ticks()
@@ -11993,21 +12033,21 @@ _v106_q_use_previous = q_hizli_itemi_kullan
 # <POTBO_STAGE S2558>
 
 
-# =========================================================
-# END V106
-# =========================================================
 
 
-# =========================================================
-# V108 - CORONA INTENSITY / UNLIMITED DEV SPELLS / FINAL UI LAYER
-# =========================================================
+
+
+
+
+
+
 V108_VERSION = "108.0"
 
-# ---------------------------------------------------------
-# DEV SPELL OWNERSHIP
-# Ctrl ile verilen büyü normal save ekonomisinden bağımsız bir test yetkisi kazanır.
-# Bu set save'e yazılmaz: yalnız mevcut geliştirme oturumunda mana/cooldown tüketmez.
-# ---------------------------------------------------------
+
+
+
+
+
 V108_DEV_UNLIMITED_SPELLS = set()
 # </POTBO_STAGE S2558>
 
@@ -12041,18 +12081,18 @@ V108_CORONA_BRIGHT_CACHE = {}
 
 def v106_corona_phase_angle(now):
     age = max(0.0, (int(now) - int(v106_corona.started_ms)) / 1000.0)
-    # Violent acceleration: readable for a fraction of a second, then nearly a ring.
+
     ramp = min(1.0, age / 0.46)
     smooth = ramp * ramp * (3.0 - 2.0 * ramp)
     speed = 4.4 + 12.8 * smooth
-    # Small high-frequency phase instability keeps the orbit from looking mechanical.
+
     return age * speed + math.sin(age * 23.0) * (0.025 + 0.055 * smooth)
 # </POTBO_STAGE S2567>
 
 # <POTBO_STAGE S2571>
 
 
-# Q slot: dev-granted spell explicitly reads as unlimited and never shows a cooldown mask.
+
 _v108_q_slot_draw_raw = v89_q_slot_draw
 # </POTBO_STAGE S2571>
 
@@ -12065,14 +12105,14 @@ _v108_game_draw_raw = oyun_ekrani_ciz
 # <POTBO_STAGE S2578>
 
 
-# =========================================================
-# END V108
-# =========================================================
 
 
-# =========================================================
-# V109 - CORONA GRAVITY / CLEAN DEATH UI / QUEUED CONSUMABLE FX / EADRIC TICKS
-# =========================================================
+
+
+
+
+
+
 V109_VERSION = "109.0"
 # </POTBO_STAGE S2578>
 
@@ -12094,7 +12134,7 @@ def v109_corona_glow_surface(size, alpha=255):
     surf = pygame.Surface((extent, extent), pygame.SRCALPHA).convert_alpha()
     c = extent // 2
     a = max(0.0, min(1.0, alpha / 255.0))
-    # Hafif dış halo: ışık yayar fakat orb'un kendisini yutmaz.
+
     pygame.draw.circle(surf, (220, 242, 255, int(15 * a)), (c, c), max(2, int(extent * 0.48)))
     pygame.draw.circle(surf, (231, 247, 255, int(23 * a)), (c, c), max(2, int(extent * 0.35)))
     pygame.draw.circle(surf, (244, 252, 255, int(31 * a)), (c, c), max(2, int(extent * 0.24)))
@@ -12139,7 +12179,7 @@ def v109_corona_find_target(projectile):
             continue
         desired = delta / dist
         dot = forward.dot(desired)
-        # Arkadaki aktöre geri dönmez; yalnız ön yarı düzlemdeki yakın hedefleri seçer.
+
         if dot < 0.08:
             continue
         score = dist * (1.0 + (1.0 - dot) * 0.42)
@@ -12261,9 +12301,9 @@ _v110_q_ok_raw = item_q_hizli_kullanima_uygun_mu
 # <POTBO_STAGE S2605>
 
 
-# ---------------------------------------------------------
-# TEST / GRANT
-# ---------------------------------------------------------
+
+
+
 GELISTIRICI_TEST_TUSLARI.add(pygame.K_4)
 # </POTBO_STAGE S2605>
 
@@ -12437,7 +12477,7 @@ _v112_brightness_raw = parlaklik_kaplamasi_ciz
 
 
 def v113_polyline_tail(points, progress):
-    # v112 prefix helper already exists; this only aliases and clamps.
+
     try:
         return v112_polyline_prefix(points, progress)
     except Exception:
@@ -12490,7 +12530,7 @@ _v114_brightness_raw = parlaklik_kaplamasi_ciz
 # <POTBO_STAGE S2671>
 
 
-# Glow ve tam ekran çakma biraz daha kontrollü.
+
 _v117_ground_draw_raw = v111_draw_ground_electric
 # </POTBO_STAGE S2671>
 

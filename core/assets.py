@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0015>
 
@@ -36,9 +36,9 @@ EADRIC_TASI_YOLU = os.path.join(ASSETS, "items", "eadrics_stone.png")
 
 # <POTBO_STAGE S0036>
 
-# Ambient rat ve Heads Thrower asset'leri. İkisi de eski sprite arşivlerinden
-# geldiği için kaynakta parlak yeşil + teal preview fonu taşır; aşağıdaki loader
-# çalışma anında bu iki rengi gerçek alpha=0 yapar. Rat savaş aktörü değildir.
+
+
+
 AMBIENT_KLASORU = os.path.join(ASSETS, "ambient")
 RAT_SHEET_ADAYLARI = [
     os.path.join(AMBIENT_KLASORU, "rat_spriteSheet.png"),
@@ -57,7 +57,7 @@ KISAYOL_E_YOLU = os.path.join(ASSETS, "shortcuts", "e.png")
 COIN_SEMBOL_ADAYLARI = [
     os.path.join(ASSETS, "ui", "coin.png"),
     os.path.join(ASSETS, "items", "coin.png"),
-    # Kullanıcının verdiği coin.png proje kökünde de doğrudan desteklenir.
+
     os.path.join(BASE_DIR, "coin.png"),
     os.path.join(BASE_DIR, "coinsymbol.png"),
     os.path.join(BASE_DIR, "coinsymbol(2).png"),
@@ -66,18 +66,10 @@ COIN_SEMBOL_ADAYLARI = [
 
 # <POTBO_STAGE S0060>
 
-VSCODE_LOGO_ADAYLARI = [
-    os.path.join(ASSETS, "ui", "vscode_logo.png"),
-    os.path.join(ASSETS, "ui", "vscode_logo.webp"),
-    os.path.join(BASE_DIR, "Visual_Studio_Code_1.35_icon.svg(2).webp"),
-]
-
 COIN_SEMBOL_YOLU = mevcut_ilk_dosya(COIN_SEMBOL_ADAYLARI)
 # </POTBO_STAGE S0060>
 
 # <POTBO_STAGE S0062>
-VSCODE_LOGO_YOLU = mevcut_ilk_dosya(VSCODE_LOGO_ADAYLARI)
-
 AURUM_POTABILE_ADAYLARI = [
     AURUM_POTABILE_YOLU,
     os.path.join(ASSETS, "items", "aurum_potentia.png"),
@@ -119,17 +111,17 @@ EADRIC_TASI_YOLU = mevcut_ilk_dosya(EADRIC_TASI_ADAYLARI) or EADRIC_TASI_YOLU
 # </POTBO_STAGE S0062>
 
 # <POTBO_STAGE S0067>
-# Yeni düzenli yol.
+
 BASLIK_FONT_YOLU = os.path.join(ASSETS, "fonts", "mainmenufont.ttf")
-# Eski projedeki yolu da destekle.
+
 ESKI_BASLIK_FONT_YOLU = os.path.join(ASSETS, "mainmenufont.ttf")
 # </POTBO_STAGE S0067>
 
 # <POTBO_STAGE S0071>
-# =========================================================
-# FONTLAR
-# Sadece ana oyun başlığı özel font kullanır.
-# =========================================================
+
+
+
+
 if os.path.exists(BASLIK_FONT_YOLU):
     gercek_baslik_font_yolu = BASLIK_FONT_YOLU
 elif os.path.exists(ESKI_BASLIK_FONT_YOLU):
@@ -192,7 +184,7 @@ sprite_olcek_onbellegi = {}
 # </POTBO_STAGE S0175>
 
 # <POTBO_STAGE S0181>
-# Eadric mağaranın yol tarifini verdiğinde True olur.
+
 magara_yolu_ogrenildi = False
 # </POTBO_STAGE S0181>
 
@@ -319,8 +311,8 @@ def tas_secimi_bolumu():
 def ganimet_sonrasi_akisi():
     e = eadric_adi()
 
-    # Eadric'in konuşması oyuncunun önceki seçimine göre değiştirilmez.
-    # Bu akışın özgün giriş metni doğrudan korunur.
+
+
     giris = [
         satir(e, bt("Bir eksildi.", "One less.")),
         satir(
@@ -412,11 +404,11 @@ def ganimet_sonrasi_akisi():
 # <POTBO_STAGE S0215>
 
 
-# =========================================================
-# GÖRSEL YÜKLEME
-# =========================================================
 
-# =========================================================
+
+
+
+
 
 
 def resim_yukle(yol, boyut=None, alpha=True, piksel=False):
@@ -582,8 +574,8 @@ def _sinir_fonlu_sheet_rectlerini_cikar(yol, rectler, fon_rengi, tolerans=6, pad
     if sheet is None:
         return []
     sheet = sheet.copy().convert_alpha()
-    # Fon temizliği rect kesmeden ÖNCE bütün atlas sınırından yapılır. Böylece bir
-    # alev/煙 sprite'ı kendi hücre kenarına değdiğinde yanlışlıkla fon sanılmaz.
+
+
     sheet = _sinir_baglantili_fon_temizle(sheet, fon_rengi, tolerans)
     sonuc = []
     for x, y, w, h in rectler:
@@ -619,9 +611,9 @@ def _frame_listesi_dogrula(kareler, minimum, isim):
 
 # <POTBO_STAGE S0255>
 
-# Rat sheet iki cycle taşır. İlk cycle'daki dört küçük yön satırı 22'şer frame'dir.
-# Label satırını kesmemek için y=14'ten başlanır; her hücre trim edildikten sonra
-# ortak canvas'a alınır. Bu, küçük sprite'ın koşarken zıplamasını engeller.
+
+
+
 RAT_FRAME_RECTLERI = []
 # </POTBO_STAGE S0255>
 
@@ -648,10 +640,10 @@ for _ri, _rname in enumerate(("right", "left", "down", "up")):
         _rat_tum_kareler[_start : _start + 22]
     )
 
-# y=189'daki 28x44 şerit tam gövde yürüyüşü değil; parça/ara sprite'lar
-# içerdiği için karakter dünyada sürükleniyormuş gibi görünüyordu. Locomotion artık
-# 72px'lik full-body pickup satırının ilk nötr/gövde karelerinden türetilir. Pickup
-# ve throw sekanslarının tamamı menzilli saldırı için korunur.
+
+
+
+
 _head_fragment_canvas = _kareleri_ortak_canvas_yap(_head_idle_raw, padding=3)
 # </POTBO_STAGE S0262>
 
@@ -688,15 +680,13 @@ coin_sembol_resmi = resim_yukle(COIN_SEMBOL_YOLU) if COIN_SEMBOL_YOLU else None
 
 # <POTBO_STAGE S0283>
 
-
-vscode_logo_resmi = resim_yukle(VSCODE_LOGO_YOLU) if VSCODE_LOGO_YOLU else None
 # </POTBO_STAGE S0283>
 
 # <POTBO_STAGE S0290>
 
-# =========================================================
-# SPRITE SHEET ARKA PLAN TEMİZLEME
-# =========================================================
+
+
+
 
 
 def siyaha_yakin_pikselleri_saydam_yap(kaynak):
@@ -774,8 +764,8 @@ def kenardan_siyah_arka_plani_temizle(kaynak, esik=35):
     return sonuc
 
 
-# Common enemy sheet'leri kendi chroma-key/alpha hattında temizlenir.
-# Bu bölüm yalnız eski karakter/NPC asset temizleyicileri için korunur.
+
+
 
 
 def sheet_parcala(sheet, sutun_sayisi, satir_sayisi):
@@ -814,16 +804,16 @@ def sheet_parcala(sheet, sutun_sayisi, satir_sayisi):
 # <POTBO_STAGE S0292>
 
 
-# Erkek sheet: 6 sütun × 4 satır
+
 erkek_kareleri = sheet_parcala(erkek_sheet, 6, 4)
 # </POTBO_STAGE S0292>
 
 # <POTBO_STAGE S0300>
 
 
-# =========================================================
-# TEMEL ÇİZİM FONKSİYONLARI
-# =========================================================
+
+
+
 
 
 def yazi_yaz(metin, x, y, renk=BEYAZ, font=normal_font, ortala=False):
@@ -913,9 +903,9 @@ def seviye_animasyonu_ciz():
 # <POTBO_STAGE S0338>
 
 
-# =========================================================
-# OYUNCU SPRITE ANİMASYONU
-# =========================================================
+
+
+
 
 
 def karakter_zemin_golgesi_ciz(x, y, genislik, yukseklik, alpha=72):
@@ -1071,7 +1061,7 @@ def kontrol_atamalari_paneli_ciz(secenek_panel, secenekler):
     """Tuş atamalarını diğer ayar satırlarından bilinçli olarak ayrı bir görsel dilde çizer."""
     pygame.draw.rect(ekran, (3, 3, 6), secenek_panel)
     pygame.draw.rect(ekran, (58, 49, 58), secenek_panel, 1)
-    # İnce çift ray: bu ekranı klasik gotik ayar kartlarından ayırır.
+
     pygame.draw.line(
         ekran,
         (128, 8, 28),
@@ -1197,7 +1187,7 @@ def kontrol_atamalari_paneli_ciz(secenek_panel, secenekler):
                 True,
             )
 
-    # Dikey konum göstergesi: thumb listenin üst/orta/alt konumunu doğrudan gösterir.
+
     track = pygame.Rect(
         secenek_panel.right - 38,
         satir_y,
@@ -1230,34 +1220,6 @@ def kontrol_atamalari_paneli_ciz(secenek_panel, secenekler):
 
 # <POTBO_STAGE S0490>
 
-
-def vscode_isareti_ciz(merkez_x, merkez_y, alfa):
-    alfa = max(0, min(255, int(alfa)))
-
-    if vscode_logo_resmi is not None:
-        logo = hafif_piksellestir(vscode_logo_resmi, (205, 205), 3)
-        logo.set_alpha(alfa)
-        ekran.blit(
-            logo,
-            logo.get_rect(center=(merkez_x, merkez_y - 28)),
-        )
-    else:
-        # Asset bulunamazsa sade bir yer tutucu göster; yeni logo çizilmez.
-        pygame.draw.rect(
-            ekran,
-            (42, 155, 235),
-            pygame.Rect(merkez_x - 82, merkez_y - 110, 164, 164),
-            4,
-        )
-
-    alfa_metin_ciz(
-        "VISUAL STUDIO CODE",
-        merkez_x,
-        merkez_y + 105,
-        normal_font,
-        (225, 235, 245),
-        alfa,
-    )
 # </POTBO_STAGE S0490>
 
 # <POTBO_STAGE S0624>
@@ -1284,9 +1246,9 @@ v34_special_afterimages = deque(maxlen=0)
 # <POTBO_STAGE S0967>
 
 
-# ---------------------------------------------------------
-# FIREBALL RENDER CACHES
-# ---------------------------------------------------------
+
+
+
 v38_fire_sprite_cache = {}
 # </POTBO_STAGE S0967>
 
@@ -1326,9 +1288,9 @@ sprite_parlama_alpha_onbellegi = {}
 V40_RAT_ASSET_RELOADED = _v40_rat_sheet_reload()
 
 
-# ---------------------------------------------------------
-# CHARACTER SELECT: TAM BİYOGRAFİ + ÇAKIŞMASIZ PROFİL
-# ---------------------------------------------------------
+
+
+
 v40_char_bio_font = pygame.font.SysFont("consolas", 13, bold=True)
 v40_char_profile_font = pygame.font.SysFont("consolas", 12, bold=True)
 # </POTBO_STAGE S1076>
@@ -1431,9 +1393,9 @@ class RockImpact:
 
 # <POTBO_STAGE S1129>
 
-# Gerçek dünyadaki santimetre/piksel oranı oyunda fiziksel birim olarak tanımlı değil.
-# Sprite gövdesi ~60-70 px olduğundan +6 px, görsel ölçekte yaklaşık 1 cm'lik küçük
-# bir kılıç erişim artışı olarak kullanılır. Hitbox hâlâ yönsel ve dar kalır.
+
+
+
 V44_SWORD_REACH_BONUS_PX = 6
 # </POTBO_STAGE S1129>
 
@@ -1469,7 +1431,7 @@ def v57_bar(surface, rect, value, label, value_text=""):
 
 
 def v58_draw(surface, silhouette=False):
-    # Lobe arkada, iplik ve aerosol önde. Bu sıra kanın tek düz sprite gibi görünmesini önler.
+
     for lobe in v58_lobes:
         lobe.draw(surface, silhouette=silhouette)
     for filament in v58_filaments:
@@ -1512,7 +1474,7 @@ def v59_technique_toast_ciz():
         width=1,
         border_radius=4,
     )
-    # Ağır UI: sol metal blok + ince koyu kırmızı progress kesiği.
+
     pygame.draw.rect(
         layer,
         (39, 31, 39, min(220, alpha)),
@@ -1551,8 +1513,8 @@ def _v85_fracture_release(self, impulse=(1.0, 0.0), power=1.0, seed=0):
             radial = radial.normalize()
         direction = v84_safe_vector(radial * 0.58 + base * 0.42).normalize()
         if fragment.released:
-            # Already severed pieces keep their ground position; the final impact
-            # adds momentum instead of snapping them back into the source sprite.
+
+
             fragment.velocity += direction * rng.uniform(150.0, 310.0) * float(power)
             fragment.vertical_velocity = max(
                 fragment.vertical_velocity,
@@ -1622,9 +1584,9 @@ V87_GROUND_FIRE_SPRITES = v87_ground_fire_frames_from_embedded()
 
 
 def v86_flame_draw(center, size, seed, now):
-    # This signature is used by intact burning bodies, bomb fragments and organs.
-    # Quantised pulse keeps the atlas crisp and cacheable instead of resampling it
-    # to a different blurry size every frame.
+
+
+
     pulse = ((int(now) // 78 + abs(int(seed)) * 3) % 5) - 2
     height = max(8, int(round(float(size) * 4.05)) + pulse)
     image = v87_death_fire_sprite(height, seed, 242)
@@ -1638,17 +1600,17 @@ def v86_flame_draw(center, size, seed, now):
 # <POTBO_STAGE S1963>
 
 
-# A detached bite remains connected, but its boundary can inherit one-pixel
-# filaments from a narrow source sprite.  Grow only candidates touching at least
-# two detached pixels; this keeps asymmetry while producing a more solid piece.
+
+
+
 _v87_bite_mask_original = v86_bite_mask
 # </POTBO_STAGE S1963>
 
 # <POTBO_STAGE S2059>
 
-# Only grounded flame tongues are selected.  The three explosion-cloud motifs
-# in the first row and every burnt-body/skeleton sprite are intentionally
-# excluded; a patch therefore never morphs into an explosion or a corpse.
+
+
+
 V89_GROUND_FIRE_RECTS = (
     (8, 34, 23, 30),
     (29, 33, 30, 42),
@@ -1669,9 +1631,9 @@ v89_footprint_image_cache = {}
 # <POTBO_STAGE S2089>
 
 
-# ---------------------------------------------------------
-# CURATED GROUND FIRE + ATTACHED SMALL-FLAME DEATH SPRITES
-# ---------------------------------------------------------
+
+
+
 _v89_ground_fire_init_raw = GroundFirePatch.__init__
 # </POTBO_STAGE S2089>
 
@@ -1869,7 +1831,7 @@ def v90_draco_draw(now=None):
                         glow_strength=0.70,
                     )
             elif state.phase == "silence":
-                # The deliberate half-second lacuna has only a few inward embers.
+
                 if V89_SMALL_FIRE_FRAMES and (age // 90) % 3 == 0:
                     frame = V89_SMALL_FIRE_FRAMES[(age // 90) % len(V89_SMALL_FIRE_FRAMES)]
                     v90_draw_draco_sprite(
@@ -2103,7 +2065,7 @@ def v91_death_flame_cluster(
         pygame.SRCALPHA,
     )
     rng = random.Random(key[0] * 1187)
-    # Forty authored sprite flames, composited once and drawn as one cached blit.
+
     for index in range(40):
         frame = V89_SMALL_FIRE_FRAMES[
             (
@@ -2187,7 +2149,7 @@ def _v95_pixel_actor(frame, target_h):
     target_h = max(1, int(target_h))
     scale = target_h / max(1.0, float(frame.get_height()))
     target_w = max(1, int(round(frame.get_width() * scale)))
-    # Nearest-neighbour is intentional: these are pixel sprites.
+
     return pygame.transform.scale(frame, (target_w, target_h))
 # </POTBO_STAGE S2379>
 
@@ -2205,7 +2167,7 @@ def v90_draco_draw(now=None):
 
         if state.phase == "cast":
             p = v90_clamp(age / max(1.0, float(V90_DRACO_CAST_MS)))
-            # Natural ignition: spark -> recognisable head/body -> full dragon.
+
             formed = v90_smoothstep(p)
             thresholds = (0.00, 0.07, 0.15, 0.25, 0.38, 0.52, 0.67, 0.82, 0.94)
             index = 0
@@ -2353,8 +2315,8 @@ def v90_draco_draw(now=None):
                     glow_strength=0.48,
                 )
 
-    # Cached ember sprite buckets avoid allocating a new alpha Surface for every
-    # ember on every frame.
+
+
     for ember in v90_embers:
         age = max(0, int(now) - int(ember.born_ms))
         fade = 1.0 - v90_clamp(age / max(1.0, float(ember.ttl_ms)))
@@ -2415,12 +2377,12 @@ def _v98_status_icon_scaled(source, size):
 # <POTBO_STAGE S2425>
 
 
-# ---------------------------------------------------------
-# UNIVERSAL FIRE ATLAS
-# İlk üç sprite bütün yerde yanan ateşlerin canonical animasyonudur.
-# Canonical öneri: assets/effects/fire/universal_fire.png
-# Verilen orijinal dosya adı da fallback olarak desteklenir.
-# ---------------------------------------------------------
+
+
+
+
+
+
 V98_UNIVERSAL_FIRE_ADAYLARI = (
     os.path.join(ASSETS, "effects", "fire", "universal_fire.png"),
     os.path.join(ASSETS, "effects", "fire", "fire.png"),
@@ -2439,7 +2401,7 @@ def _v98_universal_fire_frames_load():
     except (pygame.error, OSError):
         return []
 
-    # 241x147 atlas. İlk üç alev 32 px hücrelerde, üst sıradadır.
+
     specs = (
         (0, 0, 32, 35),
         (32, 0, 32, 35),
@@ -2500,23 +2462,23 @@ def _v98_fire_frame_image(frame, target_h, alpha=255):
 # <POTBO_STAGE S2445>
 
 
-# ---------------------------------------------------------
-# FIREBALL: IMPACT-ONLY FIRE FIELD
-# No projectile trail. A dense fire bed is created only at detonation, with all
-# flame centers kept well inside the blast presentation radius so sprite/glow
-# edges do not visibly spill outside the impact zone.
-# ---------------------------------------------------------
-# Restore the projectile update captured before V98 added trail spawning.
+
+
+
+
+
+
+
 FireMagicProjectile.guncelle = _v98_fire_projectile_update_raw
 # </POTBO_STAGE S2445>
 
 # <POTBO_STAGE S2481>
 
-# ---------------------------------------------------------
-# UI ICON CONTRACT
-# Reinald'ın YETENEK ve GELİŞTİR sayfaları aynı gerçek ikon motorunu kullanır.
-# Dosyalar hem canonical ui klasöründe hem de eski/fallback konumlarda aranır.
-# ---------------------------------------------------------
+
+
+
+
+
 def _v102_trim_alpha(image):
     if image is None:
         return None
@@ -2562,8 +2524,8 @@ def yazi_yaz(metin, x, y, renk=BEYAZ, font=normal_font, ortala=False):
     if goruntu is None:
         goruntu = font.render(metin, True, renk)
         if len(V103_TEXT_CACHE) >= V103_TEXT_CACHE_LIMIT:
-            # Dict insertion order gives us a cheap bounded FIFO; avoid a cache
-            # clear spike by evicting only the oldest quarter.
+
+
             for eski in list(V103_TEXT_CACHE)[: V103_TEXT_CACHE_LIMIT // 4]:
                 V103_TEXT_CACHE.pop(eski, None)
         V103_TEXT_CACHE[key] = goruntu
@@ -2612,11 +2574,11 @@ def v106_corona_sprite(frame_index, size, alpha=255):
 # <POTBO_STAGE S2564>
 
 
-# ---------------------------------------------------------
-# CORONA: faster / harsher orbit and white-hot authored silhouettes.
-# No external glow surface is used: brightness is clipped to the sprite alpha,
-# so the light cannot spill beyond the orb itself. Blue is intentionally removed.
-# ---------------------------------------------------------
+
+
+
+
+
 V106_CORONA_ORBIT_RADIUS = 59.0
 # </POTBO_STAGE S2564>
 
@@ -2633,14 +2595,14 @@ def v108_corona_white_hot_sprite(frame_index, size, alpha=255):
     if cached is not None:
         return cached
 
-    # RGB_MAX whitens only RGB; original alpha silhouette stays intact.
+
     hot = base.copy().convert_alpha()
     hot.fill((255, 255, 255), special_flags=pygame.BLEND_RGB_MAX)
     if alpha < 255:
         hot.set_alpha(max(0, min(255, int(alpha))))
 
-    # Internal core bloom. It is drawn onto the same sprite-sized surface, then
-    # clipped by the original alpha mask, so it never grows outside the ball.
+
+
     inner = pygame.Surface(hot.get_size(), pygame.SRCALPHA).convert_alpha()
     cx, cy = hot.get_width() // 2, hot.get_height() // 2
     r_outer = max(2, int(min(hot.get_size()) * 0.31))
@@ -2663,11 +2625,11 @@ def v108_corona_white_hot_sprite(frame_index, size, alpha=255):
 
 # <POTBO_STAGE S2579>
 
-# ---------------------------------------------------------
-# CORONA VISUALS
-# V108'in neredeyse tamamen beyaza çeviren işlemi geri çekilir: authored sprite
-# yeniden okunabilir kalır, fakat iç parlaklık ve küçük bir çevresel ışık halesi korunur.
-# ---------------------------------------------------------
+
+
+
+
+
 V109_CORONA_SPRITE_CACHE = {}
 # </POTBO_STAGE S2579>
 
@@ -2684,12 +2646,12 @@ def v108_corona_white_hot_sprite(frame_index, size, alpha=255):
     if cached is not None:
         return cached
 
-    # Authored mavi/cam dokusunu görünür bırak; yalnız tüm kanalları dengeli biçimde
-    # yükselt. Önceki RGB_MAX beyazlaştırmasına göre çok daha az yıkayıcıdır.
+
+
     hot = base.copy().convert_alpha()
     hot.fill((86, 86, 86), special_flags=pygame.BLEND_RGB_ADD)
 
-    # Beyaz merkez yalnız sprite alfa silüetinin içinde kalır.
+
     inner = pygame.Surface(hot.get_size(), pygame.SRCALPHA).convert_alpha()
     cx, cy = hot.get_width() // 2, hot.get_height() // 2
     r_outer = max(2, int(min(hot.get_size()) * 0.27))
@@ -2727,7 +2689,7 @@ _v112_impact_raw = v110_draw_impact_sprite
 # <POTBO_STAGE S2650>
 
 
-# Impact sprite artık bloklu sprite yığınları kullanmaz; yalnız pürüzsüz yerel bloom.
+
 def v110_draw_impact_sprite(center, age_ms):
     return v113_draw_strike_bloom(center, age_ms)
 # </POTBO_STAGE S2650>
@@ -2735,8 +2697,8 @@ def v110_draw_impact_sprite(center, age_ms):
 # <POTBO_STAGE S2659>
 
 
-# Geometrik top/daire bloom kaldırıldı. Çarpma yeri yalnız düzensiz elektrik saçakları
-# ve beyaz doygunlukla okunur.
+
+
 def v110_draw_impact_sprite(center, age_ms):
     return None
 # </POTBO_STAGE S2659>

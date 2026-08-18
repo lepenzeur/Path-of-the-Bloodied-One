@@ -1,27 +1,44 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S2676>
 
-# =========================================================
-# END V117
-# =========================================================
+
+
+
 
 while calisiyor:
     for olay in pygame.event.get():
         if olay.type == pygame.QUIT:
             calisiyor = False
 
+
+
+        if olay.type == pygame.WINDOWFOCUSLOST:
+            if oyuncu_saldiriyor and oyuncu_saldiri_modu in ("press", "charge"):
+                oyuncu_saldiri_durumunu_sifirla()
+            if oyun_durumu == OYUN and oyuncu_hp > 0 and oyun_alt_durumu == HARITA:
+                duraklatma_index = 0
+                oyun_durumu = DURAKLATMA
+            continue
+
+        if (
+            olay.type == pygame.KEYDOWN
+            and oyun_durumu in (OYUN, ENVANTER, DURAKLATMA)
+            and gelistirici_test_girdisi_uygula(olay)
+        ):
+            continue
+
         if olay.type == pygame.KEYDOWN and not tus_girdisi_kabul(olay):
             continue
 
-        # -------------------------------------------------
-        # ANA MENÜ
-        # -------------------------------------------------
+
+
+
 
         if oyun_durumu == ANA_MENU:
             if olay.type == pygame.KEYDOWN:
@@ -35,13 +52,13 @@ while calisiyor:
                     button_click_sesi_cal()
                     menu_secimini_calistir()
 
-        # -------------------------------------------------
-        # KARAKTER OLUŞTURMA
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == KARAKTER_OLUSTUR:
             if olay.type == pygame.KEYDOWN:
-                # Onay animasyonu başladıktan sonra geçiş bitene kadar yeni girdi alınmaz.
+
                 if karakter_onay_gecisi_aktif:
                     continue
 
@@ -57,13 +74,13 @@ while calisiyor:
                     karakter_secim_index = 1
 
                 elif olay.key in buton_onay_tuslari():
-                    # V40: Character Select bir UI butonu değildir. Enter seçim kilidini
-                    # doğrudan başlatır; generic buttonClick sesi/animasyonu kullanılmaz.
+
+
                     karakter_onay_gecisini_baslat()
 
-        # -------------------------------------------------
-        # KAYIT ADI
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == KAYIT_ADI:
             if olay.type == pygame.KEYDOWN:
@@ -83,9 +100,9 @@ while calisiyor:
                 ):
                     kayit_adi_girdisi += olay.unicode
 
-        # -------------------------------------------------
-        # ÇIKIŞ ONAY
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == CIKIS_ONAY:
             if olay.type == pygame.KEYDOWN:
@@ -103,29 +120,24 @@ while calisiyor:
                 elif olay.key in buton_onay_tuslari():
                     v37_exit_confirm_schedule(cikis_index)
 
-        # -------------------------------------------------
-        # LOADING
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == LOADING:
-            # Loading tamamlanmadan hiçbir tuş işlem yapmaz.
-            # ESC dahil hiçbir tuş ana menüye döndürmez.
+
+
             if olay.type == pygame.KEYDOWN:
                 if loading_tamamlandi:
                     oyun_durumu = OYUN
 
-        # -------------------------------------------------
-        # OYUN
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == OYUN:
             if olay.type == pygame.KEYDOWN:
-                # Geliştirici CTRL testleri normal oyuncu inputundan önce ele alınır;
-                # coin/level/toggle kontrolleri transient kalır ve save'i değiştirmez.
-                if gelistirici_test_girdisi_uygula(olay):
-                    continue
 
-                # Ölüm ekranı kendi input modalıdır; pause/attack/envanter buraya sızmaz.
                 if oyuncu_hp <= 0:
                     if oyuncu_olum_menu_hazir_mi():
                         if olay.key in ui_yukari_tuslari():
@@ -133,7 +145,7 @@ while calisiyor:
                         elif olay.key in ui_asagi_tuslari():
                             oyuncu_olum_menu_index = (oyuncu_olum_menu_index + 1) % 4
                         elif olay.key in buton_onay_tuslari():
-                            # Ölüm menüsü de aynı click -> action kontratını kullanır.
+
                             v37_death_action_schedule(oyuncu_olum_menu_index)
                     continue
 
@@ -141,7 +153,7 @@ while calisiyor:
                     continue
 
                 if onemli_item_penceresi_acik_mi():
-                    # Progress dolmadan girdiyi yut; dolduktan sonra herhangi bir tuş ilerletir.
+
                     if onemli_item_girdisi_hazir_mi():
                         onemli_item_penceresini_ilerlet()
                     continue
@@ -164,16 +176,16 @@ while calisiyor:
                     and oyuncu_saldiriyor
                     and oyuncu_saldiri_modu in ("press", "charge")
                 ):
-                    # R normal dash değildir. Ctrl+U açıkken hold-charge içindeyse yalnız
-                    # special move kombinasyonunu arm eder; hareket R KEYUP'ta başlar.
+
+
                     gelistirici_x_skill_r_baslat(pygame.time.get_ticks())
 
                 elif olay.key == tus_atamasi("save"):
                     oyun_kaydet()
 
                 elif olay.key == tus_atamasi("inventory"):
-                    # Envanter bağımsız bir modal durumdur. Açılırken önceki
-                    # taşıma/aksiyon oturumları temizlenir; oyun girdileri durur.
+
+
                     envanter_aksiyon_acik = False
                     envanter_aksiyon_item_index = None
                     envanter_aksiyon_kaynagi = "grid"
@@ -201,9 +213,9 @@ while calisiyor:
 
                     if v106_corona_active_orbs():
                         v106_corona_fire_next(simdi)
-                    elif karakter_cinsiyet == "male" and ADEFONSUS_YENI_SHEET_AKTIF:
-                        # KEYDOWN yalnız press/charge adayını başlatır. Quick tap
-                        # KEYUP'ta normal ikili animasyona, hold ise charge-release'e gider.
+                    elif oyuncu_yeni_sheet_aktif_mi():
+
+
                         adefonsus_saldiri_baslat(simdi)
                     elif (
                         not oyuncu_saldiriyor
@@ -253,8 +265,8 @@ while calisiyor:
                     oyuncu_etkilesim_yap()
 
             elif olay.type == pygame.KEYUP:
-                # KEYUP ayrı işlenir; input debounce yalnız KEYDOWN içindir.
-                # Böylece hold release auto-repeat veya menu debounce yüzünden kaybolmaz.
+
+
                 if (
                     olay.key == pygame.K_r
                     and oyun_alt_durumu == HARITA
@@ -264,27 +276,26 @@ while calisiyor:
                 elif (
                     olay.key == tus_atamasi("attack")
                     and oyun_alt_durumu == HARITA
-                    and karakter_cinsiyet == "male"
-                    and ADEFONSUS_YENI_SHEET_AKTIF
+                    and oyuncu_yeni_sheet_aktif_mi()
                 ):
                     adefonsus_saldiri_tusu_birakildi(pygame.time.get_ticks())
 
-        # -------------------------------------------------
-        # MERCHANT
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == MERCHANT:
             v92_merchant_handle_event(olay)
 
-        # -------------------------------------------------
-        # BLACKSMITH
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == BLACKSMITH:
             v92_blacksmith_handle_event(olay)
 
-        # V92 keeps the inherited merchant state machine below for reference,
-        # but its event branch is intentionally unreachable.
+
+
         elif False and oyun_durumu == MERCHANT:
             merchant_fade_bitti = (
                 pygame.time.get_ticks() - merchant_acilis_zamani
@@ -296,8 +307,8 @@ while calisiyor:
                 and not merchant_kapanis_isteniyor
                 and not merchant_kapanis_zamani
             ):
-                # Merchant diyaloğunda ENTER ve SPACE artık aynı davranır:
-                # yazı akıyorsa tamamlar, tamamlandıysa sonraki satıra geçer.
+
+
                 if merchant_modal is None and olay.key in ONAY_TUSLARI:
                     if not merchant_yazi_tamamlandi:
                         merchant_diyalog_tamamla()
@@ -305,7 +316,7 @@ while calisiyor:
                     if merchant_diyalog_index + 1 < len(merchant_diyalog_kuyrugu):
                         merchant_diyalog_sonraki()
                         continue
-                    # Diyalog kuyruğu bittiyse aynı tuş aşağıdaki gerçek butonu onaylar.
+
 
                 if merchant_modal == "price":
                     if olay.key == pygame.K_ESCAPE:
@@ -364,19 +375,17 @@ while calisiyor:
                         button_click_sesi_cal()
                     merchant_onayla()
 
-        # -------------------------------------------------
-        # ENVANTER
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == ENVANTER:
             if olay.type == pygame.KEYDOWN:
-                if gelistirici_test_girdisi_uygula(olay):
-                    continue
                 if olay.key == tus_atamasi("inventory") and not envanter_aksiyon_acik:
                     oyun_durumu = OYUN
                     continue
-                # Aksiyon penceresi tam modaldır. Arkadaki grid, hızlı slotlar
-                # ve oyun dünyası bu pencere kapanana kadar girdi almaz.
+
+
                 if envanter_aksiyon_acik:
                     aksiyonlar = envanter_aksiyonlari(
                         envanter_aksiyon_item_index,
@@ -431,7 +440,7 @@ while calisiyor:
                         envanter_aksiyon_item_index = None
                         envanter_aksiyon_kaynagi = "grid"
 
-                # Grid itemini featured slota atama modu: yalnız 1-5 hedef seçer.
+
                 elif one_cikan_atama_item_index is not None:
                     if olay.key in (
                         pygame.K_ESCAPE,
@@ -454,8 +463,8 @@ while calisiyor:
                             button_click_sesi_cal()
                         one_cikan_atama_item_index = None
 
-                # Öne çıkan slot taşıma modu da modaldır. Yalnızca hedef slot
-                # seçimi, onay ve iptal girdileri kabul edilir.
+
+
                 elif one_cikan_tasima_kaynagi is not None:
                     if olay.key in (
                         pygame.K_ESCAPE,
@@ -486,8 +495,8 @@ while calisiyor:
                             envanter_secili_slot,
                         )
 
-                # Ana 30'lu grid taşıma modu. Hızlı slot ve oyun girdileri
-                # hedef yerleştirilene veya işlem iptal edilene kadar kapalıdır.
+
+
                 elif envanter_tasima_kaynagi is not None:
                     if olay.key in (
                         pygame.K_ESCAPE,
@@ -538,7 +547,7 @@ while calisiyor:
                         pygame.K_4,
                         pygame.K_5,
                     ):
-                        # 1-5 yalnızca işlem yapılacak öne çıkan slotu seçer.
+
                         envanter_secili_slot = olay.key - pygame.K_1
 
                     elif olay.key in ui_sol_tuslari():
@@ -569,8 +578,8 @@ while calisiyor:
                             envanter_aksiyon_menusunu_ac(envanter_imlec, "grid")
 
                     elif olay.key == tus_atamasi("q_quick_use"):
-                        # Envanter açıkken Q doğrudan imleçteki kullanılabilir eşyayı
-                        # bağımsız altıncı hızlı slota bağlar / bağlıysa çıkarır.
+
+
                         item = envanter_itemleri[envanter_imlec]
                         if isinstance(item, dict) and item_q_hizli_kullanima_uygun_mu(
                             item
@@ -589,8 +598,8 @@ while calisiyor:
                             )
 
                     elif olay.key == tus_atamasi("quick_use"):
-                        # Hızlı-kullan tuşu envanter açıkken bağlamsal menüyü açar.
-                        # Seçili öne çıkan slot için bağlamsal menüyü açar.
+
+
                         item_index = secili_one_cikan_item_index()
                         if not envanter_aksiyon_menusunu_ac(item_index, "featured"):
                             bildirim_goster(
@@ -600,9 +609,9 @@ while calisiyor:
                                 )
                             )
 
-        # -------------------------------------------------
-        # DURAKLATMA MENÜSÜ
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == DURAKLATMA:
             if olay.type == pygame.KEYDOWN:
@@ -625,9 +634,9 @@ while calisiyor:
                 elif olay.key in buton_onay_tuslari():
                     v37_pause_action_schedule(duraklatma_index)
 
-        # -------------------------------------------------
-        # OYUNDAN ÇIKIŞ ONAYI (ORTAK TASARIM)
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == OYUNDAN_CIKIS_ONAY:
             if olay.type == pygame.KEYDOWN:
@@ -645,9 +654,9 @@ while calisiyor:
                 elif olay.key in buton_onay_tuslari():
                     v37_quit_confirm_schedule(oyundan_cikis_onay_index)
 
-        # -------------------------------------------------
-        # ANA MENÜYE DÖNÜŞ ONAYI
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == ANA_MENU_ONAY:
             if olay.type == pygame.KEYDOWN:
@@ -665,9 +674,9 @@ while calisiyor:
                 elif olay.key in buton_onay_tuslari():
                     v37_main_confirm_schedule(ana_menu_onay_index)
 
-        # -------------------------------------------------
-        # KAYIT SİLME ONAYI
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == KAYIT_SIL_ONAY:
             if olay.type == pygame.KEYDOWN:
@@ -686,14 +695,14 @@ while calisiyor:
                 elif olay.key in buton_onay_tuslari():
                     v37_delete_confirm_schedule(kayit_sil_onay_index)
 
-        # -------------------------------------------------
-        # AYARLAR
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == AYARLAR:
             if olay.type == pygame.KEYDOWN:
-                # Yeniden atama sırasında bir sonraki klavye girdisi doğrudan yakalanır.
-                # Mouse olayı bu sisteme hiçbir noktada girmez.
+
+
                 if tus_atama_bekleniyor is not None:
                     tus_atama_uygula(olay.key)
                     continue
@@ -747,9 +756,9 @@ while calisiyor:
                         ayar_odak = "kategori"
                         button_click_sesi_cal("menu1")
 
-        # -------------------------------------------------
-        # LOAD GAME
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == LOAD_GAME:
             if olay.type == pygame.KEYDOWN:
@@ -773,9 +782,9 @@ while calisiyor:
                         kayit_sil_onay_index = 1
                         oyun_durumu = KAYIT_SIL_ONAY
 
-        # -------------------------------------------------
-        # CREDITS
-        # -------------------------------------------------
+
+
+
 
         elif oyun_durumu == CREDITS:
             if olay.type == pygame.KEYDOWN:
@@ -786,28 +795,28 @@ while calisiyor:
                 ):
                     oyun_durumu = ANA_MENU
 
-    # V37: click feedback state değişiminden önce birkaç frame görünür.
+
     v37_ui_transition_tick()
 
-    # Seçim değişikliklerini olaylar işlendiği anda seslendir.
+
     secim_sesi_guncelle()
 
-    # Karakter kartı onay/fade zaman çizelgesini güncelle.
+
     karakter_onay_gecisini_guncelle()
 
-    # New-item kartı temiz haritada hazırlanır; ses bir saniye önce başlar.
+
     onemli_item_gosterimini_guncelle()
 
-    # V34 quality orchestrator: pause compensation, buffered input, transient FX budget.
+
     v34_quality_tick()
 
-    # V100: execution cutscenes own an independent clock. Main gameplay simulation
-    # is frozen by oyun_sinematik_kilitli_mi(), but the authored scene still advances.
+
+
     v100_cinematic_update(pygame.time.get_ticks())
 
-    # =====================================================
-    # OYUNCU HAREKETİ
-    # =====================================================
+
+
+
 
     oyuncu_hareket_ediyor = False
 
@@ -840,8 +849,8 @@ while calisiyor:
         simdi_combat = pygame.time.get_ticks()
         if oyuncu_saldiriyor:
             oyuncu_saldiri_gecislerini_guncelle(simdi_combat)
-            # Heavy release hareketi enemy update'ten önce çözülür. Böylece aynı
-            # frame'deki hitbox, ekranda görülen yeni oyuncu konumuyla eşleşir.
+
+
             if oyuncu_saldiri_modu == "hold_release":
                 adefonsus_hold_dash_guncelle(simdi_combat)
         common_enemy_guncelle()
@@ -850,20 +859,19 @@ while calisiyor:
         kan_gore_guncelle()
         oyuncu_olum_durumu_guncelle()
 
-    # ses katmanı: hareket çözüldükten sonra footstep phase'i, state değiştikten
-    # sonra da harita ambience'i güncellenir. Boş kılıç swing'i burada ses üretmez.
+
+
     adefonsus_footstep_guncelle()
     map_ambience_guncelle()
 
-    # Her kare çalışan arka plan veri katmanı; modal/sinematik durumlarda
-    # aktif zamanı ilerletmez ve sıçrayan delta-time üretmez.
+
+
     dunya_simulasyon_guncelle()
 
     if oyuncu_saldiriyor:
         simdi_saldiri = pygame.time.get_ticks()
         sureli_faz = not (
-            karakter_cinsiyet == "male"
-            and ADEFONSUS_YENI_SHEET_AKTIF
+            oyuncu_yeni_sheet_aktif_mi()
             and oyuncu_saldiri_modu in ("press", "charge")
         )
         if (
@@ -883,9 +891,9 @@ while calisiyor:
             if oyun_kaydet():
                 son_otomatik_kayit = simdi
 
-    # =====================================================
-    # EKRAN ÇİZİMİ
-    # =====================================================
+
+
+
 
     if oyun_durumu == ANA_MENU:
         ana_menu_ciz()
@@ -941,9 +949,9 @@ while calisiyor:
 
     saat.tick(FPS)
 
-# =========================================================
-# KAPATMA
-# =========================================================
+
+
+
 
 ayarlari_kaydet()
 

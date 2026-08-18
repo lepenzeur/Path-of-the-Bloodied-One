@@ -1,14 +1,14 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0033>
 
-# Kılıç boşluğu keserken sessizdir. Bu sample'lar yalnız gerçek melee temasında
-# çağrılır: Crawler/Berserker/Heads Thrower/Tarkard = no armor, Torrmund = armor.
+
+
 STAB_NO_ARMOR_SES_ADAYLARI = [
     os.path.join(ASSETS, "sounds", "combat", "stabNoArmor.wav"),
     os.path.join(ASSETS, "sounds", "stabNoArmor.wav"),
@@ -18,8 +18,8 @@ STAB_NO_ARMOR_SES_ADAYLARI = [
 
 # <POTBO_STAGE S0035>
 
-# Common enemy sprite sheet yolları.
-# İki sheet de tek dosyadan, çalışma anında chroma-key ile şeffaflaştırılır.
+
+
 COMMON_ENEMY_KLASORU = os.path.join(ASSETS, "enemies", "common_enemy")
 
 CRAWLER_SHEET_ADAYLARI = [
@@ -41,9 +41,9 @@ BERSERKER_SHEET_ADAYLARI = [
     os.path.join(BASE_DIR, "berserker_spriteSheet.png"),
 ]
 
-# Tarkard common enemy değildir; özel dünya aktörüdür. Yine de ortak navigation /
-# combat fiziğini kullandığı için asset yolu ayrı tutulur ve eski proje kökü de
-# güvenli fallback olarak desteklenir.
+
+
+
 TARKARD_KLASORU = os.path.join(ASSETS, "enemies", "special")
 TARKARD_SHEET_ADAYLARI = [
     os.path.join(TARKARD_KLASORU, "tarkard_spriteSheet.png"),
@@ -51,9 +51,9 @@ TARKARD_SHEET_ADAYLARI = [
     os.path.join(BASE_DIR, "tarkard_spriteSheet.png"),
 ]
 
-# Sir Torrmund da common enemy değildir. Özel isimli, tekil dünya aktörüdür.
-# Asset adı iki yaygın yazımı destekler; böylece elle klasöre kopyalarken küçük
-# bir dosya adı farkı oyunu sessizce spritesız bırakmaz.
+
+
+
 TORRMUND_KLASORU = os.path.join(ASSETS, "enemies", "special")
 TORRMUND_SHEET_ADAYLARI = [
     os.path.join(TORRMUND_KLASORU, "sirTorrmund_spriteSheet.png"),
@@ -85,25 +85,25 @@ HEADSTHROWER_SHEET_ADAYLARI = [
 # </POTBO_STAGE S0037>
 
 # <POTBO_STAGE S0140>
-# Ağır darbe kontrol katmanı. Tarkard'ın vuruşu oyuncuyu yalnızca hasarlamaz;
-# gerçek collision-aware knockback ve iki saniyelik bilinç kaybı uygular.
-# Bu değişkenler global input kilidinden ayrıdır: pause her zaman erişilebilir kalır.
+
+
+
 oyuncu_baygin_bitis = 0
 # </POTBO_STAGE S0140>
 
 # <POTBO_STAGE S0142>
-# Sir Torrmund'un kesici infazı knockback üretmez; bunun yerine kısa, keskin bir
-# ekran yarığı ve ölüm kilidi bırakır. Efekt state'i save'e yazılmaz.
+
+
 oyuncu_kesik_efekti_bitis = 0
 # </POTBO_STAGE S0142>
 
 # <POTBO_STAGE S0144>
-# =========================================================
-# COMMON ENEMY DURUMU
-# Crawler ve Berserker aynı fizik / aggro / saldırı omurgasını paylaşır.
-# Yaklaşmak tek başına aggro üretmez: düşman yalnızca oyuncudan darbe
-# aldıktan sonra saldırganlaşır.
-# =========================================================
+
+
+
+
+
+
 COMMON_ENEMY_TURLERI = ("crawler", "berserker", "headsthrower")
 # </POTBO_STAGE S0144>
 
@@ -111,20 +111,20 @@ COMMON_ENEMY_TURLERI = ("crawler", "berserker", "headsthrower")
 common_enemy_son_guncelleme = pygame.time.get_ticks()
 common_enemy_onceki_oyuncu_konumu = None
 common_enemy_oyuncu_hizi = pygame.Vector2(0.0, 0.0)
-# Bu değer, yeni sistemin kayıt formatını gelecekte güvenle evrimleştirmek içindir.
+
 COMMON_ENEMY_SAVE_VERSION = 9
-# Tarkard semantik olarak common enemy değildir. common_enemies listesine hiçbir
-# zaman girmez; save/load, interaction ve çizim katmanlarında özel aktör olarak yaşar.
+
+
 tarkard_actor = None
 tarkard_adi_ogrenildi = False
 tarkard_konusuldu = False
-# Sir Torrmund ikinci özel aktördür. Common enemy listesine girmez ve Tarkard ile
-# aynı unique-id / save mantığını paylaşmaz.
+
+
 torrmund_actor = None
 torrmund_konusuldu = False
-# geçici dünya aktörleri. Projectile ve fareler save'e yazılmaz; bir kayıt
-# yüklenirken sıfırlanırlar. Böylece eski bir kayanın yeni kayda taşınması veya
-# kamera dışında kalmış bir ambient farenin save'i şişirmesi mümkün olmaz.
+
+
+
 enemy_projectiles = []
 enemy_rock_impacts = []
 ambient_rats = []
@@ -137,8 +137,8 @@ oyuncu_olum_torrmund_senaryo = ""
 # </POTBO_STAGE S0158>
 
 # <POTBO_STAGE S0163>
-# Ağır kesici sınıfı, özel tek-vuruş kontratı olmayan gelecek düşmanlarda bile
-# sıradan kılıç hasarına düşmez. Torrmund kendi infaz fonksiyonuyla %100 lethal kalır.
+
+
 AGIR_KESICI_MIN_MAX_HP_ORANI = 0.68
 # </POTBO_STAGE S0163>
 
@@ -230,13 +230,13 @@ def _sprite_sheet_karelerini_cikar(
         return []
 
     sheet = sheet.copy().convert_alpha()
-    # Opaque kaynaklar için hızlı ilk katman. Zaten alpha'lı PNG'lerde zararsızdır.
+
     sheet.set_colorkey(arka_plan_rengi, pygame.RLEACCEL)
     kareler = []
 
     ref_r, ref_g, ref_b = [int(v) for v in arka_plan_rengi]
-    # Magenta kenarlarda renk sızıntısına karşı küçük tolerans; beyaz crawler'da
-    # kaynak zaten alpha olduğundan yalnız gerçekten fon olan pikseller etkilenir.
+
+
     tolerans = 10 if arka_plan_rengi == (255, 0, 255) else 3
 
     for x, y, w, h in rectler:
@@ -249,12 +249,12 @@ def _sprite_sheet_karelerini_cikar(
         ham.fill((0, 0, 0, 0))
         ham.blit(sheet, (0, 0), alan)
 
-        # colorkey yalnız hız için ilk katmandır; gerçek güvence fiziksel
-        # alpha temizliğidir. Önceki sürüm yalnız #FF00FF magentada bu döngüye
-        # giriyordu. Sphaera'nın #990099 moru bu nedenle bazı Pygame/convert_alpha
-        # zincirlerinde opaque kalabiliyordu. Rat/HeadsThrower'da da kaynak dosya
-        # #00FF00 + #008080 iki fon taşıyor. Artık tüm chroma profilleri açıkça
-        # alpha=0'a çevrilir. İşlem sadece asset yüklenirken bir kez çalışır.
+
+
+
+
+
+
         temiz_rgb = {tuple(int(c) for c in rgb) for rgb in ozel_transparan_rgblar}
         chroma_temizligi_gerekli = arka_plan_rengi in (
             (255, 0, 255),
@@ -287,8 +287,8 @@ def _sprite_sheet_karelerini_cikar(
                         rgb = (renk.r, renk.g, renk.b)
                         ana_fon = _rgb_yakin(rgb, (ref_r, ref_g, ref_b), tolerans)
 
-                        # Yeşil sprite sheet'ler iki ayrı background kullanır.
-                        # Referans yalnız lime olsa bile teal dış canvas da sökülür.
+
+
                         yesil_teal_fon = False
                         if arka_plan_rengi in (
                             (0, 255, 0),
@@ -361,7 +361,7 @@ def _tarkard_sprite_sheet_karelerini_cikar(yol, rectler):
 # <POTBO_STAGE S0254>
 
 
-# Crawler sheet'i düzenli grid değildir; görseldeki gerçek sprite sınırları.
+
 CRAWLER_FRAME_RECTLERI = [
     (5, 2, 29, 45),
     (45, 2, 29, 45),
@@ -385,7 +385,7 @@ CRAWLER_FRAME_RECTLERI = [
     (222, 133, 27, 38),
 ]
 
-# Berserker, klasik 3-frame locomotion + 4-frame attack satır düzeni taşır.
+
 BERSERKER_FRAME_RECTLERI = [
     (12, 10, 52, 79),
     (92, 10, 59, 79),
@@ -417,9 +417,9 @@ BERSERKER_FRAME_RECTLERI = [
     (396, 676, 61, 81),
 ]
 
-# Tarkard sheet düzenli grid değildir. Rect'ler gönderilen 1144x696 kaynaktaki
-# gerçek frame adalarını takip eder. Son beş kare palette varyantlarıdır ve ana
-# Tarkard animasyonunda kullanılmaz; ileride kabile varyantları için korunur.
+
+
+
 TARKARD_FRAME_RECTLERI = [
     (2, 2, 88, 88),
     (92, 10, 88, 80),
@@ -455,9 +455,9 @@ TARKARD_FRAME_RECTLERI = [
     (362, 606, 88, 88),
 ]
 
-# Sir Torrmund sheet'inin gerçek non-teal frame adaları. Son dört kare palette
-# varyantıdır; ana karakter animasyonuna dahil edilmez. Rect'ler yalnız kaynak
-# 894x669 sheet'e aittir ve transparan temizleme öncesi koordinatlardır.
+
+
+
 TORRMUND_FRAME_RECTLERI = [
     (2, 2, 112, 88),
     (116, 2, 112, 88),
@@ -489,14 +489,14 @@ TORRMUND_FRAME_RECTLERI = [
 
 # <POTBO_STAGE S0257>
 
-# Heads Thrower kaynak sheet'inde sequence'ler farklı hücre genişliğine sahiptir.
-# İlk pickup karelerinde label ile çakışmamak için yalnız o hücrelerin üstü daraltılır.
+
+
 HEADSTHROWER_IDLE_RECTLERI = [(_i * 28, 189, 28, 44) for _i in range(18)]
 HEADSTHROWER_PICKUP_RECTLERI = [
     (_i * 72, 258 if _i < 4 else 246, 72, 72 if _i < 4 else 84) for _i in range(19)
 ]
 HEADSTHROWER_THROW_RECTLERI = [(_i * 59, 342, 59, 84) for _i in range(13)]
-# Pickup'ın taş baş üstündeyken net olduğu bir kareden yalnız kaya adası kesilir.
+
 HEADSTHROWER_ROCK_RECTLERI = [(1014, 246, 46, 38)]
 
 crawler_sheet_yolu = mevcut_ilk_dosya(CRAWLER_SHEET_ADAYLARI)
@@ -578,10 +578,10 @@ HEADSTHROWER_ROCK_SPRITE = _head_rock_raw[0] if _head_rock_raw else None
 # <POTBO_STAGE S0270>
 
 
-# Crawler'ın kaynak sheet'inde bazı karelerin ayak tabanında ayrı bir koyu yatay
-# gölge bulunur. Dünya gölgesi zaten kodla çizildiği için bu ikinci katmanı yalnız
-# frame'in en alt bandında, yatay ve gövdeden izole koyu gri pikseller üzerinden
-# temizleriz. Gövde konturu renkli/parlak komşuluğa sahipse korunur.
+
+
+
+
 def _crawler_gomme_golge_temizle(kare):
     if kare is None:
         return kare
@@ -639,10 +639,10 @@ def _crawler_gomme_golge_temizle(kare):
 
 _crawler_tum_kareler = [_crawler_gomme_golge_temizle(k) for k in _crawler_tum_kareler]
 
-# Crawler sheet tek bir uzun hareket dizisi gibi görünse de locomotion ile
-# saldırı aynı kare havuzundan seçilirse yaratık yürürken vuruyormuş hissi verir.
-# Alt satır (15..19) düşük profilli sürünme/locomotion; üst+orta bölüm (0..14)
-# ise dönüşüm/vuruş zinciridir. Bu iki durum artık kesinlikle karışmaz.
+
+
+
+
 _crawler_idle = _kareleri_ortak_canvas_yap(
     [_crawler_tum_kareler[i] for i in (19,) if i < len(_crawler_tum_kareler)]
 )
@@ -657,9 +657,9 @@ _crawler_attack = _kareleri_ortak_canvas_yap(
     [_crawler_tum_kareler[i] for i in range(0, min(15, len(_crawler_tum_kareler)))]
 )
 
-# Berserker sheet'in ilk dört locomotion satırı cardinal değil, diyagonal bakış
-# yönleridir: ön-sağ, arka-sağ, ön-sol, arka-sol. Eski down/left/right/up eşlemesi
-# bu yüzden özellikle sağ/sol takipte yaratığı geri geri yürütüyordu.
+
+
+
 BERSERKER_GORSEL_YON_SIRASI = (
     "down_right",
     "up_right",
@@ -693,9 +693,9 @@ COMMON_ENEMY_SPRITELERI = {
     },
 }
 
-# Tarkard'ın ana palette animasyonları. 0..8 ağır locomotion, 9..13 yumruk/
-# gauntlet smash, 14..21 geniş dairesel darbe, 22..23 kısa hazırlık/guard,
-# 25 düşüş, 26 diz çökme/stagger olarak ayrılır.
+
+
+
 _tarkard_idle = _kareleri_ortak_canvas_yap(
     [_tarkard_tum_kareler[i] for i in (0, 1, 0, 2) if i < len(_tarkard_tum_kareler)],
     padding=4,
@@ -732,8 +732,8 @@ TARKARD_SPRITELERI = {
     "stagger": _tarkard_stagger or _tarkard_idle,
 }
 
-# Sir Torrmund: 0..2 ağır idle, 3..6 kontrollü yürüyüş, 7..12 yatay infaz
-# zinciri, 13..18 dikey/alt cleave zinciri, 19..20 kısa guard/recovery.
+
+
 _torrmund_idle = _kareleri_ortak_canvas_yap(
     [_torrmund_tum_kareler[i] for i in (0, 1, 0, 2) if i < len(_torrmund_tum_kareler)],
     padding=5,
@@ -1029,8 +1029,8 @@ def _v24_olum_katil_adayi_bul(kaynak_x, kaynak_y, kaynak_adi=""):
         a_tur = str(getattr(a, "tur", "")).strip().lower()
         isim_eslesme = bool(ad) and (a_ad == ad or a_ad in ad or ad in a_ad)
         tur_eslesme = bool(tur_ipucu) and a_tur == tur_ipucu
-        # İsim/tür eşleşmesi 10.000 puanlık öncelik alır; aynı türden birden fazla
-        # aktör varsa gerçek darbeye en yakın olan seçilir.
+
+
         mesafe = pygame.Vector2(
             float(getattr(a, "x", 0.0)),
             float(getattr(a, "y", 0.0)),
@@ -1041,7 +1041,7 @@ def _v24_olum_katil_adayi_bul(kaynak_x, kaynak_y, kaynak_adi=""):
             en_iyi_skor = skor
             en_iyi = a
 
-    # İsim/tür hiç uyuşmadıysa uzaktaki rastgele bir karakteri "katil" ilan etme.
+
     if en_iyi_skor >= 10000.0:
         return None
     return en_iyi
@@ -1243,8 +1243,8 @@ COMMON_ENEMY_CONFIG = {
         "name_en": "Berserker",
         "level": 8,
         "max_hp": 435,
-        # Oyuncu temel yürüyüşü yaklaşık 240 px/s civarında. Berserker artık
-        # gerçekten "hızlı" hissedilecek ama telegraph okunabilir kalacak düzeyde.
+
+
         "move_speed": 248.0,
         "acceleration": 1180.0,
         "steering_lambda": 13.2,
@@ -1287,8 +1287,8 @@ COMMON_ENEMY_CONFIG = {
         "chase_dash_max_wait_ms": 9200,
         "chase_dash_trigger_distance": 285.0,
         "chase_dash_cooldown_ms": 6200,
-        # Sabırsızlık, Berserker'ı sabit hızlı bir füze olmaktan çıkarır. Oyuncuya
-        # uzun süre baskı kuramazsa yürüyüşü kademeli hızlanır; temas kurunca söner.
+
+
         "impatience_delay_ms": 1800,
         "impatience_rise_sec": 4.4,
         "impatience_decay_sec": 1.45,
@@ -1299,8 +1299,8 @@ COMMON_ENEMY_CONFIG = {
         "stagger_ms": 315,
         "enrage_hp_ratio": 0.44,
         "enrage_speed_mul": 1.10,
-        # Okunabilir Berserker state-machine ayarları: uzun süreli dairesel orbit
-        # yerine kısa baskı/commit pencereleri ve başarısız saldırı sonrası kısa reset.
+
+
         "pressure_commit_ms": 920,
         "post_miss_reposition_ms": 690,
         "close_speed_mul": 0.88,
@@ -1316,14 +1316,14 @@ COMMON_ENEMY_CONFIG = {
         "name_tr": "Kafa Fırlatıcı",
         "name_en": "Heads Thrower",
         "level": 5,
-        # Zırhsız ve kırılgan: oyunun başlangıç hasarında bile genellikle tek vuruş.
+
         "max_hp": 20,
         "move_speed": 142.0,
         "acceleration": 760.0,
         "steering_lambda": 10.4,
         "arrival_sigma": 68.0,
         "stop_radius": 34.0,
-        # Melee kullanmaz; bu alanlar ortak motor/future-save uyumluluğu içindir.
+
         "attack_range": 0.0,
         "attack_contact_gap": 0.0,
         "attack_start_contact_gap": 0.0,
@@ -1352,8 +1352,8 @@ COMMON_ENEMY_CONFIG = {
         "poise_regen_per_sec": 8.0,
         "poise_damage_scale": 1.8,
         "stagger_ms": 430,
-        # Ranged band. Yakında kalırsa kaçar, çok uzaktaysa veya LOS kapalıysa
-        # yeni bir atış koridoru arar. Taş fırlatmadan önce pickup telegraph vardır.
+
+
         "ranged_min": 205.0,
         "ranged_preferred": 305.0,
         "ranged_max": 445.0,
@@ -1375,8 +1375,8 @@ COMMON_ENEMY_CONFIG = {
             (920.0, 280.0),
         ],
     },
-    # Rat config yalnız collision/clearance yardımcılarını tekrar kullanmak için
-    # burada yaşar. COMMON_ENEMY_TURLERI içinde olmadığı için asla düşman spawnı olmaz.
+
+
     "rat": {
         "name_tr": "Fare",
         "name_en": "Rat",
@@ -1430,7 +1430,7 @@ COMMON_ENEMY_CONFIG = {
         "attack_range": 90.0,
         "attack_contact_gap": 36.0,
         "attack_start_contact_gap": 46.0,
-        # Gerçek hasar özel sınıfta max HP'nin %75'i olarak çözülür.
+
         "attack_damage": 75,
         "attack_cooldown_ms": 1680,
         "attack_frame_ms": 126,
@@ -1480,7 +1480,7 @@ COMMON_ENEMY_CONFIG = {
         "attack_range": 88.0,
         "attack_contact_gap": 24.0,
         "attack_start_contact_gap": 31.0,
-        # Gerçek vuruş özel sınıfta ölümcül kesme olarak uygulanır.
+
         "attack_damage": 9999,
         "attack_cooldown_ms": 2240,
         "attack_frame_ms": 145,
@@ -1524,10 +1524,10 @@ COMMON_ENEMY_NAV_MAX_DUGUM = 4200
 COMMON_ENEMY_NAV_HEURISTIC_WEIGHT = 1.015
 COMMON_ENEMY_NAV_GOAL_RING = 7
 
-# performans mimarisi:
-# - fizik / animasyon 60 Hz kalır,
-# - lokal steering yaklaşık 14-20 Hz hesaplanır ve aradaki karelerde karar korunur,
-# - Theta* tek karede binlerce node çözmek yerine frame-budget ile artımlı ilerler.
+
+
+
+
 COMMON_ENEMY_LOCAL_HORIZONS = (0.115, 0.225)
 COMMON_ENEMY_LOCAL_TICK_MS = {
     "crawler": 72,
@@ -1555,7 +1555,7 @@ COMMON_ENEMY_NAV_LOS_CACHE_MAX = 18000
 COMMON_ENEMY_DEBUG_NAV = False
 COMMON_ENEMY_PERF_DEBUG = False
 
-# Navigation cache map boyutu değişince otomatik invalid olur.
+
 _common_enemy_nav_gecerlilik_cache = {}
 _common_enemy_nav_clearance_cache = {}
 _common_enemy_nav_los_cache = {}
@@ -1564,8 +1564,8 @@ _common_enemy_collision_bbox_cache = []
 _common_enemy_path_budget_remaining = COMMON_ENEMY_PATH_BUDGET_PER_FRAME
 _common_enemy_path_budget_frame = -1
 
-# Oyuncunun yalnız hızı değil ivmesi de yumuşatılır. Berserker kısa tahminlerde
-# bunu kullanır; Crawler ise bilerek çok az prediction kullanır.
+
+
 common_enemy_oyuncu_ivmesi = pygame.Vector2(0.0, 0.0)
 common_enemy_onceki_oyuncu_hizi = pygame.Vector2(0.0, 0.0)
 # </POTBO_STAGE S0423>
@@ -1609,8 +1609,8 @@ def common_enemy_saldiri_los_acik_mi(dusman, adim=4.5):
         return True
 
     sayi = max(2, int(math.ceil(mesafe / max(3.5, float(adim)))))
-    # Endpoint'leri bilerek atla: source/target kendi geçerli ayak alanında olabilir,
-    # asıl aradığımız ikisinin ARASINDA solid polygon bulunup bulunmadığıdır.
+
+
     for i in range(1, sayi):
         p = bas.lerp(son, i / sayi)
         if harita_pikseli_engel_mi(p.x, p.y):
@@ -1618,8 +1618,8 @@ def common_enemy_saldiri_los_acik_mi(dusman, adim=4.5):
 
     a = (int(round(bas.x)), int(round(bas.y)))
     b = (int(round(son.x)), int(round(son.y)))
-    # Solid NPC/merchant gövdesinin içinden de kılıç geçmez. Çok yakın endpoint
-    # overlap'larında clipline false-positive üretmemesi için rectler hafif daraltılır.
+
+
     for blocker in (
         npc_carpisma_rect(),
         merchant_carpisma_rect(),
@@ -1913,8 +1913,8 @@ def _common_enemy_hucre_los(tur, a_h, b_h):
                 onceki = h
 
     if len(_common_enemy_nav_los_cache) >= COMMON_ENEMY_NAV_LOS_CACHE_MAX:
-        # Python dict insertion-order'dır; en eski yaklaşık %12.5'i topluca atmak
-        # her eklemede pop yapmaktan daha ucuzdur.
+
+
         silinecek = max(256, COMMON_ENEMY_NAV_LOS_CACHE_MAX // 8)
         for k in list(_common_enemy_nav_los_cache.keys())[:silinecek]:
             _common_enemy_nav_los_cache.pop(k, None)
@@ -2019,7 +2019,7 @@ def common_enemy_astar_yol_bul(
                 guard += 1
             zincir.reverse()
             noktalar = [_common_enemy_hucre_merkezi(h) for h in zincir[1:]]
-            # Son gerçek hedef navigation açısından geçerliyse exact goal kullan.
+
             if noktalar and common_enemy_statik_konum_gecerli_mi(
                 tur, son.x, son.y, navigation=True
             ):
@@ -2031,7 +2031,7 @@ def common_enemy_astar_yol_bul(
             if komsu in kapali or komsu in yasak or not _common_enemy_hucre(tur, komsu):
                 continue
             if dx and dy:
-                # Diagonal corner cutting kesin yasak.
+
                 if not _common_enemy_hucre(tur, (mevcut[0] + dx, mevcut[1])):
                     continue
                 if not _common_enemy_hucre(tur, (mevcut[0], mevcut[1] + dy)):
@@ -2041,7 +2041,7 @@ def common_enemy_astar_yol_bul(
             aday_g = mevcut_g + taban_maliyet
             mevcut_parent = parent.get(mevcut, mevcut)
 
-            # Theta*: parent -> neighbour görüşü açıksa current node'u aradan çıkar.
+
             if mevcut_parent != mevcut and _common_enemy_hucre_los(
                 tur, mevcut_parent, komsu
             ):
@@ -2398,20 +2398,20 @@ def enemy_friendly_melee_vur(attacker, simdi):
     return vurulan
 
 
-# =========================================================
-# ENEMY FIRE AWARENESS / DISTINCT BEHAVIOUR AI
-# =========================================================
-# Fireball dodge yalniz Crawler ve Berserker'a aittir. Heads Thrower, Tarkard
-# ve Torrmund projectile'i arcade refleksiyle yana kacmaz. Buna karsilik BUTUN
-# dusmanlar kalici zemin alevini tehdit kabul eder ve kendi dovus karakterlerine
-# uygun bicimde alev alanindan cikmaya calisir.
-# ground_style:
-# skittish -> Crawler: cabuk ve zikzakli emniyet cizgisi.
-# pressure -> Berserker: alevden cikar ama oyuncuya baskiyi tamamen birakmaz.
-# ranged -> Heads Thrower: atis mesafesini koruyacak guvenli banda cekilir.
-# tank -> Tarkard: projectile'dan kacmaz, yerdeki alevden en kisa saglam
-# rotayla yuruyerek cikar.
-# tank_guard -> Torrmund: ayni agirlikta, daha kontrollu ve acik zemini tercih eder.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 FIRE_ENEMY_AI = {
     "crawler": {
         "ground_style": "skittish",
@@ -2518,7 +2518,7 @@ class CommonEnemy:
             "left" if self.tur in ("crawler", "tarkard") else "down_right"
         )
 
-        # Combat state.
+
         self.attacking = False
         self.attack_started_ms = -10000
         self.last_attack_ms = -10000
@@ -2537,12 +2537,12 @@ class CommonEnemy:
             sum(ord(c) for c in self.uid) % 173
         )
 
-        # Basit fakat gerçek davranış belleği: oyuncunun swing ritminin EWMA'sı.
+
         self.player_attack_interval_ema = 760.0
         self.last_player_attack_seen_ms = -10000
         self.player_attack_samples = 0
 
-        # Global navigation / path following.
+
         self.nav_path = []
         self.nav_index = 0
         self.nav_next_replan_ms = 0
@@ -2564,8 +2564,8 @@ class CommonEnemy:
         self.nav_direct_key = None
         self.nav_direct_value = False
 
-        # Multi-rate local planner cache. Karar 60 kez/s yeniden hesaplanmaz;
-        # fizik aradaki karelerde aynı niyeti yumuşakça uygular.
+
+
         faz = sum(ord(c) for c in self.uid) % 23
         self.local_plan_until = pygame.time.get_ticks() + faz
         self.local_plan_input_dir = pygame.Vector2(0.0, 0.0)
@@ -2573,25 +2573,25 @@ class CommonEnemy:
         self.local_plan_output_dir = pygame.Vector2(0.0, 0.0)
         self.local_plan_speed_ratio = 0.0
 
-        # Yakın dövüş LOS'u yalnız menzile yaklaşınca ve kısa TTL ile ölçülür.
+
         self.attack_los_until = 0
         self.attack_los_value = False
         self.attack_los_enemy_pos = pygame.Vector2(self.x, self.y)
         self.attack_los_player_pos = pygame.Vector2(self.x, self.y)
 
-        # Tactical slot cache.
+
         self.tactical_target = pygame.Vector2(self.x, self.y)
         self.tactical_refresh_ms = 0
         self.orbit_sign = self.wall_follow_sign
 
-        # Crawler evade.
+
         self.evade_until = 0
         self.evade_target = None
         self.defense_cooldown_until = 0
         self.crawler_commit_until = 0
 
-        # fire-awareness. Scan rate limitedir; 24-38 ground-fire patch'i her
-        # enemy için her render frame'inde taranmaz.
+
+
         self.fire_ai_next_scan_ms = 0
         self.fire_avoid_until = 0
         self.fire_avoid_target = None
@@ -2602,15 +2602,15 @@ class CommonEnemy:
         self.fire_dash_velocity = pygame.Vector2(0.0, 0.0)
         self.fire_dash_cooldown_until = 0
         self.fire_last_threat_id = None
-        # smooth short-dash state. Konum tek framede ziplatilmaz; smoothstep
-        # egriyle hizlanip yavaslayarak collision-aware ilerler.
+
+
         self.fire_dash_started_ms = 0
         self.fire_dash_direction = pygame.Vector2(0.0, 0.0)
         self.fire_dash_distance_total = 0.0
         self.fire_dash_duration_ms = 0
         self.fire_dash_last_ease = 0.0
 
-        # Berserker dash / pressure state.
+
         self.dash_until = 0
         self.dash_velocity = pygame.Vector2(0.0, 0.0)
         self.dash_kind = None
@@ -2628,14 +2628,14 @@ class CommonEnemy:
         )
         self.impatience = 0.0
         self.last_dash_ms = -10000
-        # Berserker kısa, okunabilir commitment pencereleri kullanır. Böylece
-        # hedefin çevresinde matematiksel olarak kusursuz ama görsel olarak garip
-        # daireler çizmek yerine karar verir, saldırır ve kısa süre yeniden konumlanır.
+
+
+
         self.pressure_commit_until = 0
         self.post_miss_reposition_until = 0
         self.next_attack_variance_ms = 0
 
-        # Health bar trailing value; hasarın ağırlığını görsel olarak daha net verir.
+
         self.hp_display = float(self.hp)
         self.hp_trail = float(self.hp)
         self.hp_trail_hold_until = 0
@@ -2918,9 +2918,9 @@ class CommonEnemy:
         hasar kaçabiliyordu. Artık swing birkaç frame boyunca fiziksel olarak aktif.
         """
         if self.tur == "crawler":
-            # Kaynak sheet'te gerçek temas yalnız ikinci satırın ortasındaki büyük
-            # rüzgâr/pençe yayıdır (attack sequence raw index 12). Hazırlık ve
-            # recovery kareleri artık hasar vermez.
+
+
+
             return (12, 12)
         if self.tur == "berserker":
             return (1, 3)
@@ -2983,8 +2983,8 @@ class CommonEnemy:
         fark = pygame.Vector2(hurt.center) - origin
         if fark.length_squared() <= 1e-6:
             return True
-        # Başlatma cone'u okunabilir olsun; active sweep ise yan tarafta gerçekten
-        # değen kol/kılıcı kaçırmamak için daha affedicidir.
+
+
         dot = facing.dot(fark.normalize())
         return dot >= (0.02 if baslangic else -0.18)
 
@@ -2998,8 +2998,8 @@ class CommonEnemy:
         collision sonucunu aynılaştırmaktır. Duvar LOS'u ayrıca çağıran tarafta
         korunur. Yön saldırı başında kilitlendiği için input-reading yapılmaz.
         """
-        # hiçbir melee saldırı yalnız büyük sprite/capsule menzili yüzünden
-        # uzaktan bağlanamaz. Önce gerçek body-to-hurtbox temas mesafesi geçmelidir.
+
+
         if not self._attack_contact_gate(baslangic=False):
             return False
 
@@ -3038,8 +3038,8 @@ class CommonEnemy:
                 merkez_aci + 12.0,
             )
         elif self.tur == "tarkard" and variant == "whirl":
-            # Dairesel saldırıda kılıcın bütün 360° izi vardır fakat iç yarıçap
-            # küçük tutulur; çok uzaktaki hedefe görünmez hasar vermez.
+
+
             merkez = pygame.Vector2(hurt.center)
             return origin.distance_to(merkez) <= 78.0
         elif self.tur == "tarkard":
@@ -3073,8 +3073,8 @@ class CommonEnemy:
 
         for aci in sweep:
             yon = facing.rotate(aci)
-            # Silah izi gövdeden biraz ileride başlar; arkadaki oyuncuyu yanlışlıkla
-            # kesmez, fakat çok yakın temasta yukarıdaki body overlap devreye girer.
+
+
             bas = origin + yon * 10.0
             son = origin + yon * reach
             if _kapsul_rect_kesisiyor(hurt, bas, son, radius):
@@ -3096,8 +3096,8 @@ class CommonEnemy:
         self.attack_friendly_hits.clear()
         self.dash_until = 0
         self.dash_kind = None
-        # Attack yönü burada kilitlenir. Animasyon boyunca hedefin yanına geçmesi
-        # sprite'ın vuruş ortasında 180° dönmesine neden olmaz.
+
+
         fark = pygame.Vector2(oyuncu_x - self.x, oyuncu_y - self.y)
         self._yonleri_hareketten_guncelle(fark, zorla=True)
         self.vx *= 0.22
@@ -3112,8 +3112,8 @@ class CommonEnemy:
         kare = self._attack_frame_index(simdi)
         aktif_bas, aktif_son = self._attack_active_frame_araligi()
 
-        # Temas tek bir milisaniyeye indirgenmez. Active frame penceresinin her
-        # render tick'inde, yalnız henüz bağlanmadıysa fiziksel swing sınanır.
+
+
         if aktif_bas <= kare <= aktif_son:
             enemy_friendly_melee_vur(self, simdi)
         if aktif_bas <= kare <= aktif_son and not self.attack_connected:
@@ -3183,7 +3183,7 @@ class CommonEnemy:
             self.attacking = False
             self.attack_damage_applied = False
             recovery = int(self.cfg.get("attack_recovery_ms", 180))
-            # Miss biraz daha okunabilir punish window bırakır.
+
             if not self.attack_connected:
                 recovery = int(recovery * (1.14 if self.tur == "berserker" else 1.08))
                 if self.tur == "berserker":
@@ -3294,7 +3294,7 @@ class CommonEnemy:
             en_yakin = min(en_yakin, d)
             adet += 1
             if d <= 0.5:
-                # Tam merkezin üstünde deterministik ama uid'e göre farklı yön.
+
                 seed = (sum(ord(c) for c in self.uid) * 37 + int(simdi // 100)) % 360
                 yon = pygame.Vector2(1.0, 0.0).rotate(seed)
             else:
@@ -3314,8 +3314,8 @@ class CommonEnemy:
         dist = float(profil.get("ground_distance", 78.0))
         dist = max(52.0, min(122.0, dist))
 
-        # Crawler daha kirik/organik acilar dener; agir siniflar en kisa guvenli
-        # cizgiyi tercih eder. Heads Thrower ise ranged bandini koruyan noktayi arar.
+
+
         if style == "skittish":
             acilar = (0, 20, -20, 42, -42, 68, -68, 96, -96)
         elif style == "pressure":
@@ -3351,14 +3351,14 @@ class CommonEnemy:
             skor = min_fire * 0.74 + aciklik * 34.0
 
             if style == "skittish":
-                # Duvara yapismak yerine acik yan cikis; ayni turde herkes birebir
-                # ayni yonde kacmasin diye cok kucuk karar gurultusu.
+
+
                 skor += 10.0 if 18 <= abs(aci) <= 70 else 0.0
                 skor -= abs(aci) * 0.035
                 skor += random.uniform(-2.5, 2.5)
             elif style == "pressure":
-                # Alevden kesinlikle cik, ama mumkunse oyuncuyla temas mesafesini
-                # gereksiz yere acma. Berserker'in karakteri baskidir.
+
+
                 skor -= player_dist * 0.055
                 skor -= abs(aci) * 0.045
             elif style == "ranged":
@@ -3366,12 +3366,12 @@ class CommonEnemy:
                 skor -= abs(player_dist - preferred) * 0.22
                 skor += aciklik * 18.0
             elif style == "tank":
-                # Tarkard paniklemez: en direkt, fiziksel olarak saglam cikisi alir.
+
                 skor -= abs(aci) * 0.13
                 skor += aciklik * 12.0
             elif style == "tank_guard":
-                # Torrmund daha da muhafazakar; duvar/alev arasina sikismayacak
-                # acik zemini, sonra en kisa sapmayi tercih eder.
+
+
                 skor += aciklik * 28.0
                 skor -= abs(aci) * 0.15
 
@@ -3425,7 +3425,7 @@ class CommonEnemy:
                 ).length(),
             )
             tti = along / speed
-            # Çok uzaktaki teorik çizgiye değil, 0.75 s içindeki gerçek tehdide tepki.
+
             if tti > 0.78:
                 continue
             score = tti + lateral / max(1.0, corridor) * 0.12
@@ -3441,7 +3441,7 @@ class CommonEnemy:
 
     def _fire_dash_baslat(self, simdi, digerler, projectile, projectile_dir):
         profil = self._fire_ai_profile()
-        # yalniz Crawler ve Berserker projectile dodge yapabilir.
+
         if not bool(profil.get("projectile_dash", False)):
             return False
         if simdi < self.fire_dash_cooldown_until:
@@ -3467,8 +3467,8 @@ class CommonEnemy:
         proj_pos = pygame.Vector2(float(projectile.x), float(projectile.y))
         adaylar = []
         for sign in (-1.0, 1.0):
-            # Kisa ve smooth dash: saf 90 derece robot hareketi yerine az miktarda
-            # geriye kavis. Berserker biraz daha ileri-baski karakterini korur.
+
+
             back = (
                 random.uniform(0.035, 0.11)
                 if self.tur == "berserker"
@@ -3497,7 +3497,7 @@ class CommonEnemy:
             closest = proj_pos + d * max(0.0, along)
             line_clear = end.distance_to(closest)
             skor = line_clear + self._lokal_aciklik(end) * 25.0
-            # Berserker acik alanda oyuncuya daha yakin biten tarafi hafifce sever.
+
             if self.tur == "berserker":
                 skor -= end.distance_to((oyuncu_x, oyuncu_y)) * 0.025
             adaylar.append((skor, yon))
@@ -3515,8 +3515,8 @@ class CommonEnemy:
         self.fire_dash_direction = yon
         self.fire_dash_distance_total = float(dash_dist)
         self.fire_dash_last_ease = 0.0
-        # velocity sadece facing/animasyon icin ilk tahmini tasir; gercek hareket
-        # asagidaki smoothstep konum integrasyonudur.
+
+
         nominal_speed = dash_dist / max(0.001, dash_ms / 1000.0)
         self.fire_dash_velocity = yon * nominal_speed
         self.fire_dash_cooldown_until = simdi + int(
@@ -3554,8 +3554,8 @@ class CommonEnemy:
                 / max(1.0, float(self.fire_dash_duration_ms)),
             ),
         )
-        # smoothstep: baslangic ve bitiste hiz sifira yaklasir. Kisa dodge hizli
-        # gorunur fakat teleport veya sabit-hiz kayma hissi vermez.
+
+
         ease = p * p * (3.0 - 2.0 * p)
         delta_ease = max(0.0, ease - float(self.fire_dash_last_ease))
         self.fire_dash_last_ease = ease
@@ -3604,7 +3604,7 @@ class CommonEnemy:
                 simdi + FIRE_AI_SCAN_MS + (sum(ord(c) for c in self.uid) % 27)
             )
 
-            # Fireball reflex sadece hafif/orta mobil siniflara ait.
+
             if (
                 projectile_dash
                 and not committed
@@ -3642,7 +3642,7 @@ class CommonEnemy:
                     self.fire_projectile_pending_id = None
                     self.fire_projectile_react_at = 0
             elif not projectile_dash:
-                # Heavy/ranged siniflarda eski pending dodge state'i tasinmasin.
+
                 self.fire_projectile_pending_id = None
                 self.fire_projectile_react_at = 0
 
@@ -3655,10 +3655,10 @@ class CommonEnemy:
                 )
                 alevin_icinde = en_yakin <= panic_limit
 
-                # Yakindaki alev yuzunden her swing'i sihirli bicimde iptal etmezler;
-                # ama alev gercekten bedenlerine degiyorsa tum siniflar hayatta kalma
-                # refleksiyle commitment'i keser. Tarkard/Torrmund dahi projectile'dan
-                # kacmazken yanmakta olduklari zeminde durmaz.
+
+
+
+
                 if alevin_icinde and committed:
                     self.attacking = False
                     self.attack_damage_applied = True
@@ -3702,8 +3702,8 @@ class CommonEnemy:
         target_vel = _vektor_uzunluk_sinirla(target_vel, speed)
         current = pygame.Vector2(self.vx, self.vy)
 
-        # Hafif siniflar alevden daha hizli yon degistirir; tanklar panik halinde
-        # kaymaz, agir ama kararlı bir sekilde guvenli zemine doner.
+
+
         style = str(profil.get("ground_style", "skittish"))
         response_k = {
             "skittish": 19.0,
@@ -3782,8 +3782,8 @@ class CommonEnemy:
         )
         aciklik0 = _common_enemy_hucre_clearance(self.tur, current_cell)
 
-        # Açık alanda candidate fan açmaya gerek yok. Bir ileri probe + dynamic
-        # occupancy, düz pursuit'in güvenli olup olmadığını belirler.
+
+
         probe = bas + istenen * min(68.0, max(26.0, hiz * 0.19))
         duz_guvenli = (
             aciklik0 >= 2.0
@@ -3798,8 +3798,8 @@ class CommonEnemy:
         if duz_guvenli:
             sonuc = istenen * hiz
         else:
-            # Sıkışmaya yaklaştıkça açısal çözünürlük artar. Normal koşuda 5,
-            # Problemli koridorda 9-11 yön yeterlidir; daha geniş örnekleme gereksiz maliyet yaratır.
+
+
             if self.stuck_ms > 180.0 or aciklik0 < 1.0:
                 acilar = (
                     0,
@@ -3922,8 +3922,8 @@ class CommonEnemy:
             self.last_move_distance = 0.0
             return 0.0
 
-        # Küçük normal adımlarda tek exact test yeterlidir; sub-step yalnız hızlı harekette gerekir.
-        # yaptığı için hızlı Berserker gereksiz geometri maliyeti üretiyordu.
+
+
         son = baslangic + hareket_v
         if toplam <= 4.75 and self._hareket_gecerli(
             son.x, son.y, digerler, oyuncuyu_engel_say
@@ -3947,7 +3947,7 @@ class CommonEnemy:
                 self.x, self.y = normal_hedef.x, normal_hedef.y
                 continue
 
-            # Yalnız gerçekten bloklandığında tangent fan açılır.
+
             en_iyi = None
             for derece in (22, -22, 44, -44, 68, -68, 90, -90):
                 sapma = _vektor_dondur(temel, derece)
@@ -3987,7 +3987,7 @@ class CommonEnemy:
                     self.vy = self.vy * 0.38 + yeni.y * 0.62
                 continue
 
-            # Axis slide son güvenlik katmanı.
+
             x_ok = self._hareket_gecerli(
                 self.x + temel.x,
                 self.y,
@@ -4058,8 +4058,8 @@ class CommonEnemy:
             self.nav_follow_target = hedef
             return hedef
 
-        # Oyuncunun her birkaç piksel hareketi rota çözdürmez. Goal gridde en az iki
-        # hücre kaymışsa veya mevcut rota gerçekten problemliyse yeni iş başlatılır.
+
+
         goal_shift = True
         if self.nav_goal_cell is not None:
             goal_shift = _common_enemy_octile(self.nav_goal_cell, goal_cell) >= 2.0
@@ -4095,8 +4095,8 @@ class CommonEnemy:
             self.nav_job = None
 
         if not self.nav_path:
-            # Job birkaç kare sürerken enemy duvara abanmaz. Stable wall-follow local
-            # hedefi seçer; candidate steering bunun güvenli alt yönünü bulur.
+
+
             fark = hedef - konum
             if fark.length_squared() <= 1e-6:
                 return hedef
@@ -4116,8 +4116,8 @@ class CommonEnemy:
         if simdi < self.nav_follow_refresh_ms:
             return pygame.Vector2(self.nav_follow_target)
 
-        # En ileri görünür path node'u grid LOS cache ile seçilir. Bu işlem artık
-        # yalnız 10-14 kez/s yapılır; aynı hücre çiftinin LOS'u da kalıcı cache'dedir.
+
+
         en_ileri = self.nav_index
         sinir = min(len(self.nav_path) - 1, self.nav_index + 7)
         for i in range(sinir, self.nav_index, -1):
@@ -4224,7 +4224,7 @@ class CommonEnemy:
                     pygame.Vector2(saldiri_rect.center)
                 )
                 aciklik = self._lokal_aciklik(hedef)
-                # Yakın kal; ama hitbox merkezinden uzaklaş.
+
                 ring = -abs(oyuncu_mesafe - 92.0) * 0.16
                 skor = guven * 0.86 + ring + aciklik * 24.0
                 adaylar.append((skor, hedef))
@@ -4346,8 +4346,8 @@ class CommonEnemy:
                 biten_tur = self.dash_kind
                 self.dash_kind = None
                 self.dash_velocity *= 0.30
-                # Dash'ten saldırıya anlık snap yok. Kısa ayak toplama süresi hareketi
-                # daha fiziksel ve okunabilir yapar; chase dash yine tehditkârdır.
+
+
                 ayak_toplama = 165 if biten_tur == "back" else 225
                 self.recovery_until = max(self.recovery_until, simdi + ayak_toplama)
             return False
@@ -4384,7 +4384,7 @@ class CommonEnemy:
             return
 
         if self.tur == "crawler":
-            # Art arda her swing'de kusursuz dodge yok. Crawler zeki ama okunabilir.
+
             can_orani = self.hp / max(1.0, self.max_hp)
             sans = float(self.cfg["evade_chance"]) + (0.08 if can_orani < 0.35 else 0.0)
             if simdi >= self.defense_cooldown_until and random.random() < min(
@@ -4398,8 +4398,8 @@ class CommonEnemy:
                 and mesafe < 126.0
                 and oyuncu_saldiri_vurus_penceresi_aktif_mi(simdi)
             ):
-                # Berserker artık her telegraph'a psişik biçimde cevap vermez. Yalnız
-                # kılıcın gerçekten aktif penceresine girerken ve yakınındaysa geri kaçar.
+
+
                 ritim_bonus = (
                     0.025
                     if self.player_attack_samples >= 3
@@ -4484,7 +4484,7 @@ class CommonEnemy:
                 int(self.cfg.get("chase_dash_max_wait_ms", 4750)),
             )
         else:
-            # Engel dash koridorunu kapattıysa hemen tekrar spamlamaz; path takip eder.
+
             self.next_chase_dash_ms = simdi + 900
         return basladi
 
@@ -4506,7 +4506,7 @@ class CommonEnemy:
         radial = fark.normalize()
 
         if self.tur == "crawler":
-            # Crawler düz saldırır. Yalnız hedef slot geçersizse küçük açılarla alternatif arar.
+
             radius = max(43.0, float(self.cfg["attack_range"]) - 12.0)
             acilar = (0, 18, -18, 35, -35, 58, -58)
             adaylar = []
@@ -4526,9 +4526,9 @@ class CommonEnemy:
             self.tactical_refresh_ms = simdi + 420
             return pygame.Vector2(hedef)
 
-        # Berserker: saldırı hazır değilken combat ring üzerinde dolaşır; cooldown
-        # dolduğunda ring'i attack menziline daraltır ve gerçekten içeri girer.
-        # Böylece strafe zekâsı enemy'yi sonsuza dek menzil dışında tutmaz.
+
+
+
         attack_hazir = (
             simdi - self.last_attack_ms
             >= max(
@@ -4594,7 +4594,7 @@ class CommonEnemy:
 
             velocity_align = 0.0
             if oyuncu_hiz_vektoru.length_squared() > 25.0:
-                # Hareket eden oyuncunun kaçış yönünün ilerisindeki slot biraz daha değerli.
+
                 toward = p - oyuncu
                 if toward.length_squared() > 1e-6:
                     velocity_align = (
@@ -4642,13 +4642,13 @@ class CommonEnemy:
             return temel_yon
         radial = radial.normalize()
 
-        # Uzakta: rota ve intercept kararına sadık kal. Gereksiz strafe yok.
+
         if mesafe >= 168.0:
             self.pressure_commit_until = 0
             return temel_yon
 
-        # Saldırı çok yakında hazır olacaksa kısa bir commit penceresi aç ve hedefe
-        # kararlı gir. Bu, küçük zigzagları keser ve saldırıyı okunur kılar.
+
+
         if cooldown_kalan <= 260 and simdi >= self.recovery_until:
             if self.pressure_commit_until <= simdi:
                 self.pressure_commit_until = simdi + int(
@@ -4659,7 +4659,7 @@ class CommonEnemy:
         if simdi < self.pressure_commit_until:
             return temel_yon
 
-        # Başarısız saldırı sonrası yalnız kısa süre yana reset. Tam daire çizmez.
+
         if simdi < self.post_miss_reposition_until:
             tangent = pygame.Vector2(-radial.y, radial.x) * self.orbit_sign
             radius_hatasi = mesafe - float(self.cfg["combat_radius"])
@@ -4667,7 +4667,7 @@ class CommonEnemy:
             combat = tangent * float(self.cfg["combat_strafe_strength"]) + duzeltme
             return combat.normalize() if combat.length_squared() > 0.01 else temel_yon
 
-        # Normal cooldown: yalnız hafif bir açı kır; sürekli çevreleme yok.
+
         if cooldown_kalan > 360 and 86.0 < mesafe < 145.0:
             tangent = pygame.Vector2(-radial.y, radial.x) * self.orbit_sign
             karisim = pygame.Vector2(temel_yon) * 0.88 + tangent * 0.12
@@ -4696,7 +4696,7 @@ class CommonEnemy:
                 int(self.x // COMMON_ENEMY_NAV_GRID),
                 int(self.y // COMMON_ENEMY_NAV_GRID),
             )
-            # Bulunduğu hücreyi değil, mevcut path'in hemen önündeki problemli hücreyi cezalandır.
+
             if self.nav_path and self.nav_index < len(self.nav_path):
                 p = pygame.Vector2(self.nav_path[self.nav_index])
                 hucre = (
@@ -4707,8 +4707,8 @@ class CommonEnemy:
             self.wall_follow_until = simdi + 420
 
         if self.stuck_ms > 780.0:
-            # Uzun kilitte side bias'ı tersine çevir. Aynı kaya köşesine aynı taraftan
-            # tekrar tekrar basmayı engeller.
+
+
             self.wall_follow_sign *= -1.0
             self.orbit_sign *= -1.0
             self.stuck_ms = 260.0
@@ -4734,7 +4734,7 @@ class CommonEnemy:
         self._poise_guncelle(dt, simdi)
         self._hp_bar_guncelle(dt, simdi)
 
-        # Reaksiyon yalnız yeni swing başladığında gerçek iş yapar.
+
         self._oyuncu_saldirisina_reaksiyon(simdi, digerler)
 
         if (
@@ -4747,8 +4747,8 @@ class CommonEnemy:
                     silah_temas_sesi_cal(self.tur)
                     self.hasar_al(oyuncu_saldiri_hasar_miktari())
 
-        # yalnız Crawler/Berserker projectile dash; tüm türler ground-fire kaçışı yapar.
-        # Dodge i-frame sağlamaz; ateş topu fiziksel olarak hâlâ yakalayabilir.
+
+
         if self._fire_ai_guncelle(dt, simdi, digerler):
             return
         if self._dash_guncelle(dt, simdi, digerler):
@@ -4756,7 +4756,7 @@ class CommonEnemy:
         if self._crawler_evade_guncelle(dt, simdi, digerler):
             return
 
-        # Pasif durumda pathfinding / steering / LOS hiç çalışmaz.
+
         if not self.aggro:
             self.vx *= math.exp(-8.5 * dt)
             self.vy *= math.exp(-8.5 * dt)
@@ -4792,7 +4792,7 @@ class CommonEnemy:
         self._berserker_sabirsizlik_guncelle(dt, simdi, mesafe)
         self._yonleri_hareketten_guncelle(fark)
 
-        # Exact LOS yalnız gerçekten saldırı menziline yaklaşınca ölçülür.
+
         if (
             mesafe <= float(self.cfg["attack_range"]) + 7.0
             and simdi - self.last_attack_ms
@@ -4847,8 +4847,8 @@ class CommonEnemy:
         d = max(0.0001, yol.length())
         yon = yol / d
 
-        # Crawler dodge sonrası tekrar daha düz saldırır; exact LOS yerine static
-        # grid LOS kullanılır ve aynı hücre çiftinde sonuç cache'den gelir.
+
+
         if self.tur == "crawler" and simdi < self.crawler_commit_until:
             duz = oyuncu_tahmin - konum
             if duz.length_squared() > 1e-6:
@@ -4927,8 +4927,8 @@ class CommonEnemy:
             )
             if durum == "walk" and self.dash_kind is not None:
                 sure = max(38, int(sure * 0.64))
-            # Berserker sabırsızlaştıkça yürüyüş frekansı fiziksel hızı izler;
-            # böylece sprite kayıyormuş gibi görünmez.
+
+
             if durum == "walk" and self.tur == "berserker":
                 anim_mul = self._anlik_move_speed() / max(
                     1.0, float(self.cfg["move_speed"])
@@ -4949,8 +4949,8 @@ class CommonEnemy:
         ekran_x = dunya_ekran_x(self.x)
         ekran_y = dunya_ekran_y(self.y)
 
-        # Sprite içindeki eski Berserker gölgesi asset/runtime temizliğinde kaldırılır.
-        # Dünya gölgesi tek kaynaktır; böylece çift oval görünmez.
+
+
         karakter_zemin_golgesi_ciz(
             ekran_x,
             ekran_y - 1,
@@ -5033,7 +5033,7 @@ class CommonEnemy:
             bar_yukseklik,
         )
 
-        # Hasar sonrası çok kısa trailing blade: önce eski HP silueti, üstüne gerçek HP.
+
         if trail_oran > oran + 0.008:
             gotik_bicak_bari_ciz(
                 bar,
@@ -5198,15 +5198,15 @@ class HeadsThrowerRockProjectile:
         if not self.active:
             return
         p = self.progress(simdi)
-        # Ground travel, release'te sabitlenmiş hedefe yumuşak fakat okunabilir gider.
+
         q = p * p * (3.0 - 2.0 * p)
         ground = self.start.lerp(self.target, q)
         self.last_ground = pygame.Vector2(self.x, self.y)
         self.x, self.y = ground.x, ground.y
         self.z = 4.0 * self.arc_height * p * (1.0 - p)
 
-        # Çok alçalmışken yüksek duvar/solid zeminin içine gömülmesin. Yüksek arkta
-        # küçük kayaların üstünden geçebilir; inişte solid'e çarparsa orada düşer.
+
+
         if p > 0.72 and self.z < 26.0 and harita_pikseli_engel_mi(self.x, self.y - 4.0):
             self._impact(simdi)
             return
@@ -5219,7 +5219,7 @@ class HeadsThrowerRockProjectile:
         sx = dunya_ekran_x(self.x)
         sy = dunya_ekran_y(self.y)
         zpx = self.z * KAMERA_YAKINLASTIRMA
-        # Yerdeki gölge, oyuncunun taşın nereye ineceğini sezmesini sağlar.
+
         shadow_w = max(
             5,
             int(round((13.0 - min(7.0, self.z * 0.05)) * KAMERA_YAKINLASTIRMA)),
@@ -5340,8 +5340,8 @@ class HeadsThrowerEnemy(CommonEnemy):
         self.ranged_released = True
         start = pygame.Vector2(self.x, self.y - 30.0)
         player = pygame.Vector2(oyuncu_x, oyuncu_y - 10.0)
-        # Lead bilinçli olarak kusursuz değildir. Uzakta biraz daha tahmin eder,
-        # fakat release sonrası hedef sabit kalır ve oyuncu gerçek dodge yapabilir.
+
+
         dist = start.distance_to(player)
         lead_t = max(
             0.06,
@@ -5433,8 +5433,8 @@ class HeadsThrowerEnemy(CommonEnemy):
                 self.tur, p.x, p.y, navigation=True
             ):
                 continue
-            # Hedefte atış hattı açık olsun; aksi halde yalnız hareket hedefi olarak
-            # son çare kabul edilir ve büyük ceza alır.
+
+
             los = self._projectile_los(
                 simdi,
                 (p.x, p.y - 26.0),
@@ -5449,7 +5449,7 @@ class HeadsThrowerEnemy(CommonEnemy):
                 if dd < 88.0:
                     crowd += (88.0 - dd) * 1.6
             travel = here.distance_to(p)
-            # Aynı tarafta kilitlenmek yerine zamanla farklı ring noktaları seçebilir.
+
             score = travel + crowd + (0.0 if los else 220.0)
             candidates.append((score, p))
         if candidates:
@@ -5478,7 +5478,7 @@ class HeadsThrowerEnemy(CommonEnemy):
             return self._ring_hedefi_sec(simdi, digerler)
         if mesafe > rmax or not los:
             return self._ring_hedefi_sec(simdi, digerler)
-        # İdeal bandın içindeyse gereksiz orbit yapma; küçük separation dışında dur.
+
         return pygame.Vector2(here)
 
     def guncelle(self, dt, simdi, digerler, oyuncu_hiz_vektoru):
@@ -5499,8 +5499,8 @@ class HeadsThrowerEnemy(CommonEnemy):
                     if not self.active:
                         return
 
-        # Heads Thrower ayrı ranged state-machine kullandığı için base guncelle'ye
-        # uğramaz; fire-awareness burada açıkça uygulanır.
+
+
         if self._fire_ai_guncelle(dt, simdi, digerler):
             return
 
@@ -5595,9 +5595,9 @@ class HeadsThrowerEnemy(CommonEnemy):
                 else 0
             )
             return "throw", frames[idx] if frames else None
-        # Walk frame'i zamana değil gerçekten kat edilen mesafeye bağlıdır. Collision
-        # veya steering karakteri durdurursa animasyon da durur; "sprite sürükleniyor"
-        # hissinin ana nedeni olan skating böylece ortadan kalkar.
+
+
+
         pos = pygame.Vector2(self.x, self.y)
         adim = pos.distance_to(self.walk_anim_last_pos)
         if adim < 72.0:
@@ -5648,7 +5648,7 @@ class HeadsThrowerEnemy(CommonEnemy):
             img = sprite_olcek_onbellegi.get(key)
             if img is None:
                 img = pygame.transform.scale(frame, size)
-                # Kaynak sequence sağa bakar.
+
                 if self.visual_direction == "left":
                     img = pygame.transform.flip(img, True, False)
                 sprite_olcek_onbellegi[key] = img
@@ -5694,7 +5694,7 @@ def _ambient_rat_spawn_noktasi():
         if common_enemy_statik_konum_gecerli_mi("rat", x, y, navigation=False):
             return pygame.Vector2(x, y)
 
-    # Golden-angle fallback around player.
+
     golden = math.radians(137.507764)
     center = pygame.Vector2(oyuncu_x, oyuncu_y)
     for i in range(48):
@@ -5717,8 +5717,8 @@ def ambient_rat_spawn_deneme(simdi):
     spawn = _ambient_rat_spawn_noktasi()
     if spawn is not None:
         ambient_rats.append(AmbientRat(spawn.x, spawn.y, simdi))
-        # Aktif fare varken bu zaman kullanılmaz. Despawn olduğunda bir sonraki
-        # güncellemede kısa bir gecikmeyle yenisi gelir.
+
+
         ambient_rat_next_spawn_ms = int(simdi) + 1300
     else:
         ambient_rat_next_spawn_ms = int(simdi) + 900
@@ -5773,8 +5773,8 @@ class TarkardEnemy(CommonEnemy):
         )
 
     def _oyuncu_saldirisina_reaksiyon(self, simdi, digerler):
-        # Tarkard crawler gibi kaçmaz, Berserker gibi back-dash atmaz. Swing'i
-        # görünce yalnız yaklaşma slotunu yeniden değerlendirir; bu fair ve okunabilir.
+
+
         if not oyuncu_saldiriyor:
             return
         if saldiri_baslangic == self.last_observed_player_attack_id:
@@ -5789,7 +5789,7 @@ class TarkardEnemy(CommonEnemy):
         if vektor.length_squared() <= 4.0:
             return
         self.direction = _common_enemy_yon_bul(vektor.x, vektor.y, self.direction)
-        # Sheet iki yönlü olmadığı için yalnız horizontal facing kullanılır.
+
         if abs(vektor.x) > 1.3:
             self.visual_direction = "right" if vektor.x > 0 else "left"
 
@@ -5821,8 +5821,8 @@ class TarkardEnemy(CommonEnemy):
     def _saldiri_baslat(self, simdi):
         oyuncu_hiz = common_enemy_oyuncu_hizi.length()
         mesafe = pygame.Vector2(self.x, self.y).distance_to((oyuncu_x, oyuncu_y))
-        # Whirl, sürekli çevresinde koşan oyuncuyu cezalandırır; yine de seyrek ve
-        # daha uzun recovery'li olduğu için rastgele haksız bir AoE spam değildir.
+
+
         whirl_uygun = (
             mesafe < 89.0
             and oyuncu_hiz > 115.0
@@ -5836,7 +5836,7 @@ class TarkardEnemy(CommonEnemy):
     def _attack_rect(self):
         if self.attack_variant == "whirl":
             r = self.collision_rect()
-            # Dairesel sprite hareketini yaklaşıkleyen geniş fakat okunabilir alan.
+
             return pygame.Rect(r.centerx - 70, r.centery - 56, 140, 112)
         return super()._attack_rect()
 
@@ -5900,8 +5900,8 @@ class TarkardEnemy(CommonEnemy):
         swing_tehdidi = oyuncu_saldiriyor and simdi < self.guard_memory_until
         adaylar = []
 
-        # Ağır karakter kısa yolu seçer ama dar collision koridoruna girmekten ve
-        # oyuncunun aktif kılıç cephesine körlemesine basmaktan kaçınır.
+
+
         for ofset in (
             0,
             24,
@@ -6003,7 +6003,7 @@ class TarkardEnemy(CommonEnemy):
             cizilecek = sprite_olcek_onbellegi.get(anahtar)
             if cizilecek is None:
                 cizilecek = pygame.transform.scale(kare, boyut)
-                # Kaynak sheet sağa dönük kabul edilir; sola yönelirken gerçek flip.
+
                 if self.visual_direction == "left":
                     cizilecek = pygame.transform.flip(cizilecek, True, False)
                 sprite_olcek_onbellegi[anahtar] = cizilecek
@@ -6107,7 +6107,7 @@ class SirTorrmundEnemy(TarkardEnemy):
     """
 
     def __init__(self, uid, x, y):
-        # TarkardEnemy.__init__ turu sabit "tarkard" yaptığı için doğrudan CommonEnemy.
+
         CommonEnemy.__init__(self, uid, "torrmund", x, y)
         self.direction = "left"
         self.visual_direction = "left"
@@ -6122,7 +6122,7 @@ class SirTorrmundEnemy(TarkardEnemy):
         return "Sir Torrmund"
 
     def _oyuncu_saldirisina_reaksiyon(self, simdi, digerler):
-        # Kaçmaz. Oyuncunun görünür swing'ini yalnız rota/slot maliyeti olarak hatırlar.
+
         if not oyuncu_saldiriyor:
             return
         if saldiri_baslangic == self.last_observed_player_attack_id:
@@ -6168,8 +6168,8 @@ class SirTorrmundEnemy(TarkardEnemy):
     def _saldiri_baslat(self, simdi):
         mesafe = pygame.Vector2(self.x, self.y).distance_to((oyuncu_x, oyuncu_y))
         oyuncu_hiz = common_enemy_oyuncu_hizi.length()
-        # Dikey cleave, oyuncu çok yaklaşmış ve yön değiştirmeyi zorluyorsa seyrek gelir;
-        # yatay execution standart imzadır. Her ikisi de uzun telegraph taşır.
+
+
         cleave = (
             mesafe < 96.0
             and oyuncu_hiz > 95.0
@@ -6183,7 +6183,7 @@ class SirTorrmundEnemy(TarkardEnemy):
 
     def _attack_rect(self):
         r = self.collision_rect()
-        # Uzun kılıç. Arkaya değil facing yönüne taşan bir kesme alanı.
+
         yon = _common_enemy_yon_vektoru(self.direction)
         if self.attack_variant == "cleave":
             merkez = pygame.Vector2(r.center) + yon * 34.0
@@ -6233,14 +6233,14 @@ class SirTorrmundEnemy(TarkardEnemy):
             if self.attack_variant == "cleave":
                 recovery = int(recovery * 1.10)
             if not self.attack_connected:
-                # Tek vuruş ölümcül olduğu için kaçırması oyuncuya gerçek punish penceresi açar.
+
                 recovery = int(recovery * 1.24)
             self.recovery_until = simdi + recovery
         return True
 
     def _taktik_hedef_sec(self, simdi, oyuncu_tahmin, digerler, oyuncu_hiz_vektoru):
-        # Tarkard'ın ağır slot seçimini kullan, fakat Torrmund daha disiplinli:
-        # kılıç menzili nedeniyle daha geniş halka ve daha kuvvetli ön-açı cezası.
+
+
         if simdi < self.tactical_refresh_ms and self.tactical_target is not None:
             return pygame.Vector2(self.tactical_target)
 
@@ -6354,7 +6354,7 @@ class SirTorrmundEnemy(TarkardEnemy):
             cizilecek = sprite_olcek_onbellegi.get(anahtar)
             if cizilecek is None:
                 cizilecek = pygame.transform.scale(kare, boyut)
-                # Kaynak karakter sağa bakar; sol-facing yalnız runtime flip'tir.
+
                 if self.visual_direction == "left":
                     cizilecek = pygame.transform.flip(cizilecek, True, False)
                 sprite_olcek_onbellegi[anahtar] = cizilecek
@@ -6684,8 +6684,8 @@ def common_enemy_guncelle():
     common_enemy_onceki_oyuncu_hizi = pygame.Vector2(common_enemy_oyuncu_hizi)
     common_enemy_onceki_oyuncu_konumu = (oyuncu_x, oyuncu_y)
 
-    # Update sırasının sürekli aynı enemy lehine dynamic avoidance üretmemesi için
-    # frame parity ile ters çevir. Yalnız iki common enemy olsa da fairness sağlar.
+
+
     tum_taktik_aktorler = list(common_enemies)
     if tarkard_actor is not None and getattr(tarkard_actor, "active", False):
         tum_taktik_aktorler.append(tarkard_actor)
@@ -6696,8 +6696,8 @@ def common_enemy_guncelle():
     if (simdi // 17) % 2:
         aktifler.reverse()
     for dusman in aktifler:
-        # Patlama impulse'u aktifken AI steering aynı frame fiziksel savrulmayı
-        # geri çekmesin. Burn tick'leri de burada, aktör güncellemesinden önce işler.
+
+
         if fire_magic_enemy_status_preupdate(dusman, dt, simdi, tum_taktik_aktorler):
             continue
         dusman.guncelle(
@@ -6707,9 +6707,9 @@ def common_enemy_guncelle():
             common_enemy_oyuncu_hizi,
         )
 
-    # Projectile ve ambient fauna fizik tick'i enemy AI'dan ayrıdır; pathfinding
-    # bütçesi tüketmezler. Bu sayede Heads Thrower sayısı artsa bile Theta* frame
-    # bütçesi taş animasyonuna harcanmaz.
+
+
+
     enemy_projectiles_guncelle(dt, simdi)
     ambient_rats_guncelle(dt, simdi)
     fire_magic_guncelle(dt, simdi)
@@ -6786,7 +6786,7 @@ def _v24_katil_siluet_surface_ve_rect(actor):
         )
     )
 
-    # Normal dünya renderer'ındaki orientation kuralları birebir korunur.
+
     if tur == "crawler":
         if str(getattr(actor, "direction", "left")) == "right":
             img = pygame.transform.flip(img, True, False)
@@ -6828,8 +6828,8 @@ def _stage1__v30_oyuncu_ozel_ceset_ciz():
         hits = sum(
             1 for k in oyuncu_olum_koreografi_vuruslari if str(k).startswith("crawler_")
         )
-        # Ceset yerine oturduktan sonra altı hızlı ısırık giderek küçük parçalar alır.
-        # Gövde tamamen yok olmaz; 2., 4. ve 6. darbede üç lokal eksilme oluşur.
+
+
         rng = random.Random(int(oyuncu_olum_koreografi_seed or 1))
         for i in range(min(3, hits // 2)):
             side = -1 if (i + oyuncu_olum_koreografi_seed) % 2 else 1
@@ -6850,7 +6850,7 @@ def _stage1__v30_oyuncu_ozel_ceset_ciz():
             1 for k in oyuncu_olum_koreografi_vuruslari if str(k).startswith("bers_")
         )
         rng = random.Random(int(oyuncu_olum_koreografi_seed or 1) + 91)
-        # Daha kesici: 2., 4. ve 6. saldırı küçük çapraz kama koparır.
+
         for i in range(min(3, hits // 2)):
             y0 = int(h * (0.12 + i * 0.18))
             if (oyuncu_olum_koreografi_seed + i) % 2:
@@ -6872,7 +6872,7 @@ def _stage1__v30_oyuncu_ozel_ceset_ciz():
         return True
 
     if alt == "headshot":
-        # Head Thrower kayası: kafa bölgesi yok, boyun altı gövde korunur.
+
         pygame.draw.ellipse(
             sil,
             (0, 0, 0, 0),
@@ -6887,8 +6887,8 @@ def _stage1__v30_oyuncu_ozel_ceset_ciz():
         return True
 
     if alt == "tarkard_crush":
-        # Whirl ceset yere oturduktan sonra gelir. Bedenin çoğu kalır ama boss darbesi
-        # üç küçük bölgeyi ezer/koparır; "tam sağlam ceset" görünümü kalmaz.
+
+
         squash = 1.0
         if 500 <= e <= 1050:
             pulse = math.sin((e - 500) / 550.0 * math.pi)
@@ -6911,15 +6911,15 @@ def _stage1__v30_oyuncu_ozel_ceset_ciz():
         return True
 
     if alt in ("torrmund_decap", "torrmund_decap_cleave"):
-        # Kafayı gerçek player silhouette'inden ayır. İkinci cleave varsa 1.42 s sonra
-        # başsız gövde ayrıca çapraz iki parçaya ayrılır.
+
+
         head_h = max(5, int(round(h * 0.24)))
         head_w = max(5, int(round(w * 0.48)))
         head_x = max(0, (w - head_w) // 2)
         head_rect = pygame.Rect(head_x, 0, head_w, head_h).clip(sil.get_rect())
         head = sil.subsurface(head_rect).copy()
         body = sil.copy()
-        # Tam üst şeridi değil, kafa çevresindeki oval alanı temizle; omuzlar kalır.
+
         pygame.draw.ellipse(
             body,
             (0, 0, 0, 0),
@@ -6973,7 +6973,7 @@ def _stage1__v30_oyuncu_ozel_ceset_ciz():
         else:
             _v30_yatan_siluet_yerlestir(body)
 
-        # Baş gerçek crop olarak boyun noktasından çıkar; tüm beden merkezi etrafında dönmez.
+
         t = min(1.8, e / 1000.0)
         sign = -1.0 if oyuncu_yonu in ("left", "up") else 1.0
         sx = float(dunya_ekran_x(oyuncu_x))
@@ -7081,8 +7081,8 @@ def _v32_katil_temasa_yaklastir(simdi):
         return V32_OLUM_KATIL_READY_MS
 
     tur = str(getattr(actor, "tur", ""))
-    # Ranged Head Thrower'ın öldürücü taşı zaten kafa temasını temsil eder; cesede
-    # yürütülmez. Torrmund'un ilk öldürücü kılıcı da zaten melee temasındadır.
+
+
     if tur not in ("crawler", "berserker", "tarkard"):
         if V32_OLUM_KATIL_READY_MS <= 0 and oyuncu_olum_baslangic_ms > 0:
             V32_OLUM_KATIL_READY_MS = max(
@@ -7102,8 +7102,8 @@ def _v32_katil_temasa_yaklastir(simdi):
     )
     V32_OLUM_KATIL_LAST_UPDATE_MS = int(simdi)
 
-    # Cesedin gövde merkezi. Weapon-point fonksiyonundaki yukarı ofsetle aynı dünya
-    # düzleminde hedeflenir; merkez-mesafe yerine gerçek el/silah ucunun uzaklığı ölçülür.
+
+
     hedef = pygame.Vector2(float(oyuncu_x), float(oyuncu_y) - 14.0)
     merkezden = pygame.Vector2(
         float(oyuncu_x) - float(actor.x),
@@ -7151,8 +7151,8 @@ def _v32_katil_temasa_yaklastir(simdi):
                 oyuncuyu_engel_say=False,
             )
         except Exception:
-            # Yalnız CommonEnemy navigation metodu bulunmayan özel bir aktör olursa
-            # static collision'ı delmeden küçük bir doğrudan nudge denenir.
+
+
             nx, ny = (
                 float(actor.x) + step.x,
                 float(actor.y) + step.y,
@@ -7186,8 +7186,8 @@ def _v32_katil_temasa_yaklastir(simdi):
             actor.vy = 0.0
         except Exception:
             pass
-        # Saldırı ancak hem ceset yere yerleştikten hem de el/silah temas menziline
-        # girdikten sonra başlar. Bu iki koşul aynı anda sağlanmazsa animasyon bekler.
+
+
         if int(simdi) >= int(oyuncu_olum_baslangic_ms) + OLU_CESET_YERLESME_MS:
             if V32_OLUM_KATIL_READY_MS <= 0:
                 V32_OLUM_KATIL_READY_MS = int(simdi)
@@ -7292,7 +7292,7 @@ def _stage2__v30_katil_koreografi_frame(actor, simdi):
             return None
         return None
 
-    # Torrmund ve ranged headshot'un önceden kurulmuş animasyon kontratını koru.
+
     return _v31_katil_koreografi_frame(actor, simdi)
 # </POTBO_STAGE S0566>
 
@@ -7309,7 +7309,7 @@ def _stage1__v32_tirtikli_ceset_ciz(mod="generic"):
     seed = int(oyuncu_olum_koreografi_seed or oyuncu_olum_ates_seed or 47531)
     rng = random.Random(seed + sum(ord(c) for c in str(mod)) * 19)
 
-    # mod -> (kopma sayısı, yatay/vertical yarıçap aralığı, doğum zamanları)
+
     if mod == "crawler":
         hits = sum(
             1 for k in oyuncu_olum_koreografi_vuruslari if str(k).startswith("crawler_")
@@ -7348,8 +7348,8 @@ def _stage1__v32_tirtikli_ceset_ciz(mod="generic"):
             cxr = rng.uniform(0.34, 0.66)
             cyr = rng.uniform(0.05, 0.24)
         else:
-            # Parçaları bedenin farklı dış bölgelerine dağıt; birbirini izleyen temiz
-            # kesim düzlemleri yerine dağınık yırtılma noktaları oluşur.
+
+
             angle = rng.uniform(0.0, math.tau)
             cxr = 0.5 + math.cos(angle) * rng.uniform(0.20, 0.34)
             cyr = 0.53 + math.sin(angle) * rng.uniform(0.18, 0.36)
@@ -7374,7 +7374,7 @@ def _stage1__v32_tirtikli_ceset_ciz(mod="generic"):
                 )
             )
 
-    # Tarkard'ın crush hareketinde gövde hafifçe basılır; parçalanma tırtıklı kalır.
+
     if mod == "tarkard_crush" and local >= 0 and local < 780:
         pulse = math.sin(max(0.0, min(1.0, local / 780.0)) * math.pi)
         if pulse > 0.0:
@@ -7404,8 +7404,8 @@ def _stage1__v32_tirtikli_ceset_ciz(mod="generic"):
             d = pygame.Vector2(1.0, 0.0).rotate(rng.uniform(0.0, 360.0))
         else:
             d = d.normalize()
-        # Kopan parça yalnız birkaç piksel ayrılır: beden tanınabilir kalır ama artık
-        # kusursuz tek parça değildir. Crawler/Berserker'da vuruş sırasına göre büyür.
+
+
         strength = (
             1.15 if mod == "berserker" else (1.35 if mod == "tarkard_crush" else 1.0)
         )
@@ -7429,9 +7429,9 @@ def _stage2__v30_oyuncu_ozel_ceset_ciz():
     if alt == "tarkard_crush":
         return _v32_tirtikli_ceset_ciz("tarkard_crush")
 
-    # Torrmund'un kılıcı kasıtlı olarak temiz kesim dilini korur; bu onun silahının
-    # ayırt edici infaz karakteridir. Eski fonksiyonun yalnız Torrmund bölümünü burada
-    # Bu dal generic corpse renderer tarafından tamamlanır.
+
+
+
     return False
 # </POTBO_STAGE S0570>
 
@@ -7440,7 +7440,7 @@ def _stage2__v30_oyuncu_ozel_ceset_ciz():
 
 def _oyuncu_yatay_siluet_ciz():
     """V32 corpse dispatcher: temiz bisect yalnız Torrmund; diğerleri tırtıklı."""
-    # Bombanın ikinci/orta halkası doğrudan blast parçalarıyla görünür.
+
     if oyuncu_olum_turu == "blast_mid":
         _v32_patlama_siluet_parcalari_ciz("blast_mid")
         return
@@ -7455,10 +7455,10 @@ def _oyuncu_yatay_siluet_ciz():
         _v30_oyuncu_ozel_ceset_ciz()
         return
 
-    # Torrmund'un iki özel kılıç senaryosu clean sword renderer'ı kullanır.
-    # kaybetmemek adına burada özgün mantığa benzer şekilde eski yatay fonksiyonu
-    # çağırmak mümkün değildir (isim artık override edildi). Bu yüzden Torrmund'un
-    # clean kesimini minimum bir local renderer ile koruyoruz.
+
+
+
+
     if alt in ("torrmund_decap", "torrmund_decap_cleave"):
         sil = _v30_oyuncu_base_siluet()
         if sil is None:
@@ -7538,8 +7538,8 @@ def _oyuncu_yatay_siluet_ciz():
         )
         return
 
-    # Torrmund bisect hala oyuncu_olum_ikiye_bolundu flag'iyle gelir. Bu tek durumda
-    # Temiz iki düzlemli kılıç kesimi için kısa renderer.
+
+
     if oyuncu_olum_ikiye_bolundu and str(oyuncu_olum_katil_tur or "") == "torrmund":
         sil = _v30_oyuncu_base_siluet()
         if sil is None:
@@ -7615,8 +7615,8 @@ def _oyuncu_yatay_siluet_ciz():
         )
         return
 
-    # Fire death yalnız gerçek burn tick'inden gelebilir; gövde yine birkaç tırtıklı
-    # parçaya ayrılır ama patlama kadar atomize olmaz.
+
+
     if oyuncu_olum_turu == "fire":
         _v32_tirtikli_ceset_ciz("fire")
         return
@@ -7624,28 +7624,28 @@ def _oyuncu_yatay_siluet_ciz():
     _v32_tirtikli_ceset_ciz("generic")
 
 
-# =========================================================
-# COMBAT IMPACT + GROUND BLOOD + DEATH MUSIC
-# =========================================================
-# - zemin kanının mutlak olarak bütün aktörlerin altında çizilmesini,
-# - oyuncu hasar flaşını,
-# - Crawler'ın gerçek çift temasını ve küçük hit-sekmesini,
-# - ölüm sonrası Crawler/Berserker temas koreografisini,
-# - Tarkard'ın post-mortem ikinci saldırısının kaldırılmasını,
-# - bomba ölüm yarıçapının sıkılaştırılmasını,
-# - corpse sprite'ının siyah dikdörtgen üretmeden gerçek alpha parçalarına bölünmesini,
-# - daha yoğun fakat kamera-cull dostu kan / organ / kemik üretimini,
-# - daha yavaş game-over başlık fade'i ve gameovermusic'i uygular.
 
-# Daha yavaş game-over başlık geçişi. Dört saniyelik saf ölüm tablosu korunur.
+
+
+
+
+
+
+
+
+
+
+
+
+
 OLU_MENU_FADE_IN_MS = 1700
 # </POTBO_STAGE S0575>
 
 # <POTBO_STAGE S0583>
 
 
-# Crawler saldırısında yalnız rüzgârlı impact karesi gerçek temas üretir.
-# ilk darbede tüm swing'i kapatıyordu; artık iki ayrı active slot vardır.
+
+
 _v32_common_saldiri_baslat_v33 = CommonEnemy._saldiri_baslat
 _v32_common_saldiri_guncelle_v33 = CommonEnemy._saldiri_guncelle
 # </POTBO_STAGE S0583>
@@ -7658,8 +7658,8 @@ def _v33_common_saldiri_guncelle(self, simdi):
     if self.tur != "crawler":
         once_hp = int(oyuncu_hp)
         sonuc = _v32_common_saldiri_guncelle_v33(self, simdi)
-        # Berserker'ın normal vuruşu da birkaç piksellik gövde tepkisi üretir.
-        # Tarkard'ın kendi ağır knockback'i ve Torrmund'un sabit kesişi burada ezilmez.
+
+
         if self.tur == "berserker" and int(oyuncu_hp) > 0 and int(oyuncu_hp) < once_hp:
             _v33_oyuncu_kucuk_sektir(self.x, self.y, 66.0, 108)
         return sonuc
@@ -7706,8 +7706,8 @@ def _v33_common_saldiri_guncelle(self, simdi):
                         pygame.Vector2(oyuncu_x - self.x, oyuncu_y - self.y),
                     )
                     kamera_hit_sarsintisi_baslat(2.7 if slot == 0 else 3.4, 105)
-                    # İlk temas çok küçük; ikinci temas biraz daha okunur. İkinci hit'i
-                    # menzil dışına itmeyecek kadar kısadır.
+
+
                     _v33_oyuncu_kucuk_sektir(
                         self.x,
                         self.y,
@@ -7741,10 +7741,10 @@ def _v33_common_saldiri_guncelle(self, simdi):
 CommonEnemy._saldiri_baslat = _v33_common_saldiri_baslat
 CommonEnemy._saldiri_guncelle = _v33_common_saldiri_guncelle
 
-# Heads Thrower taşı da küçük fiziksel sekme üretir; özel heavy boss knockback'lerine
-# dokunulmaz. Projectile sınıfının orijinal impact'ini yeniden yazmak yerine kill kayıt
-# Kaynak adı üzerinden kan kaydı wrapper'ında ekstra itme uygulanmaz;
-# taşın kendi impact'i için minimal wrapper kullanılır.
+
+
+
+
 _v32_rock_impact_v33 = HeadsThrowerRockProjectile._impact
 # </POTBO_STAGE S0585>
 
@@ -7757,8 +7757,8 @@ HeadsThrowerRockProjectile._impact = _v33_rock_impact
 # <POTBO_STAGE S0591>
 
 
-# Tarkard death renderer, ölüm sonrası yeni whirl başlatmaz. İlk lethal saldırının
-# frozen/current frame'i actor._animasyon_kare fallback'iyle görünür.
+
+
 _v32_katil_frame_v33 = _v30_katil_koreografi_frame
 
 
@@ -7785,8 +7785,8 @@ def _v33_tirtikli_ceset_ciz(mod="generic"):
     seed = int(oyuncu_olum_koreografi_seed or oyuncu_olum_ates_seed or 47531)
     rng = random.Random(seed + sum(ord(c) for c in str(mod)) * 23)
 
-    # Her ölümde beden gerçekten birkaç alpha parçasına ayrılır. Crawler/Berserker
-    # ceset yerleştikten sonra her gerçek post-mortem hit'te bir yeni kopma ekler.
+
+
     if mod == "crawler":
         hits = sum(
             1 for k in oyuncu_olum_koreografi_vuruslari if str(k).startswith("crawler_")
@@ -7802,7 +7802,7 @@ def _v33_tirtikli_ceset_ciz(mod="generic"):
         times = (0, 30, 60, 80, 235, 390, 545, 700, 855)
         rxr, ryr = (0.10, 0.17), (0.052, 0.095)
     elif mod == "tarkard_crush":
-        # Post-mortem saldırı yok: parçalanma doğrudan ölümcül ilk darbenin sonucudur.
+
         adet = 8 if e_abs >= OLU_CESET_YERLESME_MS else 0
         times = (0, 0, 20, 35, 50, 70, 90, 110)
         rxr, ryr = (0.11, 0.19), (0.06, 0.105)
@@ -7852,7 +7852,7 @@ def _v33_tirtikli_ceset_ciz(mod="generic"):
                 )
             )
 
-    # Ana gövde de crop edilerek çizilir; full-canvas siyah/şeffaf kutu ASLA blit edilmez.
+
     _v33_full_piece_ciz(body, simdi=simdi)
 
     for i, parca, local_pos, rot, mesafe, tangent in kopanlar:
@@ -7883,8 +7883,8 @@ def _v33_tirtikli_ceset_ciz(mod="generic"):
 # <POTBO_STAGE S0598>
 
 
-# Generic corpse dispatcher'ı yeniden bağla: Torrmund clean blade özel kalır; diğer
-# Bu ölümler tırtıklı actual-alpha parçalarını kullanır.
+
+
 def _v30_oyuncu_ozel_ceset_ciz():
     alt = str(oyuncu_olum_alt_turu or "")
     if alt == "crawler":
@@ -7901,16 +7901,16 @@ def _v30_oyuncu_ozel_ceset_ciz():
 # <POTBO_STAGE S0604>
 
 
-# =========================================================
-# TORRMUND FINISHERS + CRAWLER IMPACT + DEATH TIMELINE
-# =========================================================
-# - Crawler yalnız sheet'teki büyük rüzgâr yayı karesinde tek kez hasar verir.
-# - Torrmund'a eski, tek darbede merkezden ikiye ayıran finisher geri eklenir.
-# - Başlık daima "YOU ARE DEAD"; 3.6 sn sonra görünmeye başlar.
-# - Başlık ilk görünür pikselinde gameovermusic başlar, en fazla 10 sn çalar.
-# - Müzik penceresi bittikten sonra butonlar 1.6 sn'de fade-in olur.
-# - Death -> Load -> ESC aynı ölüm tablosuna döner.
-# - Death -> Main Menu aynı tablonun üzerinde ARE YOU SURE? ister.
+
+
+
+
+
+
+
+
+
+
 
 V34_DEATH_TITLE_DELAY_MS = 3600
 # </POTBO_STAGE S0604>
@@ -7918,9 +7918,9 @@ V34_DEATH_TITLE_DELAY_MS = 3600
 # <POTBO_STAGE S0614>
 
 
-# ---------------------------------------------------------
-# CRAWLER: tek gerçek impact, büyük wind-arc frame (raw attack index 12)
-# ---------------------------------------------------------
+
+
+
 _v33_common_saldiri_guncelle_v34 = CommonEnemy._saldiri_guncelle
 
 
@@ -7932,10 +7932,10 @@ def _v34_common_saldiri_guncelle(self, simdi):
         return False
 
     kare = self._attack_frame_index(simdi)
-    aktif_bas, aktif_son = self._attack_active_frame_araligi()  # V34: (12, 12)
+    aktif_bas, aktif_son = self._attack_active_frame_araligi()
 
-    # Yalnız büyük rüzgâr yayı karesi fiziksel saldırıdır. Hazırlık pozları ve yere
-    # kapanma/recovery kareleri hitbox üretmez. Tek swing = tek hasar olayı.
+
+
     if aktif_bas <= kare <= aktif_son:
         enemy_friendly_melee_vur(self, simdi)
         if not self.attack_connected and self._attack_temas_var_mi(simdi):
@@ -7993,9 +7993,9 @@ def _v34_common_saldiri_guncelle(self, simdi):
 CommonEnemy._saldiri_guncelle = _v34_common_saldiri_guncelle
 
 
-# ---------------------------------------------------------
-# TORRMUND: üçüncü finisher = eski merkezden tek-vuruş bisect
-# ---------------------------------------------------------
+
+
+
 def _v30_olum_koreografi_hazirla(katil_tur, profil, kaynak_adi=""):
     global oyuncu_olum_alt_turu, oyuncu_olum_koreografi_seed
     global oyuncu_olum_torrmund_senaryo, oyuncu_olum_ikiye_bolundu
@@ -8021,22 +8021,22 @@ def _v30_olum_koreografi_hazirla(katil_tur, profil, kaynak_adi=""):
         rng = random.Random(oyuncu_olum_koreografi_seed)
         roll = rng.random()
         if roll < 0.28:
-            # ek finisher: eski ölümün daha merkezî, neredeyse yatay temiz kesimi.
-            # Tek lethal vuruştur; post-mortem ikinci saldırı yoktur.
+
+
             oyuncu_olum_torrmund_senaryo = "center_bisect"
             oyuncu_olum_alt_turu = "torrmund_center_bisect"
             oyuncu_olum_ikiye_bolundu = True
             oyuncu_olum_kesim_acisi = rng.uniform(-5.0, 5.0)
             oyuncu_olum_kesim_ofset_orani = rng.uniform(0.492, 0.518)
         elif roll < 0.62:
-            # Mevcut çapraz bisect korunur.
+
             oyuncu_olum_torrmund_senaryo = "bisect"
             oyuncu_olum_alt_turu = "torrmund_bisect"
             oyuncu_olum_ikiye_bolundu = True
             oyuncu_olum_kesim_acisi = rng.uniform(14.0, 32.0) * rng.choice((-1.0, 1.0))
             oyuncu_olum_kesim_ofset_orani = rng.uniform(0.48, 0.57)
         else:
-            # Kafa uçurma; yalnız bu dal bazen farklı heavy cleave ile devam eder.
+
             ikinci = rng.random() < 0.46
             oyuncu_olum_torrmund_senaryo = "decap_cleave" if ikinci else "decap"
             oyuncu_olum_alt_turu = (
@@ -8076,10 +8076,10 @@ def _v34_dynamic_blockers(exclude=None):
 # <POTBO_STAGE S0710>
 
 
-# Orijinal CommonEnemy.hasar_al referansını wrapper ile AYNI isimde tutma.
-# Aksi halde wrapper tanımı bu adı yeniden bağlayıp ilk hasarda kendini çağırır
-# ve RecursionError üretir. Attribute işareti wrapper'ı idempotent de yapar;
-# geliştirme sırasında aynı patch ikinci kez çalıştırılsa bile wrapper zincirlenmez.
+
+
+
+
 _v34c_commonenemy_hasar_al_original = getattr(
     CommonEnemy.hasar_al,
     "_v34_original_hasar_al",
@@ -8129,7 +8129,7 @@ def _v34_actor_move_static_safe(actor, candidate, others, ignore_player=False):
             )
         )
     except (AttributeError, TypeError):
-        # Fallback yalnız static world query; body footprint için enemy helper kullanılır.
+
         try:
             return bool(
                 _common_enemy_hizli_statik_gecerli_mi(
@@ -8203,8 +8203,8 @@ def _v34_push_actor_pair(a, b, actors):
     direction = delta.normalize()
     moved = False
 
-    # Her aktör diğerini geçici olarak blocker listesinden çıkarır; amaç mevcut
-    # interpenetration'ı azaltmaktır. Diğer bütün aktörler ve static world korunur.
+
+
     others_a = [x for x in actors if x is not a and x is not b]
     ca = pygame.Vector2(float(a.x), float(a.y)) + direction * V34_CROWD_PAIR_PUSH
     if _v34_actor_move_static_safe(a, ca, others_a, ignore_player=False):
@@ -8246,8 +8246,8 @@ def _v34_fix_actor_numbers():
             getattr(actor, "y", None)
         ):
             continue
-        # Non-finite AI coordinate'u pathfinder'a göndermek bütün navigation cache'ini
-        # zehirleyebilir. Oyuncudan uzağa, fakat harita içinde en yakın static-safe nokta.
+
+
         base = pygame.Vector2(float(oyuncu_x), float(oyuncu_y))
         found = None
         for radius in (90, 120, 160, 220, 300):
@@ -8306,7 +8306,7 @@ def _v34_interaction_candidates():
         and not getattr(tarkard_actor, "aggro", False)
     ):
         pos = pygame.Vector2(float(tarkard_actor.x), float(tarkard_actor.y))
-        # Tarkard'ın mevcut yakin_mi kontratını koru; yalnız score nearest olur.
+
         if tarkard_yakin_mi():
             candidates.append(
                 _v34_interaction_candidate(
@@ -8320,7 +8320,7 @@ def _v34_interaction_candidates():
             )
 
     mpos = pygame.Vector2(float(merchant_x), float(merchant_y))
-    # Merchant helper zaten collision dışında etkileşim menzilini ayarlıyor.
+
     if merchant_yakin_mi():
         candidates.append(
             _v34_interaction_candidate(
@@ -8339,7 +8339,7 @@ def _v34_interaction_candidates():
             abs(player.x - gpos.x) < 40.0 * V34_INTERACTION_GRACE
             and abs(player.y - gpos.y) < 36.0 * V34_INTERACTION_GRACE
         ):
-            # Loot biraz yüksek priority; doğrudan ayağın altındaki ganimet NPC konuşmasına yenilmez.
+
             candidates.append(
                 _v34_interaction_candidate(
                     "loot",
@@ -8372,8 +8372,8 @@ def _v34_interaction_candidates():
 
 # <POTBO_STAGE S0823>
 
-# Enemy attack contact gate: AI saldırıya biraz önceden hazırlanabilir, fakat gerçek
-# damage ancak gövde/silah oyuncuya makul mesafeye geldiğinde bağlanır.
+
+
 V35_ENEMY_ACTIVE_ROOT_LIMIT = {
     "crawler": 54.0,
     "berserker": 61.0,
@@ -8420,7 +8420,7 @@ def _v35_enemy_attack_contact_gate(self, baslangic=False):
     if root_dist > limit:
         return False
 
-    # Çok yakın beden teması yön cone'una takılmaz; karakterler gerçekten çarpışmıştır.
+
     body = self.collision_rect().inflate(8, 22)
     if body.colliderect(hurt):
         return True
@@ -8437,8 +8437,8 @@ def _v35_enemy_attack_contact_gate(self, baslangic=False):
     if delta.length_squared() <= 1e-6:
         return True
     dot = facing.dot(delta.normalize())
-    # Startup daha belirgin ön-yüz ister. Active arc ise yan tarafta gerçekten geçen
-    # kılıcı kaçırmamak için daha geniş ama arkaya vurmayan bir cone kullanır.
+
+
     threshold = 0.10 if baslangic else -0.06
     if tur in ("tarkard", "torrmund") and not baslangic:
         threshold = -0.12
@@ -8468,8 +8468,8 @@ def _v35_enemy_attack_contact(self, simdi):
     variant = str(getattr(self, "attack_variant", ""))
 
     if tur == "tarkard" and variant == "whirl":
-        # Dairesel saldırı görsel olarak 360 derecedir fakat radius artık yalnız
-        # beden yakınındaki gerçek halka alanını kapsar.
+
+
         nearest = _rect_en_yakin_nokta(hurt, origin)
         return origin.distance_to(nearest) <= 70.0
 
@@ -8516,8 +8516,8 @@ def _v35_enemy_attack_contact(self, simdi):
     return False
 
 
-# Class metotlarını bir kere V35 contact modeline bağla. Subclass'lar aynı base
-# implementation'ı kullandığı için hepsi aynı fiziksel mesafe standardını paylaşır.
+
+
 CommonEnemy._attack_contact_gate = _v35_enemy_attack_contact_gate
 CommonEnemy._attack_baslatma_temasi_var_mi = (
     lambda self: _v35_enemy_attack_contact_gate(self, True)
@@ -8575,8 +8575,8 @@ def _v35_physical_targets():
 # <POTBO_STAGE S0836>
 
 
-# Recursion-safe wrapper: orijinal referans class attribute altında tutulur; wrapper
-# kendi global adına hiçbir zaman geri çağrı yapmaz.
+
+
 if not hasattr(CommonEnemy, "_v35_hasar_al_original"):
     CommonEnemy._v35_hasar_al_original = CommonEnemy.hasar_al
 
@@ -8593,8 +8593,8 @@ def _v35_commonenemy_hasar_al(self, miktar, kaynak=None):
             else False
         )
         if from_player and not player_magic:
-            # Special'ın üç fiziksel vuruşu da ritme dahildir fakat tek teknik flow'u
-            # anında gereğinden fazla taşırmasın diye daha küçük katkı verir.
+
+
             if gelistirici_x_skill_aktif_mi():
                 _v35_register_player_melee_hit(0.58)
             else:
@@ -8776,8 +8776,8 @@ def common_enemy_guncelle():
     global v37_special_ai_pause_frames
     active = gelistirici_x_skill_aktif_mi()
     if active or v37_special_previous_active:
-        # v37_special_previous_active special'ın bittiği ilk simulation frame'inde
-        # bir ek guard verir; sonraki quality tick AI recovery grace'i kurar.
+
+
         v37_special_ai_pause_frames += 1
         return
     return _v37_common_enemy_guncelle_original()
@@ -8786,9 +8786,9 @@ def common_enemy_guncelle():
 # <POTBO_STAGE S0933>
 
 
-# ---------------------------------------------------------
-# FINAL GAME COMPOSITOR
-# ---------------------------------------------------------
+
+
+
 def oyun_ekrani_ciz():
     """V37 tek oyun-frame compositor'ı.
 
@@ -8801,23 +8801,23 @@ def oyun_ekrani_ciz():
     if oyuncu_hp <= 0:
         return
 
-    # Input/attack dili.
+
     _v34_special_ready_prompt_ciz()
 
-    # Combat readability.
+
     _v34_damage_feedback_ciz()
     _v34_combo_ui_ciz()
     _v34_special_recovery_control_hint_ciz()
     _v34_diagnostics_overlay_ciz()
 
-    # World awareness. Special active iken ilgili fonksiyonların kendi guard'ları vardır.
+
     _v34_special_target_preview_ciz()
     _v34_special_path_preview_ciz()
     _v34_threat_indicators_ciz()
     _v34_interaction_target_marker_ciz()
     _v35_enemy_intent_ciz()
 
-    # Minimal sürekli combat-flow göstergesi en üst okunabilir HUD katmanıdır.
+
     _v35_flow_hud_ciz()
 # </POTBO_STAGE S0933>
 
@@ -8835,7 +8835,7 @@ def _v38_enemy_damage_at(distance, exposure=1.0):
     expf = _v38_clamp01(exposure)
     pressure = _v38_pressure_field(d)
     thermal = _v38_thermal_field(d)
-    # Partial cover: pressure daha sert gölgelenir, sıcak gaz az miktarda kenardan sarar.
+
     pressure *= expf**1.35
     thermal *= 0.18 + 0.82 * expf
     raw = V38_FIRE_DAMAGE_PRESSURE * pressure + V38_FIRE_DAMAGE_THERMAL * thermal
@@ -8856,8 +8856,8 @@ def _v38_self_damage_at(distance, exposure=1.0):
     base = _v38_enemy_damage_at(d, exposure)
     if base <= 0:
         return 0
-    # Owner risk merkezde gerçek, sınırda hızla sıfır. Self damage hiçbir zaman
-    # maksimum canın %58'inden fazlasını tek detonation'da alamaz.
+
+
     edge = 1.0 - _v38_smoothstep(d / V38_FIRE_SELF_DAMAGE_RADIUS)
     scaled = base * V38_FIRE_SELF_DAMAGE_SCALE * edge
     cap = max(
@@ -8871,9 +8871,9 @@ def _v38_self_damage_at(distance, exposure=1.0):
 # <POTBO_STAGE S0984>
 
 
-# ---------------------------------------------------------
-# MELEE CONTACT INTEGRITY: ENEMIES
-# ---------------------------------------------------------
+
+
+
 V38_ENEMY_ACTIVE_ROOT_STRICT = {
     "crawler": 43.0,
     "berserker": 49.0,
@@ -8929,7 +8929,7 @@ def _v38_enemy_contact_gate(actor, baslangic=False):
     if dist > limit:
         return False
 
-    # Gerçek body overlap varsa yön cone'u aranmaz.
+
     if actor.collision_rect().inflate(6, 16).colliderect(hurt):
         return True
 
@@ -8942,7 +8942,7 @@ def _v38_enemy_contact_gate(actor, baslangic=False):
     dot = facing.normalize().dot(delta.normalize())
     if baslangic:
         return dot >= 0.14
-    # Active swing yan kenarı kapsar ama artık karakterin arkasına kapsül uzamaz.
+
     threshold = -0.02 if tur in ("tarkard", "torrmund") else 0.02
     return dot >= threshold
 
@@ -9028,7 +9028,7 @@ CommonEnemy._attack_baslatma_temasi_var_mi = lambda self: _v38_enemy_contact_gat
 CommonEnemy._attack_temas_var_mi = _v38_enemy_contact
 
 
-# Friendly fire de aynı "dev attack rect" problemine geri düşmesin.
+
 def enemy_friendly_melee_vur(attacker, simdi):
     if not getattr(attacker, "attacking", False):
         return 0
@@ -9053,8 +9053,8 @@ def enemy_friendly_melee_vur(attacker, simdi):
         if uid in attacker.attack_friendly_hits:
             continue
         target_rect = target.collision_rect().inflate(3, 6)
-        # Tek sweep centerline + target rect capsule. Friendly-fire için geniş arc
-        # gerekmiyor; savaş okunurluğu oyuncu hit testinden daha önemli.
+
+
         start = origin + facing * 8.0
         end = origin + facing * reach
         if not _kapsul_rect_kesisiyor(target_rect, start, end, radius):
@@ -9073,12 +9073,12 @@ def enemy_friendly_melee_vur(attacker, simdi):
 # <POTBO_STAGE S1002>
 
 
-# Materyal katsayıları "armor = fire immune" gibi kaba bir sınıflama değildir.
-# pressure: blast pressure'a mekanik hassasiyet
-# thermal : kısa süreli ısı dozuna hassasiyet
-# burn    : devam eden yanma dozunun çarpanı
-# impulse : knockback susceptibility
-# core    : çok yakın merkezde minimum aktarım katsayısı
+
+
+
+
+
+
 V38_FIRE_MATERIAL_RESPONSE = {
     "crawler": {
         "pressure": 1.06,
@@ -9150,7 +9150,7 @@ def _v38_enemy_damage_for_actor(actor, distance, exposure, momentum=None, radial
         V38_FIRE_DAMAGE_PRESSURE * p * pressure_factor
         + V38_FIRE_DAMAGE_THERMAL * h * thermal_factor
     )
-    # Core çok yakın olduğunda zırhlı hedef bile blast'ı tamamen yok sayamaz.
+
     raw *= (1.0 - core_blend) + core_blend * max(float(material["core"]), 0.82)
     return int(round(raw)) if raw >= V38_FIRE_MIN_ENEMY_DAMAGE else 0
 
@@ -9172,11 +9172,11 @@ def _v38_enemy_knockback_for_actor(actor, distance, exposure):
 # <POTBO_STAGE S1007>
 
 
-# ---------------------------------------------------------
-# EQUATION CATALOG / BALANCE INTROSPECTION
-# ---------------------------------------------------------
-# Bu katalog gameplay döngüsünde çalışmaz. Kod içinden tuning yaparken denklem ile
-# parametre arasındaki bağı kaybetmemek için tek merkezden okunabilir bir şema sağlar.
+
+
+
+
+
 V38_EQUATION_CATALOG = {
     "pressure": {
         "equation": "P(d)=exp(-(d/sigma_p)^2)",
@@ -9362,11 +9362,11 @@ def v38_runtime_balance_summary():
 # <POTBO_STAGE S1012>
 
 
-# ---------------------------------------------------------
-# CONTACT QA GRID
-# ---------------------------------------------------------
-# Gameplay sırasında çalışmaz. Tuning sırasında menzil sayılarını tek bakışta
-# karşılaştırmak ve "startup range < active hit range" gibi terslikleri yakalamak içindir.
+
+
+
+
+
 V38_CONTACT_QA_CASES = (
     ("crawler", 43.0, 44.0, 10.5),
     ("berserker", 49.0, 51.0, 12.5),
@@ -9540,9 +9540,9 @@ _v40_ambient_rats_guncelle_original = ambient_rats_guncelle
 # <POTBO_STAGE S1085>
 
 
-# ---------------------------------------------------------
-# HEADS THROWER ROCK: GERÇEK SPRITE PARÇALARI
-# ---------------------------------------------------------
+
+
+
 def _v40_head_rock_fragments_build():
     src = HEADSTHROWER_ROCK_SPRITE
     if src is None:
@@ -9587,8 +9587,8 @@ def _v40_head_rock_fragments_build():
 # <POTBO_STAGE S1104>
 
 
-# Daha geniş ama hâlâ kısa/örtük loading ipucu havuzu. Tutorial paragrafı yerine
-# dünyayı ve sistemleri sezdiren tek cümleler kullanılır.
+
+
 IPUCLARI = {
     "TR": [
         "Bazen ilk vuruş yol açar; öldüren ikinci adımdır.",
@@ -9643,14 +9643,14 @@ IPUCLARI = {
 
 # <POTBO_STAGE S1110>
 
-# ---------------------------------------------------------
-# MELEE CLOSING CONTRACT
-# ---------------------------------------------------------
-# V39/V42'de hasar teması bilinçli olarak sıkılaştırılmıştı. Ancak AI'nın saldırı
-# başlatma halkası ve tactical ready slotu aynı oranda daralmadığı için özellikle
-# Tarkard / Torrmund, oyuncuya doğru yürümeyi erken bırakıp artık yetişemeyecek bir
-# swing'e commit edebiliyordu. Çözüm hitbox'ı tekrar büyütmek değildir:
-# saldırı başlamadan önce gerçekten active-hit geometrisine girmek zorundadır.
+
+
+
+
+
+
+
+
 V43_MELEE_READY_SLOT = {
     "crawler": 37.0,
     "berserker": 43.0,
@@ -9658,8 +9658,8 @@ V43_MELEE_READY_SLOT = {
     "torrmund": 53.0,
 }
 
-# Startup gate active gate'ten büyük olmaz. Böylece telegraph başladığı konum,
-# karakter yerinde kalsa bile active frame geldiğinde mekanik olarak hâlâ erişilebilirdir.
+
+
 V38_ENEMY_START_ROOT.update(
     {
         "crawler": float(V38_ENEMY_ACTIVE_ROOT_STRICT["crawler"]),
@@ -9699,8 +9699,8 @@ def _v43_inward_melee_slot(actor, target, simdi, player_prediction):
         radial = pygame.Vector2(1.0, 0.0)
     radial = radial.normalize()
 
-    # En yakın slot ideal; dar duvar geometrisinde 3 küçük dış halka fallback'i var.
-    # Bunlar oyuncudan uzaklaştırma değil, yalnız enemy footprint'ine yer bulma payıdır.
+
+
     for radius in (
         desired,
         desired + 4.0,
@@ -9765,7 +9765,7 @@ SirTorrmundEnemy._taktik_hedef_sec = _v43_torrmund_tactical
 # <POTBO_STAGE S1155>
 
 
-# CommonEnemy damage context: lethal blood shape hit speed'e göre seçilir.
+
 _v44_commonenemy_damage_original = CommonEnemy.hasar_al
 # </POTBO_STAGE S1155>
 
@@ -9778,7 +9778,7 @@ CommonEnemy.hasar_al = _v44_commonenemy_damage
 # <POTBO_STAGE S1178>
 
 
-# V44 damage wrapper'ını bir üst katmanda gerçek melee kalite çarpanıyla zenginleştir.
+
 _v45_commonenemy_damage_original = CommonEnemy.hasar_al
 # </POTBO_STAGE S1178>
 
@@ -9794,7 +9794,7 @@ _v45_common_enemy_update_original = common_enemy_guncelle
 # <POTBO_STAGE S1201>
 
 
-# V45 wrapper'ın üstünde yalnız log/hit confirm. Hasar bir daha değişmez.
+
 _v47_commonenemy_damage_original = CommonEnemy.hasar_al
 
 
@@ -9829,7 +9829,7 @@ def v49_world_actor_list():
 # <POTBO_STAGE S1236>
 
 
-# Riposte only changes the next clean player melee hit inside its short timing window.
+
 _v51_commonenemy_damage_original = CommonEnemy.hasar_al
 
 
@@ -9857,7 +9857,7 @@ CommonEnemy.hasar_al = _v51_commonenemy_damage
 # <POTBO_STAGE S1256>
 
 
-# Final melee damage skill scalar; wraps without changing magic/friendly fire.
+
 _v52_commonenemy_damage_original = CommonEnemy.hasar_al
 
 
@@ -9874,7 +9874,7 @@ CommonEnemy.hasar_al = _v52_commonenemy_damage
 # <POTBO_STAGE S1284>
 
 
-# Contact quality slightly modifies player melee damage, but only inside ±8%.
+
 _v54_commonenemy_damage_original = CommonEnemy.hasar_al
 
 
@@ -10005,7 +10005,7 @@ def v56_state(actor):
 # <POTBO_STAGE S1316>
 
 
-# Track repeated attacks and misses from generic common enemy update without touching damage.
+
 _v56_common_attack_update_original = (
     CommonEnemy._saldiri_guncelle if hasattr(CommonEnemy, "_saldiri_guncelle") else None
 )
@@ -10053,7 +10053,7 @@ def v56_diagnostics():
 # <POTBO_STAGE S1336>
 
 
-# Melee damage chain'inin en dışına küçük tempo/yorulma katsayısı eklenir.
+
 _v57_commonenemy_damage_original = CommonEnemy.hasar_al
 
 
@@ -10077,8 +10077,8 @@ CommonEnemy.hasar_al = _v57_commonenemy_damage
 # <POTBO_STAGE S1379>
 
 
-# Technique damage seçimi damage chain'in dışında, mevcut precision/skill bonuslarının
-# üstüne kontrollü eklenir. Aynı hit yalnız bir technique tetikleyebilir.
+
+
 _v59_commonenemy_damage_original = CommonEnemy.hasar_al
 
 
@@ -10114,9 +10114,9 @@ CommonEnemy.hasar_al = _v59_commonenemy_damage
 
 # <POTBO_STAGE S1389>
 
-# CommonEnemy zaten temel poise kullanıyor. Bu katman poise kaybını yalnız damage'e değil,
-# bıçağın anlık hızı, açı kalitesi, temas bölgesi ve hedef kütlesine bağlar. Sonuç:
-# hızlı sıyırma ile ağır, derin temas aynı stagger davranışını üretmez.
+
+
+
 V61_ENEMY_MASS = {
     "crawler": 0.72,
     "berserker": 1.18,
@@ -10163,8 +10163,8 @@ CommonEnemy.hasar_al = _v61_commonenemy_damage
 
 # <POTBO_STAGE S1437>
 
-# Türlerin hepsi aynı kırmızıya düşmesin: doku profili + uid küçük tonal imza üretir.
-# Renk farkı kontrollü tutulur; hiçbir profil parlak arcade kırmızısına çıkmaz.
+
+
 V68_SIGNATURES = {
     "crawler": {"red": -10, "green": 0, "blue": 1, "sat": 0.94},
     "berserker": {
@@ -10232,9 +10232,9 @@ def _v44_damage_context_for_enemy(enemy, amount, source):
 # <POTBO_STAGE S1511>
 
 
-# ---------------------------------------------------------
-# RAT ECOLOGY: KURTÇUK AVCISI + YAVAŞ KAN/ORGAN TEMİZLİĞİ
-# ---------------------------------------------------------
+
+
+
 def v75_local_feeding_rats(rat, kind, radius=48.0):
     here = pygame.Vector2(float(rat.x), float(rat.y))
     count = 0
@@ -10253,9 +10253,9 @@ def v75_local_feeding_rats(rat, kind, radius=48.0):
 # <POTBO_STAGE S1519>
 
 
-# ---------------------------------------------------------
-# SADE / İŞE YARAR LOADING İPUÇLARI
-# ---------------------------------------------------------
+
+
+
 IPUCLARI = {
     "TR": [
         "J'ye kısa bas: normal saldırı.",
@@ -10291,9 +10291,9 @@ IPUCLARI = {
 # <POTBO_STAGE S1564>
 
 
-# -----------------------
-# Enemy recoil and rage.
-# -----------------------
+
+
+
 V78_RAGE_PROFILES = {
     "crawler": {
         "threshold": 0.46,
@@ -10461,7 +10461,7 @@ def _v78_headsthrower_tactic(self, simdi, digerler, mesafe, los):
     if away.length_squared() <= 1e-6:
         away = pygame.Vector2(1.0, 0.0)
     away = away.normalize()
-    # Korkak karakter: fazla yaklaşınca alan açar; canı düşünce daha da huzursuz olur.
+
     if mesafe < float(self.cfg.get("ranged_preferred", 305.0)) - 12.0 or rage > 0.25:
         extra = 18.0 + 34.0 * rage
         pushed = target + away * extra
@@ -10488,7 +10488,7 @@ def _v78_tarkard_tactic(self, simdi, oyuncu_tahmin, digerler, oyuncu_hiz_vektoru
             oyuncu_hiz_vektoru,
         )
     )
-    # Tarkard kaba güce güvenir: gereksiz geniş flank yerine daha doğrudan yaklaşsın.
+
     oyuncu = pygame.Vector2(oyuncu_tahmin)
     straight = oyuncu + (hedef - oyuncu) * 0.70
     if common_enemy_statik_konum_gecerli_mi(
@@ -10558,7 +10558,7 @@ SirTorrmundEnemy._saldiri_baslat = _v78_torrmund_attack_start
 
 # <POTBO_STAGE S1586>
 
-# AI kararları biraz daha sık güncellenir; hareket fizik katmanı yine dt tabanlıdır.
+
 COMMON_ENEMY_LOCAL_TICK_MS.update(
     {
         "crawler": 62,
@@ -10578,7 +10578,7 @@ COMMON_ENEMY_NAV_FOLLOW_TICK_MS.update(
     }
 )
 
-# Türlerin kişiliği korunarak hareket/atak akıcılığı artırılır.
+
 _v79_enemy_tuning = {
     "crawler": {
         "move_speed": 153.0,
@@ -10619,7 +10619,7 @@ for _v79_enemy_type, _v79_values in _v79_enemy_tuning.items():
     if _v79_enemy_type in COMMON_ENEMY_CONFIG:
         COMMON_ENEMY_CONFIG[_v79_enemy_type].update(_v79_values)
 
-# Heads Thrower'ın taşı hâlâ okunabilir; yalnız boşta bekleme daha azdır.
+
 if "headsthrower" in COMMON_ENEMY_CONFIG:
     COMMON_ENEMY_CONFIG["headsthrower"].update(
         {
@@ -10654,8 +10654,8 @@ def _v81_reset_death_blood():
     impact = _v81_impact_direction()
     f, side = _v81_body_basis()
 
-    # İlk öldürücü darbenin yarası. Hazır göl değil: önce fışkırma, sonra düşen
-    # damlaların oluşturduğu lekeler ve yara çevresindeki yavaş sızıntı.
+
+
     if dtype == "blood":
         if alt == "headshot":
             origin = _v81_wound_origin(0.0, -7.0)
@@ -10670,8 +10670,8 @@ def _v81_reset_death_blood():
         elif alt.startswith("torrmund_"):
             origin = _v81_wound_origin(random.uniform(-2.0, 2.0), -1.0)
             if "bisect" in alt:
-                # Büyük kesik tek noktadan kusursuz fan üretmez; iki damar hattı birbirinden
-                # az farklı açılarla boşalır.
+
+
                 _v81_add_arterial_sequence(
                     origin + side * 4.0,
                     impact.rotate(-19.0),
@@ -10728,8 +10728,8 @@ def _v81_reset_death_blood():
 
     elif dtype in ("blast_core", "blast_inner", "blast_mid"):
         origin = _v81_wound_origin(0.0, 0.0)
-        # Patlama, karakterin yönüne göre ileri + iki yan kola ayrılır. "up/down" ekran
-        # ekseni değil karakterin ileri/geri doğrultusudur.
+
+
         dirs = (f.rotate(-68.0), f.rotate(4.0), f.rotate(72.0))
         for i, d in enumerate(dirs):
             _v81_add_burst(
@@ -10794,7 +10794,7 @@ def _v30_katil_koreografi_frame(actor, simdi):
     tur = str(getattr(actor, "tur", ""))
     alt = str(oyuncu_olum_alt_turu or "")
 
-    # Yalnız bu üç durumda ölüm sonrası yeni saldırı animasyonu vardır.
+
     if tur == "crawler" and alt == "crawler":
         return _v81_katil_frame_original(actor, simdi)
     if tur == "berserker" and alt == "berserker":
@@ -10802,7 +10802,7 @@ def _v30_katil_koreografi_frame(actor, simdi):
     if tur == "torrmund" and alt == "torrmund_decap_cleave":
         return _v81_katil_frame_original(actor, simdi)
 
-    # Diğer katiller öldürücü darbenin son pozunda/idle'da donar; yeni swing yok.
+
     frozen = _v81_final_attack_frame(actor)
     if frozen is not None:
         return frozen
@@ -10843,8 +10843,8 @@ def _v81_post_hit_blood(kind, index, base, now):
             311 + index,
         )
     elif kind == "torrmund_second":
-        # İkinci infaz darbesi bedeni ikiye ayırır: iki ayrı yara hattı aynı yöne
-        # kusursuz simetriyle değil, farklı basınçlarla boşalır.
+
+
         o1 = _v81_wound_origin(-5.5, 0.0)
         o2 = _v81_wound_origin(6.5, 1.5)
         _v81_add_arterial_sequence(
@@ -11153,8 +11153,8 @@ def _v84_enemy_damage(self, miktar, kaynak=None):
             now,
             int(riposte_profile["stagger_ms"]),
         )
-        # Bosses keep their posture and phase logic.  Their poise advantage is
-        # substantial, but the riposte never applies a floor knockdown.
+
+
         if str(getattr(self, "tur", "")) in (
             "tarkard",
             "torrmund",
@@ -11270,8 +11270,8 @@ def _v85_hold_enemy_damage(self, miktar, kaynak=None):
         and state.hit_registered
         and int(state.attack_id) == int(saldiri_baslangic)
     ):
-        # One heavy release is exactly one physical contact: it cannot damage a
-        # second hurtbox or tick the original target again on a later active frame.
+
+
         return 0
     before = int(getattr(self, "hp", 0))
     result = _v85_hold_enemy_damage_original(self, miktar, kaynak)
@@ -11713,23 +11713,23 @@ def v86_diagnostics():
 # <POTBO_STAGE S1944>
 
 
-# =========================================================
-# END V86
-# =========================================================
 
 
-# =========================================================
-# V87 - SPECIAL-SLASH PARITY / PERSISTENT BLOOD / DEATH CADENCE
-# =========================================================
-# V87 is deliberately an authority layer rather than a second combat system.
-# It reuses the existing special-move palette and blood ecology, corrects the
-# Berserker's eight-way visual direction, and retimes authored death impacts so
-# animation anticipation always precedes the physical cut.
+
+
+
+
+
+
+
+
+
+
 
 V87_VERSION = "87.0"
 
-# The old 64/78 ms loops were below readable animation cadence.  Crawler remains
-# the faster predator; Berserker gets a visibly heavier anticipation/recovery.
+
+
 V86_CRAWLER_HIT_STEP_MS = 158
 V86_BERSERKER_HIT_STEP_MS = 230
 V87_CRAWLER_IMPACT_MS = 88
@@ -11785,7 +11785,7 @@ def v86_death_actor_frame(actor, now):
         visual = str(getattr(actor, "visual_direction", "down_right"))
         frames = directional.get(visual, []) if isinstance(directional, dict) else []
         if not frames and isinstance(directional, dict) and directional:
-            # Defensive recovery for old saves that contain a four-way direction.
+
             v86_face_killer_to_player(actor)
             visual = str(getattr(actor, "visual_direction", "down_right"))
             frames = directional.get(visual, [])
@@ -11799,8 +11799,8 @@ def v86_death_actor_frame(actor, now):
         return _v87_death_actor_frame_original(actor, now)
     local = max(0, int(now) - attack)
     if local >= count * step:
-        # The final strike resolves into a held recovery stance.  Modulo must not
-        # silently begin a phantom extra swing while the victim starts falling.
+
+
         return frames[0] if frames else _v87_death_actor_frame_original(actor, now)
     cycle = local % max(1, step)
     progress = v87_repeating_attack_progress(cycle, step, impact)
@@ -11966,8 +11966,8 @@ def v88_source_type_hint(source_name):
 # <POTBO_STAGE S2007>
 
 
-# Scope every direct melee resolver.  Subclasses own distinct attack methods, so
-# each one is wrapped explicitly instead of relying on class-name inference.
+
+
 _v88_common_attack_update_original = CommonEnemy._saldiri_guncelle
 # </POTBO_STAGE S2007>
 
@@ -12062,14 +12062,14 @@ def oyuncu_infaz_darbesi_uygula(
 # <POTBO_STAGE S2023>
 
 
-# ---------------------------------------------------------
-# Readable post-mortem cadence with no frame-hitch catch-up
-# ---------------------------------------------------------
-# Previous values (158/230 ms) could show 4-6 contacts per second.  These cycles
-# preserve Crawler as the faster predator while giving every strike a readable
-# anticipation, contact and recovery.  More importantly, one update may author at
-# most one hit: a slow frame can delay choreography but can never dump several cuts
-# into the same rendered frame.
+
+
+
+
+
+
+
+
 
 V86_CRAWLER_HIT_STEP_MS = 430
 V86_BERSERKER_HIT_STEP_MS = 620
@@ -12347,7 +12347,7 @@ def gelistirici_test_girdisi_uygula(olay):
     global oyuncu_altin
     if olay.type != pygame.KEYDOWN:
         return _v92_dev_raw(olay)
-    # Quote and every legacy developer overlay key are intentionally swallowed.
+
     if olay.key == pygame.K_QUOTE:
         return True
     ctrl = bool(olay.mod & pygame.KMOD_CTRL)
@@ -12365,7 +12365,7 @@ def gelistirici_test_girdisi_uygula(olay):
             return True
         if olay.key == pygame.K_o:
             return v92_spawn_passive_headsthrowers()
-        # Do not pass any Ctrl chord to the historical developer chain.
+
         return False
     return _v92_dev_raw(olay)
 # </POTBO_STAGE S2295>
@@ -12385,7 +12385,7 @@ def common_enemy_guncelle():
 # <POTBO_STAGE S2405>
 
 
-# Enemy navigation/steering must also regard Reinald as solid.
+
 _v97_common_enemy_static_raw = common_enemy_statik_konum_gecerli_mi
 # </POTBO_STAGE S2405>
 
@@ -12404,8 +12404,8 @@ _v97_melee_los_raw = common_enemy_saldiri_los_acik_mi
 # <POTBO_STAGE S2413>
 
 
-# Clear navigation caches once so any cells cached before V97 are rebuilt with
-# Reinald's body included.
+
+
 try:
     _common_enemy_nav_gecerlilik_cache.clear()
 except Exception:
@@ -12419,11 +12419,11 @@ except Exception:
 # <POTBO_STAGE S2469>
 
 
-# ---------------------------------------------------------
-# CINEMATIC CLOCK: gameplay simulation pauses during execution scenes, but the
-# authored execution timeline keeps advancing independently. This removes the
-# Catena freeze caused by tying its update to common_enemy_guncelle().
-# ---------------------------------------------------------
+
+
+
+
+
 _v100_cinematic_lock_base = oyun_sinematik_kilitli_mi
 # </POTBO_STAGE S2469>
 

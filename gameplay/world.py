@@ -1,13 +1,13 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0007>
 
-# Oyun içi kamera dünyayı biraz daha yakından gösterir.
+
 KAMERA_YAKINLASTIRMA = 1.12
 # </POTBO_STAGE S0007>
 
@@ -31,8 +31,8 @@ kamera_sarsinti_gucu = 0.0
 # </POTBO_STAGE S0129>
 
 # <POTBO_STAGE S0165>
-# Dünya koordinatları.
-# Oyuncu haritanın sol alt yol başlangıcında başlar.
+
+
 oyuncu_x = 175.0
 # </POTBO_STAGE S0165>
 
@@ -47,7 +47,7 @@ dunya_son_combat_zamani = -10000
 # </POTBO_STAGE S0168>
 
 # <POTBO_STAGE S0178>
-# Kamera haritayı oyuncuya göre hareket ettirir.
+
 kamera_x = 0.0
 kamera_y = 0.0
 # </POTBO_STAGE S0178>
@@ -206,7 +206,7 @@ def dunya_simulasyon_guncelle():
 
     onceki_x, onceki_y = dunya_onceki_konum
     mesafe = math.hypot(oyuncu_x - onceki_x, oyuncu_y - onceki_y)
-    # Teleport/load gibi sıçramaları gerçek yürüyüş mesafesine yazma.
+
     if mesafe <= 28.0:
         dunya_durumu["distance_travelled"] = round(
             float(dunya_durumu.get("distance_travelled", 0.0)) + mesafe,
@@ -236,7 +236,7 @@ def dunya_simulasyon_guncelle():
         if not getattr(dusman, "active", False) or not getattr(dusman, "aggro", False):
             continue
         dusman_mesafe = math.hypot(oyuncu_x - dusman.x, oyuncu_y - dusman.y)
-        # Birden fazla common_enemy varsa en tehlikeli yakın temas baskın gelir.
+
         yerel_baski = max(0.0, min(1.0, 1.0 - dusman_mesafe / 420.0))
         dusman_baskisi = max(dusman_baskisi, yerel_baski)
 
@@ -252,7 +252,7 @@ def dunya_simulasyon_guncelle():
     dunya_durumu["threat"] = round(hedef_tehdit, 4)
 
     mevcut = max(0.0, min(1.0, float(dunya_durumu.get("tension", 0.0))))
-    # Yükselme hızlı, çözülme daha yavaş: savaş sonrası atmosfer hemen sıfırlanmaz.
+
     sure = 0.75 if hedef_tehdit > mevcut else 2.4
     oran = 1.0 - math.exp(-dt / max(0.001, sure))
     dunya_durumu["tension"] = round(mevcut + (hedef_tehdit - mevcut) * oran, 4)
@@ -261,9 +261,9 @@ def dunya_simulasyon_guncelle():
 # <POTBO_STAGE S0337>
 
 
-# =========================================================
-# KAMERA / DÜNYA KOORDİNATLARI
-# =========================================================
+
+
+
 
 
 def kamerayi_guncelle():
@@ -273,7 +273,7 @@ def kamerayi_guncelle():
     gorunen_genislik = GENISLIK / KAMERA_YAKINLASTIRMA
     gorunen_yukseklik = YUKSEKLIK / KAMERA_YAKINLASTIRMA
 
-    # Oyuncu ekranda hafif aşağıda kalır; kamera önceye göre daha yakındır.
+
     hedef_x = oyuncu_x - gorunen_genislik * 0.50
     hedef_y = oyuncu_y - gorunen_yukseklik * 0.58
 
@@ -305,9 +305,9 @@ def dunya_ekran_y(dunya_y):
 # <POTBO_STAGE S0341>
 
 
-# =========================================================
-# NPC ÇİZİMİ
-# =========================================================
+
+
+
 
 
 def npc_ciz():
@@ -346,7 +346,7 @@ def yeni_item_sahnesi_musait_mi():
 
 
 def oyuncu_carpisma_rect(x, y):
-    # Yalnızca ayakların zemine bastığı dar alan fiziksel gövde kabul edilir.
+
     return pygame.Rect(int(round(x)) - 12, int(round(y)) - 14, 24, 14)
 
 
@@ -393,7 +393,7 @@ def collision_polygonlari():
         return _collision_polygon_onbellegi
 
     ham_polygonlar = [
-        # Üst kaya duvarı: çarpışma yalnızca mavi sınırın üstünde.
+
         [
             (0, 0),
             (1671, 0),
@@ -424,7 +424,7 @@ def collision_polygonlari():
             (90, 126),
             (0, 123),
         ],
-        # Sol gölet ve çevresindeki kaya çemberi.
+
         [
             (80, 310),
             (92, 264),
@@ -445,7 +445,7 @@ def collision_polygonlari():
             (128, 348),
             (93, 323),
         ],
-        # Ortadaki düzensiz kaya çıkıntısı.
+
         [
             (752, 274),
             (768, 257),
@@ -487,7 +487,7 @@ def collision_polygonlari():
             (778, 293),
             (759, 289),
         ],
-        # Sağ alttaki yuvarlak kaya halkası ve çıkıntısı.
+
         [
             (1362, 468),
             (1368, 427),
@@ -508,7 +508,7 @@ def collision_polygonlari():
             (1408, 524),
             (1380, 502),
         ],
-        # Alt kaya kıyısı: mavi sınırın altı tamamen engel.
+
         [
             (0, 666),
             (65, 668),
@@ -566,41 +566,41 @@ def harita_pikseli_engel_mi(x, y):
 # <POTBO_STAGE S0406>
 
 
-# =========================================================
-# COMMON ENEMY — BUDGETED TACTICAL NAVIGATION / COMBAT AI
-# =========================================================
-# Bu sürüm üç problemi ayrı katmanlarda çözer:
-# 1) GLOBAL NAVIGATION
-# - Enemy gövdesinin gerçek dikdörtgen hacmini collision polygonlarına karşı
-# test eden geometry katmanı.
-# - 18 px navigation lattice üzerinde clearance-aware Theta*.
-# - Theta* klasik A* gibi yalnız grid kenarlarına bağlı kalmaz; bir node'un
-# parent'ından yeni node'a temiz görüş varsa parent bağlantısını koruyarak
-# any-angle rota üretir. Sonuç kaya etrafında daha kısa ve daha doğal akar.
-# - Dar geçit cezası, dönüş cezası ve geçici "problemli hücre" blacklist'i.
-# - Yol üstünde look-ahead / string pulling. Enemy tek tek node kovalamaz.
-# 2) PERFORMANCE SCHEDULER
-# - Pathfinding frame-budgeted incremental Theta* olarak birkaç kareye yayılır.
-# - Local steering multi-rate cache ile 14-20 Hz düşünür; fizik 60 Hz kalır.
-# - Static grid LOS sonuçları kalıcı cache edilir; açık alanda pahalı polygon testleri atlanır.
-# 3) LOCAL COMBAT INTELLIGENCE
-# - Candidate-velocity steering: hedef doğrultu + engel açıklığı + inertia +
-# separation + hedef ilerlemesi birlikte skorlanır.
-# - Stuck detector yalnız "hareket ettim mi" demez; hedefe gerçek ilerlemeyi
-# ölçer. İlerleme yoksa path yeniden planlanır ve sorunlu hücre geçici olarak
-# cezalandırılır.
-# - Crawler oyuncuya yakın kalıp kısa sidestep ile swing'den sıyrılır; sonra
-# yeniden daha doğrusal saldırı çizgisine girer.
-# - Berserker oyuncu hızını kesişim denklemiyle tahmin eder, saldırı slotu
-# seçer, cooldown sırasında körlemesine gövdeye koşmak yerine çevreler,
-# swing başlangıcında güvenli back-dash seçebilir ve uzun süre temas
-# kuramazsa mevcut Theta* koridoru boyunca chase-dash yapar.
-# Aggro kuralı değişmez: proximity / LOS / zaman tek başına aggro üretmez.
-# Düşman ancak oyuncudan gerçek darbe aldıktan sonra saldırganlaşır.
 
-# =========================================================
-# KALICI KAN / GORE FİZİĞİ
-# =========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def darbe_profili_belirle(kaynak=None, hedef_turu=""):
@@ -663,9 +663,9 @@ def oyuncu_savas_hurtbox_rect(x=None, y=None):
         x = oyuncu_x
     if y is None:
         y = oyuncu_y
-    # iki piksel yan tolerans ve biraz daha uzun torso kapsaması. Bu fizik
-    # collision'ını değiştirmez; yalnız sprite üzerinde gerçekten temas eden el/kılıç
-    # darbelerinin birkaç piksel yüzünden boşa düşmesini azaltır.
+
+
+
     return pygame.Rect(int(round(x)) - 17, int(round(y)) - 48, 34, 44)
 # </POTBO_STAGE S0427>
 
@@ -785,7 +785,7 @@ class AmbientRat:
         self.wobble_seed = random.random() * math.tau
         self.speed_base = random.uniform(78.0, 103.0)
         self.speed_flee = random.uniform(145.0, 178.0)
-        # Her fare kendi güvenli boyut aralığında bağımsız rastgele ölçek alır.
+
         self.scale_factor = random.uniform(0.44, 0.72)
         self.target = pygame.Vector2(self.x, self.y)
         self.target_refresh_ms = 0
@@ -823,8 +823,8 @@ class AmbientRat:
             p = here + pygame.Vector2(math.cos(aci), math.sin(aci)) * mesafe
             if not self._aday_gecerli(p):
                 continue
-            # Çok uzun solid duvarın öbür tarafını seçmek local-probe'u gereksiz
-            # debelendirir. İnce LOS açık adaylara küçük öncelik.
+
+
             los = _ince_dunya_los_acik_mi(here, p, 9.0)
             merkez_ceza = max(0.0, 70.0 - p.distance_to((oyuncu_x, oyuncu_y)))
             skor = merkez_ceza + (0.0 if los else 85.0) + rng.uniform(0.0, 22.0)
@@ -844,9 +844,9 @@ class AmbientRat:
             away = pygame.Vector2(1.0, 0.0)
         away = away.normalize()
 
-        # Fare doğrudan geriye değil, biraz tangent bileşenle kaçar. Bu hem doğal
-        # görünür hem de oyuncu bir kaya yanında durduğunda farenin duvara kitlenmesini
-        # azaltır.
+
+
+
         side = pygame.Vector2(-away.y, away.x)
         sign = -1.0 if (self.frame_seed + simdi // 300) % 2 else 1.0
         ideal = away * 0.88 + side * 0.32 * sign
@@ -914,8 +914,8 @@ class AmbientRat:
             ileri_acik = 1.0 if self._aday_gecerli(probe2) else 0.0
             hedef_align = d.dot(desired)
             inertia = d.dot(current)
-            # Dar koridorda ikinci probe ceza alır, ama tek-frame geri dönüş yerine
-            # mevcut heading'e yakın kayma yönü seçilir.
+
+
             skor = (
                 hedef_align * 1.55
                 + inertia * 0.82
@@ -946,7 +946,7 @@ class AmbientRat:
                 moved_any = True
                 continue
 
-            # Duvara çarptığında yönü terse sektirmek yerine duvar boyunca kaymayı dene.
+
             candidates = [
                 pygame.Vector2(sub.x, 0.0),
                 pygame.Vector2(0.0, sub.y),
@@ -985,8 +985,8 @@ class AmbientRat:
             self.behavior = "roam"
             self._yeni_roam_hedefi(simdi, force=True)
         else:
-            # Et/kan sorgusu artık her frame yüzlerce kalıcı obje taramaz. 0.45-0.70 s
-            # arası yenilenir; steering her frame akıcı kalmaya devam eder.
+
+
             if simdi >= self.food_refresh_ms:
                 besin = kan_et_hedefi_bul(here, 560.0)
                 self.food_refresh_ms = int(simdi) + random.randint(450, 700)
@@ -1009,7 +1009,7 @@ class AmbientRat:
             return
 
         desired = to.normalize()
-        # Organik, çok küçük gait sapması; flee'de azaltılır.
+
         wobble_amp = (
             0.035
             if self.behavior == "flee"
@@ -1032,14 +1032,14 @@ class AmbientRat:
 
         self.stuck_ms = max(0.0, self.stuck_ms - dt * 980.0)
         speed = self.speed_flee if self.behavior == "flee" else self.speed_base
-        # Hedefe yaklaşırken fare aniden fren yapmaz; son 34 px'de stride kademeli azalır.
+
         mesafe_hedef = here.distance_to(self.target)
         arrival = (
             max(0.42, min(1.0, mesafe_hedef / 34.0)) if self.behavior != "flee" else 1.0
         )
         speed *= arrival
 
-        # Heading dönüş hızı sınırlı: bir frame sağa, sonraki frame sola snap olmaz.
+
         current_angle = math.degrees(math.atan2(self.heading.y, self.heading.x))
         target_angle = math.degrees(math.atan2(chosen.y, chosen.x))
         delta = (target_angle - current_angle + 180.0) % 360.0 - 180.0
@@ -1067,8 +1067,8 @@ class AmbientRat:
         if self.v.length_squared() > 4.0:
             self.direction = self._dir_name(self.v)
 
-        # Çok uzun süre yaşayan fare yenilenir; ekranda pop etmemesi için yalnız
-        # kamera dışında olduğunda ömrü dolunca despawn edilir.
+
+
         sx = dunya_ekran_x(self.x)
         sy = dunya_ekran_y(self.y)
         outside = sx < -80 or sx > GENISLIK + 80 or sy < -80 or sy > YUKSEKLIK + 80
@@ -1078,8 +1078,8 @@ class AmbientRat:
     def ciz(self):
         if not self.active:
             return
-        # Kaynak yatay cycle'ın default yönü sağdır. Sol hareket ayrı bir satıra
-        # güvenmek yerine aynı cycle'ın kesin horizontal flip'idir.
+
+
         kaynak_yon = "right" if self.direction in ("left", "right") else self.direction
         frames = RAT_SPRITELERI.get(kaynak_yon) or RAT_SPRITELERI.get("right", [])
         if not frames:
@@ -1186,7 +1186,7 @@ def _fire_ground_spawn_noktalari(x, y, adet, radius):
     for i in range(deneme):
         if len(accepted) >= int(adet):
             break
-        # sqrt dağılımı diskte alan-uniform örnekleme üretir.
+
         rr = float(radius) * math.sqrt((i + 0.6) / float(deneme + 0.6))
         rr *= rng.uniform(0.62, 1.0)
         aci = i * golden + rng.uniform(-0.16, 0.16)
@@ -1207,7 +1207,7 @@ def _fire_ground_spawn_noktalari(x, y, adet, radius):
             continue
         accepted.append(p)
 
-    # Merkezin kendisi walkable ise en az bir küçük patch garanti et.
+
     if not accepted and not harita_pikseli_engel_mi(merkez.x, merkez.y):
         accepted.append(merkez)
     return accepted
@@ -1245,7 +1245,7 @@ def combat_impact_fx_ciz():
             continue
 
         p = max(0.0, min(1.0, gecen / float(life)))
-        # İlk frame'de çabuk açılır, sonra ince bir kesik izi olarak söner.
+
         alpha = int(255 * (1.0 - p) ** 1.45)
         if alpha <= 0:
             continue
@@ -1266,8 +1266,8 @@ def combat_impact_fx_ciz():
         c = pygame.Vector2(pad, pad)
 
         if heavy:
-            # Ağır saldırı: iki farklı açı. Dıştaki koyu kırmızı "yarık" ve
-            # içteki beyaz çelik çizgisi normal kesikten açıkça ayrılır.
+
+
             _kesik_cizgi_ciz(
                 surf,
                 c,
@@ -1398,8 +1398,8 @@ def _stage1__v30_patlama_birinci_katman_siluet_ciz():
         float(dunya_ekran_y(oyuncu_y) - 8),
     )
 
-    # 5x4 = 20 parça. Merkez 36 parçadır; bu katmanda parçalar daha iri olduğu için
-    # bedenin eski formu bir an okunur, sonra bütünüyle açılır.
+
+
     cols, rows = 5, 4
     for row in range(rows):
         for col in range(cols):
@@ -1490,7 +1490,7 @@ def _stage1__oyuncu_yatay_siluet_ciz():
         if oyuncu_olum_baslangic_ms > 0
         else 560
     )
-    # ölüm komutu anında gelir; 0.34 sn'lik cubic düşüş takılmadan yere oturur.
+
     fall_p = max(0.0, min(1.0, gecen / float(OLU_CESET_YERLESME_MS)))
     ease = 1.0 - (1.0 - fall_p) ** 3
     hedef_aci = -90.0 if oyuncu_yonu in ("right", "down") else 90.0
@@ -1498,9 +1498,9 @@ def _stage1__oyuncu_yatay_siluet_ciz():
     sy = dunya_ekran_y(oyuncu_y) - 8 + int(7 * ease)
 
     if oyuncu_olum_ikiye_bolundu and sil.get_height() >= 8:
-        # düz crop yok. Silüet, merkezden geçen rastgele açılı bir kesim
-        # çizgisinin iki yarı-düzlem maskesiyle gerçek iki ayrı Surface'e bölünür.
-        # Kesim açısı ölüm anında bir kez seçildiği için kareler arasında titreme yapmaz.
+
+
+
         w, hh = sil.get_size()
         cut_deg = float(oyuncu_olum_kesim_acisi)
         cut_rad = math.radians(cut_deg)
@@ -1550,12 +1550,12 @@ def _stage1__oyuncu_yatay_siluet_ciz():
             special_flags=pygame.BLEND_RGBA_MULT,
         )
 
-        # Ağır kesici teması gecikmez: ilk ~0.21 sn içinde ayrışma tamamlanır.
+
         split_p = max(0.0, min(1.0, gecen / 210.0))
         split_ease = 1.0 - (1.0 - split_p) ** 3
         ana_rot = hedef_aci * ease
-        # İki parça ana düşüşü paylaşır; sonrasında ters yönlerde bağımsız küçük
-        # rotasyon alır. Kesik çizgisinin kendisi zaten çaprazdır.
+
+
         ust_rot = pygame.transform.rotate(
             ust,
             ana_rot - (7.0 + abs(cut_deg) * 0.10) * split_ease,
@@ -1565,8 +1565,8 @@ def _stage1__oyuncu_yatay_siluet_ciz():
             ana_rot + (6.0 + abs(cut_deg) * 0.08) * split_ease,
         )
 
-        # Ayrılma kesim çizgisine dik yönde olur. Böylece parçalar yatay eksende
-        # mekanik biçimde açılmak yerine bıçağın gerçek kesim normalinden kopar.
+
+
         normal = pygame.Vector2(-math.sin(cut_rad), math.cos(cut_rad))
         normal = normal.rotate(-ana_rot)
         if normal.length_squared() <= 1e-6:
@@ -1606,7 +1606,7 @@ def _stage1__oyuncu_yatay_siluet_ciz():
         if split_p > 0.06:
             yarik = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
             alpha = int(185 * min(1.0, split_p * 1.8))
-            # Kesim yönünde kısa kırmızı yarık; silhouette kompozisyonunu bozmaz.
+
             tang = pygame.Vector2(math.cos(cut_rad), math.sin(cut_rad)).rotate(-ana_rot)
             a = merkez - tang * (8.0 + 6.0 * split_ease)
             b = merkez + tang * (8.0 + 6.0 * split_ease)
@@ -1620,8 +1620,8 @@ def _stage1__oyuncu_yatay_siluet_ciz():
             ekran.blit(yarik, (0, 0))
         return
 
-    # özel infaz olmayan ölümlerde bile beden kusursuz tek parça kalmaz. Ceset
-    # yere oturduktan sonra 2-3 küçük lokal parça ayrılır; boss/bomba kadar abartılmaz.
+
+
     if gecen >= OLU_CESET_YERLESME_MS and oyuncu_olum_turu in (
         "blood",
         "fire",
@@ -1682,8 +1682,8 @@ def _stage1__oyuncu_yatay_siluet_ciz():
             )
         return
 
-    # Normal ölüm: sprite yokluğu nedeniyle idle gövdesi ilk ~0.34 saniyede fiziksel
-    # olarak yana devrilir; sonra yatay kalır.
+
+
     sil = pygame.transform.rotate(sil, hedef_aci * ease)
     shadow = pygame.Rect(
         0,
@@ -1736,7 +1736,7 @@ def _stage1__v26_oyuncu_patlama_siluet_parcalari_ciz():
         base = pygame.Vector2(1.0, 0.0)
     base = base.normalize()
 
-    # 36 düzensiz gövde shard'ı: eski 8 parçalık grid artık patlama şiddetini taşımıyordu.
+
     cols, rows = 6, 6
     for row in range(rows):
         for col in range(cols):
@@ -1748,8 +1748,8 @@ def _stage1__v26_oyuncu_patlama_siluet_parcalari_ciz():
                 continue
             shard = sil.subsurface((x0, y0, x1 - x0, y1 - y0)).copy()
 
-            # Düz dikdörtgen crop hissini kırmak için her hücreye dört noktalı
-            # düzensiz bir alpha maskesi uygulanır.
+
+
             mw, mh = shard.get_size()
             pmask = pygame.Surface((mw, mh), pygame.SRCALPHA)
             jitter_x = max(1, int(mw * 0.24))
@@ -1796,8 +1796,8 @@ def _stage1__v26_oyuncu_patlama_siluet_parcalari_ciz():
                 (y0 + y1) * 0.5 - sh * 0.5,
             )
             spread = base.rotate(rng.uniform(-72.0, 72.0))
-            # Sprite'ın blast tarafındaki parçaları biraz daha hızlı: ana gövde bütün
-            # halinde kalmak yerine kuvvet boyunca açılır.
+
+
             hiz = rng.uniform(235.0, 510.0) + max(0.0, local.dot(base)) * 2.6
             vx = spread.x * hiz
             vy = spread.y * hiz - rng.uniform(55.0, 175.0)
@@ -1864,7 +1864,7 @@ def oyuncu_zorlanmis_hareket_guncelle():
             oyuncu_zorlanmis_hiz *= 0.18
             break
 
-    # İlk anda sert, sonra hızla ağırlaşan impuls; yaklaşık 150-190 px boş alan savrulması.
+
     oyuncu_zorlanmis_hiz *= math.exp(-4.25 * dt)
 # </POTBO_STAGE S0536>
 
@@ -2051,8 +2051,8 @@ def oyuncu_serbest_hareket_guncelle():
     if oyuncu_dash_aktif_mi(simdi):
         oyuncu_dash_guncelle(simdi)
         oyuncu_hareket_ediyor = True
-        # Dash sonunda yürüyüş ivmesiz sıfırdan başlamasın; çıkış hızı girdinin yönüne
-        # doğru küçük bir taban momentum taşır.
+
+
         if input_v.length_squared() > 0.0:
             oyuncu_hareket_hiz_vektoru = input_v * (OYUNCU_YURUYUS_HIZI * 0.64)
         return
@@ -2065,8 +2065,8 @@ def oyuncu_serbest_hareket_guncelle():
         )
         return
 
-    # Normal/quick saldırıda karakter tamamen çakılı kalmaz; yaklaşık %32 hızla
-    # adım düzeltmesi yapabilir. Charge ve ağır release ise bilinçli commitment'tır.
+
+
     hareket_carpani = 1.0
     if oyuncu_savunuyor:
         hareket_carpani = 0.36
@@ -2116,9 +2116,9 @@ def oyuncu_serbest_hareket_guncelle():
 # <POTBO_STAGE S0582>
 
 
-# ---------------------------------------------------------
-# HIT WEIGHT: küçük, collision-aware olmayan ama çok kısa recoil momentumu
-# ---------------------------------------------------------
+
+
+
 def _v33_oyuncu_kucuk_sektir(kaynak_x, kaynak_y, hiz=54.0, sure=92):
     global oyuncu_zorlanmis_hiz, oyuncu_zorlanmis_bitis, oyuncu_zorlanmis_son_guncelleme
     if oyuncu_hp <= 0:
@@ -2131,7 +2131,7 @@ def _v33_oyuncu_kucuk_sektir(kaynak_x, kaynak_y, hiz=54.0, sure=92):
         d = pygame.Vector2(1.0, 0.0)
     d = d.normalize()
     yeni = d * float(hiz)
-    # Mevcut daha güçlü knockback'i ezme; küçük vuruş yalnız ek bir darbe hissi verir.
+
     if oyuncu_zorlanmis_hiz.length() < yeni.length():
         oyuncu_zorlanmis_hiz = yeni
     else:
@@ -2213,7 +2213,7 @@ def _v34_dynamic_position_valid(x, y, baseline=None, exclude=None):
         old_area = _v34_rect_overlap_alani(baseline_rect, blocker)
         if old_area <= 0:
             return False
-        # İç içe girilmişse sadece overlap'ı büyüten hareket reddedilir.
+
         if new_area > old_area + V34_DYNAMIC_ESCAPE_EPSILON:
             return False
         v34_collision_soft_escape_events += 1
@@ -2268,7 +2268,7 @@ def _v34_player_depenetrate(force=False):
         v34_last_safe_player_pos = current
         return False
 
-    # Önce kayıtlı son güvenli pozisyon; yakınsa en doğal çözümdür.
+
     if (
         v34_last_safe_player_pos is not None
         and current.distance_to(v34_last_safe_player_pos) <= 110.0
@@ -2284,8 +2284,8 @@ def _v34_player_depenetrate(force=False):
         v34_collision_hard_recovery_events += 1
         return True
 
-    # Static invalid ise radial search; yalnız dynamic overlap ise teleport etme,
-    # normal monotonic escape zaten oyuncunun dışarı çıkmasına izin verir.
+
+
     if current_static_ok and not force:
         return False
 
@@ -2320,8 +2320,8 @@ def _v34_player_safety_tick():
         return
 
     v34_player_was_invalid = True
-    # Dynamic overlap tek başına hard teleport sebebi değildir; static invalidity
-    # varsa rescue devreye girer.
+
+
     if not _v34_static_position_valid(pos.x, pos.y):
         _v34_player_depenetrate(False)
 # </POTBO_STAGE S0652>
@@ -2374,7 +2374,7 @@ def _v34_special_path_clear(path, center, radius):
         return False
     start, entry, p1, p2, p3, p4 = path
     setup_control, switch_control = _v34_special_path_controls(path, center, radius)
-    # Entry ve iki slash kesin corridor check. Setup/switch ise bezier örneklenir.
+
     return (
         _v34_segment_static_clear(start, entry, 2.7)
         and _v34_curve_static_clear(entry, setup_control, p1)
@@ -2402,8 +2402,8 @@ def _gelistirici_x_skill_yol_kur(hedef, baslangic):
             v34_special_path_valid = True
             return path
 
-    # Dar alanda tamamen iptal etmek yerine endpoint'leri static safe noktalara
-    # sıkıştıran conservative fallback. Slash yönleri yine / ve \ olarak kalır.
+
+
     radius = V34_SPECIAL_MIN_RADIUS
     raw = _v34_special_candidate_path(hedef, baslangic, radius)
     repaired = [raw[0]]
@@ -2418,9 +2418,9 @@ def _gelistirici_x_skill_yol_kur(hedef, baslangic):
 # <POTBO_STAGE S0665>
 
 
-# ---------------------------------------------------------
-# SPECIAL MOVE VISUAL DIRECTOR
-# ---------------------------------------------------------
+
+
+
 def _v34_world_to_screen_vec(p, yoff=0.0):
     p = pygame.Vector2(p)
     return pygame.Vector2(
@@ -2483,7 +2483,7 @@ def _v34_special_afterimages_ciz(katman, simdi):
         alive.append((t0, p, facing, phase))
         fade = max(0.0, 1.0 - age / 260.0)
         s = _v34_world_to_screen_vec(p, -17.0)
-        # Sprite kopyalamak yerine okunaklı beden silüeti. Asset pipeline'a bağımlı değil.
+
         body_w = 18 if "slash" in phase else 15
         body_h = 32 if "slash" in phase else 28
         rect = pygame.Rect(0, 0, body_w, body_h)
@@ -2580,7 +2580,7 @@ def _v34_special_hit_counter_ciz(simdi):
     center = _v34_world_to_screen_vec(v34_special_effect_center, -76.0)
     roman = ("I", "II", "III")[max(0, min(2, v34_special_hit_display_index - 1))]
     alpha = int(220 * min(1.0, remaining * 1.7))
-    # pygame font render alpha ayrı surface üzerinden verilir.
+
     text = mini_font.render(roman, True, (245, 232, 236))
     text.set_alpha(alpha)
     rect = text.get_rect(center=(int(center.x), int(center.y)))
@@ -2590,9 +2590,9 @@ def _v34_special_hit_counter_ciz(simdi):
 # <POTBO_STAGE S0673>
 
 
-# ---------------------------------------------------------
-# CAMERA COMPOSITION
-# ---------------------------------------------------------
+
+
+
 _v33_kamerayi_guncelle = kamerayi_guncelle
 
 
@@ -2611,7 +2611,7 @@ def kamerayi_guncelle():
     focus = player.lerp(center, 0.58)
     target_x = focus.x - visible_w * 0.50
     target_y = focus.y - visible_h * 0.54
-    # Ek blend normal kamera takibini tamamen ezmez; hızlı slash'ta hedef ekranda stabil kalır.
+
     kamera_x += (target_x - kamera_x) * 0.20
     kamera_y += (target_y - kamera_y) * 0.20
     max_x = max(0.0, HARITA_GENISLIK - visible_w)
@@ -2623,9 +2623,9 @@ def kamerayi_guncelle():
 # <POTBO_STAGE S0677>
 
 
-# ---------------------------------------------------------
-# TEST / DIAGNOSTIC HELPERS
-# ---------------------------------------------------------
+
+
+
 def v34_collision_diagnostics():
     """Developer console için küçük, allocation-light collision snapshot."""
     pos = pygame.Vector2(float(oyuncu_x), float(oyuncu_y))
@@ -2671,9 +2671,9 @@ def gelistirici_x_skill_sifirla(tam_reset=False):
         v34_special_afterimages.clear()
 
 
-# ---------------------------------------------------------
-# PAUSE COMPENSATION
-# ---------------------------------------------------------
+
+
+
 def v34_special_pause_tick():
     """Special move'un authored zaman çizgisini pause süresinden arındırır.
 
@@ -2736,9 +2736,9 @@ def v34_special_pause_tick():
 # <POTBO_STAGE S0694>
 
 
-# ---------------------------------------------------------
-# CAMERA LOOK-AHEAD
-# ---------------------------------------------------------
+
+
+
 _v34a_kamerayi_guncelle = kamerayi_guncelle
 
 
@@ -2762,8 +2762,8 @@ def kamerayi_guncelle():
     look = velocity * 0.085
     if look.length() > max_look:
         look.scale_to_length(max_look)
-    # Dünya kamera koordinatına küçük bir hız-ofseti eklenir. Keskin yön değişiminde
-    # tek frame zıplamaz; mevcut kamera smoothing'inin üstünde düşük blend kullanılır.
+
+
     kamera_x += look.x * 0.055
     kamera_y += look.y * 0.040
 
@@ -2792,7 +2792,7 @@ def v34_crowd_separation_tick():
     if oyun_durumu != OYUN or oyun_alt_durumu != HARITA or oyuncu_hp <= 0:
         return
     if gelistirici_x_skill_aktif_mi(simdi):
-        # Special sırasında hedef body overlap'ı tekniğin parçasıdır; ayırma uygulanmaz.
+
         return
 
     actors = _v34_actor_list()
@@ -2813,9 +2813,9 @@ def v34_crowd_separation_tick():
 # <POTBO_STAGE S0717>
 
 
-# ---------------------------------------------------------
-# QUIET UX: special sonrası control-return küçük güven penceresi
-# ---------------------------------------------------------
+
+
+
 def _v34_special_recovery_control_hint_ciz():
     """Special bittiği ilk 170 ms'de çok küçük kontrol dönüş işareti.
 
@@ -2861,11 +2861,11 @@ def _v34_special_recovery_control_hint_ciz():
 # <POTBO_STAGE S0722>
 
 
-# ---------------------------------------------------------
-# OPTIONAL DEVELOPER DIAGNOSTICS OVERLAY
-# ---------------------------------------------------------
-# Overlay varsayılan olarak kapalıdır; yeni test tuşu eklenmez. DEBUG_LOGS açıkken
-# yalnız mevcut geliştirici panelinin altında birkaç sağlık metriği gösterilir.
+
+
+
+
+
 def _v34_diagnostics_overlay_ciz():
     if not (GELISTIRICI_MODU and DEBUG_LOGS):
         return
@@ -2906,8 +2906,8 @@ def _v34_special_target_preview_ciz():
     radius = int(V34_TARGET_PREVIEW_RADIUS + 2.0 * pulse)
     layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
 
-    # Tam daire yerine dört kırık segment: hedef seçimini anlatır ama RPG lock-on
-    # reticle'ı gibi sürekli bağırmaz.
+
+
     for start in (18, 108, 198, 288):
         rect = pygame.Rect(cx - radius, cy - radius, radius * 2, radius * 2)
         pygame.draw.arc(
@@ -3002,7 +3002,7 @@ def _v34_threat_indicators_ciz():
         direction_world = pos - player
         if direction_world.length_squared() <= 1e-6:
             continue
-        # World axes kamera ile dönmediği için aynı vektör UI direction olarak kullanılabilir.
+
         d = direction_world.normalize()
         edge = _v34_line_to_screen_edge(d)
         inward = -d * 7.0
@@ -3115,35 +3115,35 @@ def _v34_interaction_target_marker_ciz():
 # <POTBO_STAGE S0752>
 
 
-# Adaptive afterimage recorder: düşük kalite yalnız kayıt frekansını azaltır;
-# special'ın gerçek hareketi, hit anları ve collision'ı ASLA değişmez.
+
+
 _v34e_special_register_trail = _v34_special_register_trail
 # </POTBO_STAGE S0752>
 
 # <POTBO_STAGE S0757>
 
 
-# =========================================================
-# END V34E
-# =========================================================
 
 
-# =========================================================
-# V34F PROFESSIONAL SESSION HARDENING / SPECIAL MOVE MASTERING
-# =========================================================
-# Bu katman oyuncuya yeni bir "sistem menüsü" dayatmaz. Amaç oyunun arka planda
-# daha güvenilir davranması ve özel hareketin authored bir combat sequence gibi
-# daha tok, daha okunaklı ve daha tutarlı hissettirmesidir.
-#
-# Ana ilkeler:
-# 1) Save/settings yazımı yarım dosya bırakmamalı; son sağlıklı JSON yedeği tutulmalı.
-# 2) Bozuk save mümkünse son sağlıklı .bak üzerinden otomatik kurtarılmalı.
-# 3) Special sırasında hedef ve oyuncu state'i tek bir director tarafından sahiplenilmeli.
-# 4) Alt sistemler (dash, block, buffered input, knockback) special'a karışmamalı.
-# 5) Üç gerçek hit'in her biri farklı ağırlıkta görsel feedback üretmeli.
-# 6) Üçüncü hit sonrası X izi, landing ve kamera recoil tekniğin kapanışını okutmalı.
-# 7) Focus kaybı ve transient state'ler "takılı tuş" veya yarım special üretmemeli.
-# 8) Runtime invariant audit normal oyuncuyu rahatsız etmeden bozuk state'i teşhis etmeli.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 V34F_VERSION = "34F"
 # </POTBO_STAGE S0757>
@@ -3201,9 +3201,9 @@ def _v34_special_hit_feedback(slot, center, direction):
 # <POTBO_STAGE S0792>
 
 
-# ---------------------------------------------------------
-# FOCUS LOSS SAFETY
-# ---------------------------------------------------------
+
+
+
 def _v34f_shift_special_timeline(delta):
     """Window focus dışındayken authored time'ın arkada akmasını engeller."""
     global \
@@ -3271,8 +3271,8 @@ def v34f_focus_safety_tick():
     elif not v34f_last_focus and focused:
         v34f_focus_regained_ms = simdi
         lost_for = max(0, simdi - int(v34f_focus_lost_ms)) if v34f_focus_lost_ms else 0
-        # Pause menüsü de aktifse V34B pause compensation aynı zaman aralığını zaten
-        # ileri taşır; çift compensation yapma. Focus-only kayıpta timeline burada donar.
+
+
         pause_compensation_pending = int(v34_special_pause_started_ms) > 0
         if (
             lost_for >= V34F_FOCUS_DEBOUNCE_MS
@@ -3293,9 +3293,9 @@ def v34f_focus_safety_tick():
 # <POTBO_STAGE S0794>
 
 
-# ---------------------------------------------------------
-# SPECIAL CAMERA PUNCH
-# ---------------------------------------------------------
+
+
+
 _v34f_previous_camera_update = kamerayi_guncelle
 
 
@@ -3321,7 +3321,7 @@ def kamerayi_guncelle():
     d = _v34f_direction_safe(v34f_special_camera_punch_direction)
     n = pygame.Vector2(-d.y, d.x)
     strength = V34F_SPECIAL_CAMERA_PUNCH[slot] * envelope
-    # Hit yönüne karşı recoil + küçük normal-axis kick. Random shake yerine authored.
+
     kamera_x += -d.x * strength + n.x * strength * 0.22
     kamera_y += -d.y * strength + n.y * strength * 0.22
     visible_w = GENISLIK / KAMERA_YAKINLASTIRMA
@@ -3336,9 +3336,9 @@ def kamerayi_guncelle():
     )
 
 
-# ---------------------------------------------------------
-# SPECIAL MASTER VFX
-# ---------------------------------------------------------
+
+
+
 def _v34f_draw_sparks(layer, simdi):
     alive = []
     for born, start, velocity, life, length, slot in list(v34f_special_sparks):
@@ -3417,7 +3417,7 @@ def _v34f_final_cut_flash_ciz(simdi):
         return
     layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
     layer.fill((12, 0, 3, alpha))
-    # Final slash yönünde ince bir beyaz ışık yarığı.
+
     center_world = v34f_special_last_center or pygame.Vector2(
         float(oyuncu_x), float(oyuncu_y)
     )
@@ -3488,9 +3488,9 @@ def _v34f_special_runtime_contract():
 # <POTBO_STAGE S0807>
 
 
-# ---------------------------------------------------------
-# DIAGNOSTIC SNAPSHOT (DEVELOPER CONSOLE, NO UI SPAM)
-# ---------------------------------------------------------
+
+
+
 def v34f_diagnostics():
     simdi = _v34f_now()
     phase_ok, phase_detail = _v34f_special_phase_contract()
@@ -3553,9 +3553,9 @@ def v34f_diagnostics():
 
 # <POTBO_STAGE S0816>
 
-# Special yaklaşık 2.3s -> 1.66s. Input lock teknik boyunca korunur; sadece authored
-# hareket daha yoğun hale gelir. Radius ve entry overshoot da bedenin X'i daha geniş
-# çizmesini sağlar, fakat V34 preflight collision planner dar alanda otomatik küçültür.
+
+
+
 GELISTIRICI_X_SKILL_SURE_MS = 1660
 # </POTBO_STAGE S0816>
 
@@ -3595,7 +3595,7 @@ def _v35_heavy_assist_direction(base_dir):
             best = delta.normalize()
     if best is None:
         return base
-    # Assist yalnız birkaç derece yön kırar; lock-on gibi karakteri çevirmemeli.
+
     blended = base * (1.0 - V35_HEAVY_ASSIST_BLEND) + best * V35_HEAVY_ASSIST_BLEND
     return blended.normalize() if blended.length_squared() > 1e-6 else base
 # </POTBO_STAGE S0829>
@@ -3603,9 +3603,9 @@ def _v35_heavy_assist_direction(base_dir):
 # <POTBO_STAGE S0840>
 
 
-# ---------------------------------------------------------
-# KINETIC CAMERA LEAD
-# ---------------------------------------------------------
+
+
+
 V35_CAMERA_DASH_LEAD = 18.0
 V35_CAMERA_HEAVY_LEAD = 23.0
 V35_CAMERA_SPECIAL_LEAD = 31.0
@@ -3629,7 +3629,7 @@ def _v35_special_signature_ciz():
     center_world = v34_special_effect_center
     if center_world is None:
         return
-    # Hit counter 520ms yaşar; yalnız ilk ~150ms signature görünür.
+
     age = 520 - max(0, v34_special_hit_display_until - simdi)
     if age < 0 or age > 150:
         return
@@ -3665,29 +3665,29 @@ def _v35_special_signature_ciz():
 
 # <POTBO_STAGE S0853>
 
-# =========================================================
-# END V35
-# =========================================================
 
 
-# =========================================================
-# V36 CAMERA STABILITY / FASTER DASH / SPECIAL FX OPTIMIZATION
-# =========================================================
-# Bu katman combat geometrisini değiştirmez. Amaç V35'teki üç-hit special move'u
-# korurken kameradaki heavy lead salınımını kaldırmak ve special VFX'in frame başına
-# tam-ekran alpha surface üretme maliyetini küçük, lokal katmanlara indirmektir.
+
+
+
+
+
+
+
+
+
 
 V36_VERSION = 36
 
-# Normal dash aynı mesafeyi daha kısa sürede kat eder. Collision-safe dash updater
-# aynen kullanıldığı için hız artışı duvardan geçme anlamına gelmez.
+
+
 DASH_SURESI_MS = 120
 
-# Hold-release sırasında ekstra kamera lead yok. Oyuncu bedeni fiziksel olarak ileri
-# gider fakat kamera ayrıca öne itilip recovery'de geri çekilmez.
+
+
 V35_CAMERA_HEAVY_LEAD = 0.0
 
-# Special VFX bütçesi. Üç hit, hasar, path, collision ve input lock etkilenmez.
+
 V34_SPECIAL_AFTERIMAGE_INTERVAL_MS = 64
 # </POTBO_STAGE S0853>
 
@@ -3727,7 +3727,7 @@ def gelistirici_x_skill_efekt_ciz():
         return
     layer = pygame.Surface(rect.size, pygame.SRCALPHA)
 
-    # Kısa sampled body trail.
+
     items = list(v34_special_trail)
     for i in range(1, len(items)):
         _, a, _ = items[i - 1]
@@ -3750,7 +3750,7 @@ def gelistirici_x_skill_efekt_ciz():
                 1,
             )
 
-    # En fazla 8 afterimage; ellipse silhouette yeterli motion continuity verir.
+
     alive_after = []
     for t0, p0, facing, phase_name in list(v34_special_afterimages):
         age = simdi - int(t0)
@@ -3794,7 +3794,7 @@ def gelistirici_x_skill_efekt_ciz():
     _v36_draw_slash_local(layer, rect, p1, p2, prog1, a1, False)
     _v36_draw_slash_local(layer, rect, p3, p4, prog2, a2, True)
 
-    # Lokal impact halkası; tam-ekran overlay yok.
+
     if simdi < v34_special_impact_ring_until:
         duration = max(
             1,
@@ -3976,7 +3976,7 @@ def _v34f_special_master_vfx_ciz():
     v34f_special_landing_marks.clear()
     v34f_special_landing_marks.extend(alive_landing)
 
-    # Yalnız final anında lokal cut flash; bütün ekranı alpha-blit etmez.
+
     if simdi < v34f_special_final_cut_until:
         duration = max(
             1,
@@ -4054,9 +4054,9 @@ def _v35_special_signature_ciz():
 # <POTBO_STAGE S0865>
 
 
-# V35 kamerayı kendi wrapper zincirinde kullanmaya devam eder; constant=0 heavy lead'i
-# kaldırır. Charge/hold-release başladığında daha önce dash/special'dan kalan lead'i de
-# anında temizle ki kamera eski momentum yüzünden ileri-geri salınmasın.
+
+
+
 _v36_camera_previous = kamerayi_guncelle
 
 
@@ -4074,7 +4074,7 @@ def kamerayi_guncelle():
         and oyuncu_saldiri_modu in ("charge", "hold_release")
         and not gelistirici_x_skill_aktif_mi()
     ):
-        # Previous V35 wrapper target=0 olsa bile floating remainder bırakabilir.
+
         v35_camera_lead.update(0.0, 0.0)
 
 
@@ -4093,26 +4093,26 @@ def v36_diagnostics():
     return base
 
 
-# =========================================================
-# END V36
-# =========================================================
 
 
-# =========================================================
-# V37 COHERENT TIMING / LOW-COST SPECIAL / RENDER HYGIENE
-# =========================================================
-# V37'in amacı yeni bir efekt katmanı eklemek değildir. Önceki polish sürümlerinde
-# aynı hissi üretmek için birbiri üzerine eklenmiş renderer/wrapper katmanlarının
-# hot-path maliyetini azaltır; UI geçişlerini tek zamanlama kontratına bağlar ve
-# special move'un mekanik koreografisini pahalı dekoratif simülasyondan ayırır.
-#
-# Ana kontratlar:
-# - UI: click -> kısa fiziksel basma -> action/state change. Aynı anda ikinci onay yok.
-# - Special: üç gerçek fiziksel hit aynen korunur; rota başlangıçta preflight edilir.
-# - Special sırasında aynı static collision rotası her frame tekrar taranmaz.
-# - Special sırasında common enemy AI kısa süre authored sequence'e müdahale etmez.
-# - Tam-ekran geçici SRCALPHA yüzeyleri hot-path'te mümkün olduğunca cache/lokal olur.
-# - Runtime QA özel hareket sırasında frame spike yaratacak ağır taramaları erteler.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 V37_VERSION = 37
 # </POTBO_STAGE S0865>
@@ -4242,9 +4242,9 @@ def combat_impact_fx_ciz():
 # <POTBO_STAGE S0895>
 
 
-# ---------------------------------------------------------
-# SMALL-SURFACE HOT-PATH UI / COMBAT FEEDBACK
-# ---------------------------------------------------------
+
+
+
 def _v34_interaction_target_marker_ciz():
     if not etkilesim_ipuclari or oyun_alt_durumu != HARITA or oyuncu_hp <= 0:
         return
@@ -4439,7 +4439,7 @@ def _v34_threat_indicators_ciz():
 
 # <POTBO_STAGE S0906>
 
-# Şiddet ses/kamera/üç fiziksel geçişten gelsin; dekoratif geçmiş çok küçük kalsın.
+
 V34_SPECIAL_AFTERIMAGE_INTERVAL_MS = 9999
 # </POTBO_STAGE S0906>
 
@@ -4447,7 +4447,7 @@ V34_SPECIAL_AFTERIMAGE_INTERVAL_MS = 9999
 
 
 def _v34_special_path_clear(path, center, radius):
-    # Footprint test korunur; yalnız aşırı ince 2.5-2.7px örnekleme kaldırılır.
+
     if len(path) < 6:
         return False
     start, entry, p1, p2, p3, p4 = [pygame.Vector2(v) for v in path]
@@ -4547,7 +4547,7 @@ def gelistirici_x_skill_efekt_ciz():
     layer = v37_special_layer
     layer.fill((0, 0, 0, 0))
 
-    # En fazla 6 örnek: hızlı beden motion streak.
+
     items = list(v34_special_trail)
     alive_trail = []
     for item in items:
@@ -4576,7 +4576,7 @@ def gelistirici_x_skill_efekt_ciz():
         sa = _v36_screen_local(a, rect, -12.0)
         sb = _v36_screen_local(b, rect, -12.0)
         end = sa.lerp(sb, progress)
-        # Üç katman yeterli: koyu yara, kırmızı gövde, beyaz çekirdek.
+
         pygame.draw.line(layer, (88, 0, 14, 155), sa, end, 9 if final else 7)
         pygame.draw.line(
             layer,
@@ -4590,7 +4590,7 @@ def gelistirici_x_skill_efekt_ciz():
     draw_slash(p1, p2, prog1, False)
     draw_slash(p3, p4, prog2, True)
 
-    # Impact halkası tek compositor içinde.
+
     if now < v34_special_impact_ring_until:
         duration = max(
             1,
@@ -4616,7 +4616,7 @@ def gelistirici_x_skill_efekt_ciz():
 
     _v37_draw_special_sparks(layer, rect, now)
 
-    # Final hit'te ayrı signature renderer yerine aynı surface'te çok kısa tam X.
+
     if v34_special_hit_display_index == 3 and now < v34_special_hit_display_until:
         age = 520 - max(0, v34_special_hit_display_until - now)
         if 0 <= age <= V37_SPECIAL_AFTERGLOW_MS:
@@ -4659,7 +4659,7 @@ _v37_dunya_simulasyon_guncelle_original = dunya_simulasyon_guncelle
 def dunya_simulasyon_guncelle():
     global dunya_son_guncelleme, dunya_onceki_konum
     if gelistirici_x_skill_aktif_mi():
-        # authored dash mesafesini keşif/yürüyüş metriğine yazma ve resume'da dt spike üretme.
+
         dunya_son_guncelleme = pygame.time.get_ticks()
         dunya_onceki_konum = (oyuncu_x, oyuncu_y)
         return
@@ -4696,9 +4696,9 @@ def _v38_exposure_fraction(center, target_pos, target_radius):
 # <POTBO_STAGE S0974>
 
 
-# ---------------------------------------------------------
-# FIRE PROJECTILE: DRAG + TEMPERATURE + COLLISION
-# ---------------------------------------------------------
+
+
+
 def _v38_fire_projectile_init(self, x, y, direction, simdi):
     self.x = float(x)
     self.y = float(y)
@@ -4734,7 +4734,7 @@ def _gelistirici_x_skill_vur(slot, yon=None):
         return False
     slot = max(0, min(2, int(slot)))
     bit = 1 << slot
-    # Original mask'i bu çağrıda ilk kez set ettiyse fiziksel hit yeni gerçekleşti.
+
     if not (before_mask & bit):
         paid = _v38_special_pay_hit(slot, pygame.time.get_ticks())
         dunya_olayi_kaydet(
@@ -4749,24 +4749,24 @@ def _gelistirici_x_skill_vur(slot, yon=None):
 # <POTBO_STAGE S0998>
 
 
-# ---------------------------------------------------------
-# IMPACT MICRO-PAUSE BUDGET
-# ---------------------------------------------------------
-# Existing camera shake/impact FX already supplies most violence. This setting only
-# controls whether the special hit feedback may request strong transient flash values.
-# No busy-wait or sleep is introduced: frame pacing is never deliberately blocked.
+
+
+
+
+
+
 _v38_special_hit_feedback_original = _v34_special_hit_feedback
 # </POTBO_STAGE S0998>
 
 # <POTBO_STAGE S1023>
 
 
-# ---------------------------------------------------------
-# TUNING BOUNDS / INVARIANTS
-# ---------------------------------------------------------
-# Bu tablo runtime'da her frame dolaşılmaz. Geliştirici tuning sırasında katsayıların
-# fizik/oyun anlamını ve güvenli aralığını tek yerde tutar. Özellikle speed/radius gibi
-# birimler yanlışlıkla 10x değişirse diagnostics bunu hemen görünür hale getirir.
+
+
+
+
+
+
 V38_TUNING_LIMITS = {
     "V38_FIRE_CORE_TEMPERATURE_K": {
         "min": 1200.0,
@@ -4924,23 +4924,23 @@ V38_TUNING_LIMITS = {
 # <POTBO_STAGE S1109>
 
 
-# =========================================================
-# END V42
-# =========================================================
 
 
-# =========================================================
-# V43 - TRUE MELEE CLOSING / SLOW BLOOD AGING / DEV CAMERA ZOOM
-# =========================================================
+
+
+
+
+
+
 V43_VERSION = "43.0"
 # </POTBO_STAGE S1109>
 
 # <POTBO_STAGE S1113>
 
 
-# ---------------------------------------------------------
-# CTRL+1 DEVELOPER CAMERA ZOOM, MAX 6X
-# ---------------------------------------------------------
+
+
+
 V43_CAMERA_BASE_ZOOM = 1.12
 V43_CAMERA_ZOOM_STEPS = (
     1.12,
@@ -5033,8 +5033,8 @@ def _v43_map_draw():
 # <POTBO_STAGE S1120>
 
 
-# V37 final compositor global _v33_oyun_ekrani_ciz referansını runtime'da okur.
-# Bu nedenle wrapper zinciri eklemeden yalnız base world katmanı değiştirilir.
+
+
 _v33_oyun_ekrani_ciz = _v43_base_world_renderer
 # </POTBO_STAGE S1120>
 
@@ -5076,7 +5076,7 @@ def v47_hit_confirm_ciz():
 # <POTBO_STAGE S1204>
 
 
-# Final world renderer'ı bir kez sar: mevcut compositor sırasını bozma, yalnız son overlay.
+
 _v47_base_world_renderer_original = _v33_oyun_ekrani_ciz
 
 
@@ -5135,7 +5135,7 @@ def v51_blade_trail_sample():
         return
     root = v51_blade_root_world()
     tip = v51_blade_tip_world()
-    # Swing yönüne küçük tangent varyasyonu; tek düz çizgi yerine blade arc hissi.
+
     tangent = v44_player_facing_vector().rotate(90.0)
     phase = math.sin(now * 0.018)
     root += tangent * phase * 2.2
@@ -5412,8 +5412,8 @@ def v61_reaction_debug_ciz():
 # <POTBO_STAGE S1411>
 
 
-# V58 lobe eski sürümde her lobe için tam ekran alpha Surface oluşturuyordu. Aynı görseli
-# lokal bounding-box surface ile çiz; yoğun ölüm sahnesinde GPU/CPU bellek bant genişliği azalır.
+
+
 def _v63_lobe_draw(self, surface, silhouette=False):
     if not self.alive or not v58_world_visible(self.origin.x, self.origin.y):
         return
@@ -5499,7 +5499,7 @@ def v67_sample_tip(now=None):
         if v67_tip_history and int(now) - int(v67_tip_history[-1][0]) > 120:
             v67_clear_trajectory()
         return
-    # Her swing için zaten monoton/yenilenen başlangıç timestamp'i var; ayrı bir id uydurma.
+
     attack_id = int(globals().get("saldiri_baslangic", -1))
     if attack_id != v67_last_attack_id:
         v67_last_attack_id = attack_id
@@ -5588,7 +5588,7 @@ def v69_debug_trajectory_ciz():
         x1, y1, a1 = points[idx]
         alpha = min(a0, a1)
         pygame.draw.line(layer, (246, 228, 231, alpha), (x0, y0), (x1, y1), 1)
-    # Son tangent: blood splatter'ın kullandığı gerçek ölçülmüş doğrultu.
+
     last = pygame.Vector2(points[-1][0], points[-1][1])
     tangent = v67_measured_direction() * 30.0 * KAMERA_YAKINLASTIRMA
     pygame.draw.line(layer, (245, 204, 63, 180), last, last + tangent, 1)
@@ -5683,8 +5683,8 @@ def v74_trace_clean_floor(end_x, end_y, direction=None, last_clean=None):
 # <POTBO_STAGE S1487>
 
 
-# Her istenen zemin sıçraması için temiz bir nokta bulmaya çalış. Collision'a denk gelen
-# random örnek yalnızca yeniden örneklenir; collision yüzeyinin üzerine asla basılmaz.
+
+
 def v73_ground_splatter(
     x,
     y,
@@ -5713,7 +5713,7 @@ def v73_ground_splatter(
 
     for i in range(count):
         placed = False
-        # Her damla için ayrı retry: bir collider örneği bütün kan hacmini yutmasın.
+
         for attempt in range(12):
             if random.random() < float(backscatter):
                 angle = random.choice((-1.0, 1.0)) * random.uniform(78.0, 154.0)
@@ -5735,9 +5735,9 @@ def v73_ground_splatter(
                 decal.v73_ground_source = str(source)
                 created += 1
 
-                # İri/orta lekenin ucuna en fazla iki mikro damla. Bu küçük uydu lekeler
-                # geometrik fan görünümünü kırar; kalıcı oldukları için havadaki yüzlerce
-                # ekstra particle'dan daha ucuz ve daha okunaklıdır.
+
+
+
                 if size >= 0.18 and random.random() < 0.42:
                     drip_count = 1 if random.random() < 0.68 else 2
                     tangent2 = pygame.Vector2(-d.y, d.x)
@@ -5763,8 +5763,8 @@ def v73_ground_splatter(
                 placed = True
                 break
 
-        # Yakın çevrenin tamamı collision ise yalnız temiz origin kullanılabilir.
-        # Origin de collision ise doğru davranış decal üretmemektir; collision'a kan basmayız.
+
+
         if not placed and v74_floor_clean(origin.x, origin.y):
             decal = v74_create_persistent_decal(
                 origin.x,
@@ -5966,8 +5966,8 @@ def _v82_draw_viscous_creep(drop, now):
     age = int(now) - landing_time
     if age < 520:
         return
-    # Yalnız damlaların bir bölümü aşağı doğru ağır bir damar bırakır; tüm lekeler
-    # aynı anda akmaz. Bu asimetri sıvılık hissini güçlendirir ama görüntüyü çamura çevirmez.
+
+
     if _v82_drop_seed(drop, 7) % 100 >= 37:
         return
     grow = _v82_smooth((age - 520) / 1700.0)
@@ -5998,8 +5998,8 @@ def _v82_draw_seep_wet_edge(seep, now):
     if p < 0.12 or p > 0.78:
         return
     rng = random.Random(int(seep["birth_ms"]) ^ int(float(seep["rx"]) * 1009))
-    # 1px highlight sadece 2-3 düzensiz kenarda. Yeni renk yok: açık kırmızı beden rengi
-    # aynı ölüm paletinin 'wet specular' rolünü üstlenir.
+
+
     for i in range(2):
         a = rng.uniform(math.pi * 0.08, math.pi * 0.92)
         x = float(seep["origin"].x) + math.cos(a) * float(seep["rx"]) * (
@@ -6025,8 +6025,8 @@ def _v82_apply_hit_feedback(enemy, kind, damage):
         "lethal": (7.0, 158),
     }.get(kind, (1.6, 54))
     kamera_hit_sarsintisi_baslat(*shake)
-    # Reaksiyon süresi artar ama kontrolsüz stun-lock oluşmaz; yalnız temiz/deep/heavy
-    # temaslar birkaç frame daha 'oturur'.
+
+
     extra = {
         "glance": 62,
         "clean": 92,
@@ -6081,7 +6081,7 @@ def _v82_hit_fx_draw():
                 pygame.draw.circle(ekran, (118, 8, 18), (int(q.x), int(q.y)), 1)
 
         elif kind == "armor":
-            # Et kanından farklı: beyaz/sarı metal kıvılcımlar temas yönünde patlar.
+
             for i in range(7):
                 d = base.rotate(rng.uniform(-72.0, 72.0))
                 length = rng.uniform(4.0, 13.0) * contraction
@@ -6180,7 +6180,7 @@ def _v83_death_victim_layer():
     sx = _v83_clamp(sx, 110, GENISLIK - 110)
     sy = _v83_clamp(sy, 98, YUKSEKLIK - 88)
 
-    # Oyuncu altında kan/zemin hissi kalsın; düşmanda olmayacak.
+
     shadow = pygame.Rect(
         0,
         0,
@@ -6201,7 +6201,7 @@ def _v83_death_victim_layer():
     gap = 13.0 if age < 220 else 8.0 - 2.0 * settle
     _v83_death_split_surface(sil, (int(round(sx)), int(round(sy))), rot, gap)
 
-    # İlk darbenin ağırlığı okunur olsun: kısa, sert bir kesik izi.
+
     if age < 200:
         cut_p = 1.0 - _v82_clamp01(age / 200.0)
         line_len = 28 + int(18 * cut_p)
@@ -6455,8 +6455,8 @@ def v84_death_victim_draw(now):
         return
     anchor = v84_death_body_screen_anchor()
     state.fracture.draw(anchor)
-    # A light-red wound core remains readable for the first half-second, then the
-    # absence of the main sprite becomes the visual fact of death.
+
+
     if age < 520:
         radius = max(2, int(round(6.0 * (1.0 - age / 650.0))))
         center = (
@@ -6859,7 +6859,7 @@ def v84_execution_trace_draw(trace, now):
     pygame.draw.lines(ekran, V84_BLOOD, False, points, outer)
     pygame.draw.lines(ekran, V84_BODY_HOT, False, points, inner)
 
-    # Short displaced edge cuts add depth without turning one X into extra hits.
+
     if (
         3
         <= int(getattr(trace, "v86_attack_index", -1))
@@ -6897,7 +6897,7 @@ def v84_execution_trace_draw(trace, now):
 def gelistirici_test_girdisi_uygula(olay):
     global oyuncu_savunuyor, v86_guard_intent_until_ms
     if olay.type == pygame.KEYDOWN and olay.key == tus_atamasi("block"):
-        # OS key-repeat must not continually reopen a perfect-guard window.
+
         if bool(getattr(olay, "repeat", False)):
             return False
         now = pygame.time.get_ticks()
@@ -7076,8 +7076,8 @@ def v84_execution_trace_draw(trace, now):
         1,
     )
 
-    # One ring/spark packet per physical attack.  The companion stroke of a burst
-    # X remains purely visual and therefore does not double the impact cue.
+
+
     companion = bool(getattr(trace, "v86_cross", False))
     if not companion and 0 <= age < 140:
         q = v84_clamp01(age / 140.0)
@@ -7228,8 +7228,8 @@ V89_SMALL_FIRE_PATH = os.path.join(
 
 def _v89_rat_init(self, x, y, simdi):
     _v89_rat_init_raw(self, x, y, simdi)
-    # Exactly three resident scavengers; they do not despawn merely because a
-    # hidden lifetime elapsed off-camera.
+
+
     self.life_until = 2**62
 # </POTBO_STAGE S2086>
 
@@ -7261,9 +7261,9 @@ def v90_draco_frames_load():
             for px in range(frame.get_width()):
                 for py in range(frame.get_height()):
                     color = frame.get_at((px, py))
-                    # The source sheet uses #59B14D plus a few darker indexed
-                    # greens.  Fire pixels are red-dominant, so this chroma test
-                    # removes the canvas without eating yellow flame highlights.
+
+
+
                     green_canvas = (
                         color.r < 154
                         and color.g > color.r * 1.18
@@ -7320,8 +7320,8 @@ def v90_draw_draco_sprite(
         int(round(dunya_ekran_y(world_position[1]))),
     )
     rect = image.get_rect(center=center)
-    # Light is derived from the exact flame alpha mask.  Four one-pixel offsets
-    # soften its edge without introducing a circular or rectangular aura.
+
+
     glow_alpha = max(0, min(112, int(72 * glow_strength * alpha / 255.0)))
     if glow_alpha > 0:
         glow = v90_mask_tint(image, (255, 75, 8), glow_alpha)
@@ -7493,8 +7493,8 @@ def v90_draw_draco_sprite(
     body=True,
     glow_strength=1.0,
 ):
-    # Only the flying body grows into the sheet's long forms. Cast, bite, coil,
-    # collapse and rupture retain their original dragon language.
+
+
     if (
         body
         and v90_draco_state.active
@@ -7533,8 +7533,8 @@ def v90_draw_draco_sprite(
                     for old in list(v91_draco_alpha_cache)[:45]:
                         v91_draco_alpha_cache.pop(old, None)
         ekran.blit(draw, rect)
-        # Light occupies exactly the flame mask—one pass, no circle, square,
-        # expanded copy or screen-space halo.
+
+
         glow_alpha = max(
             0,
             min(
@@ -7604,7 +7604,7 @@ def v92_chain_polyline_position(progress):
     for i, length in enumerate(lengths):
         if walked + length >= target_distance:
             local = (target_distance - walked) / max(1e-6, length)
-            # Strong ease-out makes cuts fast, while camera/head motion can remain slow.
+
             local = 1.0 - (1.0 - local) ** 2.6
             return pygame.Vector2(points[i]).lerp(points[i + 1], local)
         walked += length
@@ -7614,8 +7614,8 @@ def v92_chain_polyline_position(progress):
 # <POTBO_STAGE S2349>
 
 
-# Background telemetry/ecology does not need 60 Hz when the blade is idle. Combat,
-# executions and learned chain movement still receive full-rate sampling.
+
+
 _v94_world_update_full = dunya_simulasyon_guncelle
 v94_world_next_ms = 0
 
@@ -7690,7 +7690,7 @@ def v90_draw_draco_sprite(
                 ekran.blit(core, rect, special_flags=pygame.BLEND_RGBA_ADD)
             v90_draco_stats["mask_glow_draws"] += 1
     else:
-        # Brighter afterimage but still exact sprite silhouette—no circles/rectangles.
+
         silhouette = v90_mask_tint(
             image,
             (255, 82, 8),
@@ -7701,8 +7701,8 @@ def v90_draw_draco_sprite(
 
 # <POTBO_STAGE S2393>
 
-# Decorative simulation stays responsive in combat; idle ecology/telemetry runs
-# less often under frame pressure.
+
+
 _v95_world_sim_previous = dunya_simulasyon_guncelle
 v95_world_sim_next_ms = 0
 
@@ -7764,27 +7764,27 @@ V102_UPGRADE_ICON_PATHS = {
 # <POTBO_STAGE S2491>
 
 
-# =========================================================
-# END V102
-# =========================================================
 
 
-# =========================================================
-# V103 - PERFORMANCE PASS
-# Final runtime layer: only safe caches/culling are applied here so gameplay
-# simulation, collision and combat timing remain unchanged.
-# =========================================================
+
+
+
+
+
+
+
+
 V103_VERSION = "103.0"
 # </POTBO_STAGE S2491>
 
 # <POTBO_STAGE S2497>
 
 
-# ---------------------------------------------------------
-# Render culling
-# Simulation remains full fidelity. Only objects outside the camera rectangle are
-# omitted from painter construction / sprite transforms / UI draws.
-# ---------------------------------------------------------
+
+
+
+
+
 V103_RENDER_MARGIN = 150.0
 # </POTBO_STAGE S2497>
 
@@ -7811,7 +7811,7 @@ def _v103_obj_visible(obj, margin=V103_RENDER_MARGIN):
     x = getattr(obj, "x", None)
     y = getattr(obj, "y", None)
     if x is None or y is None:
-        # Unknown coordinate model: preserve rendering rather than risk hiding it.
+
         return True
     return v103_world_visible(x, y, margin)
 # </POTBO_STAGE S2499>
@@ -7852,9 +7852,9 @@ def stamina_guncelle():
     v106_mana_tick_ms = int(now)
     dt = max(0.0, min(0.08, (int(now) - previous_tick) / 1000.0))
 
-    # V39's inherited passive regeneration checks current < max. Temporarily make
-    # the current value the ceiling while its stamina/display pipeline runs; this
-    # prevents even a one-frame hidden mana gain instead of refunding it afterward.
+
+
+
     oyuncu_max_mana = mana_before
     try:
         result = _v106_stamina_update_previous()
@@ -7996,7 +7996,7 @@ def v106_corona_draw(now=None):
         if age >= 520:
             rx = int(round(V106_CORONA_ORBIT_RADIUS * KAMERA_YAKINLASTIRMA))
             ry = max(6, int(round(rx * 0.62)))
-            # Thin ellipse only; never the thick straight death-streak row.
+
             pygame.draw.ellipse(
                 ekran,
                 (58, 151, 203),
@@ -8006,7 +8006,7 @@ def v106_corona_draw(now=None):
         for core_id in v106_corona.cores:
             position = v106_corona_orb_position(core_id, now)
             if age >= 700:
-                # Two sprite ghosts imply speed without allocating line trails.
+
                 for back, alpha in ((44, 58), (24, 104)):
                     ghost_pos = v106_corona_orb_position(core_id, int(now) - back)
                     v106_corona_draw_orb(ghost_pos, now - back, core_id, 24, alpha)
@@ -8116,7 +8116,7 @@ def v106_corona_draw(now=None):
             rx = int(round(V106_CORONA_ORBIT_RADIUS * KAMERA_YAKINLASTIRMA))
             ry = max(6, int(round(rx * 0.62)))
             orbit_rect = pygame.Rect(center[0] - rx, center[1] - ry, rx * 2, ry * 2)
-            # White, restless orbital traces; no blue ring remains.
+
             phase = (int(now) * 0.012) % math.tau
             for offset, width in ((0.0, 1), (0.17, 1)):
                 pygame.draw.arc(
@@ -8130,7 +8130,7 @@ def v106_corona_draw(now=None):
         for core_id in v106_corona.cores:
             position = v106_corona_orb_position(core_id, now)
             if age >= 420:
-                # Dense white silhouettes sell speed without an external glow halo.
+
                 for back, alpha, size in ((52, 46, 22), (31, 82, 24), (15, 132, 26)):
                     ghost_pos = v106_corona_orb_position(core_id, int(now) - back)
                     v106_corona_draw_orb(ghost_pos, int(now) - back, core_id, size, alpha)
@@ -8170,7 +8170,7 @@ def v106_corona_draw_orb(world_pos, now, core_id, size=27, alpha=255):
     sy = int(round(dunya_ekran_y(world_pos.y) - 24.0 * KAMERA_YAKINLASTIRMA))
     frame_index = (int(now) // 58 + int(core_id)) % max(1, len(V106_CORONA_FRAMES) or 1)
 
-    # Asıl çekirdeğin çevresinde ışık vardır; hız izi ghost'ları ayrıca halo üretmez.
+
     if int(alpha) >= 176:
         glow = v109_corona_glow_surface(size, alpha)
         ekran.blit(glow, glow.get_rect(center=(sx, sy)))
@@ -8184,12 +8184,12 @@ def v106_corona_draw_orb(world_pos, now, core_id, size=27, alpha=255):
         pygame.draw.circle(ekran, (255, 255, 255), (sx, sy), max(1, radius // 2))
 
 
-# ---------------------------------------------------------
-# CORONA PROJECTILE PHYSICS
-# Yakın hedefe yumuşak homing, doğrudan temasta swept collision ve mermi boyunca
-# hasarsız itici AETHER alanı. Mermi oyuncudan uzaklaştığı için ömürle silinmez;
-# dünya sınırı, harita engeli veya gerçek temas onu sonlandırır.
-# ---------------------------------------------------------
+
+
+
+
+
+
 V109_CORONA_HOMING_RANGE = 300.0
 # </POTBO_STAGE S2583>
 
@@ -8222,7 +8222,7 @@ def v109_corona_first_wall(a, b):
 def v106_corona_apply_hit(actor, position, direction, projectile=True):
     result = _v109_corona_apply_hit_raw(actor, position, direction, projectile=projectile)
     if projectile:
-        # V108'den daha sert, fakat tek kısa impuls. Reduced-motion ayarı ana helper'da korunur.
+
         kamera_hit_sarsintisi_baslat(30.0, 350)
     return result
 # </POTBO_STAGE S2589>
@@ -8261,7 +8261,7 @@ def v109_consumable_flash_update():
 # <POTBO_STAGE S2599>
 
 
-# Restart/load sırasında eski tüketim kuyruğu yeni dünyaya taşınmasın.
+
 _v109_transient_reset_raw = gecici_dunya_aktorlerini_sifirla
 
 

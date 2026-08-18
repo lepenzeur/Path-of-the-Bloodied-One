@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0013>
 hasar_sayilari = True
@@ -24,14 +24,14 @@ ERKEK_YON_DOSYALARI = {
     "walk_right_02": os.path.join(ERKEK_YON_KLASORU, "male_walk_right_02.png"),
     "walk_up_01": os.path.join(ERKEK_YON_KLASORU, "male_walk_up_01.png"),
     "walk_up_02": os.path.join(ERKEK_YON_KLASORU, "male_walk_up_02.png"),
-    # Aşağı saldırı
+
     "attack_down_01": os.path.join(ERKEK_YON_KLASORU, "male_attack_down_01.png"),
     "attack_down_02": os.path.join(ERKEK_YON_KLASORU, "male_attack_down_02.png"),
-    # Sol saldırı
+
     "attack_left_01": os.path.join(ERKEK_YON_KLASORU, "male_attack_left_01.png"),
-    # Sağ saldırı
+
     "attack_right_01": os.path.join(ERKEK_YON_KLASORU, "male_attack_right_01.png"),
-    # Yukarı saldırı
+
     "attack_up_01": os.path.join(ERKEK_YON_KLASORU, "male_attack_up_01.png"),
     "attack_up_02": os.path.join(ERKEK_YON_KLASORU, "male_attack_up_02.png"),
 }
@@ -40,9 +40,9 @@ ERKEK_YON_DOSYALARI = {
 # <POTBO_STAGE S0078>
 
 
-# =========================================================
-# İPUÇLARI
-# =========================================================
+
+
+
 IPUCLARI = {
     "TR": [
         (
@@ -161,8 +161,8 @@ stamina_uyari_bitis = 0
 # </POTBO_STAGE S0126>
 
 # <POTBO_STAGE S0132>
-# Aynı hedef, üst üste duran 30 ayrı alev patch'inden aynı karede 30 kez hasar almaz.
-# Cooldown hedef bazlıdır; başka bir alev alanına yürümek yine temas olarak sayılır.
+
+
 fire_ground_touch_cooldowns = {}
 # </POTBO_STAGE S0132>
 
@@ -177,20 +177,20 @@ gelistirici_x_skill_iz_bitis = 0
 GELISTIRICI_X_SKILL_SURE_MS = 2300
 GELISTIRICI_X_SKILL_YARI_CAP = 116.0
 GELISTIRICI_X_SKILL_TETIK_MENZILI = 390.0
-# Special move üç AYRI fiziksel vuruştur. Hasar da üç bağımsız temas olarak uygulanır:
-# 1) hedefin içinden geçen düz giriş, 2) / dash, 3) \ dash.
-# Son vuruş biraz daha ağırdır; ancak hiçbir slash yalnız VFX olarak sayılmaz.
+
+
+
 GELISTIRICI_X_SKILL_HASAR_CARPANLARI = (0.90, 1.15, 1.35)
-# Fazlar: düz giriş/HIT-1 -> alt-sol kurulum -> / HIT-2 -> üst switch -> \ HIT-3 -> recovery.
-# Toplam kontrol kaybı 2.3 saniyedir. Dash'ler hızlıdır; aradaki kısa kurulum ve
-# recovery, komut verildikten sonra tekniğin tamamlanmasını izleme hissi bırakır.
+
+
+
 GELISTIRICI_X_SKILL_ENTRY_BITIS = 0.24
 GELISTIRICI_X_SKILL_KURULUM_BITIS = 0.34
 GELISTIRICI_X_SKILL_SLASH1_BITIS = 0.52
 GELISTIRICI_X_SKILL_SWITCH_BITIS = 0.62
 GELISTIRICI_X_SKILL_SLASH2_BITIS = 0.80
 combat_impact_fx = []
-# Self-hit yanma state'i. Save'e yazılmaz; transient combat durumudur.
+
 oyuncu_fire_burn_until = 0
 # </POTBO_STAGE S0136>
 
@@ -200,8 +200,8 @@ oyuncu_fire_burn_tick_damage = 0
 
 # <POTBO_STAGE S0148>
 
-# Savunma zinciri. Orta sınıf iki, ağır sınıf bir darbeyi karşılar; ardından
-# aynı guard zincirinde yeni temas doğrudan hasara geçer.
+
+
 oyuncu_savunuyor = False
 savunma_zincir_vurus = 0
 savunma_son_temasi = -10000
@@ -218,9 +218,9 @@ SAVUNMA_ZINCIR_LIMITI = {"light": 3, "medium": 2, "heavy": 1}
 
 # <POTBO_STAGE S0170>
 oyuncu_saldiriyor = False
-# Saldırı ve dash stamina dengesi. Dash artık aynı frame'de teleport değildir;
-# kısa süreye yayılan ease-out hareketidir. Cooldown yalnız yeni dash'i engeller,
-# yürüyüş input'unu asla kilitlemez.
+
+
+
 SALDIRI_STAMINA_MALIYETI = 20
 DASH_STAMINA_MALIYETI = 40
 DASH_MESAFESI = 112.0
@@ -410,9 +410,9 @@ def oyuncu_seviye_kazanclarini_uygula(eski_level, yeni_level):
 # <POTBO_STAGE S0391>
 
 
-# =========================================================
-# OYUN İÇİ PANEL
-# =========================================================
+
+
+
 
 
 def gotik_bicak_bari_ciz(
@@ -442,18 +442,18 @@ def gotik_bicak_bari_ciz(
     r = x + w
     b = y + h
 
-    # daha agresif bıçak geometrisi: eğimler uzatıldı, sağ üst spear-tip daha
-    # ileri okunur, sağ alt uç belirgin biçimde geride ikinci keskin nokta olur.
-    # Sol alt yalnız küçük bir bevel taşır; barın genel geometrisi keskin tutulur.
+
+
+
     alt_geri = max(18, min(30, h + 7))
     sol_bevel = max(3, h // 6)
     dis = [
-        (x, y + max(2, h // 5)),  # sol üst sivri burun
+        (x, y + max(2, h // 5)),
         (x + 21, y),
         (r - 25, y),
-        (r, y + max(3, h // 4)),  # sağ üst en ileri uç
+        (r, y + max(3, h // 4)),
         (r - 8, y + max(5, h // 2)),
-        (r - alt_geri, b),  # sağ alt geride, fakat keskin
+        (r - alt_geri, b),
         (x + 16, b),
         (x + 7, b - 1),
         (x + 2, b - sol_bevel),
@@ -480,8 +480,8 @@ def gotik_bicak_bari_ciz(
     ]
     pygame.draw.polygon(ekran, arka_rengi, ic)
 
-    # Dolgu da aynı bıçak poligonu içinde clip edilir; böylece oran azalırken
-    # sağ uç geometrisi bozulmaz, yalnız görünür dolgu genişliği kısalır.
+
+
     yerel = pygame.Surface((w, h), pygame.SRCALPHA)
     yerel_ic = [(px - x, py - y) for px, py in ic]
     pygame.draw.polygon(yerel, (*dolgu_rengi, 255), yerel_ic)
@@ -507,8 +507,8 @@ def gotik_bicak_bari_ciz(
     cerceve = PARLAK_KIRMIZI if uyari else (92 + tier * 12, 78, 82)
     pygame.draw.lines(ekran, cerceve, True, dis, 2 if tier >= 3 else 1)
 
-    # Onluk level eşiklerinde yalnız çerçeve ihtişamı artar; barın okunabilir
-    # bıçak silueti ve dolgu oranı değişmez.
+
+
     for i in range(tier):
         px = x + 34 + i * 27
         if px + 12 >= r - 28:
@@ -734,8 +734,8 @@ def gelistirici_x_skill_guncelle(simdi=None):
     e3 = GELISTIRICI_X_SKILL_SLASH2_BITIS
 
     if p < e0:
-        # HIT-1 — DÜZ GİRİŞ: karakter hedef merkezinin içinden geçerek ileri çıkar.
-        # Temas, beden segmentinin hedef merkezini geçtiği gerçek geometrik anda oluşur.
+
+
         tloc = _gelistirici_x_skill_ease_out(p / max(0.001, e0))
         pos = bas.lerp(entry, tloc)
         yon_farki = entry - bas
@@ -749,7 +749,7 @@ def gelistirici_x_skill_guncelle(simdi=None):
             if tloc >= hit_t:
                 _gelistirici_x_skill_vur(0, yon_farki)
     elif p < e_setup:
-        # Kontrol oyuncuda değildir; karakter '/' çizgisinin alt-sol başlangıcına kayar.
+
         tloc = (p - e0) / max(0.001, e_setup - e0)
         merkez = pygame.Vector2(
             float(gelistirici_x_skill_hedef.x),
@@ -762,14 +762,14 @@ def gelistirici_x_skill_guncelle(simdi=None):
         pos = _gelistirici_x_skill_bezier(entry, control, p1, tloc)
         yon_farki = p1 - entry
     elif p < e1:
-        # / : alt-sol -> üst-sağ. Karakter çizginin kendisini dash olarak kat eder.
+
         tloc = _gelistirici_x_skill_ease_out((p - e_setup) / max(0.001, e1 - e_setup))
         pos = p1.lerp(p2, tloc)
         yon_farki = p2 - p1
         if tloc >= 0.50:
             _gelistirici_x_skill_vur(1, yon_farki)
     elif p < e2:
-        # İkinci kesiye hazırlık: hedefin üst tarafında çok kısa, hasarsız switch.
+
         tloc = (p - e1) / max(0.001, e2 - e1)
         merkez = pygame.Vector2(
             float(gelistirici_x_skill_hedef.x),
@@ -779,14 +779,14 @@ def gelistirici_x_skill_guncelle(simdi=None):
         pos = _gelistirici_x_skill_bezier(p2, control, p3, tloc)
         yon_farki = p3 - p2
     elif p < e3:
-        # \\ : üst-sol -> alt-sağ. İkinci dash X'i kapatır.
+
         tloc = _gelistirici_x_skill_ease_out((p - e2) / max(0.001, e3 - e2))
         pos = p3.lerp(p4, tloc)
         yon_farki = p4 - p3
         if tloc >= 0.50:
             _gelistirici_x_skill_vur(2, yon_farki)
     else:
-        # Yaklaşık son üçte birlik bölüm recovery/commitment'tır; kontrol hemen dönmez.
+
         pos = pygame.Vector2(p4)
         yon_farki = p4 - p3
 
@@ -886,9 +886,9 @@ oyuncu_kanli_hasar_kaydi = _stage2_oyuncu_kanli_hasar_kaydi
 # <POTBO_STAGE S0581>
 
 
-# ---------------------------------------------------------
-# PLAYER DAMAGE FLASH -- potion flaşıyla ayrık renk dili
-# ---------------------------------------------------------
+
+
+
 _v32_kanli_hasar_kaydi_v33 = oyuncu_kanli_hasar_kaydi
 
 
@@ -909,7 +909,7 @@ def oyuncu_sprite_parlamasi_ciz(sprite, rect):
     fade = math.sin(math.pi * p) ** 0.72
 
     if str(oyuncu_parlama_turu) == "damage":
-        # Potabile'nin parlak içim dilinden bilinçli biçimde daha koyu.
+
         pulse = 0.72 + 0.28 * (0.5 + 0.5 * math.sin(p * math.tau * 2.0))
         sprite_maskeli_parlama_ciz(sprite, rect, (118, 4, 20), int(162 * fade * pulse))
         return
@@ -971,9 +971,9 @@ def _v34_segment_static_clear(a, b, step=V34_SCRIPT_STEP):
 # <POTBO_STAGE S0654>
 
 
-# ---------------------------------------------------------
-# DASH FEEL: normal dash'e hafif beden izi eklenir.
-# ---------------------------------------------------------
+
+
+
 _v33_oyuncu_dash_guncelle = oyuncu_dash_guncelle
 
 
@@ -1036,8 +1036,8 @@ def _gelistirici_x_skill_vur(slot, yon=None):
     target_alive = hedef is not None and int(getattr(hedef, "hp", 0)) > 0
 
     if hedef is not None:
-        # İlk iki hit hedefi 1 HP altında bırakmaz. Bu, special move'un üç gerçek
-        # temasının da okunmasını garanti eder. Üçüncü hit normal ölüm kurallarını çözer.
+
+
         hp_before = max(0, int(getattr(hedef, "hp", 0)))
         if hp_before > 0:
             if V34_SPECIAL_FIRST_TWO_HITS_NONLETHAL and slot < 2:
@@ -1050,8 +1050,8 @@ def _gelistirici_x_skill_vur(slot, yon=None):
                 except TypeError:
                     hedef.hasar_al(applied_damage)
 
-    # Target ilk iki darbede 1 HP'ye inse veya üçüncü darbede ölse bile impact
-    # sunumu her slotta çalışır; koreografi asla "bir vurup bırakmış" görünmez.
+
+
     silah_temas_sesi_cal(
         str(getattr(hedef, "tur", "crawler")) if hedef is not None else "crawler"
     )
@@ -1068,7 +1068,7 @@ def _gelistirici_x_skill_vur(slot, yon=None):
     _v34_special_hit_feedback(slot, center, yon)
 
     if slot == 2:
-        # Final keside daha geniş ikinci impact halkası teknik kapanışını okutur.
+
         combat_impact_spawn(center.x, center.y - 14.0, "shock_heavy", 1.48, yon)
 
     dunya_olayi_kaydet(
@@ -1088,8 +1088,8 @@ def _v34_special_phase_values(p):
     2.3 saniyelik toplam kontrol kilidi korunur; hızlı dash'ler daha kısa aralıklarda,
     vuruş sonrası mikro duraklar ise tekniğe ağırlık veren ayrı fazlardadır.
     """
-    # entry dash / hit1 pause / setup / slash1 / hit2 pause / switch / slash2 /
-    # hit3 pause / settling / recovery
+
+
     return {
         "entry_end": 0.205,
         "hit1_hold_end": 0.235,
@@ -1116,8 +1116,8 @@ def gelistirici_x_skill_guncelle(simdi=None):
     simdi = int(simdi)
     if not gelistirici_x_skill_aktif_mi(simdi) or len(gelistirici_x_skill_yol) < 6:
         if gelistirici_x_skill_baslangic_ms and simdi >= gelistirici_x_skill_bitis_ms:
-            # Final pozisyonu dynamic body ile çakışıyorsa oyuncuyu en yakın güvenli
-            # noktaya çıkar. Static invalidity zaten scripted resolver tarafından engellenir.
+
+
             _v34_player_depenetrate(False)
             gelistirici_x_skill_sifirla(False)
         return False
@@ -1158,7 +1158,7 @@ def gelistirici_x_skill_guncelle(simdi=None):
         desired = bas.lerp(entry, t)
         delta = entry - bas
         phase_name = "entry"
-        # Hit tam body segmenti target center'dan geçtiğinde.
+
         seg = entry - bas
         denom = max(1e-6, seg.length_squared())
         hit_t = max(0.0, min(1.0, (center - bas).dot(seg) / denom))
@@ -1205,7 +1205,7 @@ def gelistirici_x_skill_guncelle(simdi=None):
         delta = p4 - p3
         phase_name = "hit3_hold"
     elif p < settle_end:
-        # Finalde 12 px kadar yön boyunca "settle"; rigid stop hissini azaltır.
+
         t = _gelistirici_x_skill_smooth(
             (p - hit3_hold_end) / max(0.001, settle_end - hit3_hold_end)
         )
@@ -1239,7 +1239,7 @@ def gelistirici_x_skill_guncelle(simdi=None):
         _v34_special_register_trail(simdi, actual, phase_name)
     v34_special_last_pos = actual.copy()
 
-    # Special aktifken her frame tüm alternatif movement kanallarını bastır.
+
     oyuncu_hareket_hiz_vektoru.update(0.0, 0.0)
     oyuncu_zorlanmis_hiz.update(0.0, 0.0)
 
@@ -1333,7 +1333,7 @@ def gelistirici_x_skill_efekt_ciz():
     _v34_special_speed_lines_ciz(katman, simdi)
     ekran.blit(katman, (0, 0))
 
-    # Eski iki slash çizgisi korunur; V34 beden hareketini onunla aynı geometriye bağlar.
+
     _v33_gelistirici_x_skill_efekt_ciz()
 
     top = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
@@ -1365,9 +1365,9 @@ v34_input_buffer_attack_count = 0
 v34_input_buffer_dash_count = 0
 
 
-# ---------------------------------------------------------
-# SPECIAL RESET HYGIENE
-# ---------------------------------------------------------
+
+
+
 _v34a_gelistirici_x_skill_sifirla = gelistirici_x_skill_sifirla
 # </POTBO_STAGE S0689>
 
@@ -1410,17 +1410,17 @@ def oyuncu_dash_yap(dx, dy):
 # <POTBO_STAGE S0699>
 
 
-# =========================================================
-# END V34B
-# =========================================================
 
 
-# =========================================================
-# V34C COMBAT READABILITY / CROWD SEPARATION / SESSION FEEL
-# =========================================================
-# Amaç yalnız daha fazla efekt değil; oyuncunun neden hasar aldığını, saldırısının
-# zincir halinde bağlanıp bağlanmadığını ve kalabalıkta neden sıkıştığını daha iyi
-# anlatan sistemik geri bildirimler eklemektir.
+
+
+
+
+
+
+
+
+
 
 V34_COMBO_WINDOW_MS = 1450
 V34_COMBO_FADE_MS = 520
@@ -1536,7 +1536,7 @@ def _v34_damage_edge_geometry(direction, thickness=20):
     if d.length_squared() <= 1e-6:
         d = pygame.Vector2(0.0, -1.0)
     d = d.normalize()
-    # Kaynak oyuncunun sağındaysa sağ kenar yanar; yukarıdaysa üst kenar.
+
     if abs(d.x) >= abs(d.y):
         if d.x > 0:
             return pygame.Rect(GENISLIK - thickness, 0, thickness, YUKSEKLIK), "right"
@@ -1573,7 +1573,7 @@ def _v34_damage_feedback_ciz():
     overlay = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
     pygame.draw.rect(overlay, (178, 10, 28, alpha), rect)
 
-    # Kenardan içeri doğru ikinci yumuşak band.
+
     soft = thickness * 3
     if side == "right":
         rect2 = pygame.Rect(GENISLIK - soft, 0, soft, YUKSEKLIK)
@@ -1700,8 +1700,8 @@ def v34_state_watchdog_tick():
     elif v34_focus_lost_since > 0:
         v34_focus_lost_since = 0
         v34_focus_recovery_count += 1
-        # Pencere odağı geri geldiğinde held-state latch'leri bırak. Fiziksel tuşlar
-        # bir sonraki frame yeniden okunur; phantom dash/block kalmaz.
+
+
         global dash_tus_kilitli
         dash_tus_kilitli = False
 
@@ -1717,19 +1717,19 @@ def v34_state_watchdog_tick():
 # <POTBO_STAGE S0742>
 
 
-# =========================================================
-# END V34D
-# =========================================================
 
 
-# =========================================================
-# V34E CINEMATIC ARMOR / INTERACTION RESOLVER / ADAPTIVE FX QUALITY
-# =========================================================
-# Son kullanıcıya doğrudan hissedilen üç iyileştirme:
-# 1) authored special move ölümcül bir dış darbeyle yarıda kesilmez; hasar alınır ama
-#    ilk iki slash tamamlanmadan HP 0'a inemez,
-# 2) E etkileşimi sabit priority zinciri yerine gerçekten en yakın uygun hedefi seçer,
-# 3) uzun savaşlarda FPS düşerse yalnız dekoratif V34 efektleri otomatik hafifler.
+
+
+
+
+
+
+
+
+
+
+
 
 V34_SPECIAL_CINEMATIC_ARMOR_END = 0.78
 # </POTBO_STAGE S0742>
@@ -1829,7 +1829,7 @@ def _v34f_special_target_commit_tick(simdi=None):
     )
     drift = current.distance_to(anchor)
     if drift > V34F_SPECIAL_TARGET_MAX_DRIFT:
-        # Snap yerine güçlü lerp: frame-frame okunduğunda beden "teleport" etmez.
+
         corrected = current.lerp(anchor, V34F_SPECIAL_TARGET_SNAP_SPEED)
         try:
             target.x = float(corrected.x)
@@ -1855,9 +1855,9 @@ def _v34f_special_target_commit_tick(simdi=None):
     v34_special_effect_center = anchor.copy()
 
 
-# ---------------------------------------------------------
-# SPECIAL INPUT QUARANTINE
-# ---------------------------------------------------------
+
+
+
 def _v34f_special_input_quarantine(simdi=None):
     """Special aktifken tüm player-driven locomotion kanallarını her frame nötralize eder."""
     global v34f_special_input_quarantine_frames
@@ -1907,8 +1907,8 @@ def v34f_special_lifecycle_tick():
 # <POTBO_STAGE S0793>
 
 
-# Special update focus dışındayken body'yi ilerletmez. Regain'de yukarıdaki timeline
-# shift nedeniyle kaldığı authored frame'den devam eder.
+
+
 _v34f_previous_special_update = gelistirici_x_skill_guncelle
 
 
@@ -1956,7 +1956,7 @@ def _v34f_special_vignette_ciz(simdi):
     if alpha <= 0:
         return
     layer = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
-    # Dört kenardan içeri yumuşak basamaklar; pahalı per-pixel radial shader yok.
+
     steps = 7
     for i in range(steps):
         k = (steps - i) / steps
@@ -2048,7 +2048,7 @@ def _v34f_repair_resource_invariants():
         oyuncu_stamina = stamina
         fixed = True
 
-    # UI interpolant'ları NaN olursa draw math'ini zehirleyebilir; gerçek resource'a döndür.
+
     if not math.isfinite(_v34f_finite(hp_gorunen, float("nan"))):
         hp_gorunen = float(oyuncu_hp)
         fixed = True
@@ -2068,9 +2068,9 @@ def _v34f_repair_resource_invariants():
     return fixed
 
 
-# ---------------------------------------------------------
-# SPECIAL PHASE CONTRACT AUDIT
-# ---------------------------------------------------------
+
+
+
 def _v34f_special_phase_contract():
     try:
         phase = _v34_special_phase_values(0.0)
@@ -2132,17 +2132,17 @@ def _v34f_keybind_contract():
 # <POTBO_STAGE S0809>
 
 
-# ---------------------------------------------------------
-# PLAYER CONTROL RETURN GUARD
-# ---------------------------------------------------------
+
+
+
 def _v34f_post_special_control_tick():
     global v34f_post_special_recovery_until, dash_tus_kilitli, oyuncu_savunuyor
     simdi = _v34f_now()
     if v34f_post_special_recovery_until <= 0:
         return
     if simdi < v34f_post_special_recovery_until:
-        # Kısa landing recovery sırasında momentum sıfırdır; normal movement input'u
-        # gelistirici_x_skill bitince ana loop'a geri dönse bile ilk frame snap üretmez.
+
+
         oyuncu_hareket_hiz_vektoru.update(0.0, 0.0)
         oyuncu_savunuyor = False
         return
@@ -2158,10 +2158,10 @@ def _v34f_post_special_control_tick():
 
 # <POTBO_STAGE S0814>
 
-# ---------------------------------------------------------
-# MOVEMENT / RANGE RETUNE
-# ---------------------------------------------------------
-# Normal dash yaklaşık %25 daha uzun; süre çok az uzadığı için hissedilen hız da artar.
+
+
+
+
 DASH_MESAFESI = 140.0
 DASH_SURESI_MS = 172
 # </POTBO_STAGE S0814>
@@ -2404,7 +2404,7 @@ def _gelistirici_x_skill_vur(slot, yon=None):
 
 
 def _v34_player_safety_tick():
-    # Path preflight + sparse sanity check special sırasında yeterlidir.
+
     if gelistirici_x_skill_aktif_mi():
         return
     return _v37_player_safety_tick_original()
@@ -2414,7 +2414,7 @@ _v37_stamina_guncelle_original = stamina_guncelle
 
 
 def stamina_guncelle():
-    # Authored control-lock sırasında stamina regen/cost timeline'a gizlice karışmasın.
+
     if gelistirici_x_skill_aktif_mi():
         return
     return _v37_stamina_guncelle_original()
@@ -2455,30 +2455,30 @@ def v34_quality_tick():
     """
     global v37_special_previous_active
 
-    # V34B temel oturum işleri.
+
     v34_special_pause_tick()
     v34_input_buffer_guncelle()
     v34_fx_budget_guncelle()
 
-    # V34C-D-E combat/readability güvenlikleri.
+
     _v34_combat_focus_tick()
     v34_state_watchdog_tick()
     v34_fx_quality_tick()
 
-    # V34F session hardening. V37 wrapper'ları special sırasında pahalı auditleri zaten erteler.
+
     v34f_frame_health_tick()
     v34f_focus_safety_tick()
     v34f_special_lifecycle_tick()
     _v34f_post_special_control_tick()
     v34f_runtime_audit_tick(False)
 
-    # V35 combat flow en son çözülür; böylece bu frame'deki hit/state bilgisi günceldir.
+
     v35_combat_flow_tick()
 
     now = pygame.time.get_ticks()
     active = gelistirici_x_skill_aktif_mi(now)
     if v37_special_previous_active and not active:
-        # AI authored sequence bittikten aynı frame'de oyuncunun üstüne saldırmasın.
+
         grace = now + V37_SPECIAL_AI_RECOVERY_MS
         for actor in _v34_actor_list():
             try:
@@ -2497,7 +2497,7 @@ def v34_quality_tick():
 # </POTBO_STAGE S0932>
 
 # <POTBO_STAGE S0936>
-v38_combat_precision = "strict"  # strict | standard
+v38_combat_precision = "strict"
 v38_fire_self_damage = True
 # </POTBO_STAGE S0936>
 
@@ -2507,7 +2507,7 @@ V38_COMBAT_PRECISIONS = ("strict", "standard")
 
 # <POTBO_STAGE S0949>
 
-# Normal kullanım mana odaklıdır; tüm stamina'yı sıfırlamak kaldırıldı.
+
 V38_FIRE_CAST_STAMINA_COST = 10.0
 # </POTBO_STAGE S0949>
 
@@ -2519,7 +2519,7 @@ V38_FIRE_DAMAGE_RADIUS = 214.0
 
 # <POTBO_STAGE S0954>
 
-# Owner safety: kendi patlaması yalnız gerçekten yakınsa hissedilir.
+
 V38_FIRE_SELF_DAMAGE_RADIUS = 118.0
 # </POTBO_STAGE S0954>
 
@@ -2579,9 +2579,9 @@ def _v38_player_reach_values():
 # <POTBO_STAGE S0985>
 
 
-# ---------------------------------------------------------
-# SPECIAL: FASTER SMOOTHER TIMELINE + 3 PHYSICAL STAMINA COSTS
-# ---------------------------------------------------------
+
+
+
 GELISTIRICI_X_SKILL_SURE_MS = 1360
 GELISTIRICI_X_SKILL_YARI_CAP = 132.0
 GELISTIRICI_X_SKILL_TETIK_MENZILI = 450.0
@@ -2662,8 +2662,8 @@ def _v38_special_pay_hit(slot, simdi):
 def gelistirici_x_skill_sifirla(tam_reset=False):
     global v38_special_arm_refund_active, v38_special_stamina_paid_mask
     global v38_special_stamina_spent
-    # Arm edilmiş fakat start edilmemiş state başka bir modal/reset ile kesildiyse
-    # refund normal hold maliyetini bedavaya çevirmesin.
+
+
     global oyuncu_stamina
     if v38_special_arm_refund_active and not gelistirici_x_skill_aktif_mi():
         oyuncu_stamina = max(0.0, float(oyuncu_stamina) - V38_SPECIAL_PREP_REFUND)
@@ -2677,13 +2677,13 @@ def gelistirici_x_skill_sifirla(tam_reset=False):
 # <POTBO_STAGE S1000>
 
 
-# ---------------------------------------------------------
-# THERMAL COLOR / MATERIAL RESPONSE
-# ---------------------------------------------------------
-# Ateşin "bilimsel" görünmesi yalnız hasar eğrisinden ibaret değildir. Aşağıdaki
-# dönüşüm yaklaşık black-body renk sıcaklığı üretir. Bu Planck integralini her frame
-# çözmek yerine Tanner-Helland tipi log/power yaklaşımının oyun için sadeleştirilmiş
-# biçimidir. Sonuç yalnız glow tonuna gider; sprite atlasının orijinal rengini bozmaz.
+
+
+
+
+
+
+
 
 
 def _v38_blackbody_rgb(temp_k):
@@ -2709,9 +2709,9 @@ def _v38_blackbody_rgb(temp_k):
 # <POTBO_STAGE S1006>
 
 
-# Temperature-aware glow cache. Projectile calls two-argument helper in the earlier
-# V38 block; this redefinition keeps that signature and derives temperature bucket from
-# intensity. It is deliberately quantized so cache cardinality stays tiny.
+
+
+
 def _v38_glow_surface(radius, intensity_bucket):
     radius = max(4, int(radius))
     bucket = max(0, min(10, int(intensity_bucket)))
@@ -2725,7 +2725,7 @@ def _v38_glow_surface(radius, intensity_bucket):
     c = size // 2
     strength = bucket / 10.0
     rgb = _v38_blackbody_rgb(_v38_temperature_from_bucket(temp_bucket))
-    # Dış katmanda turuncu/kırmızı baskın, çekirdekte RGB black-body tonuna yaklaşır.
+
     for i, frac in enumerate((1.0, 0.72, 0.46, 0.24)):
         rr = max(1, int(radius * frac))
         mix = i / 3.0
@@ -2744,11 +2744,11 @@ def _v38_glow_surface(radius, intensity_bucket):
 # <POTBO_STAGE S1010>
 
 
-# ---------------------------------------------------------
-# FIRE QUALITY PRESETS
-# ---------------------------------------------------------
-# Quality ayarı mekanik sistemlere dokunmaz. Buradaki değerler yalnız render/spawn
-# yoğunluğunu belirler; aynı save üç profilde de aynı damage/position sonucunu üretir.
+
+
+
+
+
 V38_FIRE_QUALITY_PRESETS = {
     "low": {
         "density": 0.55,
@@ -2871,22 +2871,22 @@ def v38_diagnostics():
     return data
 
 
-# ---------------------------------------------------------
-# SPECIAL ARM AFFORDABILITY FINAL GUARD
-# ---------------------------------------------------------
-# R basıldığı frame press->charge geçişi de gerçekleşebildiği için ilk precheck'te
-# hold ek maliyetinin henüz düşülmemiş olması olasıdır. Bu son guard refund sonrasında
-# gerçek kullanılabilir stamina'yı tekrar doğrular; böylece 54 stamina kontratı kesin.
+
+
+
+
+
+
 _v38_special_r_arm_stage1 = gelistirici_x_skill_r_baslat
 # </POTBO_STAGE S1030>
 
 # <POTBO_STAGE S1033>
 
-# ---------------------------------------------------------
-# HUMAN-READABLE REFERENCE CURVES
-# ---------------------------------------------------------
-# Bu küçük tablo debug/denge notudur; runtime combat kararında kullanılmaz. Sayılar
-# fonksiyonlardan üretildiği için formül değişirse tablo elle güncellenmek zorunda değildir.
+
+
+
+
+
 V38_REFERENCE_DISTANCES = (
     0.0,
     24.0,
@@ -2932,8 +2932,8 @@ def v38_reference_interpretation():
 # <POTBO_STAGE S1037>
 
 
-# Final sanity flags. Bunların herhangi biri False ise dosya açılmayı yine sürdürür;
-# geliştirici diagnostics üzerinden hangi varsayımın kırıldığını görebilir.
+
+
 V38_REFERENCE_OK = (
     len(V38_REFERENCE_CURVES) == len(V38_REFERENCE_DISTANCES)
     and V38_REFERENCE_CURVES[0]["generic_damage"]
@@ -2946,7 +2946,7 @@ V38_REFERENCE_OK = (
 # <POTBO_STAGE S1039>
 
 
-# V38 final build metadata.
+
 V38_BUILD_PROFILE = {
     "focus": "thermochemical_fire_and_contact_integrity",
     "line_target": 35000,
@@ -2963,14 +2963,14 @@ V38_BUILD_PROFILE = {
 # <POTBO_STAGE S1041>
 
 
-# =========================================================
-# END V38
-# =========================================================
 
 
-# =========================================================
-# V39 - FIRE VISUAL / CHARACTER SELECT / COMBAT FEEL
-# =========================================================
+
+
+
+
+
+
 V39_VERSION = "39.0"
 # </POTBO_STAGE S1041>
 
@@ -3147,8 +3147,8 @@ def ayar_etiketi(ayar):
 # <POTBO_STAGE S1098>
 
 
-# Geliştirici special bildirimi normal tuş şemasına karışmasın; yalnız Ctrl+U ile
-# açıldığında bir kez kombinasyonu söyler. R hâlâ ayrılmış ve normal dash değildir.
+
+
 _v41_gelistirici_test_girdisi_original = gelistirici_test_girdisi_uygula
 # </POTBO_STAGE S1098>
 
@@ -3283,7 +3283,7 @@ def v45_cross_angle_factor(enemy):
         return 1.0
     to_target = to_target.normalize()
     cross = abs(facing.x * to_target.y - facing.y * to_target.x)
-    # Tam yan temas ödüllendirilmez; hafif çapraz açı temiz slicing için ideal.
+
     ideal = 0.38
     quality = max(0.0, 1.0 - abs(cross - ideal) / ideal)
     return 1.0 + V45_CROSS_ANGLE_BONUS * quality
@@ -3325,9 +3325,9 @@ def v45_melee_multiplier(enemy, stage):
 # <POTBO_STAGE S1196>
 
 
-# =========================================================
-# V47 - COMBAT TELEMETRY / HIT FEEDBACK / ATTACK POLISH
-# =========================================================
+
+
+
 V47_VERSION = "47.0"
 # </POTBO_STAGE S1196>
 
@@ -3432,7 +3432,7 @@ def oyuncu_savunma_darbe_karsila(kaynak_turu, kaynak_x, kaynak_y, attacker=None)
     if quality <= 0.0:
         return _v51_guard_hit_original(kaynak_turu, kaynak_x, kaynak_y, attacker)
 
-    # Parent guard mekanizması gerçek stamina/temas kontratını uygular.
+
     before_stamina = float(oyuncu_stamina)
     success = _v51_guard_hit_original(kaynak_turu, kaynak_x, kaynak_y, attacker)
     if not success:
@@ -3481,14 +3481,14 @@ def oyuncu_savunma_darbe_karsila(kaynak_turu, kaynak_x, kaynak_y, attacker=None)
 # <POTBO_STAGE S1241>
 
 
-# =========================================================
-# END V51
-# =========================================================
 
 
-# =========================================================
-# V52 - SKILL MATRIX / CHARACTER-SPECIFIC COMBAT IDENTITY
-# =========================================================
+
+
+
+
+
+
 V52_VERSION = "52.0"
 # </POTBO_STAGE S1241>
 
@@ -3601,7 +3601,7 @@ def v52_execution_bonus():
 # <POTBO_STAGE S1253>
 
 
-# V44 energy estimate now reads character skill transfer.
+
 _v52_attack_energy_original = v44_attack_energy_estimate
 
 
@@ -3614,7 +3614,7 @@ def v44_attack_energy_estimate(mode=None, damage=None):
 # <POTBO_STAGE S1255>
 
 
-# Parry window includes small branch bonuses.
+
 def v51_parry_active(now=None):
     if now is None:
         now = pygame.time.get_ticks()
@@ -3642,7 +3642,7 @@ def v51_parry_quality(now=None):
 # <POTBO_STAGE S1257>
 
 
-# Skill strip: ağır UI'ye küçük, pasif bilgi; yeni modal/menu açmaz.
+
 def v52_skill_strip_ciz():
     if oyun_durumu != OYUN or oyuncu_hp <= 0:
         return
@@ -3673,7 +3673,7 @@ def v52_skill_strip_ciz():
 # <POTBO_STAGE S1259>
 
 
-# Developer diagnostics expose every active passive and aggregate; no extra key required.
+
 def v52_diagnostics():
     return {
         "version": V52_VERSION,
@@ -3702,7 +3702,7 @@ def _v44_damage_context_for_enemy(enemy, amount, source):
 
 def v54_profile_key():
     if gelistirici_x_skill_aktif_mi():
-        # Special has its own three-hit phase; velocity proxy uses strongest middle profile.
+
         return "special_mid"
     heavy = str(oyuncu_saldiri_modu) == "hold_release"
     if karakter_cinsiyet == "female":
@@ -3746,7 +3746,7 @@ def v54_angular_velocity_deg_s(profile, progress):
         else V54_SWING_CURVE_SAMPLES
     )
     normalized_speed = v54_curve_eval(curve, progress)
-    # arc/duration is the average; curve peak scales instantaneous speed.
+
     average = float(profile["arc_deg"]) / (duration_ms / 1000.0)
     return (
         average
@@ -3771,7 +3771,7 @@ def v54_instantaneous_velocity(now=None):
     progress = v54_attack_progress(now)
     angular = v54_angular_velocity_deg_s(profile, progress)
     tip = v54_tip_velocity_px_s(profile, angular)
-    # Hand translation and body step contribute additional linear velocity.
+
     body = 52.0 if karakter_cinsiyet == "female" else 44.0
     if str(oyuncu_saldiri_modu) == "hold_release":
         body += 62.0
@@ -3789,7 +3789,7 @@ _v54_attack_speed_original = v44_attack_speed_estimate
 
 
 def v44_attack_speed_estimate(mode=None):
-    # When attack is actually active, use instantaneous blade-tip kinematics.
+
     if oyuncu_saldiriyor and mode is None:
         speed = v54_instantaneous_velocity()
         if speed > 40.0:
@@ -3832,7 +3832,7 @@ def v54_contact_quality(enemy=None):
 # <POTBO_STAGE S1285>
 
 
-# Blood context reads instantaneous motion and edge efficiency before V44/V53 emitter.
+
 _v54_damage_context_original = _v44_damage_context_for_enemy
 # </POTBO_STAGE S1285>
 
@@ -3858,7 +3858,7 @@ def v56_attack_ready(actor, now=None):
         return False
     if not v56_angle_ready(actor):
         return False
-    # Hedef hızla uzaklaşıyorsa edge-of-range swing'e commit etme.
+
     if (
         dist > float(cfg["ideal_range"])
         and float(state.get("closing_rate", 0.0)) < -1.4
@@ -3917,7 +3917,7 @@ _v56_attack_ready_original = _v43_melee_attack_ready
 
 
 def _v43_melee_attack_ready(actor, simdi):
-    # Tactical readiness now includes original cooldown contract + range/facing discipline.
+
     if not _v56_attack_ready_original(actor, simdi):
         return False
     state = v56_state(actor)
@@ -3929,9 +3929,9 @@ def _v43_melee_attack_ready(actor, simdi):
 
 # <POTBO_STAGE S1320>
 
-# Bu katman saldırıların yalnız hasar sayısından ibaret kalmasını engeller. Whiff,
-# temiz temas, art arda aynı açıdan vurma ve stamina durumu kısa süreli combat
-# ritmine çevrilir. Etkiler küçük tutulur; asıl amaç timing ve ağırlık hissidir.
+
+
+
 V57_FLOW_DECAY_PER_SEC = 0.44
 # </POTBO_STAGE S1320>
 
@@ -3961,7 +3961,7 @@ def v57_attack_precision():
         progress = float(v54_attack_progress())
     except Exception:
         pass
-    # Temiz kesme bölgesi animasyonun ortasına yakın. Hold-release daha geniş pencere.
+
     width = V57_PRECISION_WIDTH + (
         0.08 if oyuncu_saldiri_modu == "hold_release" else 0.0
     )
@@ -4079,7 +4079,7 @@ def v57_update(now=None):
 
     if dt <= 0.0:
         return
-    # Dövüş dışına çıkınca flow hızlı, fatigue daha yavaş çözülür.
+
     since_contact = int(now) - int(v57_state.get("last_contact_ms", -10000))
     flow_decay = V57_FLOW_DECAY_PER_SEC * (1.15 if since_contact > 1100 else 0.45)
     fatigue_decay = V57_FATIGUE_DECAY_PER_SEC * (1.35 if not active else 0.48)
@@ -4106,7 +4106,7 @@ def v57_update(now=None):
 # <POTBO_STAGE S1339>
 
 
-# Yeni oyun/yükleme/ölüm resetlerinde önceki combat temposu sızmasın.
+
 _v57_death_reset_original = oyuncu_olum_sahnesini_sifirla
 # </POTBO_STAGE S1339>
 
@@ -4273,8 +4273,8 @@ def v61_apply_reaction(enemy, damage, before_hp, now=None):
     kind = v61_reaction_kind(depth)
     uid = str(getattr(enemy, "uid", id(enemy)))
 
-    # Original hasar_al poise'i damage ile zaten düşürdü; burada yalnız kinematik fark
-    # eklenir. Extra miktar küçük ve armor/mass ile güçlü biçimde sınırlandırılmıştır.
+
+
     max_poise = float(getattr(enemy, "cfg", {}).get("poise_max", 0.0))
     poise_extra = max_poise * max(0.0, impulse - 0.48) * 0.11
     if max_poise > 0 and float(getattr(enemy, "hp", 0.0)) > 0:
@@ -4320,7 +4320,7 @@ def v61_apply_reaction(enemy, damage, before_hp, now=None):
         enemy.poise = max_poise
         staggered = True
 
-    # Çok derin ağır temas ufak ekstra momentum üretir; mevcut knockback'in yerine geçmez.
+
     if depth >= V61_DEPTH_DEEP and impulse > 0.9:
         delta = pygame.Vector2(
             float(getattr(enemy, "x", oyuncu_x)) - float(oyuncu_x),
@@ -4352,7 +4352,7 @@ def v61_apply_reaction(enemy, damage, before_hp, now=None):
 # <POTBO_STAGE S1398>
 
 
-# Blood context contact depth'i görür: deep -> biraz daha çizgisel/hızlı, glance -> dağınık.
+
 _v61_damage_context_original = _v44_damage_context_for_enemy
 
 
@@ -4402,7 +4402,7 @@ def v44_attack_speed_estimate(mode=None):
     if not v67_measured_speed_available():
         return analytic
     measured = float(v67_last_measured_speed)
-    # İlk iki frame ölçümü jitter'a açık; history doldukça measured tarafına ağırlık artar.
+
     confidence = v44_clamp01((len(v67_tip_history) - 2) / 7.0)
     blend = V67_SPEED_BLEND * confidence
     return v44_clamp(
@@ -4454,7 +4454,7 @@ def v67_diagnostics():
 # <POTBO_STAGE S1444>
 
 
-# Damage context target türü/uid'sini palette katmanına taşı.
+
 _v68_damage_context_original = _v44_damage_context_for_enemy
 # </POTBO_STAGE S1444>
 
@@ -4493,9 +4493,9 @@ _v73_player_damage_original = oyuncu_kanli_hasar_kaydi
 
 # <POTBO_STAGE S1538>
 
-# ---------------------------------------------------------
-# LOADING HINTS: KONTROL EZBERİ DEĞİL, GERÇEK SİSTEM BİLGİSİ
-# ---------------------------------------------------------
+
+
+
 IPUCLARI = {
     "TR": [
         (
@@ -4592,7 +4592,7 @@ IPUCLARI = {
 # <POTBO_STAGE S1562>
 
 
-# İpuçları sade, oyuna dönük ve teknik olmayan hale getirildi.
+
 IPUCLARI["TR"] = [
     "Düşmanın ilk hamlesini izle. Birçok saldırı, hasardan önce niyetini gösterir.",
     "Staminan düşerken açgözlü oynama. Bir adım geri çekilmek çoğu zaman ikinci bir darbiden daha değerlidir.",
@@ -4657,14 +4657,14 @@ def _v78_common_hasar(self, miktar, kaynak=None):
 # <POTBO_STAGE S1577>
 
 
-# =========================================================
-# END V78
-# =========================================================
 
 
-# =========================================================
-# V79 - RUNTIME FIX / HEAVY UI / FASTER COMBAT / DEATH SYNC
-# =========================================================
+
+
+
+
+
+
 V79_VERSION = "79.0"
 # </POTBO_STAGE S1577>
 
@@ -4684,8 +4684,8 @@ saldiri_bekleme_suresi = 365
 # <POTBO_STAGE S1631>
 
 
-# Ölüm başlarken gerçek AI saldırısı kesilir. Bundan sonra görülen tekrar darbeler yalnız
-# yukarıdaki authored ölüm koreografisidir; combat AI ikinci kez hasar çözmez.
+
+
 _v81_death_update_original = oyuncu_olum_durumu_guncelle
 
 
@@ -4778,7 +4778,7 @@ def _v82_stamina_bar(rect, ratio, warning=False):
         (rect.right, rect.top - 1),
         1,
     )
-    # Sadece uçlarda küçük end-cap: stamina artık ağır bir üçüncü zırh barı gibi görünmez.
+
     pygame.draw.line(
         ekran,
         edge,
@@ -4798,9 +4798,9 @@ def _v82_stamina_bar(rect, ratio, warning=False):
 # <POTBO_STAGE S1673>
 
 
-# ---------------------------------------------------------
-# COMBAT: her melee temasını ayırt edilebilir kıl
-# ---------------------------------------------------------
+
+
+
 def _v82_is_player_melee_source(source):
     if bool(getattr(source, "is_player_magic", False)):
         return False
@@ -4873,32 +4873,32 @@ def _v83_stamina_bar(rect, ratio, warning=False):
 # <POTBO_STAGE S1694>
 
 
-# --- combat blood / feedback ---------------------------------------------
+
 _v83_kanli_darbe_efekti_original = kanli_darbe_efekti
 # </POTBO_STAGE S1694>
 
 # <POTBO_STAGE S1711>
 
 
-# =========================================================
-# END V83
-# =========================================================
 
 
-# =========================================================
-# V84 - EXECUTION STANCE / PERFECT GUARD / WOUND ECOLOGY
-# =========================================================
-#
-# V84 is deliberately the final authority for guard contact, riposte ownership,
-# execution choreography, wound ecology and the three-colour death tableau.  Older
-# layers remain available as implementation primitives, but their broad parry and
-# binary split decisions are not allowed to leak through this contract.
-#
-# The system is data driven for three reasons:
-#   1. combat timings can be audited without running a full asset build,
-#   2. every hostile actor follows the same rules without type-specific shortcuts,
-#   3. transient cinematic state is isolated from persistent save state.
-# =========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 V84_VERSION = "84.0"
 # </POTBO_STAGE S1711>
@@ -4920,9 +4920,9 @@ V84_EXECUTION_INTERRUPT_DAMAGE_RATIO = 0.055
 
 # <POTBO_STAGE S1722>
 
-# The interval curve is authored, not random.  It starts readable and accelerates
-# until individual cuts collapse into a single perceived burst.  Angle, length and
-# body crossing vary per target; rhythm never does.
+
+
+
 V84_EXECUTION_BEAT_TIMES = (
     150,
     370,
@@ -5063,9 +5063,9 @@ class V84FractureField:
                 positive_mask,
                 (0, 0),
             )
-            # The line belongs to the positive half.  Deriving the second child by
-            # subtraction guarantees exact pixel conservation and prevents a
-            # one-pixel duplicate seam from gaining mass after many cuts.
+
+
+
             negative = fragment.mask.copy()
             negative.erase(positive, (0, 0))
             positive_count = int(positive.count())
@@ -5244,9 +5244,9 @@ def v84_execution_naturally_eligible(actor, now=None):
 # <POTBO_STAGE S1758>
 
 
-# V51 delegated to the base guard after deciding its own broad parry.  V84 keeps
-# that base handler for ordinary held K, thereby removing projectile parries and
-# global riposte ownership without rewriting the stable stamina-chain logic.
+
+
+
 _v84_normal_guard_handler = globals().get(
     "_v51_guard_hit_original",
     oyuncu_savunma_darbe_karsila,
@@ -5576,9 +5576,9 @@ def v84_timing_contract():
 
 # <POTBO_STAGE S1824>
 
-# Three readable crossings, ten compressed asymmetric crossings, then a long
-# retreat and one terminal crossing.  These are impact times, not arbitrary
-# animation frames.
+
+
+
 V84_EXECUTION_BEAT_TIMES = (
     340,
     900,
@@ -5912,18 +5912,18 @@ def v84_timing_contract():
 # <POTBO_STAGE S1892>
 
 
-# =========================================================
-# END V85
-# =========================================================
 
 
-# =========================================================
-# V86 - RHYTHMIC X EXECUTION / RESPONSIVE GUARD
-# =========================================================
-# The three opening attacks deliberately breathe: a measured placement, an
-# X-special-speed crossing, then a held stance.  The compressed middle is not a
-# single saw-line.  Every one of its eighteen physical attacks owns an irregular
-# crossed trace while still applying exactly one cut and one damage event.
+
+
+
+
+
+
+
+
+
+
 
 V86_VERSION = "86.0"
 
@@ -6002,9 +6002,9 @@ V84_EXECUTION_END_LINGER_MS = 720
 V84_EXECUTION_TRACE_LIFE_MS = 510
 V84_EXECUTION_MAX_FRAGMENTS = 40
 
-# Compatibility names are intentionally updated as well.  Older diagnostics and
-# helpers may inspect these values, but the functions below are the final motion
-# authority.
+
+
+
 V85_EXECUTION_TOTAL_MS = V86_EXECUTION_TOTAL_MS
 V85_EXECUTION_BURST_START_MS = V86_EXECUTION_BURST_START_MS
 V85_EXECUTION_BURST_STEP_MS = V86_EXECUTION_BURST_STEP_MS
@@ -6177,9 +6177,9 @@ def v84_execution_apply_cut(index, now):
     state.detached_fragments = int(getattr(state, "detached_fragments", 0)) + int(made)
     trace = v86_execution_trace(target, state, index, angle, length_scale, now, final)
 
-    # Eighteen rapid attacks are eighteen irregular Xs.  The companion stroke is
-    # visual only: it enriches the silhouette without double-damaging or cutting
-    # twice during one authored physical attack.
+
+
+
     if 3 <= index < 3 + V86_EXECUTION_BURST_COUNT:
         rng = random.Random(state.seed ^ (index * 0xB16B00B5))
         cross_angle = angle + rng.choice((-1.0, 1.0)) * rng.uniform(69.0, 111.0)
@@ -6253,19 +6253,19 @@ def v84_perfect_guard_possible(
 # <POTBO_STAGE S1905>
 
 
-# =========================================================
-# END V86 EXECUTION / GUARD
-# =========================================================
 
 
-# =========================================================
-# V86 - ENEMY-AUTHORED 3/4-TOP-DOWN DEATH DIRECTOR
-# =========================================================
-# This renderer never draws fracture seams or holds pieces together with gaps.
-# An intact remainder and independently cropped solid pieces are the only body
-# primitives.  Their x/y motion lives on the map plane; z is merely flight above
-# that plane.  Consequently a fallen body lies across the floor instead of
-# dropping toward the bottom edge like a platform-game object.
+
+
+
+
+
+
+
+
+
+
+
 
 V86_DEATH_FRONT_WAIT_MS = 1000
 # </POTBO_STAGE S1905>
@@ -6273,10 +6273,10 @@ V86_DEATH_FRONT_WAIT_MS = 1000
 # <POTBO_STAGE S1921>
 
 
-# The former V85 mortal-follow-through delayed HP=0 and replayed one generic hit.
-# V86 records inherited hit feedback as nonlethal, restores zero immediately, then
-# starts the correct authored director.  This removes the unwanted shared prelude
-# without bypassing established damage flash, telemetry or ordinary blood ecology.
+
+
+
+
 _v86_player_damage_original = oyuncu_kanli_hasar_kaydi
 
 
@@ -6321,7 +6321,7 @@ def oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_adi=""):
 
 # <POTBO_STAGE S1945>
 
-# Exact three-layer language used by gelistirici_x_skill_efekt_ciz().
+
 V87_SPECIAL_CUT_DARK = (88, 0, 14)
 # </POTBO_STAGE S1945>
 
@@ -6408,8 +6408,8 @@ def v88_call_with_damage_source(provenance, callback, *args, **kwargs):
     try:
         return callback(*args, **kwargs)
     finally:
-        # Nested combat callbacks are legal.  Remove the exact record even if a
-        # defensive wrapper raised after another source was pushed.
+
+
         if v88_damage_source_stack and v88_damage_source_stack[-1] is provenance:
             v88_damage_source_stack.pop()
         else:
@@ -6478,8 +6478,8 @@ def oyuncu_kanli_hasar_kaydi(
         hasar,
         kaynak_adi,
     )
-    # A defensive rollback only applies if an inherited guard converted the
-    # apparent lethal contact back into a living state and no director claimed it.
+
+
     if newly_frozen and not v86_death_state.active and int(oyuncu_hp) > 0:
         v88_lethal_event = None
     return result
@@ -6551,14 +6551,14 @@ def v88_repeating_death_scheduler_ready(state, attack, kind):
 # <POTBO_STAGE S2120>
 
 
-# =========================================================
-# END V89
-# =========================================================
 
 
-# =========================================================
-# V90 - SOMATIC INJURY / DRACO CALCINANS
-# =========================================================
+
+
+
+
+
+
 
 V90_VERSION = "90.0"
 # </POTBO_STAGE S2120>
@@ -6644,9 +6644,9 @@ def oyuncu_kanli_hasar_kaydi(kaynak_x, kaynak_y, profil, hasar, kaynak_adi=""):
         hasar,
         kaynak_adi,
     )
-    # Every combat resolver subtracts HP immediately before publishing this
-    # canonical damage event; `hasar` is therefore the post-mitigation amount.
-    # Comparing HP around the event would always yield zero.
+
+
+
     if int(hasar) > 0 and int(oyuncu_hp) > 0:
         v90_injury_register_damage(int(hasar), profil)
     return result
@@ -6696,8 +6696,8 @@ _v90_attack_damage_raw = oyuncu_saldiri_hasar_miktari
 
 
 def oyuncu_saldiri_hasar_miktari():
-    # "Heavy" here means laboured commitment, not the implausible reward of
-    # becoming stronger while exsanguinating.
+
+
     scalar = 1.0 - 0.10 * v90_injury_severity()
     return max(1, int(round(_v90_attack_damage_raw() * scalar)))
 # </POTBO_STAGE S2156>
@@ -6743,8 +6743,8 @@ def secili_itemi_kullan(item_index):
 # <POTBO_STAGE S2201>
 
 
-# Correct dash exertion accounting even though the inherited dash function
-# intentionally returns None on success.
+
+
 _v90_dash_cost_wrapper = oyuncu_dash_yap
 
 
@@ -6759,10 +6759,10 @@ def oyuncu_dash_yap(dx, dy):
 # <POTBO_STAGE S2266>
 
 
-# ---------------------------------------------------------
-# Level progression replaces the level-unlocked passive-technique strip.
-# The old mechanics remain callable but contribute no level-derived bonuses.
-# ---------------------------------------------------------
+
+
+
+
 def v52_unlocked_skill_ids(level=None, gender=None):
     return tuple()
 
@@ -6788,11 +6788,11 @@ def v52_skill_strip_ciz():
 
 def oyuncu_serbest_hareket_guncelle():
     global V90_BASE_WALK_SPEED
-    # V90's injury wrapper derives the live walking speed from this baseline, so
-    # V92 scales that canonical baseline instead of fighting the wrapper one frame
-    # later.  The temporary change also means wounds still multiply correctly.
+
+
+
     base = float(V90_BASE_WALK_SPEED)
-    # ~20% maximum level contribution before equipment; noticeable, not absurd.
+
     level_mult = min(1.20, 1.0 + float(v92_level_stats.get("speed", 0.0)))
     equipment_mult = v92_equipment_speed_multiplier()
     V90_BASE_WALK_SPEED = base * level_mult * equipment_mult
@@ -6811,11 +6811,11 @@ _v92_player_damage_raw = oyuncu_kanli_hasar_kaydi
 # <POTBO_STAGE S2311>
 
 
-# ---------------------------------------------------------
-# Decussatio Rubra: the existing three-cut X special becomes a learned skill.
-# If its complete three-hit prediction is lethal, it hands the target to the
-# authored execution director. Range remains intentionally short.
-# ---------------------------------------------------------
+
+
+
+
+
 V92_X_SPECIAL_NAME = "Decussatio Rubra"
 # </POTBO_STAGE S2311>
 
@@ -6827,12 +6827,12 @@ _v92_x_release_raw = gelistirici_x_skill_r_birak
 # <POTBO_STAGE S2315>
 
 
-# ---------------------------------------------------------
-# Catena Decollationis: J + dash attacks sequential targets in the facing cone.
-# Aligned targets produce a straight line; diagonal arrangements naturally build
-# a zig-zag polyline. If every predicted hit is lethal, the scene becomes a
-# black/red decapitation tableau with fast cuts and slow-flying heads.
-# ---------------------------------------------------------
+
+
+
+
+
+
 V92_CHAIN_NAME = "Catena Decollationis"
 # </POTBO_STAGE S2315>
 
@@ -6891,14 +6891,14 @@ def v92_chain_update(now=None):
     motion_p = min(1.0, p / (0.43 if state.execution else 0.78))
     pos = v92_chain_polyline_position(motion_p)
     oyuncu_x, oyuncu_y = float(pos.x), float(pos.y)
-    # Hits are distributed over the fast motion segment in target order.
+
     for index in range(len(state.targets)):
         threshold = (index + 1) / (len(state.targets) + 1) * (0.40 if state.execution else 0.72)
         if p >= threshold:
             v92_chain_hit_target(index, now)
     dt = max(0.0, min(0.05, (int(now) - int(state.last_ms)) / 1000.0))
     state.last_ms = int(now)
-    # Heads live in deliberate slow motion relative to the cut.
+
     head_dt = dt * (0.24 if state.execution else 1.0)
     for head in state.heads:
         head.position += head.velocity * head_dt
@@ -6930,32 +6930,32 @@ def oyuncu_dash_yap(dx, dy):
 
 # <POTBO_STAGE S2340>
 
-# =========================================================
-# END V92
-# =========================================================
 
 
-# =========================================================
-# V94 - INPUT / TIMING / SKILLS / PERFORMANCE HOTFIX
-# This layer is intentionally placed BEFORE the blocking main loop.
-# =========================================================
+
+
+
+
+
+
+
 V94_VERSION = "94.0"
 # </POTBO_STAGE S2340>
 
 # <POTBO_STAGE S2344>
 
-# More aggressive cosmetic budgets. Combat hit resolution is untouched.
+
 V63_TIER_HYSTERESIS_MS = 520
 # </POTBO_STAGE S2344>
 
 # <POTBO_STAGE S2360>
 
 
-# ---------------------------------------------------------
-# Learned skills: HOLD means HOLD. Catena requires 5 trainings, a real charged J,
-# at least two chainable living targets, and a short recovery window. Otherwise
-# the input falls through to an ordinary dash.
-# ---------------------------------------------------------
+
+
+
+
+
 V92_CHAIN_EXECUTION_MS = 1180
 # </POTBO_STAGE S2360>
 
@@ -6976,8 +6976,8 @@ def gelistirici_x_skill_r_baslat(simdi=None):
 # <POTBO_STAGE S2366>
 
 
-# Robust dash wrapper: does not trigger Catena merely because J happened to be down.
-# The normal dash remains authoritative unless the learned, charged skill actually starts.
+
+
 _v94_dash_previous = _v92_dash_raw
 
 
@@ -7024,14 +7024,14 @@ def v92_chain_update(now=None):
 
 # <POTBO_STAGE S2417>
 
-# ---------------------------------------------------------
-# STATUS ICON ASSETS
-# Kullanıcının istediği canonical yollar:
-#   assets/ui/health_icon.png
-#   assets/ui/mana_icon.png
-#   assets/ui/stamina_icon.png
-# Proje kökündeki ui/ klasörü de güvenli fallback'tir.
-# ---------------------------------------------------------
+
+
+
+
+
+
+
+
 V98_HEALTH_ICON_ADAYLARI = (
     os.path.join(ASSETS, "ui", "health_icon.png"),
     os.path.join(BASE_DIR, "ui", "health_icon.png"),
@@ -7048,10 +7048,10 @@ V98_STAMINA_ICON_ADAYLARI = (
 # <POTBO_STAGE S2431>
 
 
-# ---------------------------------------------------------
-# FIREBALL TRAIL - yalnız görsel, hasar vermez.
-# Ateş topu ilerledikçe aynı universal ateşten kısa ömürlü izler bırakır.
-# ---------------------------------------------------------
+
+
+
+
 class V98ProjectileTrailFire:
     __slots__ = ("x", "y", "start_ms", "duration_ms", "phase", "scale")
 
@@ -7098,20 +7098,20 @@ v99_catena_combo_latched = False
 # <POTBO_STAGE S2453>
 
 
-# =========================================================
-# V100 - EXECUTION CONTRACT / PASSIVE SKILL BELT /
-#        UNIVERSAL NEGOTIATION / CINEMATIC CLOCK /
-#        CLEAN FIREBALL PRESENTATION
-# =========================================================
+
+
+
+
+
 V100_VERSION = "100.0"
 # </POTBO_STAGE S2453>
 
 # <POTBO_STAGE S2455>
 
-# ---------------------------------------------------------
-# SKILL METADATA + ICONS
-# Skill slots are informational only. They never cast/activate a technique.
-# ---------------------------------------------------------
+
+
+
+
 V100_SKILL_META = {
     "decussatio_rubra": {
         "name": "Decussatio Rubra",
@@ -7188,7 +7188,7 @@ def _v101_skill_fallback_surface(skill_id, size):
     thick = max(2, int(round(size * 0.075)))
 
     if skill_id == "decussatio_rubra":
-        # Decussatio: iki çapraz kesik + merkezden geçen yatay kesik.
+
         pygame.draw.line(surf, hot, (pad, pad), (size - pad, size - pad), thick + 2)
         pygame.draw.line(surf, hot, (size - pad, pad), (pad, size - pad), thick + 2)
         pygame.draw.line(surf, gold, (pad - 1, size // 2), (size - pad + 1, size // 2), thick + 2)
@@ -7196,8 +7196,8 @@ def _v101_skill_fallback_surface(skill_id, size):
         pygame.draw.line(surf, white, (size - pad - 2, pad + 2), (pad + 2, size - pad - 2), max(1, thick // 2))
         pygame.draw.line(surf, white, (pad + 2, size // 2), (size - pad - 2, size // 2), max(1, thick // 2))
     else:
-        # Catena: birbirine bağlanan üç kısa kesik. Gerçek
-        # catena_decollationis.png geldiğinde bu fallback otomatik bırakılır.
+
+
         pts = [
             (pad, int(size * 0.38)),
             (int(size * 0.34), int(size * 0.52)),
@@ -7214,10 +7214,10 @@ def _v101_skill_fallback_surface(skill_id, size):
 # <POTBO_STAGE S2462>
 
 
-# ---------------------------------------------------------
-# INVENTORY BELT: 1-5 + Q on the left, five passive skill slots on the right.
-# Skill slots are display-only and therefore have no cursor/confirm semantics.
-# ---------------------------------------------------------
+
+
+
+
 def v100_skill_belt_draw(start_x, y, slot_size=58, gap=10):
     learned = [
         skill_id
@@ -7239,11 +7239,11 @@ def v100_skill_belt_draw(start_x, y, slot_size=58, gap=10):
 # <POTBO_STAGE S2465>
 
 
-# ---------------------------------------------------------
-# CATENA DECOLLATIONIS: at least TWO living, chainable targets are mandatory.
-# If every linked target is guaranteed to die from its Catena hit, the attack
-# becomes a red/black decapitation cutscene. Otherwise it remains normal damage.
-# ---------------------------------------------------------
+
+
+
+
+
 V92_CHAIN_EXECUTION_MS = 2280
 # </POTBO_STAGE S2465>
 
@@ -7261,8 +7261,8 @@ def v92_chain_update(now=None):
     duration = max(1, int(state.duration_ms))
     p = min(1.0, elapsed / duration)
 
-    # Execution traversal is extremely fast; the remainder is reserved for the
-    # decapitated heads to travel in deliberate slow motion and settle.
+
+
     motion_window = 0.20 if state.execution else 0.58
     hit_window = 0.18 if state.execution else 0.54
     motion_p = min(1.0, p / motion_window)
@@ -7319,7 +7319,7 @@ def oyun_sinematik_kilitli_mi():
 def v100_cinematic_update(now=None):
     if now is None:
         now = pygame.time.get_ticks()
-    # Only one authored execution owns player motion at a time.
+
     if v84_execution_state.active:
         v84_execution_update(now)
     elif v92_chain_state.active:
@@ -7329,7 +7329,7 @@ def v100_cinematic_update(now=None):
 # <POTBO_STAGE S2501>
 
 
-# Keyboard-only game: mouse motion/button events are pure queue noise.
+
 for _v103_mouse_event in (
     pygame.MOUSEMOTION,
     pygame.MOUSEBUTTONDOWN,
@@ -7341,11 +7341,11 @@ for _v103_mouse_event in (
 # <POTBO_STAGE S2524>
 
 
-# ---------------------------------------------------------
-# LEVEL-UP: current resources do not refill.
-# The inherited level curve still increases maximum bars and combat progression,
-# but the exact pre-level HP/mana/stamina are restored afterwards.
-# ---------------------------------------------------------
+
+
+
+
+
 _v106_level_gain_previous = oyuncu_seviye_kazanclarini_uygula
 
 

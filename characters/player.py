@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0116>
 
@@ -61,9 +61,9 @@ oyuncu_olum_arter_sonraki_ms = 0
 
 # <POTBO_STAGE S0153>
 oyuncu_olum_ikiye_bolundu = False
-# Ağır kesici ölümünde kesim çizgisi her ölümde bir kez rastgele seçilir; render
-# kareleri boyunca sabit kalır. Böylece gövde düz yatay iki parçaya değil, gerçek
-# çapraz bir kesik düzlemi boyunca ayrılır.
+
+
+
 oyuncu_olum_kesim_acisi = 22.0
 oyuncu_olum_kesim_ofset_orani = 0.52
 oyuncu_son_darbe_profili = "slash"
@@ -76,12 +76,12 @@ oyuncu_olum_katil_tur = ""
 
 # <POTBO_STAGE S0157>
 oyuncu_olum_ates_seed = 0
-# explosion kill, oyuncunun idle silüetini runtime'da düzensiz parçalara ayırıp
-# blast merkezinden uzağa savurur. Yeni death sprite gerekmez.
+
+
 oyuncu_olum_patlama_seed = 0
 oyuncu_olum_patlama_yonu = pygame.Vector2(1.0, 0.0)
-# ölüm koreografisi: blast shell ve katile özgü post-mortem sekanslar tek
-# transient state'te tutulur. Save'e yazılmaz.
+
+
 oyuncu_olum_alt_turu = ""
 oyuncu_olum_koreografi_seed = 0
 oyuncu_olum_koreografi_vuruslari = set()
@@ -101,9 +101,9 @@ oyuncu_y = 585.0
 oyuncu_hizi = 4.0
 oyuncu_yonu = "right"
 
-# locomotion: piksel/frame yerine delta-time + ivme kullanılır. Böylece 60 FPS
-# dışına çıkıldığında hız bozulmaz; karakter aniden kaymaya başlamaz veya aniden durmaz.
-# 4 px/frame @60 FPS'in yaklaşık dünya hızı korunur fakat hızlanma/yavaşlama ağırlık verir.
+
+
+
 OYUNCU_YURUYUS_HIZI = oyuncu_hizi * FPS
 OYUNCU_HIZLANMA = 1080.0
 OYUNCU_YAVASLAMA = 1420.0
@@ -160,8 +160,8 @@ def _stage1_oyuncu_sprite_parlamasi_ciz(sprite, rect):
     p = max(0.0, min(1.0, (simdi - bas) / float(toplam)))
     fade = math.sin(math.pi * p) ** 0.72
 
-    # 4 kısa faz: beyaz -> kırmızı -> beyaz -> kırmızı/sönüş.
-    # Renk yalnız maskeye uygulanır; arka plan veya dikdörtgen yüzey parlamaz.
+
+
     faz = int(min(3, p * 4.0))
     if faz in (0, 2):
         renk = (248, 244, 238)
@@ -565,9 +565,9 @@ _v34f_previous_locomotion_reset = oyuncu_locomotion_durumunu_sifirla
 # <POTBO_STAGE S0789>
 
 
-# ---------------------------------------------------------
-# SPECIAL LIFECYCLE DETECTOR
-# ---------------------------------------------------------
+
+
+
 def _v34f_special_started(simdi):
     global v34f_special_started_seen, v34f_special_last_serial_seen
     global v34f_special_last_center, v34f_special_last_exit
@@ -598,9 +598,9 @@ def oyun_ekrani_ciz():
     _v34f_special_master_vfx_ciz()
 
 
-# ---------------------------------------------------------
-# PLAYER / RESOURCE INVARIANTS
-# ---------------------------------------------------------
+
+
+
 def _v34f_player_coordinates_valid():
     x = _v34f_finite(oyuncu_x, float("nan"))
     y = _v34f_finite(oyuncu_y, float("nan"))
@@ -613,9 +613,9 @@ def _v34f_player_coordinates_valid():
 
 # <POTBO_STAGE S0822>
 
-# ---------------------------------------------------------
-# CONTACT INTEGRITY
-# ---------------------------------------------------------
+
+
+
 V35_PLAYER_NORMAL_REACH = 52
 V35_PLAYER_NORMAL_WIDTH = 42
 V35_PLAYER_HEAVY_REACH = 78
@@ -658,20 +658,20 @@ V34_MAX_PLAYER_EXPLOSIONS = 24
 # <POTBO_STAGE S0923>
 
 
-# ---------------------------------------------------------
-# SPECIAL SIMULATION ISOLATION
-# ---------------------------------------------------------
+
+
+
 _v37_player_safety_tick_original = _v34_player_safety_tick
 # </POTBO_STAGE S0923>
 
 # <POTBO_STAGE S0981>
 
 
-# ---------------------------------------------------------
-# MELEE CONTACT INTEGRITY: PLAYER
-# ---------------------------------------------------------
-# Strict profil normal swing'i sprite gövdesine yaklaştırır. Standard yalnız 4-6 px
-# tolerans ekler; eski 62 px geniş broad-phase'e geri dönmez.
+
+
+
+
+
 V38_PLAYER_NORMAL_REACH_STRICT = 43
 V38_PLAYER_NORMAL_WIDTH_STRICT = 34
 V38_PLAYER_NORMAL_REACH_STANDARD = 48
@@ -858,7 +858,7 @@ def oyuncu_olum_sahnesini_sifirla():
 # <POTBO_STAGE S1154>
 
 
-# Sword reach + yaklaşık 1 cm. Sadece player; enemy range değişmez.
+
 _v44_player_reach_original = _v38_player_reach_values
 
 
@@ -921,7 +921,7 @@ def v46_character_selection_energy(cinsiyet, onay_animasyonu):
             saat.get_time() / 1000.0 if saat.get_time() else 1.0 / FPS,
         ),
     )
-    # Critically damped'e yakın hızlı spring; seçime ağırlık verir ama takılmaz.
+
     speed = 1.0 - math.exp(-7.4 * dt)
     current += (target - current) * speed
     if onay_animasyonu:
@@ -1067,7 +1067,7 @@ def v56_lane_target(actor, base_target, now=None, predicted_player=None):
     tangent = radial.rotate(90.0)
 
     if int(now) >= int(state.get("lane_hold_until", 0)):
-        # Sürekli oyuncunun çevresinde dönme yerine bir lane'i kısa süre tut.
+
         side_to_player = tangent.dot(v56_player_velocity)
         if abs(side_to_player) > 12.0:
             state["lane_sign"] = -1.0 if side_to_player > 0.0 else 1.0
@@ -1128,7 +1128,7 @@ def v59_cross_quality(enemy):
     facing = facing.normalize()
     delta = delta.normalize()
     cross = abs(facing.x * delta.y - facing.y * delta.x)
-    # 0.25-0.55 arası kontrollü diagonal temas; tam yandan hitbox abuse değildir.
+
     return max(0.0, 1.0 - abs(cross - 0.38) / 0.38)
 # </POTBO_STAGE S1370>
 
@@ -1156,7 +1156,7 @@ def v65_pulse_pressure(emitter, now):
     age = max(0, int(now) - int(emitter.started_ms))
     t = age / max(1.0, float(V44_PLAYER_DEATH_ARTERIAL_DURATION_MS))
     curve = v65_curve_sample(t)
-    # Pulse index'i de pressure'a etki eder; geç nabızlar curve üstüne çıkamaz.
+
     index_factor = max(0.18, 1.0 - int(emitter.pulse_index) * 0.105)
     return max(V65_MIN_PRESSURE, min(1.0, curve * index_factor))
 
@@ -1187,7 +1187,7 @@ def _v65_arterial_update(self, now):
     ):
         self.active = False
         return
-    # Bir frame gecikmesi yaşansa bile sonsuz while burst oluşmasın: max 2 pulse/frame.
+
     emitted_this_frame = 0
     while (
         self.active and int(now) >= int(self.next_pulse_ms) and emitted_this_frame < 2
@@ -1305,7 +1305,7 @@ def _v76_death_victim_draw():
     elif oyuncu_olum_turu == "blast_inner":
         _v30_patlama_birinci_katman_siluet_ciz()
     else:
-        # Fire ölümünde alevler bilinçli olarak çizilmez; kullanıcı yalnız kurbanı ister.
+
         _oyuncu_yatay_siluet_ciz()
 # </POTBO_STAGE S1526>
 
@@ -1387,10 +1387,10 @@ def _v78_death_snapshot_age():
 # <POTBO_STAGE S1581>
 
 
-# ---------------------------------------------------------
-# 2) Mekanikler: daha hızlı, input/steering daha akıcı
-# ---------------------------------------------------------
-# Oyuncu hızını aşırı yükseltmeden cevap süresini ciddi biçimde kısalt.
+
+
+
+
 OYUNCU_YURUYUS_HIZI = 258.0
 OYUNCU_HIZLANMA = 1480.0
 OYUNCU_YAVASLAMA = 1810.0
@@ -1921,7 +1921,7 @@ _v92_level_gain_raw = oyuncu_seviye_kazanclarini_uygula
 # <POTBO_STAGE S2270>
 
 
-# Movement is scaled at use-time so save files do not need a new base-speed stat.
+
 _v92_free_move_raw = oyuncu_serbest_hareket_guncelle
 # </POTBO_STAGE S2270>
 
@@ -1969,10 +1969,10 @@ def oyuncu_kontrol_kilitli_mi(simdi=None):
 # <POTBO_STAGE S2367>
 
 
-# ---------------------------------------------------------
-# Death UI: tableau stays red/black; actual menu buttons are redrawn with their true
-# selection colors after the silhouette layer.
-# ---------------------------------------------------------
+
+
+
+
 _v94_death_scene_previous = oyuncu_olum_sahnesi_ciz
 # </POTBO_STAGE S2367>
 
@@ -1985,19 +1985,19 @@ _v99_free_move_raw = oyuncu_serbest_hareket_guncelle
 # <POTBO_STAGE S2480>
 
 
-# =========================================================
-# END V100
-# =========================================================
 
 
-# =========================================================
-# END V99
-# =========================================================
 
 
-# =========================================================
-# V102 - FINAL REINALD ICON RENDERER / INVENTORY BELT ALIGNMENT
-# =========================================================
+
+
+
+
+
+
+
+
+
 V102_VERSION = "102.0"
 # </POTBO_STAGE S2480>
 

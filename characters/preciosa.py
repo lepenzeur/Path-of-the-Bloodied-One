@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0020>
 
@@ -12,7 +12,7 @@ KADIN_LOADING_YOLU = os.path.join(ASSETS, "backgrounds", "loading_female.png")
 
 # <POTBO_STAGE S0025>
 
-KADIN_SHEET_YOLU = os.path.join(ASSETS, "characters", "female_sheet.png")
+KADIN_SHEET_YOLU = os.path.join(ASSETS, "characters", "preciosa_spriteSheet.png")
 # </POTBO_STAGE S0025>
 
 # <POTBO_STAGE S0057>
@@ -156,16 +156,16 @@ preciosa_kart_portre = (
 
 # <POTBO_STAGE S0293>
 
-# Kadın sheet: 4 sütun × 3 satır
+
 kadin_kareleri = sheet_parcala(kadin_sheet, 4, 3)
 # </POTBO_STAGE S0293>
 
 # <POTBO_STAGE S0334>
 
 
-# =========================================================
-# LOADING
-# =========================================================
+
+
+
 
 
 def loading_baslat():
@@ -175,7 +175,7 @@ def loading_baslat():
     global loading_tamamlandi
 
     simdi = pygame.time.get_ticks()
-    # Loading ekranı kendi başına fade/siyah bekleme kullanmaz.
+
     loading_baslangic = simdi
 
     if karakter_cinsiyet == "female":
@@ -463,12 +463,12 @@ v89_replace_ecology_hints(KADIN_IPUCLARI)
 
 # <POTBO_STAGE S2435>
 
-# ---------------------------------------------------------
-# LOADING HINTS
-# Final hint pool: concise, actionable and tied to systems that actually exist.
-# Female pool contains the same core rules plus Preciosa-specific advice because
-# the loading screen selects KADIN_IPUCLARI exclusively for her.
-# ---------------------------------------------------------
+
+
+
+
+
+
 V99_COMMON_HINTS_TR = [
     "E yalnızca dünya etkileşimi içindir: NPC'lerle konuşur, nesneleri toplar ve diyalogları ilerletir. Menü onayı için ENTER veya SPACE kullan.",
     "1-5 tuşları öne çıkan envanter slotunu seçer; F seçili slottaki eşyayı kullanır. Q ise bağımsız hızlı eşya veya büyü slotudur.",
@@ -507,6 +507,7 @@ V99_COMMON_HINTS_TR = [
 
 V99_PRECIOSA_HINTS_TR = [
     "Preciosa'nın gücü yalnız hız değildir; kısa saldırı, açı değişimi ve yeniden giriş ritmidir. Aynı çizgide uzun süre kalma.",
+    "J'ye kısa basmak normal saldırıyı, basılı tutup bırakmak hazırlıklı ileri kesişi başlatır. Preciosa bunu Adefonsus kadar ağır vurmak için değil, açı ve mesafe kazanmak için kullanır.",
     "Preciosa'nın mana ekonomisi daha rahattır; bunu büyü spam'i için değil, kısa bir konum değişiminden sonra yeniden büyü tehdidi kurmak için kullan.",
     "Preciosa ile rakibin önünde kalmak yerine hafif çapraz açı ara. Yan çizgi hem kaçışı kolaylaştırır hem de temiz temas ihtimalini artırır.",
     "Savunmayı darbeden hemen önce açmak, uygun açıda parry fırsatı yaratabilir. Tehdide dönük değilsen iyi zamanlama tek başına yetmez.",
@@ -518,6 +519,7 @@ V99_PRECIOSA_HINTS_TR = [
 
 V99_PRECIOSA_HINTS_EN = [
     "Preciosa's strength is not speed alone; it is the rhythm of short attacks, angle changes and re-entry. Do not remain on one line for long.",
+    "Tap J for a normal attack; hold and release it for a committed forward cut. Preciosa uses it to gain angle and distance rather than to match Adefonsus's heavy force.",
     "Preciosa has a more forgiving mana economy. Use it to rebuild spell pressure after a short reposition, not to spam every spell immediately.",
     "With Preciosa, look for a shallow diagonal angle instead of remaining directly in front of the target. Side lines improve both escape and clean contact.",
     "Guarding just before impact can create a parry opportunity at the correct angle. Good timing is not enough if you are facing away from the threat.",

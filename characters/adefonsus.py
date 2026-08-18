@@ -1,15 +1,15 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0022>
 
-# Adefonsus'un yeni birleşik sprite sheet'i. Bu asset varsa eski dört-yön
-# PNG sisteminin yerine locomotion / normal attack / hold attack dizileri kullanılır.
-# Dosya yoksa mevcut karakter sistemi otomatik fallback olarak çalışmaya devam eder.
+
+
+
 ADEFONSUS_SHEET_ADAYLARI = [
     os.path.join(ASSETS, "characters", "adefonsus_spriteSheet.png"),
     os.path.join(ASSETS, "characters", "adefonsus_spritesheet.png"),
@@ -19,11 +19,11 @@ ADEFONSUS_SHEET_ADAYLARI = [
 
 # <POTBO_STAGE S0031>
 
-# =========================================================
-# LOCOMOTION / AMBIENCE / MELEE IMPACT SESLERİ
-# =========================================================
-# Adefonsus'un sample'ı tam 1 saniyedir ve kendi içinde iki ayak vuruşu taşır.
-# Sample yeniden tetiklenmez; yürürken dedicated channel üzerinde loop edilir.
+
+
+
+
+
 ADEFONSUS_FOOTSTEP_SES_ADAYLARI = [
     os.path.join(ASSETS, "sounds", "adefonsusFootsteps.wav"),
     os.path.join(ASSETS, "sounds", "characters", "adefonsusFootsteps.wav"),
@@ -33,7 +33,7 @@ ADEFONSUS_FOOTSTEP_SES_ADAYLARI = [
 
 # <POTBO_STAGE S0044>
 
-# Bu yollar mevcut_ilk_dosya() tanımlandıktan sonra çözülür.
+
 ADEFONSUS_FOOTSTEP_SES_YOLU = mevcut_ilk_dosya(ADEFONSUS_FOOTSTEP_SES_ADAYLARI)
 # </POTBO_STAGE S0044>
 
@@ -58,9 +58,9 @@ ADEFONSUS_KART_YOLU = mevcut_ilk_dosya(ADEFONSUS_KART_ADAYLARI)
 # </POTBO_STAGE S0065>
 
 # <POTBO_STAGE S0080>
-# =========================================================
-# KARAKTER ÖZGEÇMİŞLERİ
-# =========================================================
+
+
+
 KARAKTER_OZGECMISLERI = {
     "TR": {
         "male": {
@@ -126,23 +126,23 @@ KARAKTER_OZGECMISLERI = {
 
 # <POTBO_STAGE S0135>
 
-# CTRL+U yalnız bu geçici özel hareket prototipini açıp kapatır; kendi başına
-# hiçbir aksiyon üretmez ve normal dash'i değiştirmez. Prototip yalnız Adefonsus
-# hold-to-attack charge durumundayken R'ye basılıp R bırakıldığında tetiklenir.
-# Tetiklenince input yaklaşık 2.3 saniye kilitlenir: önce hedefe doğru düz bir giriş
-# dash'i, ardından ekran geometrisinde alttan üste '/' kesişi ve üstten alta '\\'
-# kesişi oynar. Karakter bu iki diyagonali gerçekten kat eder; çizgiler yalnız FX değildir.
+
+
+
+
+
+
 gelistirici_x_skill_aktif = False
 # </POTBO_STAGE S0135>
 
 # <POTBO_STAGE S0171>
-# — Adefonsus yönsel saldırı / charge-release state machine.
-# Yeni sheet üç bağımsız yön grubudur; satırın tamamı hiçbir zaman tek animasyon
-# olarak oynatılmaz. J kısa basılırsa normal vuruş, tutulursa charge, bırakılırsa
-# yön kilitli ağır dash-slash oluşur. Charge sırasında karakter yerinde kalır ve
-# yön tuşları yalnız nişan yönünü değiştirebilir; böylece ağır vuruş telegraph'ı
-# okunabilir fakat oyuncunun kontrol hissi korunur.
-oyuncu_saldiri_modu = "normal"  # normal | press | charge | hold_release
+
+
+
+
+
+
+oyuncu_saldiri_modu = "normal"
 # </POTBO_STAGE S0171>
 
 # <POTBO_STAGE S0173>
@@ -238,13 +238,13 @@ adefonsus_footstep_sesi = (
 # <POTBO_STAGE S0234>
 
 if pygame.mixer.get_init():
-    # Sound.play() otomatik kanal seçerken ambience/footstep kanallarını çalmasın.
-    # Pygame'de Channel(n) almak tek başına kanalı rezerve etmez; yoğun combat SFX
-    # ambience kanalını ele geçirip sesi görünürde "yok" edebiliyordu.
+
+
+
     try:
         pygame.mixer.set_num_channels(max(16, pygame.mixer.get_num_channels()))
-        # 0-4 arası otomatik Sound.play() tarafından alınmaz.
-        # 1 NPC, 2 ambience, 3 footstep, 4 game-over music.
+
+
         pygame.mixer.set_reserved(5)
     except pygame.error:
         pass
@@ -284,7 +284,7 @@ def adefonsus_footstep_guncelle():
         and not oyuncu_dash_aktif_mi(simdi)
     )
     if aktif:
-        # Yavaş attack-strafe sırasında ses geriye çekilir; sample hızı değiştirilmez.
+
         hiz_orani = max(0.30, min(1.0, hiz / max(1.0, OYUNCU_YURUYUS_HIZI)))
         adefonsus_footstep_kanali.set_volume(
             _v35_footstep_ses_orani() * (0.58 + 0.42 * hiz_orani)
@@ -312,25 +312,25 @@ adefonsus_kart_portre = (
 # <POTBO_STAGE S0291>
 
 
-# =========================================================
-# ADEFONSUS — YÖNSEL SPRITE SHEET / CHARGE -> DASH SLASH
-# =========================================================
-# Kullanıcının tarif ettiği gerçek semantik düzen:
-# ÜST SATIR — locomotion, üçerli yön grupları
-# 0..2 : aşağı = idle, sol ayak, sağ ayak
-# 3..5 : sol = idle, sol ayak, sağ ayak (sağ için runtime flip)
-# 6..8 : yukarı = idle, sol ayak, sağ ayak
-# ORTA SATIR — normal saldırı, ikişerli yön grupları
-# 0..1 : aşağı
-# 2..3 : sol (sağ için runtime flip)
-# 4..5 : yukarı
-# Kredi kutusu sprite değildir ve bilerek hiç çıkarılmaz.
-# ALT SATIR — hold-to-attack, üçerli yön grupları
-# [0,1] charge telegraph, [2] release slash
-# ilk üç aşağı, orta üç sol/sağ, son üç yukarı.
-# Bütün gruplar kendi canvas'ında normalize edilir. Farklı yönlerin birlikte
-# normalize edilmemesi, geniş slash frame'inin idle sprite'ı yanlış merkezlemesini
-# ve yürüme sırasında karakterin yatay "zıplamasını" engeller.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ADEFONSUS_LOCOMOTION_RECTLERI = [
     (11, 16, 58, 56),
     (76, 16, 56, 56),
@@ -421,7 +421,7 @@ _adefo_hold_raw = _adefonsus_sheet_karelerini_cikar(
     adefonsus_sheet, ADEFONSUS_HOLD_ATTACK_RECTLERI
 )
 
-# Kaynak side grubu SOLA bakar. Sağ yön yalnız render-time horizontal flip'tir.
+
 _adefo_loco_down = _adefo_grubu(_adefo_loco_raw, 0, 3, 4)
 _adefo_loco_left = _adefo_grubu(_adefo_loco_raw, 3, 3, 4)
 _adefo_loco_up = _adefo_grubu(_adefo_loco_raw, 6, 3, 4)
@@ -503,7 +503,7 @@ def adefonsus_yon_animasyon_kareleri(animasyon_adi, yon=None):
 
 
 def adefonsus_render_flip_gerekli_mi(yon=None):
-    # Sheet'in side frame'leri sola bakıyor; yalnız sağ yön için flip gerekir.
+
     return (
         ADEFONSUS_YENI_SHEET_AKTIF and (oyuncu_yonu if yon is None else yon) == "right"
     )
@@ -546,7 +546,7 @@ def aktif_animasyon_kareleri(animasyon_adi):
         if kareler:
             return kareler
 
-        # Dosyalardan biri eksikse eski sheet'e düş.
+
         return erkek_animasyonlari.get(fallback_adi, [])
 
     return kadin_animasyonlari.get(animasyon_adi, [])
@@ -569,7 +569,7 @@ def karakter_karti_ciz(rect, cinsiyet, secili, onay_animasyonu=False):
         ekran.set_clip(rect)
         ekran.blit(doldurulmus, portre_rect)
 
-        # Alt bölümdeki metnin okunabilmesi için katmanlı gölge.
+
         for yukseklik, alfa in (
             (170, 145),
             (125, 185),
@@ -659,18 +659,18 @@ def loading_ekrani_ciz():
     if oran >= 1.0:
         loading_tamamlandi = True
 
-    # Progress bar ve ipucu panelleri aynı dış sınırlara hizalanır.
-    # Referanstaki ince, yatay ve uçları sivrilen loading çizgisi.
-    # Asset yerine kodla çizilir; mevcut kırmızı dolum ve orta sembol korunur.
+
+
+
     dekor_y = 530
     kanal_w = 1120
     kanal_h = 10
     kanal_x = (GENISLIK - kanal_w) // 2
     kanal_y = dekor_y + 92
 
-    # Seçilen karakter tek başına gösterilir. Karakter görseli kesilmez;
-    # yalnızca alt bölümdeki vinyetle siyaha erir. Bu sürümde karakterler
-    # hafifçe büyütüldü ve konumları istenen yöne göre ince ayarlandı.
+
+
+
     karakter_gorseli = (
         adefonsus_portre if karakter_cinsiyet == "male" else preciosa_portre
     )
@@ -704,8 +704,8 @@ def loading_ekrani_ciz():
 
     loading_alt_vinyet_ciz()
 
-    # Sol panelin sol kenarı ve sağ panelin sağ kenarı progress barın
-    # iki dış ucuyla tam hizalıdır.
+
+
     hint_panel_w = 470
     hint_panel = (
         pygame.Rect(kanal_x, 100, hint_panel_w, 405)
@@ -755,14 +755,14 @@ def loading_ekrani_ciz():
     merkez_x = GENISLIK // 2
     merkez_y = kanal_y + kanal_h // 2
 
-    # İki ray da merkez sembolünün tam arkasına kadar uzanır. Sembol en son
-    # çizildiği için raylar ve kırmızı dolum görsel olarak ona bağlı görünür.
+
+
     sol_ic = merkez_x
     sag_ic = merkez_x
     sol_dis = kanal_x
     sag_dis = kanal_x + kanal_w
 
-    # Dış ray: ikinci referanstaki gibi ince, gri ve sivri uçlu.
+
     ray_arka = (8, 7, 10)
     ray_kenar = (92, 88, 96)
     ray_vurgu = (154, 150, 158)
@@ -801,7 +801,7 @@ def loading_ekrani_ciz():
         1,
     )
 
-    # Dolum merkezden iki yana eşzamanlı büyür; mevcut kan kırmızısı korunur.
+
     kullanilabilir_yari = max(1, sol_ic - sol_dis)
     dolum_yari = int(kullanilabilir_yari * oran)
     dolum_rengi = (142, 12, 31)
@@ -845,7 +845,7 @@ def loading_ekrani_ciz():
             1,
         )
 
-    # Mevcut orta sembol aynen korunur.
+
     pygame.draw.polygon(
         ekran,
         (22, 15, 25),
@@ -869,7 +869,7 @@ def loading_ekrani_ciz():
     )
     pygame.draw.circle(ekran, (255, 90, 145), (merkez_x, merkez_y), 4)
 
-    # İstenen tasarım gereği yüzde metni gösterilmez.
+
     if loading_tamamlandi:
         if pygame.time.get_ticks() // 500 % 2 == 0:
             yazi_yaz(
@@ -891,8 +891,8 @@ def oyuncu_sprite_ciz():
 
     oyuncu_ekran_x = dunya_ekran_x(oyuncu_x)
     oyuncu_ekran_y = dunya_ekran_y(oyuncu_y)
-    # midbottom sprite anchor ile aynı x ekseni ve ayağın hemen altı. Eski -1 y
-    # offset'i karakteri gölgeden kopuk gösteriyordu.
+
+
     karakter_zemin_golgesi_ciz(
         oyuncu_ekran_x,
         oyuncu_ekran_y - 3,
@@ -903,11 +903,11 @@ def oyuncu_sprite_ciz():
 
     yeni_adefo = karakter_cinsiyet == "male" and ADEFONSUS_YENI_SHEET_AKTIF
     if oyuncu_savunuyor:
-        # Savunma sprite'ı yok: Adefonsus'un hold-to-attack idle/charge pozu kullanılır.
+
         animasyon_adi = "hold_charge" if yeni_adefo else "idle"
     elif gelistirici_x_skill_aktif_mi():
-        # Special move sırasında karakter gerçekten hareket eder; walk animasyonu yerine
-        # hold-release commitment pozu korunur ki iki dash kesişi tek bir teknik gibi okunsun.
+
+
         animasyon_adi = "hold_release" if yeni_adefo else "attack"
     elif oyuncu_saldiriyor:
         if yeni_adefo and oyuncu_saldiri_modu in (
@@ -937,13 +937,13 @@ def oyuncu_sprite_ciz():
     simdi = pygame.time.get_ticks()
 
     if yeni_adefo and animasyon_adi == "hold_charge":
-        # Savunmada kullanıcının istediği "hold-to-attack idle" pozu sabittir;
-        # saldırı charge'ındaki pulse animasyonu savunmaya sızmaz.
+
+
         if oyuncu_savunuyor:
             animasyon_index = 0
-        # Basışın ilk kısa bölümünde birinci charge frame okunur. Eşik geçilince
-        # ilk iki sprite arasında kontrollü pulse vardır; üçüncü sprite release'e
-        # kadar hiçbir koşulda gösterilmez.
+
+
+
         elif oyuncu_saldiri_modu == "press" or len(kareler) == 1:
             animasyon_index = 0
         else:
@@ -953,7 +953,7 @@ def oyuncu_sprite_ciz():
             )
 
     elif yeni_adefo and animasyon_adi == "hold_release":
-        # Alt gruptaki üçüncü sprite release/dash boyunca sabit commitment pozu.
+
         animasyon_index = 0
 
     elif animasyon_adi == "attack":
@@ -966,8 +966,8 @@ def oyuncu_sprite_ciz():
 
     else:
         if animasyon_adi == "walk":
-            # Animasyon ritmi gerçek hızla bağlanır; hızlanırken ayaklar hızlanır,
-            # yavaşlarken frame akışı da ağırlaşır. Bu, zeminde kayma hissini azaltır.
+
+
             hiz_orani = min(
                 1.0,
                 oyuncu_hareket_hiz_vektoru.length() / max(1.0, OYUNCU_YURUYUS_HIZI),
@@ -1001,14 +1001,14 @@ def oyuncu_sprite_ciz():
         taban_yukseklik = 68 if animasyon_adi == "attack" else 58
 
     hedef_yukseklik = int(round(taban_yukseklik * KAMERA_YAKINLASTIRMA))
-    # Tek idle karesi bile tamamen donuk görünmesin: yalnız 1 px'lik, ayak anchor'ını
-    # bozmayan yavaş gövde nefesi. Geometrik aura yoktur.
+
+
     if animasyon_adi == "idle" and not oyuncu_saldiriyor:
         nefes = 0.5 + 0.5 * math.sin(simdi * 0.0026)
         if nefes > 0.58:
             hedef_yukseklik += 1
 
-    # Source side grubu SOLA bakar. Yalnız oyuncu sağa baktığında flip edilir.
+
     adefo_flip = bool(yeni_adefo and adefonsus_render_flip_gerekli_mi(oyuncu_yonu))
     onbellek_anahtari = (
         id(kare),
@@ -1028,8 +1028,8 @@ def oyuncu_sprite_ciz():
     rect = olcekli_kare.get_rect(midbottom=(oyuncu_ekran_x, oyuncu_ekran_y))
     ekran.blit(olcekli_kare, rect)
 
-    # Charge'ın "yanıp sönme" geri bildirimi sprite dışına taşan aura değil, doğrudan
-    # alfa maskesi üzerinde kısa beyaz pulse'tır. Böylece pixel-art dili korunur.
+
+
     if yeni_adefo and oyuncu_saldiriyor and oyuncu_saldiri_modu == "charge":
         charge_gecen = max(0, simdi - adefo_hold_charge_baslangic_ms)
         faz = (charge_gecen // ADEFO_HOLD_FLASH_MS) % 2
@@ -1223,8 +1223,8 @@ def _stage1__v30_olum_koreografi_guncelle(simdi):
         kamera_hit_sarsintisi_baslat(3.5 + power * 2.7, int(82 + power * 48))
         return True
 
-    # 340 ms düşüş tamamlanır. İlk post-mortem temas 470 ms'de başlar; yani
-    # katil ceset havadayken havayı dövmez.
+
+
     if alt == "crawler":
         zamanlar = (470, 635, 800, 965, 1130, 1295)
         for i, zaman in enumerate(zamanlar):
@@ -1260,8 +1260,8 @@ def _stage1__v30_olum_koreografi_guncelle(simdi):
             1,
         )
     elif alt == "tarkard_crush":
-        # Tek whirl/crush hareketi yeter; fakat boss ağırlığı nedeniyle gore normal
-        # düşmanlardan açık biçimde yüksektir.
+
+
         vur(
             "tarkard_whirl",
             520,
@@ -1321,7 +1321,7 @@ def oyuncu_aktif_saldiri_suresi_ms():
         return ADEFO_NORMAL_SURE_MS if karakter_cinsiyet == "male" else saldiri_suresi
     if karakter_cinsiyet == "male" and ADEFONSUS_YENI_SHEET_AKTIF:
         if oyuncu_saldiri_modu in ("press", "charge"):
-            # Bu fazlar KEYUP ile biter; genel duration timeout bunları kesmemeli.
+
             return 10**9
         if oyuncu_saldiri_modu == "hold_release":
             return ADEFO_HOLD_RELEASE_SURE_MS
@@ -1401,7 +1401,7 @@ def _adefo_hold_charge_baslat(simdi):
     global adefo_hold_charge_baslangic_ms, adefo_hold_charge_yonu, animasyon_index
 
     if oyuncu_stamina < ADEFO_HOLD_EK_STAMINA:
-        # Hold'a yetecek stamina yoksa basış bozulmaz; bırakınca normal vuruş gelir.
+
         ADEFO_HOLD_GECIS_YAPILDI = True
         hud_uyari_baslat("stamina")
         return False
@@ -1450,8 +1450,8 @@ def adefonsus_saldiri_tusu_birakildi(simdi=None):
     ):
         return False
     if oyuncu_saldiri_modu == "press":
-        # KEYUP iki render tick'i arasına düşebilir. Süre eşiği geçmişse state
-        # updater'ı henüz charge'a çevirmemiş olsa bile hold niyetini kaybetmeyiz.
+
+
         gecen = int(simdi) - int(adefo_saldiri_tusu_baslangic_ms)
         if gecen >= ADEFO_HOLD_ESIK_MS and _adefo_hold_charge_baslat(simdi):
             _adefo_hold_release_baslat(simdi)
@@ -1529,8 +1529,8 @@ def oyuncu_saldiri_gecislerini_guncelle(simdi=None):
         if not oyuncu_saldiri_tusu_basili_mi():
             _adefo_hold_release_baslat(simdi)
             return
-        # Charge hasarı süreyle ölçeklenmez; 2.5x sabittir. Süre yalnız görsel pulse
-        # için clamp edilir, böylece oyuncu sonsuza kadar tutarak one-shot üretemez.
+
+
         if adefo_hold_charge_baslangic_ms:
             _ = min(
                 ADEFO_HOLD_MAX_CHARGE_MS,
@@ -1566,7 +1566,7 @@ def adefonsus_hold_dash_guncelle(simdi=None):
             (int(simdi) - adefo_hold_dash_baslangic_ms) / sure,
         ),
     )
-    # sin ease-out: ilk anda güçlü kopuş, son bölümde akıcı frenleme.
+
     ease = math.sin(p * math.pi * 0.5)
     delta_ease = max(0.0, ease - float(adefo_hold_dash_son_ease))
     adefo_hold_dash_son_ease = ease
@@ -1589,8 +1589,8 @@ def adefonsus_hold_dash_guncelle(simdi=None):
             min(HARITA_YUKSEKLIK - 25.0, oyuncu_y + yon.y * adim),
         )
         if not hareket_gecerli_mi(yeni_x, yeni_y):
-            # Duvar/enemy temasında kalan dash iptal edilir; sonraki framelerde
-            # aynı collision'a tekrar tekrar basıp jitter üretmesin.
+
+
             adefo_hold_dash_son_ease = 1.0
             break
         oyuncu_x, oyuncu_y = yeni_x, yeni_y
@@ -1706,7 +1706,7 @@ def oyuncu_savunma_darbe_karsila(kaynak_turu, kaynak_x, kaynak_y, attacker=None)
         incoming = _adefo_yon_vektoru(oyuncu_yonu)
 
     if sinif == "heavy":
-        # Ağır silah: tek sert kesişim ve saldırıyı gerçekten durdurma.
+
         combat_impact_spawn(
             oyuncu_x,
             oyuncu_y - 12,
@@ -1717,7 +1717,7 @@ def oyuncu_savunma_darbe_karsila(kaynak_turu, kaynak_x, kaynak_y, attacker=None)
         kamera_hit_sarsintisi_baslat(6.5, 150)
         durdurma = 540
     else:
-        # Hafif/orta savunmada tek kesik yerine üç ayrı çarpışma izi.
+
         for aci in (-22.0, 0.0, 22.0):
             combat_impact_spawn(
                 oyuncu_x,
@@ -1781,8 +1781,8 @@ def oyuncu_agir_darbe_uygula(kaynak_x, kaynak_y, kaynak_adi="Tarkard"):
     oyuncu_agir_darbe_bagisiklik_bitis = simdi + 420
     stamina_son_harcama = oyuncu_baygin_bitis
 
-    # Aktif saldırı/charge/release commitment tek merkezden kesilir; gelecekte
-    # yeni transient alan eklendiğinde heavy-hit reset kodunun geride kalmaması sağlanır.
+
+
     oyuncu_saldiri_durumunu_sifirla()
     son_dash_zamani = simdi
     dash_tus_kilitli = True
@@ -1851,7 +1851,7 @@ def oyuncu_infaz_darbesi_uygula(
     son_dash_zamani = simdi
     dash_tus_kilitli = True
 
-    # Yatay facing'e göre çapraz kesik yönü; hareket/knockback yoktur.
+
     oyuncu_kesik_efekti_acisi = -18.0 if saldiri_yonu in ("right", "down") else 18.0
     oyuncu_kesik_efekti_bitis = simdi + 520
     oyuncu_son_infaz_kaynagi = str(kaynak_adi)
@@ -1898,7 +1898,7 @@ def gelistirici_x_skill_r_baslat(simdi=None):
     ):
         return False
 
-    # KEYDOWN tam eşik framine denk geldiyse charge updater'ını beklemeden hold'u kur.
+
     if oyuncu_saldiri_modu == "press":
         gecen = int(simdi) - int(adefo_saldiri_tusu_baslangic_ms)
         if gecen < ADEFO_HOLD_ESIK_MS or not _adefo_hold_charge_baslat(simdi):
@@ -1929,18 +1929,18 @@ def _gelistirici_x_skill_yol_kur(hedef, baslangic):
         yaklasim = pygame.Vector2(1.0, 0.0)
     yaklasim = yaklasim.normalize()
 
-    # HIT-1: düz giriş hedefte durmaz; karakter hedef merkezinin içinden gerçekten
-    # geçip yaklaşık 72 px ötesine çıkar. İlk temas böylece gerçek beden hareketidir.
+
+
     entry = merkez + yaklasim * 72.0
     entry.x = max(35.0, min(HARITA_GENISLIK - 35.0, entry.x))
     entry.y = max(35.0, min(HARITA_YUKSEKLIK - 25.0, entry.y))
 
     r = GELISTIRICI_X_SKILL_YARI_CAP
     h = r * 0.78
-    slash1_start = _gelistirici_x_skill_nokta(hedef, -r, +h)  # alt-sol
-    slash1_end = _gelistirici_x_skill_nokta(hedef, +r, -h)  # üst-sağ
-    slash2_start = _gelistirici_x_skill_nokta(hedef, -r, -h)  # üst-sol
-    slash2_end = _gelistirici_x_skill_nokta(hedef, +r, +h)  # alt-sağ
+    slash1_start = _gelistirici_x_skill_nokta(hedef, -r, +h)
+    slash1_end = _gelistirici_x_skill_nokta(hedef, +r, -h)
+    slash2_start = _gelistirici_x_skill_nokta(hedef, -r, -h)
+    slash2_end = _gelistirici_x_skill_nokta(hedef, +r, +h)
     return [
         bas,
         entry,
@@ -1991,12 +1991,12 @@ def gelistirici_x_skill_r_birak(simdi=None):
     gelistirici_x_skill_vurus_maskesi = 0
     gelistirici_x_skill_iz_bitis = int(simdi) + GELISTIRICI_X_SKILL_SURE_MS + 230
 
-    # Charge saldırısını burada tüket: J daha sonra bırakılsa bile normal hold-release
-    # üretilmez. Special move kendi hareket state'iyle karakteri sürer.
+
+
     oyuncu_saldiri_durumunu_sifirla()
 
-    # Special move başlarken diğer bütün hareket kanalları kesilir. Önceki yürüyüş
-    # ivmesi, dash veya knockback momentumu authored üç-vuruş rotasını bozamaz.
+
+
     oyuncu_hareket_hiz_vektoru.update(0.0, 0.0)
     oyuncu_zorlanmis_hiz.update(0.0, 0.0)
     oyuncu_zorlanmis_bitis = 0
@@ -2006,8 +2006,8 @@ def gelistirici_x_skill_r_birak(simdi=None):
     dash_tus_kilitli = True
     oyuncu_savunuyor = False
 
-    # Hedef teknik boyunca kısa bir commitment stun'ında kalır; böylece karakterin
-    # gerçek dash rotası ile hit anları birbirinden kopmaz. Süre bitince AI devam eder.
+
+
     try:
         hedef.hit_stun_until = max(
             int(getattr(hedef, "hit_stun_until", 0)),
@@ -2036,11 +2036,11 @@ def gelistirici_x_skill_r_birak(simdi=None):
 # <POTBO_STAGE S0554>
 
 
-# =========================================================
-# DEATH CONTACT + RAGGED DISMEMBERMENT + TRUE BURN DEATH
-# =========================================================
-# geometrisini / parçalanma sunumunu değiştirir. Yeni sprite gerekmez; Adefonsus'un
-# mevcut idle silüeti runtime alpha maskeleriyle tırtıklı parçalara ayrılır.
+
+
+
+
+
 
 V32_OLUM_KATIL_READY_MS = 0
 # </POTBO_STAGE S0554>
@@ -2103,8 +2103,8 @@ def _stage2__v30_olum_koreografi_guncelle(simdi):
         return True
 
     if alt == "crawler":
-        # Ceset yerleşmiş ve crawler gerçek temas menzilindedir. Altı darbe birbirine
-        # yakın gelir; her biri yeni bir küçük tırtıklı kopma ve organ jeti üretir.
+
+
         zamanlar = (70, 205, 340, 475, 610, 745)
         for i, zaman in enumerate(zamanlar):
             vur(
@@ -2139,7 +2139,7 @@ def _stage2__v30_olum_koreografi_guncelle(simdi):
             1,
         )
     elif alt == "tarkard_crush":
-        # Tek hareket. Temas + ceset yerleşmesi garanti edilmeden whirl başlamaz.
+
         vur(
             "tarkard_whirl",
             110,
@@ -2165,7 +2165,7 @@ def _stage2__v30_olum_koreografi_guncelle(simdi):
 # <POTBO_STAGE S0590>
 
 
-# Post-mortem: yalnız Crawler/Berserker altı gerçek temas. Tarkard burada yoktur.
+
 def _v30_olum_koreografi_guncelle(simdi):
     global oyuncu_olum_ikiye_bolundu
     if oyuncu_olum_baslangic_ms <= 0 or oyuncu_olum_turu not in (
@@ -2177,8 +2177,8 @@ def _v30_olum_koreografi_guncelle(simdi):
     if not alt or alt == "tarkard_crush":
         return
 
-    # Crawler/Berserker ancak cesede yürüyüp el/silah teması kurduktan sonra başlar.
-    # Torrmund'un decap->cleave istisnası aynı ready kontratını kullanır.
+
+
     ready = _v32_katil_temasa_yaklastir(simdi)
     if ready <= 0:
         return
@@ -2246,7 +2246,7 @@ def _v30_olum_koreografi_guncelle(simdi):
                 1,
             )
     elif alt == "headshot":
-        # Head Thrower ekstra post-hit yapmaz; yalnız kırılmış baştan residual akış.
+
         vur(
             "head_residual",
             120,
@@ -2257,8 +2257,8 @@ def _v30_olum_koreografi_guncelle(simdi):
             1,
         )
     elif alt == "torrmund_decap_cleave":
-        # İstisna: ilk darbe sadece kafayı uçurduysa bazen ikinci, farklı heavy cleave.
-        # Bisect senaryosunda bu branch hiç yoktur.
+
+
         if vur(
             "torrmund_second",
             1060,
@@ -2274,9 +2274,9 @@ def _v30_olum_koreografi_guncelle(simdi):
 # <POTBO_STAGE S0656>
 
 
-# ---------------------------------------------------------
-# SPECIAL MOVE PATH PLANNING
-# ---------------------------------------------------------
+
+
+
 def _v34_special_candidate_path(hedef, baslangic, radius):
     center = pygame.Vector2(float(hedef.x), float(hedef.y))
     start = pygame.Vector2(baslangic)
@@ -2349,8 +2349,8 @@ def gelistirici_x_skill_r_birak(simdi=None):
         )
         return False
 
-    # Path fallback static olarak tamamen temiz değilse special'ı duvar içine sokmak
-    # yerine kontrollü biçimde reddet. Oyuncunun input'u normal charge'da kalır.
+
+
     if not v34_special_path_valid:
         bildirim_goster(
             bt(
@@ -2401,7 +2401,7 @@ def gelistirici_x_skill_r_birak(simdi=None):
     except Exception:
         pass
 
-    # Başlangıç feedback'i vuruş gibi ağır değildir; yalnız teknik commit edildiğini söyler.
+
     kamera_hit_sarsintisi_baslat(2.2, 82)
     dunya_olayi_kaydet(
         "developer_x_special_move",
@@ -2447,9 +2447,9 @@ def _v34_special_ready_prompt_ciz():
 # <POTBO_STAGE S0691>
 
 
-# ---------------------------------------------------------
-# INPUT BUFFERING
-# ---------------------------------------------------------
+
+
+
 _v34a_adefonsus_saldiri_baslat = adefonsus_saldiri_baslat
 
 
@@ -2464,8 +2464,8 @@ def adefonsus_saldiri_baslat(simdi=None):
         return False
 
     if oyuncu_saldiriyor:
-        # Press/charge sırasında yeni buffer üretme; bu hold input'unu double-tap'e
-        # çevirebilir. Yalnız committed normal/heavy recovery penceresinde buffer.
+
+
         if oyuncu_saldiri_modu in ("normal", "hold_release"):
             v34_attack_buffer_until = max(
                 v34_attack_buffer_until,
@@ -2498,8 +2498,8 @@ def v34_input_buffer_guncelle():
         v34_dash_buffer_until = 0
         v34_dash_buffer_direction.update(0.0, 0.0)
 
-    # Attack önce gelir; aynı frame'de hem attack hem dash buffer varsa en eski niyet
-    # olarak saldırı commitment'ı korunur. Dash bir sonraki frame'e kalabilir.
+
+
     if (
         v34_attack_buffer_until > simdi
         and not oyuncu_saldiriyor
@@ -2569,29 +2569,29 @@ def _v34_special_target_preview_target():
 # <POTBO_STAGE S0813>
 
 
-# =========================================================
-# END V34F
-# =========================================================
 
 
-# =========================================================
-# V35 COMBAT IDENTITY / CONTACT INTEGRITY / KINETIC POLISH
-# =========================================================
-# V35'in amacı hasarı görünmez dikdörtgenlerle büyütmek değil, ekranda görülen beden
-# hareketi ile mekanik sonucu aynı hizaya getirmektir. Normal melee daha dürüst yakın
-# temas ister; dash ve Adefonsus hold-release ise menzili gerçek world hareketinden
-# kazanır. Special move üç fiziksel hit kontratını korur fakat daha kısa, daha sert ve
-# daha okunaklı bir ritme çekilir. Yeni "Kesik İvmesi" katmanı başarılı yakın dövüş
-# temaslarını hareket akışına bağlar; doğrudan hasar çarpanı vermez, bu yüzden temel
-# dengeyi sessizce bozmaz.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 V35_VERSION = 35
 # </POTBO_STAGE S0813>
 
 # <POTBO_STAGE S0815>
 
-# Heavy hold-release artık görünmez uzun hitbox yerine karakterin bedenini daha uzağa
-# taşır. Böylece menzil artışı görsel ve fiziksel olarak aynı şeydir.
+
+
 ADEFO_HOLD_DASH_MESAFESI = 206.0
 ADEFO_HOLD_DASH_SURE_MS = 214
 # </POTBO_STAGE S0815>
@@ -2646,13 +2646,13 @@ def _adefo_hold_release_baslat(simdi):
         oyuncu_yonu = "right" if corrected.x >= 0 else "left"
     else:
         oyuncu_yonu = "down" if corrected.y >= 0 else "up"
-    # Flow heavy menzilini çok küçük oranda destekler; asıl menzil artışı taban
-    # sabitindedir. Bu bonus hasarı değil hareket zincirini ödüllendirir.
+
+
     v35_hold_dash_distance_scale = 1.0 + min(0.09, v35_combat_flow * 0.03)
 
 
-# Hold movement'ın orijinal state-machine'ini koruyup yalnız frame'de uygulanacak
-# toplam mesafeyi flow ölçeğiyle çarpmak için V35 sürümü.
+
+
 def adefonsus_hold_dash_guncelle(simdi=None):
     global oyuncu_x, oyuncu_y
     global adefo_hold_dash_son_guncelleme, adefo_hold_dash_son_ease
@@ -2674,7 +2674,7 @@ def adefonsus_hold_dash_guncelle(simdi=None):
             (int(simdi) - adefo_hold_dash_baslangic_ms) / duration,
         ),
     )
-    # Daha keskin quintic ease-out: heavy ilk 1/3'te gerçek bir lunge gibi kopar.
+
     ease = 1.0 - (1.0 - p) ** 5
     delta_ease = max(0.0, ease - float(adefo_hold_dash_son_ease))
     adefo_hold_dash_son_ease = ease
@@ -2740,7 +2740,7 @@ def kamerayi_guncelle():
     elif oyuncu_dash_aktif_mi(simdi) and dash_aktif_yonu.length_squared() > 1e-6:
         target = dash_aktif_yonu.normalize() * V35_CAMERA_DASH_LEAD
 
-    # Exponential-like smoothing; bir frame'de snap üretmez.
+
     v35_camera_lead += (target - v35_camera_lead) * 0.22
     kamera_x += v35_camera_lead.x
     kamera_y += v35_camera_lead.y
@@ -2824,7 +2824,7 @@ V38_SPECIAL_PREP_REFUND = float(SALDIRI_STAMINA_MALIYETI + ADEFO_HOLD_EK_STAMINA
 
 # <POTBO_STAGE S1044>
 
-# Normal saldırılar ve hold-release daha seri; temas kutuları ise biraz daha kısa.
+
 ADEFO_NORMAL_SURE_MS = 315
 # </POTBO_STAGE S1044>
 
@@ -2919,17 +2919,17 @@ def adefonsus_hold_dash_guncelle(simdi=None):
 
 # <POTBO_STAGE S1091>
 
-# Tek bir kontrol dili:
-# - ENTER / SPACE = yalnız gerçek UI onayı.
-# - E = dünya etkileşimi + diyalog ilerletme/cevap seçimi.
-# - 1..5 = öne çıkan slot seçimi.
-# - F = seçili öne çıkan slotu kullan / envanterde featured bağlamı.
-# - Q = bağımsız quick slot; büyüler de burada.
-# - TAB = envanter.
-# - J = saldırı; Adefonsus'ta hold aynı tuşun ağır saldırı niyetidir.
-# - SHIFT = dash, K = block, ESC = pause/back.
-# Special move normal kontrol şemasının parçası değildir; Ctrl+U açık geliştirici
-# testinde hold-J -> R bas/bırak kombinasyonu olarak izole kalır.
+
+
+
+
+
+
+
+
+
+
+
 V41_CONTROL_DOCTRINE = {
     "ui_confirm": ("ENTER", "SPACE"),
     "world_interact": "E",
@@ -3001,7 +3001,7 @@ def v44_attack_speed_estimate(mode=None):
         return 650.0 + 210.0 * charge
     if mode in ("press", "charge"):
         return 260.0
-    # Preciosa ve klasik normal saldırı daha seri; Adefonsus normal biraz ağır.
+
     if karakter_cinsiyet == "female":
         return 590.0
     return 500.0
@@ -3010,7 +3010,7 @@ def v44_attack_speed_estimate(mode=None):
 # <POTBO_STAGE S1153>
 
 
-# Saldırı start/release zamanları kan morfolojisinin gerçek input temposunu görür.
+
 _v44_adefo_attack_start_original = adefonsus_saldiri_baslat
 
 
@@ -3089,8 +3089,8 @@ def _v81_body_basis():
 
 # <POTBO_STAGE S1656>
 
-# Combat pace: animation daha hızlı, fakat cooldown animasyondan uzun kalır.
-# Böylece input daha çevik hissedilirken J spam ritmi oyunu makine tüfeğine çevirmez.
+
+
 ADEFO_NORMAL_SURE_MS = 252
 # </POTBO_STAGE S1656>
 
@@ -3165,8 +3165,8 @@ def v82_diagnostics():
 
 # <POTBO_STAGE S1684>
 
-# Oynanış biraz daha çevik: daha hızlı temas, daha hafif stamina yükü,
-# fakat halen kontrolsüz spam ritmine düşmez.
+
+
 ADEFO_NORMAL_SURE_MS = 236
 # </POTBO_STAGE S1684>
 
@@ -3470,8 +3470,8 @@ def v84_execution_choreography(target, seed):
     approach = v84_safe_vector(approach).normalize()
     side = approach.rotate(90.0)
 
-    # Dash 1 crosses on a straight line.  Dash 2 is diagonal; Dash 3 is the
-    # mirrored diagonal.  Endpoints sit beyond the target, not in front of it.
+
+
     dash1 = center + approach * 76.0
     dash2 = center - approach * 61.0 + side * 67.0
     dash3 = center + approach * 57.0 - side * 71.0
@@ -3750,8 +3750,8 @@ def v84_execution_choreography(target, seed):
     approach = v84_safe_vector(approach).normalize()
     side = approach.rotate(90.0)
 
-    # Each pair is a slow staging point followed by the far side of a very fast
-    # crossing.  The second and third crossings are opposing diagonals.
+
+
     stage_1 = center - approach * 73.0
     exit_1 = center + approach * 81.0
     stage_2 = center + approach * 46.0 - side * 70.0
@@ -3774,8 +3774,8 @@ def v84_execution_choreography(target, seed):
         turn = 180.0 + authored * 0.38 + rng.uniform(-6.0, 6.0)
         radial = radial.rotate(turn).normalize()
         radius = rng.uniform(69.0, 94.0)
-        # Deliberate radius asymmetry prevents the path from collapsing into a
-        # circular orbit or one repeated screen-space line.
+
+
         if index % 4 == 1:
             radius *= 0.86
         elif index % 5 == 3:
@@ -3832,9 +3832,9 @@ def v86_killer_front_target(killer):
 # <POTBO_STAGE S1922>
 
 
-# =========================================================
-# END V86 DEATH DATA / ROUTING
-# =========================================================
+
+
+
 
 
 def v86_impact_direction(state, rotate=0.0):
@@ -4329,10 +4329,10 @@ class V90DracoState:
 # <POTBO_STAGE S2272>
 
 
-# ---------------------------------------------------------
-# Consistent resource economy. Natural/normal spells are expensive; developer
-# casts are handled separately and never touch this curve.
-# ---------------------------------------------------------
+
+
+
+
 def v92_resource_balance_refresh():
     global FIRE_MAGIC_MANA_MALIYETI, V38_FIRE_CAST_STAMINA_COST
     global V90_DRACO_MANA_COST, V90_DRACO_STAMINA_COST
@@ -4345,15 +4345,15 @@ def v92_resource_balance_refresh():
     stamina_pool = max(1.0, float(oyuncu_max_stamina))
     p = (max(1, int(oyuncu_level)) - 1) / max(1.0, float(MAKSIMUM_LEVEL - 1))
 
-    # Natural magic stays deliberately expensive. Increasing max mana creates
-    # additional casts only gradually instead of trivialising the economy.
+
+
     FIRE_MAGIC_MANA_MALIYETI = max(50, int(round(mana_pool * (0.43 - 0.035 * p))))
     V90_DRACO_MANA_COST = max(68, int(round(mana_pool * (0.53 - 0.040 * p))))
     V38_FIRE_CAST_STAMINA_COST = max(9.0, stamina_pool * (0.090 - 0.006 * p))
     V90_DRACO_STAMINA_COST = max(12.0, stamina_pool * (0.125 - 0.012 * p))
 
-    # These V90 baseline values are the canonical inputs used by the injury
-    # system every frame. Updating only the live aliases would be overwritten.
+
+
     V90_BASE_ATTACK_COST = max(15.0, stamina_pool * (0.175 - 0.018 * p))
     V90_BASE_DASH_COST = max(28.0, stamina_pool * (0.315 - 0.025 * p))
     V90_BASE_HOLD_COST = max(10.0, stamina_pool * (0.115 - 0.010 * p))
@@ -4423,9 +4423,9 @@ def gelistirici_x_skill_r_birak(simdi=None):
                 global oyuncu_saldiriyor, oyuncu_savunuyor
                 gelistirici_x_skill_r_basildi = False
                 gelistirici_x_skill_sifirla(False)
-                # Execution director rejects ordinary combat locks. The learned
-                # special owns this transition, so clear only the player's local
-                # attack/guard latch; enemy and world locks remain authoritative.
+
+
+
                 oyuncu_saldiriyor = False
                 oyuncu_savunuyor = False
                 if v84_execution_start(target=target, override=True, source="decussatio_rubra_lethal"):
@@ -4472,7 +4472,7 @@ def v92_chain_start(dx, dy):
     state.silhouettes = []
     for actor in targets:
         center = v90_actor_center(actor)
-        # Attack crosses the body then exits slightly behind it.
+
         state.points.append(center - direction * 12.0)
         state.points.append(center + direction * 30.0)
         try:
@@ -4601,13 +4601,13 @@ IPUCLARI = {
 # <POTBO_STAGE S2441>
 
 
-# ---------------------------------------------------------
-# CATENA DECOLLATIONIS INPUT FIX
-# - at least two valid, chainable targets are required;
-# - holding J + SHIFT is buffered until the heavy-charge threshold;
-# - no movement key is required: facing direction is used as fallback;
-# - ordinary dash is not allowed to consume the combo while a valid target exists.
-# ---------------------------------------------------------
+
+
+
+
+
+
+
 def v92_chain_start(dx, dy):
     global v94_chain_next_ready_ms
     now = pygame.time.get_ticks()
@@ -4623,8 +4623,8 @@ def v92_chain_start(dx, dy):
         return False
     direction = direction.normalize()
 
-    # A single target gives the technique a useful minimum case; multiple targets
-    # still form the authored chain / zig-zag path.
+
+
     if not v92_chain_targets(direction):
         return False
 
@@ -4676,7 +4676,7 @@ def oyuncu_serbest_hareket_guncelle():
     direction = _v99_catena_direction_from_keys(keys)
     targets = v92_chain_targets(direction) if direction.length_squared() > 1e-8 else []
 
-    # No valid target: preserve ordinary dash behavior instead of eating the input.
+
     if not targets:
         return _v99_free_move_raw()
 
@@ -4687,9 +4687,9 @@ def oyuncu_serbest_hareket_guncelle():
             dash_tus_kilitli = True
             return True
 
-    # A target exists and the combo is being held, but J has not reached the
-    # charge threshold yet. Block the ordinary dash for this frame so SHIFT stays
-    # buffered instead of consuming the combination too early.
+
+
+
     dash_tus_kilitli = True
     result = _v99_free_move_raw()
     if dash_held and attack_held and not v92_chain_state.active:
@@ -4700,11 +4700,11 @@ def oyuncu_serbest_hareket_guncelle():
 # <POTBO_STAGE S2464>
 
 
-# ---------------------------------------------------------
-# DECUSSATIO RUBRA: lethal prediction alone decides whether the red/black
-# many-cut execution director is entered. Non-lethal use remains the authored
-# three-cut special and never enters the execution tableau.
-# ---------------------------------------------------------
+
+
+
+
+
 def gelistirici_x_skill_r_birak(simdi=None):
     global gelistirici_x_skill_r_basildi, oyuncu_saldiriyor, oyuncu_savunuyor
     if simdi is None:
@@ -4733,7 +4733,7 @@ def gelistirici_x_skill_r_birak(simdi=None):
                 ):
                     return True
 
-    # The inherited X move applies its normal three physical cuts and damage.
+
     return _v92_x_release_raw(simdi)
 # </POTBO_STAGE S2464>
 
@@ -4761,15 +4761,15 @@ def v92_chain_start(dx, dy):
 
     started = bool(_v94_chain_start_previous(direction.x, direction.y))
     if started and v92_chain_state.active:
-        # Re-evaluate the duration after the inherited constructor because V94
-        # may have been authored with a shorter execution constant.
+
+
         if v92_chain_state.execution:
             v92_chain_state.duration_ms = V92_CHAIN_EXECUTION_MS
         v94_chain_next_ready_ms = int(now) + V94_CHAIN_RECOVERY_MS
     return started
 
 
-# Replace V99's one-target buffer with the final multi-target contract.
+
 def oyuncu_serbest_hareket_guncelle():
     global dash_tus_kilitli, v99_catena_combo_latched
 
@@ -4794,7 +4794,7 @@ def oyuncu_serbest_hareket_guncelle():
     direction = _v99_catena_direction_from_keys(keys)
     targets = v92_chain_targets(direction) if direction.length_squared() > 1e-8 else []
 
-    # Fewer than two targets means this is not Catena; preserve ordinary dash.
+
     if len(targets) < V100_CATENA_MIN_TARGETS:
         return _v99_free_move_raw()
 
@@ -4805,7 +4805,7 @@ def oyuncu_serbest_hareket_guncelle():
             dash_tus_kilitli = True
             return True
 
-    # J+SHIFT is buffered while the heavy-charge threshold is being reached.
+
     dash_tus_kilitli = True
     result = _v99_free_move_raw()
     if dash_held and attack_held and not v92_chain_state.active:
@@ -4830,9 +4830,9 @@ def v105_grant_corona_aetherica():
     if index is None:
         return True
     itemi_q_hizli_slota_ata(index)
-    # Adefonsus starts with 50 max mana while Corona costs 70. CTRL+3 is explicitly
-    # a test shortcut, so arm exactly one free/cooldown-free cast instead of mutating
-    # the character's permanent mana stats. Normal acquired Corona still costs 70.
+
+
+
     v107_corona_test_cast_ready = True
     v106_corona_last_cast_ms = -1000000
     bildirim_goster(
@@ -4848,15 +4848,15 @@ def v105_grant_corona_aetherica():
 # <POTBO_STAGE S2532>
 
 
-# ---------------------------------------------------------
-# CORONA AETHERICA
-# Q forms three AETHER cores. While any core remains in orbit, J fires the next
-# core instead of performing melee. Expiry scatters only the remaining cores.
-# The top 'idle' row of corona_aetherica_cast.png is the only authored sprite row
-# used here; the lower death/line row is intentionally ignored.
-# ---------------------------------------------------------
-# V107 fixes the test-cast contract: the normal spell remains a 70-mana spell,
-# but CTRL+3 arms one free cast so a fresh 50-mana Adefonsus can actually test it.
+
+
+
+
+
+
+
+
+
 v107_corona_test_cast_ready = False
 # </POTBO_STAGE S2532>
 

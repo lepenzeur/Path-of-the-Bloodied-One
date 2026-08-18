@@ -1,19 +1,33 @@
 # Path of the Bloodied One
 
-Version 1.0.0 — first release baseline.
+Version 2.0.0 — current major release.
 
-A Python/Pygame game project. The repository root contains the runnable project directly; historical versions should be kept with Git tags/releases rather than version subfolders.
+Agraphon Studios.
 
 ## Run
 
-1. Install Python and a compatible Pygame distribution.
-2. Run `python main.py` from this directory.
+1. Install Python 3.11+
+2. `python -m pip install -r requirements.txt`
+3. `python main.py`
 
-## Project structure
+This development build starts with test shortcuts enabled. Set `PATH_BLOODIED_DEV=0` to disable them. Saves, settings and crash logs are stored in the operating system's per-user application-data directory.
 
-- `main.py` — application entry point
-- `characters/` — player/character behavior
-- `core/` — bootstrap, assets, audio, persistence and foundation systems
-- `gameplay/` — combat, effects, enemies, spells, runtime and world logic
-- `ui/` — screens, splash and vendors
-- `assets/` — game media
+## Test controls
+
+- `Ctrl+1` — Sphaera Exothermica → Q
+- `Ctrl+2` — Draco Calcinans → Q
+- `Ctrl+3` — Corona Aetherica → Q
+- `Ctrl+4` — Fulmen Caeruleum → Q
+- Test-granted spells have unlimited test authority, zero mana/resource cost and no normal cooldown.
+- `Ctrl+U` — +1000 Coin
+- `Ctrl+I` — +10 levels
+- `Ctrl+O` — +1 Health Potion and +1 Quinta Essentia
+- `Ctrl+"` — toggle the in-game test shortcut panel
+
+## Windows build
+
+Run `build_windows.bat`.
+
+## Preciosa development art
+
+`assets/characters/preciosa_spriteSheet.png` is used only for Preciosa's in-game sprite pipeline. Her existing portrait and character-card illustrations, separate dialogue and character-specific stats remain unchanged. All packaged media are temporary development assets and are intended to be replaced before public release.

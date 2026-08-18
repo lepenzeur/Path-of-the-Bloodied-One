@@ -1,22 +1,22 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0005>
 
-# =========================================================
-# TEMEL AYARLAR
-# =========================================================
+
+
+
 
 GENISLIK = 1280
 # </POTBO_STAGE S0005>
 
 # <POTBO_STAGE S0008>
 
-# UI çizgileri ve ölçeklemelerinde hafif piksel estetiği.
+
 PIKSEL_UI = True
 # </POTBO_STAGE S0008>
 
@@ -27,8 +27,8 @@ ERKEK_LOADING_YOLU = os.path.join(ASSETS, "backgrounds", "loading_male.png")
 
 # <POTBO_STAGE S0039>
 
-# Ölüm ekranındaki game-over başlığı için özel font. Dosya yoksa
-# oyun güvenli biçimde sistem fontuna düşer; font dosyası paketle paylaşılmaz.
+
+
 GAMEOVER_FONT_YOLU = os.path.join(ASSETS, "fonts", "gameoverfont.ttf")
 # </POTBO_STAGE S0039>
 
@@ -57,9 +57,9 @@ else:
 # <POTBO_STAGE S0082>
 
 
-# =========================================================
-# OYUN DURUMLARI
-# =========================================================
+
+
+
 ANA_MENU = "ana_menu"
 # </POTBO_STAGE S0082>
 
@@ -87,14 +87,14 @@ oyun_durumu = ANA_MENU
 # </POTBO_STAGE S0096>
 
 # <POTBO_STAGE S0098>
-# =========================================================
-# MENÜ / OYUN DEĞİŞKENLERİ
-# =========================================================
+
+
+
 menu_index = 0
 # </POTBO_STAGE S0098>
 
 # <POTBO_STAGE S0101>
-# MAIN MENU onayı pause veya ölüm ekranından gelebilir; NO/ESC kaynağa döner.
+
 ana_menu_onay_donus_durumu = DURAKLATMA
 
 menu_mesaji = ""
@@ -112,18 +112,18 @@ envanter_imlec = 0
 
 # <POTBO_STAGE S0109>
 envanter_itemleri = [None] * 30
-# 1-5 öne çıkanlardan bağımsız altıncı bağlamsal hızlı slot. Varsayılan tuş Q'dur.
-# Slot item'in envanter indeksini izler; taşıma/satış/tüketim sırasında referans
-# otomatik güncellenir veya temizlenir. Büyüler yalnızca bu slot üzerinden cast edilir.
+
+
+
 q_hizli_item_index = None
 
 envanter_aksiyon_acik = False
 envanter_aksiyon_index = 0
 envanter_aksiyon_item_index = None
-# Aksiyon menüsünün 30'lu ana gridten mi yoksa öne çıkan slotlardan mı
-# açıldığını belirtir. Böylece aynı pencere bağlama göre doğru eylemleri sunar.
+
+
 envanter_aksiyon_kaynagi = "grid"
-# Envanter içindeki eşyalar taşınıp başka slotlarla yer değiştirebilir.
+
 envanter_tasima_kaynagi = None
 # </POTBO_STAGE S0109>
 
@@ -135,7 +135,7 @@ cikis_donus_durumu = ANA_MENU
 # <POTBO_STAGE S0118>
 
 loading_baslangic = 0
-# Önceki 13 saniyelik süre kısaltıldı.
+
 loading_suresi = 4500
 
 loading_ipucu = ""
@@ -147,9 +147,9 @@ oyuncu_olum_menu_index = 0
 # </POTBO_STAGE S0150>
 
 # <POTBO_STAGE S0154>
-# lethal darbeyi yapan aktör ölüm tablosunda tek başına korunur. Diğer bütün
-# karakterler görünmezken katil kırmızı silhouette olarak kalır; uid kaydı isim
-# çakışmalarında dahi doğru aktörü bulmamızı sağlar.
+
+
+
 oyuncu_olum_katil_uid = ""
 # </POTBO_STAGE S0154>
 
@@ -163,21 +163,21 @@ OLU_MENU_FADE_IN_MS = 760
 diyalog_index = 0
 aktif_diyalog = []
 diyalog_secim_index = 0
-# Bazı hikâye eşyaları diyalog akışını geçici olarak New Item sunumuna bırakır.
-# Sunum kapandıktan sonra aynı diyalog düğümünden devam edilir.
+
+
 diyalog_onemli_item_bekliyor = False
 # </POTBO_STAGE S0179>
 
 # <POTBO_STAGE S0183>
-# Oyuncunun ilk diyalog seçimleri sonraki konuşmalarda hatırlanır.
+
 eadric_tutumu = "neutral"
 # </POTBO_STAGE S0183>
 
 # <POTBO_STAGE S0187>
 UI_BUTON_CLICK_SURE_MS = 140
-# ENTER ve SPACE arayüz onayının sabit omurgasıdır. Oynanış tuşları
-# AYARLAR > TUŞ ATAMALARI içinden değiştirilebilir. Etkileşim için atanan
-# tuş, gerçek butonlarda ve envanterde bağlamsal onay tuşu olarak da çalışır.
+
+
+
 ONAY_TUSLARI = (
     pygame.K_RETURN,
     pygame.K_KP_ENTER,
@@ -203,7 +203,7 @@ def ui_yon_tuslari(eylem, ok_tusu):
     """Menüler oynanış yön atamasını izler; boştaki yön oku erişilebilir fallback olur."""
     ana = tus_atamasi(eylem)
     sonuc = [ana]
-    # Ok başka bir oynanış eylemine atanmışsa iki farklı işi aynı anda yapmasın.
+
     kullanan = next(
         (ad for ad, kod in tus_atamalari.items() if kod == ok_tusu),
         None,
@@ -230,7 +230,7 @@ def ui_sag_tuslari():
 # </POTBO_STAGE S0194>
 
 # <POTBO_STAGE S0200>
-# Harf harf diyalog sistemi.
+
 DIYALOG_HARF_ARALIGI = 28
 diyalog_yazi_baslangici = 0
 diyalog_tamamlandi = False
@@ -263,9 +263,9 @@ loading_bar_resmi_orijinal = resim_yukle(LOADING_BAR_YOLU)
 
 # <POTBO_STAGE S0286>
 
-# =========================================================
-# LOADING BAR GÖRSELİNİ HAZIRLAMA
-# =========================================================
+
+
+
 
 
 def loading_bar_arka_planini_saydam_yap(kaynak):
@@ -373,8 +373,8 @@ def genel_vinyet_ciz():
             1,
         )
 
-    # Tehdit yükseldiğinde yalnız kenarlarda, HUD okunurluğunu bozmayan
-    # düşük alfa kan tonu oluşur. Nabız deterministik olarak zamana bağlıdır.
+
+
     if gerilim > 0.08:
         nabiz = 0.72 + 0.28 * (0.5 + 0.5 * math.sin(pygame.time.get_ticks() / 310.0))
         alfa = int(15 * gerilim * nabiz)
@@ -403,7 +403,7 @@ def loading_alt_vinyet_ciz():
 
     for y in range(yukseklik):
         oran = y / max(1, yukseklik - 1)
-        # Üstte görünmez, altta tamamen siyah. Yumuşak ama kararlı geçiş.
+
         alpha = int(255 * (oran**1.75))
         pygame.draw.line(yuzey, (0, 0, 0, alpha), (0, y), (GENISLIK, y))
 
@@ -437,7 +437,7 @@ def buton_click_anim_rect(rect, secili=True):
         scale = 1.0 - 0.085 * math.sin(q * math.pi * 0.5)
     else:
         q = (p - 0.36) / 0.64
-        # Hafif overshoot; son karede tam 1.0'a yerleşir.
+
         scale = 0.915 + 0.085 * q + 0.030 * math.sin(q * math.pi)
 
     w = max(1, int(round(rect.width * scale)))
@@ -451,24 +451,24 @@ def menu_susleme_ciz(rect, secili):
     Arka plan resminin içinde hazır menü yazısı bulunmaz.
     """
 
-    # Gölge
+
     golge = rect.move(5, 6)
 
     pygame.draw.rect(ekran, (0, 0, 0), golge, border_radius=0)
 
-    # Ana plaka
-    # Seçili olmayan butonlar küçük ve sade kalır.
-    # Seçili olan buton hafif büyütülür ve kalınlaştırılır.
+
+
+
     cizim_rect = rect.inflate(32, 14) if secili else rect
     cizim_rect = buton_click_anim_rect(cizim_rect, secili)
 
-    # Seçilmeyenler yalnızca hafifçe arkada kalır.
-    # Seçili buton belirgin biçimde büyür.
+
+
     taban_renk = (78, 6, 16) if secili else (8, 7, 9)
 
     pygame.draw.rect(ekran, taban_renk, cizim_rect, border_radius=0)
 
-    # Seçili butonda iç kırmızı parıltı
+
     if secili:
         ic = cizim_rect.inflate(-10, -8)
 
@@ -490,7 +490,7 @@ def menu_susleme_ciz(rect, secili):
             2,
         )
 
-    # Dış metal kenarlıklar
+
     dis_renk = (245, 72, 92) if secili else (54, 47, 49)
 
     pygame.draw.rect(
@@ -517,7 +517,7 @@ def menu_susleme_ciz(rect, secili):
         1,
     )
 
-    # Sol ve sağ sivri uzantılar
+
     sol_uc = [
         (cizim_rect.left - 22, cizim_rect.centery),
         (cizim_rect.left, cizim_rect.top + 7),
@@ -546,8 +546,8 @@ def ana_menu_ciz():
 
     ekran.fill(SIYAH)
 
-    # Düz siyah zemin üzerinde yalnızca başlık, menü ve hafif bir merkez
-    # parlaması kullanılır; herhangi bir arka plan görseli çizilmez.
+
+
     merkez_parlama = pygame.Surface((520, YUKSEKLIK), pygame.SRCALPHA)
     for genislik, alfa in ((520, 22), (410, 18), (300, 14)):
         pygame.draw.ellipse(
@@ -622,21 +622,21 @@ def ana_menu_ciz():
 # <POTBO_STAGE S0326>
 
 
-# =========================================================
-# ÇIKIŞ ONAY EKRANI
-# =========================================================
+
+
+
 
 
 def cikis_onay_ciz():
-    # QUIT ölüm ekranından geldiyse ana menüye ışınlanmayız. Aynı ARE YOU SURE?
-    # paneli doğrudan siyah-kırmızı ölüm tablosunun üzerinde açılır. Ana menüden
-    # gelen normal quit davranışı ise eski görünümünü korur.
+
+
+
     if cikis_donus_durumu == OYUN and oyuncu_hp <= 0:
-        # Death QUIT: ölüm ekranı aynen arkada kalır.
+
         oyuncu_olum_sahnesi_ciz()
     elif cikis_donus_durumu == DURAKLATMA:
-        # Pause QUIT: ana menüyü asla araya sokma; onay panelini mevcut pause
-        # ekranının doğrudan üstüne bindir.
+
+
         duraklatma_menusu_ciz()
     else:
         ana_menu_ciz()
@@ -713,9 +713,9 @@ def karakter_onay_gecisini_guncelle():
 # <POTBO_STAGE S0342>
 
 
-# =========================================================
-# HUD / ENVANTER YARDIMCILARI
-# =========================================================
+
+
+
 
 
 def item_kisa_adi(index):
@@ -740,8 +740,8 @@ def onemli_item_penceresini_ilerlet():
     onemli_item_gosterim_hazir_zamani = 0
     onemli_item_gorsel_hazir_zamani = 0
 
-    # Eadric'in Taşı gibi diyalog içi kazanımlarda sunum, konuşmanın gerçek bir
-    # parçasıdır: kart kapanınca bir sonraki replik yeni baştan harf harf akar.
+
+
     if diyalog_onemli_item_bekliyor and not onemli_item_kuyrugu:
         diyalog_onemli_item_bekliyor = False
         oyun_alt_durumu = DIYALOG
@@ -763,7 +763,7 @@ def envantere_item_ekle(item, kazanimi_goster=True):
     except (TypeError, ValueError):
         kalan = 1
 
-    # Önce mevcut stackleri 10'a tamamla.
+
     for mevcut in envanter_itemleri:
         if kalan <= 0:
             break
@@ -774,7 +774,7 @@ def envantere_item_ekle(item, kazanimi_goster=True):
                 mevcut["quantity"] = adet + eklenebilir
                 kalan -= eklenebilir
 
-    # Kalan miktarı yeni slotlara dağıt.
+
     for index in range(30):
         if kalan <= 0:
             break
@@ -792,7 +792,7 @@ def envantere_item_ekle(item, kazanimi_goster=True):
             count=max(1, int(yeni.get("quantity", 1))),
         )
         if kazanimi_goster:
-            # Kart hemen açılmaz; temiz oyun sahnesi görünür olduğunda sunulur.
+
             onemli_item_kazanimi_ekle(yeni)
     return basarili
 # </POTBO_STAGE S0354>
@@ -883,8 +883,8 @@ def secili_itemi_kullan(item_index):
         envanterden_bir_azalt(item_index)
         dunya_olayi_kaydet("item_used", item_id=str(item_id), count=1)
 
-        # Can veren her içecek aynı kısa kırmızı-beyaz "içildi" geri bildirimini
-        # kullanır; health_potion artık sessiz/görselsiz tüketilmez.
+
+
         oyuncu_parlama_baslat("potion")
 
         if item_id == "aurum_potabile":
@@ -1029,9 +1029,9 @@ def hud_sol_rect():
 
 
 def hud_sag_rect():
-    # Sağ panel sol panelle aynı yükseklikte kalır; ancak ekranın ortasında
-    # anlamsız geniş bir boşluk bırakmaz. İki panel arasında yalnızca ince
-    # bir görsel nefes payı vardır ve sağ panel sağ dış marja kadar uzanır.
+
+
+
     sol = hud_sol_rect()
     panel_araligi = 20
     x = sol.right + panel_araligi
@@ -1176,8 +1176,8 @@ def envanter_aksiyon_menusu_ciz(panel, item_index, kaynak="grid"):
 
 
 def envanter_ciz():
-    # Oyun dünyası yalnızca donmuş bir arka plan olarak çizilir. Envanter
-    # açıkken oyun, HUD ve öne çıkan hızlı kullanım girdileri çalışmaz.
+
+
     oyun_ekrani_ciz()
     koyu_kaplama(220)
 
@@ -1194,7 +1194,7 @@ def envanter_ciz():
         True,
     )
 
-    # 30 slot: 6 sütun x 5 satır
+
     grid_x = panel.x + 42
     grid_y = panel.y + 82
     slot = 66
@@ -1218,12 +1218,12 @@ def envanter_ciz():
             tasima_kaynagi=(index == envanter_tasima_kaynagi),
         )
 
-    # Sağ item bilgi bölümü
+
     bilgi_panel = pygame.Rect(panel.x + 550, panel.y + 82, 520, 470)
 
-    # Öne çıkan 1-5 ve bağımsız Q büyü slotu tek satırda görünür. Altı kutu,
-    # ana envanterin altı sütunuyla birebir hizalanır; böylece Q artık envanter
-    # açıkken görünmez bir sistem değildir.
+
+
+
     grid_toplam_genislik = 6 * slot + 5 * gap
     one_cikan_slot_w = slot
     one_cikan_gap = gap
@@ -1254,9 +1254,9 @@ def envanter_ciz():
             tasima_kaynagi=(i == one_cikan_tasima_kaynagi),
         )
 
-    # Altıncı kutu Q slotudur. 1-5 seçiminin parçası değildir; büyü atama eylemi
-    # yine mevcut "Q slotuna ata" menüsünden yapılır. Burada gerçek bağlı item,
-    # sonsuzluk ve okul sembolü görünür.
+
+
+
     q_hizli_slot_normalize_et()
     q_rect = pygame.Rect(
         grid_x + 5 * (one_cikan_slot_w + one_cikan_gap),
@@ -1325,7 +1325,7 @@ def envanter_ciz():
                     True,
                 )
 
-    # Envanterde de cooldown okunabilsin; Q kutusunu aşağıdan yukarı koyulaştırır.
+
     if q_is_magic and not q_debug_spell:
         kalan = max(
             0,
@@ -1457,8 +1457,8 @@ def oyuncu_paneli_ciz():
     stamina_oran = stamina_gorunen / max(1.0, oyuncu_max_stamina)
     tier = min(5, oyuncu_level // 10)
 
-    # sıralaması değişmez: CAN -> STAMINA -> MANA. Üçlü blok header'dan
-    # daha aşağı taşındı ve bıçak barları daha ince/keskin oranlara çekildi.
+
+
     gotik_bicak_bari_ciz(
         pygame.Rect(bar_x, sol_panel.y + 70, bar_w, 22),
         hp_oran,
@@ -1493,9 +1493,9 @@ def oyuncu_paneli_ciz():
 # <POTBO_STAGE S0394>
 
 
-# =========================================================
-# DİYALOG
-# =========================================================
+
+
+
 
 
 def diyalog_yazisini_sifirla():
@@ -1709,9 +1709,9 @@ def diyalog_ciz():
 # <POTBO_STAGE S0466>
 
 
-# =========================================================
-# OYUN İÇİ DURAKLATMA MENÜSÜ
-# =========================================================
+
+
+
 
 
 def duraklatma_secenekleri():
@@ -1769,7 +1769,7 @@ def ayar_satiri_ciz(rect, ayar, secili):
     )
 
     baslik_rengi = BEYAZ if secili else ACIK_GRI
-    # Açıklama, başlığın ikincil tipografik katmanıdır.
+
     alt_renk = (162, 155, 168) if secili else (104, 98, 110)
 
     yazi_yaz(
@@ -1824,7 +1824,7 @@ def ayarlar_arka_plani_ciz():
     else:
         varsayilan_gotik_arka_plan()
 
-    # Ayrı ekran hissi veren hafif piksel örgüsü.
+
     doku = pygame.Surface((GENISLIK, YUKSEKLIK), pygame.SRCALPHA)
     for x in range(0, GENISLIK, 32):
         pygame.draw.line(doku, (120, 0, 24, 10), (x, 0), (x, YUKSEKLIK), 1)
@@ -1864,8 +1864,8 @@ def pause_ayarlar_ciz():
 
 
 def ayarlar_ciz():
-    # Ana menüden ve pause içinden aynı ayarlar ekranı kullanılır; böylece
-    # ses davranışı, tuş atamaları ve kategori yapısı iki yerde ayrışmaz.
+
+
     tam_ayarlar_ciz()
 # </POTBO_STAGE S0482>
 
@@ -1915,7 +1915,7 @@ def _stage1_oyuncu_olum_menu_fade_orani(simdi=None):
         0.0,
         min(1.0, gecen / max(1.0, float(OLU_MENU_FADE_IN_MS))),
     )
-    # smoothstep: düz lineer fade yerine ağır başlayan, yumuşak biten sinematik geçiş.
+
     return p * p * (3.0 - 2.0 * p)
 
 
@@ -2036,22 +2036,22 @@ V34_DEATH_BUTTON_FADE_MS = 1600
 # <POTBO_STAGE S0617>
 
 
-# Death MAIN MENU confirmation keeps the death tableau as its background.
+
 _v33_ana_menu_onay_ciz_v34 = ana_menu_onay_ciz
 # </POTBO_STAGE S0617>
 
 # <POTBO_STAGE S0620>
 
-# =========================================================
-# V34 PROFESSIONAL POLISH / COLLISION SAFETY / SPECIAL MOVE DIRECTOR
-# =========================================================
-# Bu katman mevcut sistemleri söküp yeniden yazmak yerine runtime kontratlarını
-# güçlendirir. Özellikle üç problem çözülür:
-#   1) dynamic-body overlap yüzünden oyuncunun "içeride kilitlenmesi",
-#   2) scripted special move'un collision polygonlarının içine gömülmesi,
-#   3) üç-vuruşlu tekniğin hedef erken öldüğünde görsel/işitsel olarak yarıda kalması.
-# Aynı katman dash izi, special-move kamera kompozisyonu, hit crescendo, güvenli
-# depenetration ve küçük HUD geri bildirimleri ekler. Save formatı değişmez.
+
+
+
+
+
+
+
+
+
+
 
 V34_POLISH_VERSION = 34
 # </POTBO_STAGE S0620>
@@ -2148,9 +2148,9 @@ def _v34f_actor_uid(actor):
 # <POTBO_STAGE S0781>
 
 
-# ---------------------------------------------------------
-# TRANSIENT STATE HYGIENE
-# ---------------------------------------------------------
+
+
+
 def _v34f_reset_transient_combat_state(after_load=False):
     """Save'e ait olmayan kısa ömürlü state'leri tek merkezden temizler."""
     global v34_attack_buffer_until, v34_dash_buffer_until, v34_dash_buffer_direction
@@ -2180,9 +2180,9 @@ def _v34f_reset_transient_combat_state(after_load=False):
 # <POTBO_STAGE S0784>
 
 
-# ---------------------------------------------------------
-# SPECIAL TARGET COMMITMENT
-# ---------------------------------------------------------
+
+
+
 def _v34f_special_capture_target_anchor():
     global v34f_special_target_anchor, v34f_special_target_anchor_uid
     target = gelistirici_x_skill_hedef
@@ -2217,7 +2217,7 @@ def _v34f_special_finished(simdi):
         v34f_special_last_final_direction,
         simdi,
     )
-    # Special çıkışında static/dynamic depenetration son kez çalışır.
+
     try:
         _v34_player_depenetrate(False)
     except Exception as exc:
@@ -2227,8 +2227,8 @@ def _v34f_special_finished(simdi):
             False,
             "warning",
         )
-    # Shift fiziksel olarak basılı değilse dash latch'i serbest bırak. Basılıysa KEYUP
-    # mevcut input sistemi tarafından güvenli biçimde çözülür.
+
+
     try:
         keys = pygame.key.get_pressed()
         dash_pressed = bool(keys[tus_atamasi("dash")])
@@ -2243,13 +2243,13 @@ def _v34f_special_finished(simdi):
 # <POTBO_STAGE S0831>
 
 
-# ---------------------------------------------------------
-# KESIK IVMESI / SEVERANCE FLOW
-# ---------------------------------------------------------
-# Başarılı fiziksel melee temasları küçük bir hareket ritmi biriktirir. Flow hasar
-# artırmaz. Normal dash stamina maliyetini ve input hissini hafifçe iyileştirir; kısa
-# süre saldırmadan kalınca kendiliğinden söner. Böylece sistem oyuncuya yeni bir HUD
-# ezberi dayatmadan agresif, kontrollü oyunu ödüllendirir.
+
+
+
+
+
+
+
 V35_FLOW_MAX = 3.0
 # </POTBO_STAGE S0831>
 
@@ -2293,9 +2293,9 @@ def _v35_flow_hud_ciz():
 
 # <POTBO_STAGE S0866>
 
-# ---------------------------------------------------------
-# UI TIMING COORDINATOR
-# ---------------------------------------------------------
+
+
+
 V37_UI_ACTION_DELAY_MS = 150
 V37_UI_INPUT_GUARD_MS = 165
 v37_ui_pending_action = None
@@ -2313,7 +2313,7 @@ _v37_buton_click_anim_rect_original = buton_click_anim_rect
 
 
 def buton_click_anim_rect(rect, secili=True):
-    # Global click timestamp başka bir ekrana sızıp yanlış butonu oynatmasın.
+
     if v37_ui_click_state is not None and oyun_durumu != v37_ui_click_state:
         return rect.copy()
     return _v37_buton_click_anim_rect_original(rect, secili)
@@ -2364,7 +2364,7 @@ def v37_ui_transition_tick():
 
 
 def tus_girdisi_kabul(olay):
-    # Pending click/action sırasında ikinci KEYDOWN state makinesine giremez.
+
     if olay.type == pygame.KEYDOWN and v37_ui_action_pending():
         return False
     return _v37_tus_girdisi_kabul_original(olay)
@@ -2374,8 +2374,8 @@ _v37_menu_secimini_calistir_original = menu_secimini_calistir
 
 
 def menu_secimini_calistir():
-    # Event handler click sesini/animasyonunu zaten başlatır; state bir sonraki
-    # 150ms boyunca aynı ekranda kalır ve basma animasyonu gerçekten görünür.
+
+
     return v37_ui_action_schedule(
         _v37_menu_secimini_calistir_original,
         "main_menu",
@@ -2441,8 +2441,8 @@ def _v37_settings_back_execute():
 # <POTBO_STAGE S0885>
 
 
-# Click'i daha görünür yapan tek, ucuz highlight. Ana/pause menu zaten aynı
-# menu_susleme_ciz() dilini paylaştığı için state-specific efekt gerekmez.
+
+
 _v37_menu_susleme_ciz_original = menu_susleme_ciz
 
 
@@ -2457,8 +2457,8 @@ def menu_susleme_ciz(rect, secili):
         p = elapsed / max(1.0, float(UI_BUTON_CLICK_SURE_MS))
         alpha = int(235 * (1.0 - p) ** 1.35)
         rr = buton_click_anim_rect(rect.inflate(32, 14), True)
-        # Display surface üzerinde alpha kanalının etkisi sürücüye bağlı olabileceği
-        # için renk yoğunluğu da fade eder; ek Surface tahsisi yapılmaz.
+
+
         c = max(80, min(255, alpha))
         pygame.draw.rect(ekran, (c, c, c), rr, 1)
 # </POTBO_STAGE S0885>
@@ -2512,7 +2512,7 @@ def gelistirici_x_skill_r_baslat(simdi=None):
     v38_special_stamina_start = float(oyuncu_stamina)
     v38_special_stamina_paid_mask = 0
     v38_special_stamina_spent = 0.0
-    # Regen timer bu noktadan itibaren special'ın ilk gerçek hitini bekler.
+
     stamina_son_harcama = int(simdi)
     return True
 # </POTBO_STAGE S0994>
@@ -2520,9 +2520,9 @@ def gelistirici_x_skill_r_baslat(simdi=None):
 # <POTBO_STAGE S1028>
 
 
-# ---------------------------------------------------------
-# COMPACT BALANCE SNAPSHOT
-# ---------------------------------------------------------
+
+
+
 def v38_balance_snapshot():
     """Tek çağrıda tuning için gerekli bütün özet; oyun HUD'ına otomatik basılmaz."""
     bounds = v38_tuning_bounds_validate()
@@ -2559,7 +2559,7 @@ def gelistirici_x_skill_r_baslat(simdi=None):
     if float(oyuncu_stamina) + 1e-6 >= V38_SPECIAL_TOTAL_STAMINA:
         return True
 
-    # Stage1 refund yaptıysa tam tersini uygula ve arm bayrağını söndür.
+
     if v38_special_arm_refund_active:
         oyuncu_stamina = max(0.0, float(oyuncu_stamina) - V38_SPECIAL_PREP_REFUND)
         v38_special_arm_refund_active = False
@@ -2626,7 +2626,7 @@ def diyalog_secimini_onayla():
 # <POTBO_STAGE S1092>
 
 
-# Menülerde E artık hiçbir zaman genel onay değildir. E yalnız dünya/diyalog bağlamıdır.
+
 def buton_onay_tuslari():
     return ONAY_TUSLARI
 
@@ -2639,7 +2639,7 @@ def diyalog_onay_tuslari():
     return ONAY_TUSLARI + (tus_atamasi("interact"),)
 
 
-# Metin sözleşmesi: eski açıklamalar E'yi bağlamsal UI confirm gibi tanımlamasın.
+
 METINLER["TR"]["interact_desc"] = "Konuşur, alır, açar; diyalog içinde devam eder"
 METINLER["EN"]["interact_desc"] = "Talk, pick up, open; continue dialogue"
 METINLER["TR"]["dialogue_next"] = "E / ENTER / SPACE: Devam"
@@ -2795,8 +2795,8 @@ _v48_character_create_original = karakter_olusturma_ciz
 def karakter_olusturma_ciz():
     v48_character_motion_update()
     _v48_character_create_original()
-    # Waveform tail sırasında ekranın tamamına çok hafif ağır vignette; fade'in yerine değil,
-    # seçimin gövdesini güçlendiren bir katman. 60 FPS'te alpha değişimi smoothstep'tir.
+
+
     if karakter_onay_gecisi_aktif:
         elapsed = pygame.time.get_ticks() - int(karakter_onay_gecisi_baslangic)
         env = v46_envelope_value(elapsed)
@@ -2935,14 +2935,14 @@ def v61_diagnostics():
 # <POTBO_STAGE S1415>
 
 
-# =========================================================
-# END V63
-# =========================================================
 
 
-# =========================================================
-# V64 - HEAVY HUD FRAME / INERTIAL RESOURCE READOUT
-# =========================================================
+
+
+
+
+
+
 V64_VERSION = "64.0"
 V64_HUD_SPRING_K = 26.0
 V64_HUD_SPRING_D = 10.5
@@ -3021,7 +3021,7 @@ def v64_hud_frame_ciz():
         (inner.right - 10, inner.top),
         2,
     )
-    # Köşe plakaları UI'yi "ağır" gösterir fakat animasyon yalnız birkaç piksel oynar.
+
     corner = 12
     corner_color = (48, 42, 47, 188)
     for x, y in (
@@ -3045,7 +3045,7 @@ def v64_hud_frame_ciz():
             (x + corner // 2, y + corner // 2),
             2,
         )
-    # Üst kenarda tek, çok zayıf beyaz yansıma. Kan highlight diliyle aynı materyal ailesi.
+
     pygame.draw.line(
         layer,
         (238, 232, 234, V64_HUD_SPECULAR_ALPHA),
@@ -3122,10 +3122,10 @@ def v68_apply_signature(color, key):
 # <POTBO_STAGE S1521>
 
 
-# ---------------------------------------------------------
-# HIT / ATTACK HUD KAPALI
-# ---------------------------------------------------------
-# Normal combo 'N VURUŞ / N HIT' paneli.
+
+
+
+
 def _v34_combo_ui_ciz():
     return
 # </POTBO_STAGE S1521>
@@ -3133,14 +3133,14 @@ def _v34_combo_ui_ciz():
 # <POTBO_STAGE S1523>
 
 
-# Sol alttaki EDGE RHYTHM / KESİŞ RİTMİ saldırı paneli.
+
 def v57_combat_rhythm_hud_ciz():
     return
 
 
-# ---------------------------------------------------------
-# BUTON CLICK: UÇ SÜSLERİN İÇİNE ÇİZGİ SIZDIRMAZ
-# ---------------------------------------------------------
+
+
+
 V76_BUTTON_CLICK_MS = 170
 
 
@@ -3158,12 +3158,12 @@ def buton_click_anim_rect(rect, secili=True):
     p = max(0.0, min(1.0, elapsed / float(V76_BUTTON_CLICK_MS)))
     if p < 0.38:
         q = p / 0.38
-        # İlk 65 ms: küçük bir inward press + 1px aşağı hareket.
+
         scale = 1.0 - 0.055 * (1.0 - math.cos(q * math.pi * 0.5))
         y_shift = int(round(2.0 * q))
     else:
         q = (p - 0.38) / 0.62
-        # Geri sekme 1.0 çevresinde çok küçük overshoot yapıp sakinleşir.
+
         scale = 0.945 + 0.055 * q + 0.012 * math.sin(q * math.pi)
         y_shift = int(round(2.0 * (1.0 - q)))
 
@@ -3174,9 +3174,9 @@ def buton_click_anim_rect(rect, secili=True):
     return out
 
 
-# V37'nin tam dikdörtgen click-outline'ı sivri uçların içinde görünüyordu. Ana buton
-# çizimini koruyoruz; yalnız click parlamasını merkez plakanın yatay metal çizgilerine
-# kısıtlıyoruz. Dikey outline yok, dolayısıyla uç poligonların içine çizgi giremez.
+
+
+
 def menu_susleme_ciz(rect, secili):
     _v37_menu_susleme_ciz_original(rect, secili)
     if not secili or (
@@ -3217,7 +3217,7 @@ def menu_susleme_ciz(rect, secili):
 # <POTBO_STAGE S1530>
 
 
-# Ölümde eski wrapper zincirinin HUD/debug/telemetry katmanlarını tamamen atla.
+
 _v76_game_draw_original = oyun_ekrani_ciz
 # </POTBO_STAGE S1530>
 
@@ -3230,7 +3230,7 @@ def _v77_death_button(rect, selected):
     pygame.draw.rect(ekran, V77_DEATH_BLACK, base)
     pygame.draw.rect(ekran, V77_DEATH_BODY, base, 4 if selected else 1)
 
-    # Orijinal iki sivri uç korunur; dolgu siyah, yalnız kontur açık kırmızıdır.
+
     left_tip = [
         (base.left - 22, base.centery),
         (base.left, base.top + 7),
@@ -3275,7 +3275,7 @@ def _v77_death_button(rect, selected):
 # <POTBO_STAGE S1550>
 
 
-# Death -> MAIN MENU onayı da aynı üç renk dışına çıkmasın.
+
 _v77_main_menu_confirm_original = ana_menu_onay_ciz
 
 
@@ -3500,9 +3500,9 @@ def ana_menu_onay_ciz():
 
 # <POTBO_STAGE S1578>
 
-# ---------------------------------------------------------
-# 1) V78 HUD runtime düzeltmesi + daha sade/keskin kaynak barları
-# ---------------------------------------------------------
+
+
+
 V79_UI_PRESS_MS = 235
 V79_UI_ACTION_DELAY_MS = 218
 V79_UI_PRESS_DEPTH = 0.038
@@ -3515,8 +3515,8 @@ def oyuncu_paneli_ciz():
     panel = hud_sol_rect()
     gotik_panel(panel, PARLAK_KIRMIZI, 238)
 
-    # V78'de olmayan coin_gorseli_getir/altin/max isimleri kullanılmıştı.
-    # Burada oyunun mevcut ve kanonik değişkenleri kullanılır.
+
+
     ad = secili_karakter_adi()
     ad_rect = yazi_yaz(ad, panel.x + 22, panel.y + 17, BEYAZ, oyun_font)
     level_rect = yazi_yaz(
@@ -3581,7 +3581,7 @@ def oyuncu_paneli_ciz():
     )
 
 
-# Ana/pause/death butonlarının basışı daha ağırdır; state değişimi animasyonu kesmez.
+
 def buton_click_anim_rect(rect, secili=True):
     rect = pygame.Rect(rect)
     if not secili:
@@ -3599,7 +3599,7 @@ def buton_click_anim_rect(rect, secili=True):
         y_shift = 2.0 * q
     else:
         q = _v79_smootherstep((p - 0.44) / 0.56)
-        # Çok küçük overshoot; ağır metal plaka yerine oturur.
+
         scale = (
             (1.0 - V79_UI_PRESS_DEPTH)
             + V79_UI_PRESS_DEPTH * q
@@ -3671,14 +3671,14 @@ def _v77_death_menu_draw(now):
 # <POTBO_STAGE S1606>
 
 
-# =========================================================
-# END V79
-# =========================================================
 
 
-# =========================================================
-# V80 - SELECT PACE / SYMMETRIC HUD / DYNAMIC DEATH BLOOD
-# =========================================================
+
+
+
+
+
+
 V80_VERSION = "80.0"
 # </POTBO_STAGE S1606>
 
@@ -3771,14 +3771,14 @@ def v80_diagnostics():
 # <POTBO_STAGE S1635>
 
 
-# =========================================================
-# END V81
-# =========================================================
 
 
-# =========================================================
-# V81 - BRUTAL DEATH TABLEAU / TOPMOST HUD / HARD-EDGED BARS
-# =========================================================
+
+
+
+
+
+
 V81_VERSION = "81.0"
 V81_HUD_ACCENT = (214, 38, 56)
 V81_HUD_PANEL_ACCENT = V81_HUD_ACCENT
@@ -4024,13 +4024,13 @@ def v81_diagnostics():
 # <POTBO_STAGE S1655>
 
 
-# =========================================================
-# END V81
-# =========================================================
 
-# =========================================================
-# V82 - FLUID DEATH / GOTHIC HUD / DISTINCT MELEE CONTACT
-# =========================================================
+
+
+
+
+
+
 V82_VERSION = "82.0"
 # </POTBO_STAGE S1655>
 
@@ -4106,7 +4106,7 @@ def _v82_feature_slot(rect, key_text, item_index=None, selected=False, magic=Fal
             1,
         )
     if magic:
-        # Q slotu panelin rengini bozmaz; büyü kimliği yalnız küçük turuncu rune/işaretle okunur.
+
         pygame.draw.line(
             ekran,
             (211, 106, 36),
@@ -4226,7 +4226,7 @@ def _v82_death_menu_draw(now):
         title = gameover_font.render(t("game_over_title"), False, V77_DEATH_BODY)
         title_rect = title.get_rect(center=(GENISLIK // 2, 136))
         ekran.blit(title, title_rect)
-        # Başlığın iki yanında gotik yatay kollar; merkez boş bırakılır, okunurluk artar.
+
         y = title_rect.bottom + 18
         left_end = title_rect.left - 26
         right_start = title_rect.right + 26
@@ -4262,7 +4262,7 @@ def _v82_death_menu_draw(now):
                 (right_start, y + 4),
             ],
         )
-        # Az sayıda sabit başlık damlası: 'kanlı' fakat menüyü kapatmıyor.
+
         for i, dx in enumerate((-282, -168, 193, 276)):
             phase = ((now // 30 + i * 17) % 46) / 46.0
             if phase < 0.72:
@@ -4282,8 +4282,8 @@ def _v82_death_menu_draw(now):
             t("main_menu"),
             t("quit"),
         ]
-        # Menü bölgesine temiz siyah nefes alanı. Kan/ceset görsel şölen olarak arkada kalır,
-        # seçim hiyerarşisi asla kaybolmaz.
+
+
         panel = pygame.Rect(GENISLIK // 2 - 235, 390, 470, 260)
         pygame.draw.rect(ekran, V77_DEATH_BLACK, panel)
         pygame.draw.line(
@@ -4315,13 +4315,13 @@ _v77_death_menu_draw = _v82_death_menu_draw
 # <POTBO_STAGE S1683>
 
 
-# =========================================================
-# END V82
-# =========================================================
 
-# =========================================================
-# V83 - DEATH TABLEAU REFOCUS / SHARP GOTHIC HUD / LIGHTER STAMINA
-# =========================================================
+
+
+
+
+
+
 V83_VERSION = "83.0"
 # </POTBO_STAGE S1683>
 
@@ -4364,7 +4364,7 @@ def _v83_panel(rect, accent=V83_UI_ACCENT, alpha=244):
     ekran.blit(surf, rect)
 
 
-# --- HUD -----------------------------------------------------------------
+
 def _v83_bar_shell(rect, accent):
     shell = pygame.Rect(rect).inflate(8, 6)
     pygame.draw.polygon(ekran, (2, 2, 3), _v83_poly(shell, 7))
@@ -4542,7 +4542,7 @@ _v77_death_menu_draw = _v83_death_menu_draw
 # <POTBO_STAGE S1707>
 
 
-# HUD yine en üstte kalsın; dünya katmanları artık buna sızamaz.
+
 _v83_game_draw_original = oyun_ekrani_ciz
 # </POTBO_STAGE S1707>
 
@@ -4787,9 +4787,9 @@ def v84_perfect_guard_apply(
     poise_fraction = float(V84_GUARD_POISE_FRACTIONS[class_name])
     poise_damage = maximum * poise_fraction * (0.86 + 0.14 * quality)
 
-    # Holding K for the current render tick may have consumed a fraction of a
-    # stamina point.  This small compensation makes the contact itself net-zero
-    # without turning a held guard into stamina generation.
+
+
+
     oyuncu_stamina = min(
         float(oyuncu_max_stamina),
         float(oyuncu_stamina) + min(0.42, SAVUNMA_TUTMA_STAMINA_SANIYE / FPS),
@@ -4825,8 +4825,8 @@ def v84_perfect_guard_apply(
         opening_ms,
     )
     if not broken:
-        # A perfect guard always creates a short punish opening, but only a true
-        # poise break satisfies the natural execution condition.
+
+
         attacker.stagger_until = max(
             int(getattr(attacker, "stagger_until", 0)),
             int(now) + min(opening_ms, 420),
@@ -5153,7 +5153,7 @@ def v84_integrity_tick(now=None):
         elif state.target_uid != v84_actor_uid(state.target):
             v84_execution_interrupt("target_identity")
         elif not state.final_applied:
-            # Rendering suspension is an invariant, not an optional animation flag.
+
             state.target.active = False
             state.target.attacking = False
             state.target.vx = 0.0
@@ -5396,9 +5396,9 @@ class V85HoldCrossState:
 # <POTBO_STAGE S1882>
 
 
-# ---------------------------------------------------------
-# SHARP HUD / SLOT GEOMETRY
-# ---------------------------------------------------------
+
+
+
 V85_HUD_PANEL_FILL = (7, 6, 9)
 V85_HUD_PANEL_INNER = (14, 11, 15)
 V85_HUD_EDGE = (96, 77, 86)
@@ -5865,9 +5865,9 @@ V86_STARTUP_OK = all(
 # <POTBO_STAGE S1993>
 
 
-# ---------------------------------------------------------
-# Immutable damage provenance and atomic lethal ownership
-# ---------------------------------------------------------
+
+
+
 
 
 @dataclass(frozen=True)
@@ -6094,9 +6094,9 @@ def _v88_rock_impact(self, simdi):
 # <POTBO_STAGE S2020>
 
 
-# ---------------------------------------------------------
-# Impact-linked transitions: no replayed lethal heavy hit
-# ---------------------------------------------------------
+
+
+
 
 
 def v88_linked_lethal_event_for_scene(killer, source_name):
@@ -6117,9 +6117,9 @@ def v88_linked_lethal_event_for_scene(killer, source_name):
 # <POTBO_STAGE S2100>
 
 
-# ---------------------------------------------------------
-# MEDIEVAL HUD / INVENTORY: IRON, OAK, RIVETS; NO MODERN CUTS
-# ---------------------------------------------------------
+
+
+
 V89_UI_IRON = (37, 31, 29)
 V89_UI_IRON_DARK = (12, 10, 10)
 V89_UI_OAK = (59, 39, 25)
@@ -6147,7 +6147,7 @@ def v89_medieval_panel(rect, accent=V89_UI_BLOOD, alpha=244):
     layer = pygame.Surface(rect.size, pygame.SRCALPHA)
     layer.fill((*V89_UI_IRON_DARK, max(0, min(255, int(alpha)))))
     pygame.draw.rect(layer, (*V89_UI_OAK, alpha), layer.get_rect().inflate(-6, -6))
-    # Quiet vertical grain: deterministic, low-contrast, and explicitly material.
+
     for x in range(11, rect.width - 10, 23):
         pygame.draw.line(
             layer,
@@ -6505,23 +6505,23 @@ def envanter_ciz():
 # <POTBO_STAGE S2210>
 
 
-# =========================================================
-# END V90
-# =========================================================
 
 
-# =========================================================
-# V91 - PIXEL HUD / COMPACT BLOOD / AUTHORED IGNIS VFX
-# =========================================================
+
+
+
+
+
+
 
 V91_VERSION = "91.0"
 # </POTBO_STAGE S2210>
 
 # <POTBO_STAGE S2212>
 
-# The HUD reference is used only as a material/style vocabulary. Existing
-# information, panels, slot count and layout stay untouched; no minimap or new
-# screen region is introduced.
+
+
+
 V91_UI_BLACK = (0, 0, 0)
 V91_UI_INK = (9, 7, 9)
 V91_UI_WHITE = (231, 232, 220)
@@ -6534,7 +6534,7 @@ V91_UI_MANA = (42, 142, 187)
 
 # <POTBO_STAGE S2214>
 
-# Keep inherited call sites coherent with the new pixel palette.
+
 V89_UI_IRON = V91_UI_GREY
 V89_UI_IRON_DARK = V91_UI_BLACK
 V89_UI_OAK = V91_UI_INK
@@ -6607,8 +6607,8 @@ def v85_slot_contents(rect, key_text=None, item_index=None):
         if isinstance(candidate, dict):
             item = candidate
     if item is not None:
-        # Tight alpha crop plus three pixels of breathing room makes every item
-        # fit the authored slot instead of floating in a large modern inset.
+
+
         icon_area = rect.inflate(-6, -6)
         image = v89_tight_icon(item.get("id"), icon_area.size)
         if image is not None:
@@ -6709,9 +6709,9 @@ def v91_find_inventory_item(item_id):
 # <POTBO_STAGE S2263>
 
 
-# ---------------------------------------------------------
-# HUD: status + quick inventory become one continuous top band.
-# ---------------------------------------------------------
+
+
+
 def hud_sol_rect():
     return pygame.Rect(12, 10, 494, 150)
 
@@ -6806,9 +6806,9 @@ def oyuncu_paneli_ciz():
 # <POTBO_STAGE S2265>
 
 
-# ---------------------------------------------------------
-# Inventory: two equal visual halves and a centered belt.
-# ---------------------------------------------------------
+
+
+
 def envanter_ciz():
     oyun_ekrani_ciz()
     koyu_kaplama(220)
@@ -6927,7 +6927,7 @@ def envanter_ciz():
 
 # <POTBO_STAGE S2341>
 
-# UI timing: a click should read physically, but never feel like a lock.
+
 V37_UI_ACTION_DELAY_MS = 92
 V37_UI_INPUT_GUARD_MS = 105
 # </POTBO_STAGE S2341>
@@ -6952,10 +6952,10 @@ def v37_ui_action_schedule(action, label="ui", delay_ms=None):
 # <POTBO_STAGE S2346>
 
 
-# ---------------------------------------------------------
-# Main menu: cache the static glow instead of allocating a 520x720 alpha surface
-# every frame.
-# ---------------------------------------------------------
+
+
+
+
 v94_menu_glow = pygame.Surface((520, YUKSEKLIK), pygame.SRCALPHA).convert_alpha()
 v94_menu_glow.fill((0, 0, 0, 0))
 for _width, _alpha in ((520, 22), (410, 18), (300, 14)):
@@ -6993,10 +6993,10 @@ def ana_menu_ciz():
 # <POTBO_STAGE S2358>
 
 
-# ---------------------------------------------------------
-# Compact status symbols. PNG icons can replace these later without changing bar
-# geometry.
-# ---------------------------------------------------------
+
+
+
+
 def oyuncu_paneli_ciz():
     if oyuncu_hp <= 0:
         return
@@ -7041,8 +7041,8 @@ def oyuncu_olum_sahnesi_ciz():
 
 # <POTBO_STAGE S2373>
 
-# Restore the deliberate original UI rhythm. Performance work must never alter
-# menu/interaction timing.
+
+
 V37_UI_ACTION_DELAY_MS = 150
 V37_UI_INPUT_GUARD_MS = 165
 # </POTBO_STAGE S2373>
@@ -7054,9 +7054,9 @@ UI_BUTON_CLICK_SURE_MS = 140
 # <POTBO_STAGE S2403>
 
 
-# ---------------------------------------------------------
-# Dialogue strips: names live here, not in the top header.
-# ---------------------------------------------------------
+
+
+
 def _v97_dialogue_box(panel):
     return pygame.Rect(panel.x + 24, panel.bottom - 190, panel.width - 48, 154)
 # </POTBO_STAGE S2403>
@@ -7064,17 +7064,17 @@ def _v97_dialogue_box(panel):
 # <POTBO_STAGE S2416>
 
 
-# =========================================================
-# END V97
-# =========================================================
 
 
-# =========================================================
-# V98 - STATUS ICONS / REINALD WORLD INTEGRATION /
-# UNIVERSAL GROUND FIRE + FIREBALL TRAIL
-# =========================================================
-# Bu katman dosyanın en sonunda tanımlanır; böylece önceki HUD/world/fire
-# override'larının tamamından sonra canonical davranış olur.
+
+
+
+
+
+
+
+
+
 
 V98_VERSION = "98.0"
 # </POTBO_STAGE S2416>
@@ -7132,7 +7132,7 @@ def _v98_status_row(panel, y, height, ratio, fill, icon, trail=None, warning=Fal
     if image is not None:
         ekran.blit(image, image.get_rect(center=icon_box.center))
     else:
-        # Asset eksikse bar geometrisi bozulmaz; yalnız sade bir işaret kullanılır.
+
         pygame.draw.rect(ekran, V91_UI_GREY, icon_box.inflate(-8, -8), 1)
 
     bar_x = icon_box.right + 5
@@ -7218,7 +7218,7 @@ def oyuncu_paneli_ciz():
         warning=now < mana_uyari_bitis,
     )
 
-    # Injury sistemi stamina'nın erişilebilir kapasitesini bar üzerinde korur.
+
     if "v90_injury" in globals():
         effective = max(0.0, min(1.0, float(v90_injury.effective_stamina_ratio)))
         cap_x = stamina_bar.x + int(round(stamina_bar.width * effective))
@@ -7331,7 +7331,7 @@ def v100_skill_icon_draw(skill_id, rect, alpha=255):
             ekran.blit(fitted, fitted.get_rect(center=rect.center))
             return True
 
-    # Harf placeholder kullanma; Reinald ve envanter aynı grafik fallback'i görür.
+
     fallback = _v101_skill_fallback_surface(skill_id, min(rect.width, rect.height))
     if alpha < 255:
         fallback.set_alpha(max(0, min(255, int(alpha))))
@@ -7421,11 +7421,11 @@ def envanter_ciz():
         yazi_yaz(line, right.x + 31, y, ACIK_GRI, mini_font)
         y += 21
 
-    # Alt kemer slotları üstteki 30 envanter slotuyla aynı ölçekte tutulur.
-    # Tasarım değişmez; yalnız 58 px'lik küçük sürüm yerine 66 px kullanılır ve
-    # bütün 1-5 + Q / skill grubu panel merkezine simetrik yayılır.
-    belt_slot = slot_size  # 66 px: 30'lu grid ile birebir aynı slot boyutu
-    item_gap = gap         # 8 px: üst grid ile aynı ritim
+
+
+
+    belt_slot = slot_size
+    item_gap = gap
     item_separator = 22
     item_group_w = belt_slot * 6 + item_gap * 4 + item_separator
     skill_gap = gap
@@ -7476,8 +7476,8 @@ def envanter_ciz():
 # <POTBO_STAGE S2483>
 
 
-# Skill ikonları için ui/skills zorunlu değildir. Kullanıcı PNG'yi doğrudan
-# assets/ui içine koyarsa da aynı ikon hem Reinald'da hem envanter skill belt'inde görünür.
+
+
 V102_SKILL_PATH_EXTRAS = {
     "decussatio_rubra": (
         os.path.join(ASSETS, "ui", "decussatio_rubra.png"),
@@ -7497,12 +7497,12 @@ V102_SKILL_PATH_EXTRAS = {
 # <POTBO_STAGE S2490>
 
 
-# ---------------------------------------------------------
-# INVENTORY BELT FINAL ALIGNMENT
-# 1-5 + Q tam olarak sol 6x5 grid'in kolonlarına oturur.
-# Skill belt sağ bilgi kutusunun tam merkezindedir.
-# İki dikey ayraç üstteki iki ana kutunun iç kenarlarıyla birebir hizalıdır.
-# ---------------------------------------------------------
+
+
+
+
+
+
 def envanter_ciz():
     oyun_ekrani_ciz()
     koyu_kaplama(220)
@@ -7578,12 +7578,12 @@ def envanter_ciz():
         yazi_yaz(line, right.x + 31, y, ACIK_GRI, mini_font)
         y += 21
 
-    # Alt slotlar üst grid ile aynı boyut ve aynı yatay kolon ritmini kullanır.
+
     belt_slot = slot_size
     belt_gap = gap
     belt_y = panel.bottom - belt_slot - 18
 
-    # SOL: 1-5 ve Q, üstteki 6 kolonun TAM ALTINA oturur.
+
     quick_x = grid_x
     for index in range(5):
         rect = pygame.Rect(
@@ -7607,13 +7607,13 @@ def envanter_ciz():
     )
     v89_q_slot_draw(q_rect)
 
-    # SAĞ: 5 pasif skill slotu sağ bilgi kutusunun tam merkezine yerleşir.
+
     skill_group_w = belt_slot * 5 + belt_gap * 4
     skill_x = right.centerx - skill_group_w // 2
     v100_skill_belt_draw(skill_x, belt_y, belt_slot, belt_gap)
 
-    # Tek merkez çizgisi yerine iki çizgi: yukarıdaki sol/sağ kutuların iç
-    # sınırlarıyla tam aynı x koordinatlarında. Böylece alt kemer iki panele bağlanır.
+
+
     divider_top = left.bottom + 7
     divider_bottom = panel.bottom - 10
     for divider_x in (left.right, right.x):
@@ -7633,21 +7633,21 @@ def envanter_ciz():
 
 # <POTBO_STAGE S2492>
 
-# ---------------------------------------------------------
-# Text render cache
-# font.render() is surprisingly expensive when dozens of static HUD/menu labels
-# are rebuilt at 60 Hz. Dynamic values still work; the cache is bounded.
-# ---------------------------------------------------------
+
+
+
+
+
 V103_TEXT_CACHE = {}
 # </POTBO_STAGE S2492>
 
 # <POTBO_STAGE S2496>
 
 
-# ---------------------------------------------------------
-# Medieval HUD panel cache
-# The top HUD used to allocate/redraw the same alpha plate every frame.
-# ---------------------------------------------------------
+
+
+
+
 V103_PANEL_CACHE = {}
 
 
@@ -7679,9 +7679,9 @@ def v89_medieval_panel(rect, accent=V91_UI_RED, alpha=248):
 
 # <POTBO_STAGE S2503>
 
-# ---------------------------------------------------------
-# CTRL+3: Corona Aetherica -> inventory + Q test slot
-# ---------------------------------------------------------
+
+
+
 def v105_find_inventory_item(item_id):
     for index, item in enumerate(envanter_itemleri):
         if isinstance(item, dict) and item.get("id") == item_id:
@@ -7691,12 +7691,12 @@ def v105_find_inventory_item(item_id):
 
 # <POTBO_STAGE S2517>
 
-# ---------------------------------------------------------
-# PLAYER CONDITION
-# Normal HUD never prints condition text. CTRL+I is the diagnostic readout.
-# Wounded characters drip compact sprite blood from the body; critical condition
-# keeps the same drip and adds a restrained red screen wash.
-# ---------------------------------------------------------
+
+
+
+
+
+
 def v106_player_condition():
     if oyuncu_hp <= 0:
         return "critical"
@@ -7712,8 +7712,8 @@ def v106_player_condition():
 # <POTBO_STAGE S2523>
 
 
-# Final HUD definition: identical compact V98 bars, but condition words are never
-# shown during normal play. CTRL+I owns the textual diagnosis.
+
+
 def oyuncu_paneli_ciz():
     if oyuncu_hp <= 0:
         return
@@ -7805,7 +7805,7 @@ def oyuncu_paneli_ciz():
         )
 
 
-# CTRL+I replaces the old coin diagnostic. No normal HUD text is emitted.
+
 _v106_dev_input_previous = gelistirici_test_girdisi_uygula
 
 
@@ -7918,7 +7918,7 @@ def v106_corona_update(now=None):
     if oyun_durumu != OYUN or oyun_alt_durumu != HARITA or oyuncu_hp <= 0:
         return
 
-    # Yörünge temas bölgesi aynı kalır: yaklaşan düşmanları vurur/geri iter.
+
     if v106_corona.active:
         if int(now) >= int(v106_corona.expires_ms):
             v106_corona_scatter_remaining(now)
@@ -7958,7 +7958,7 @@ def v106_corona_update(now=None):
         wall_hit = v109_corona_first_wall(previous, proposed)
         travel_end = pygame.Vector2(wall_hit[1]) if wall_hit is not None else proposed
 
-        # Yüksek hızda bir aktörün iki frame arasından atlanmaması için segment collision.
+
         first_actor = None
         first_t = 2.0
         first_point = None
@@ -8003,7 +8003,7 @@ def v106_corona_update(now=None):
         projectile.x = float(proposed.x)
         projectile.y = float(proposed.y)
 
-        # Oyuncuya göre menzil sınırı yoktur; yalnız gerçek dünya sınırından çıkınca temizlenir.
+
         if (
             projectile.x < -V109_CORONA_WORLD_MARGIN
             or projectile.y < -V109_CORONA_WORLD_MARGIN
@@ -8017,7 +8017,7 @@ def v106_corona_update(now=None):
         if not projectile.trail or pos.distance_to(projectile.trail[-1]) >= 11.0:
             projectile.trail.append((float(projectile.x), float(projectile.y)))
 
-        # Hasarsız itici alan: top değmeden de yakın hedefi dışarı doğru iter.
+
         v109_corona_repulsion(projectile, dt)
 
     v106_corona.projectiles[:] = [p for p in v106_corona.projectiles if p.active]
@@ -8028,32 +8028,32 @@ def v106_corona_update(now=None):
     ]
 
 
-# ---------------------------------------------------------
-# DEATH UI
-# Ölüm sahnesinin üst başlığı zaten _v83_death_menu_draw tarafından çiziliyor.
-# Eski oyuncu_olum_ui_ciz alt kısımda ikinci GEBERDİN + katil adını ekliyordu;
-# final UI compositor bu fonksiyonu yeniden çağırdığı için duplicate görünüyordu.
-# ---------------------------------------------------------
+
+
+
+
+
+
 def oyuncu_olum_ui_ciz():
     return None
 
 
-# ---------------------------------------------------------
-# CONSUMABLE FLASH QUEUE
-# Envanter modalında kullanılan iksirler efekt sürelerini harcamaz. Envanter kapanınca
-# 430ms'lik mevcut sprite-parlama dili tek tek, çakışmadan oynatılır.
-# ---------------------------------------------------------
+
+
+
+
+
 V109_CONSUMABLE_FLASH_QUEUE = deque()
 # </POTBO_STAGE S2590>
 
 # <POTBO_STAGE S2594>
 
 
-# ---------------------------------------------------------
-# EADRIC STONE MANA
-# Mana doğal olarak yenilenmez. Eadric'in taşı varken HUD'daki altı mana karesinden
-# tam bir kareyi her 5 saniyede doldurur: tick başına max_mana / 6.
-# ---------------------------------------------------------
+
+
+
+
+
 V109_EADRIC_TICK_MS = 5000
 # </POTBO_STAGE S2594>
 
@@ -8063,8 +8063,8 @@ V109_EADRIC_TICK_MS = 5000
 def stamina_guncelle():
     global oyuncu_mana, mana_gorunen, v109_eadric_next_tick_ms
 
-    # Parent V106 doğal mana regenini zaten kapatıyor ama Eadric için continuous rate
-    # ekliyor. Bu çağrıda taşı geçici olarak görünmez yapıp yalnız stamina/HUD pipeline'ını al.
+
+
     g = globals()
     saved_has_stone = g.get("v106_has_eadric_stone")
     g["v106_has_eadric_stone"] = lambda: False
@@ -8093,7 +8093,7 @@ def stamina_guncelle():
             0,
             (int(now) - int(v109_eadric_next_tick_ms)) // V109_EADRIC_TICK_MS,
         )
-        # Çok uzun bir frame hitch'inde tek karede sınırsız catch-up yapma.
+
         elapsed_ticks = min(3, int(elapsed_ticks))
         per_tick = float(oyuncu_max_mana) / V109_EADRIC_BAR_SQUARES
         oyuncu_mana = min(
@@ -8101,7 +8101,7 @@ def stamina_guncelle():
             float(oyuncu_mana) + per_tick * elapsed_ticks,
         )
         v109_eadric_next_tick_ms += V109_EADRIC_TICK_MS * elapsed_ticks
-        # Görsel bar bir anda teleport etmesin; mevcut smooth display sonraki karelerde yaklaşır.
+
         mana_gorunen = min(float(oyuncu_max_mana), float(mana_gorunen))
     return result
 # </POTBO_STAGE S2598>

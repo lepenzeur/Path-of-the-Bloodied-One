@@ -1,9 +1,9 @@
-# Path of the Bloodied One — categorized source stages
-#
-# This file is intentionally executed by core/bootstrap.py in original source order.
-# Keeping one shared runtime namespace avoids gameplay regressions while the former
-# 90k-line monolith is physically separated by responsibility. Do not import this
-# file directly; edit the stage code normally and launch root main.py.
+
+
+
+
+
+
 
 # <POTBO_STAGE S0004>
 
@@ -23,25 +23,25 @@ diyalog_sesi = 80
 
 # <POTBO_STAGE S0016>
 
-# Uzun arka-plan/tema seslerinin canonical konumu assets/musics klasörüdür.
-# Harita ambience ve game-over müziği burada tutulur.
+
+
 MUSICS = os.path.join(ASSETS, "musics")
 
-# Eski sürümlerde proje kökünde musics/ kullanılmış olabilir. Yalnız geriye dönük
-# uyumluluk için fallback olarak aranır; yeni asset düzeni assets/musics'tir.
+
+
 LEGACY_MUSICS = os.path.join(BASE_DIR, "musics")
 # </POTBO_STAGE S0016>
 
 # <POTBO_STAGE S0032>
 
-# Harita sesi müzik değil, sürekli çevre/ambience katmanıdır. Kullanıcıya verilecek
-# standart ad ``mapAmbience``; uzun loop olduğu için musics klasöründe tutulur.
+
+
 MAP_AMBIENCE_SES_ADAYLARI = [
-    # Birincil dosya adları
+
     os.path.join(MUSICS, "mapAmbience.wav"),
     os.path.join(MUSICS, "mapAmbience.ogg"),
     os.path.join(MUSICS, "mapAmbience.mp3"),
-    # Elle dosya adlandırırken sık kullanılan varyasyonlar.
+
     os.path.join(MUSICS, "map_ambience.wav"),
     os.path.join(MUSICS, "map_ambience.ogg"),
     os.path.join(MUSICS, "map_ambience.mp3"),
@@ -51,11 +51,11 @@ MAP_AMBIENCE_SES_ADAYLARI = [
     os.path.join(MUSICS, "ambience.wav"),
     os.path.join(MUSICS, "ambience.ogg"),
     os.path.join(MUSICS, "ambience.mp3"),
-    # Proje kökündeki eski musics/ düzeni yalnız fallback'tir.
+
     os.path.join(LEGACY_MUSICS, "mapAmbience.wav"),
     os.path.join(LEGACY_MUSICS, "mapAmbience.ogg"),
     os.path.join(LEGACY_MUSICS, "mapAmbience.mp3"),
-    # Eski/fallback klasörleri.
+
     os.path.join(ASSETS, "ambience", "mapAmbience.wav"),
     os.path.join(ASSETS, "ambience", "mapAmbience.ogg"),
     os.path.join(ASSETS, "ambience", "mapAmbience.mp3"),
@@ -69,8 +69,8 @@ MAP_AMBIENCE_SES_ADAYLARI = [
     os.path.join(ASSETS, "sounds", "mapAmbience.mp3"),
 ]
 
-# Game-over müziğinin canonical yeri assets/musics klasörüdür.
-# Yol mixer/Sound yükleme aşamasından önce çözülür.
+
+
 GAMEOVER_MUSIC_ADAYLARI = [
     os.path.join(MUSICS, "gameovermusic.wav"),
     os.path.join(MUSICS, "gameovermusic.ogg"),
@@ -106,11 +106,11 @@ NPC_SES_YOLLARI = [
 ]
 
 OYUN_BASLANGIC_SES_ADAYLARI = [
-    # Kullanıcının mevcut klasör yapısı
+
     os.path.join(ASSETS, "ui", "game_start.wav"),
     os.path.join(ASSETS, "ui", "game_start.mp3"),
     os.path.join(ASSETS, "ui", "game_start.ogg"),
-    # Alternatif düzenli klasör yapısı
+
     os.path.join(ASSETS, "sounds", "ui", "game_start.wav"),
     os.path.join(ASSETS, "sounds", "ui", "game_start.mp3"),
     os.path.join(ASSETS, "sounds", "ui", "game_start.ogg"),
@@ -210,7 +210,7 @@ BUTTON_HOVER_SES_ADAYLARI = [
 ]
 
 BUTTON_HOVER_SES_YOLU = mevcut_ilk_dosya(BUTTON_HOVER_SES_ADAYLARI)
-# Ana menü / pause / karakter onayı için birinci buton ses ailesi.
+
 BUTTON_HOVER1_SES_ADAYLARI = [
     os.path.join(ASSETS, "ui", "buttonHover1.wav"),
     os.path.join(ASSETS, "sounds", "ui", "buttonHover1.wav"),
@@ -279,8 +279,8 @@ NEW_ITEM_SES_ADAYLARI = [
     os.path.join(ASSETS, "ui", "new_item.wav"),
 ]
 
-# Dünya içi E ile toplama sesleri. Kullanıcının dosya adı düzenini kırmamak için
-# yaygın camelCase / snake_case adları ve kök klasör fallback'leri desteklenir.
+
+
 COIN_PICKUP_SES_ADAYLARI = [
     os.path.join(ASSETS, "ui", "coinPickup.wav"),
     os.path.join(ASSETS, "sounds", "ui", "coinPickup.wav"),
@@ -319,8 +319,8 @@ ONEMLI_ITEM_SES_ONCELIK_SURESI = 1000
 
 # <POTBO_STAGE S0186>
 
-# Bütün gerçek UI click sesleri aynı zamanda kısa bir fiziksel basma/geri-sekme
-# animasyonu tetikler. Ses kapalı veya mixer unavailable olsa bile animasyon çalışır.
+
+
 ui_buton_click_baslangic = -10000
 # </POTBO_STAGE S0186>
 
@@ -377,8 +377,8 @@ liquid_pickup_sesi = (
 map_ambience_sesi = ses_yukle(MAP_AMBIENCE_SES_YOLU) if MAP_AMBIENCE_SES_YOLU else None
 gameover_music_sesi = ses_yukle(GAMEOVER_MUSIC_YOLU) if GAMEOVER_MUSIC_YOLU else None
 
-# Ambience hata ayıklaması sessiz yapılmaz. Dosya yanlış yerde/isimdeyse kullanıcı
-# konsolda doğrudan görür; doğruysa hangi dosyanın seçildiği bir kez yazılır.
+
+
 if pygame.mixer.get_init():
     if MAP_AMBIENCE_SES_YOLU is None:
         print("[AUDIO] map ambience bulunamadi.")
@@ -523,9 +523,9 @@ def _efekt_ses_orani():
 
 
 def _v35_ambience_ses_orani():
-    # Ambience efekt bus'ına bağlıdır fakat önceki 0.46 çarpanı fazla gerideydi.
-    # Master=70 / Effects=70 iken yaklaşık %35 çıkış verir; duyulur ama combat'ın
-    # önüne geçmez.
+
+
+
     return max(0.0, min(1.0, _efekt_ses_orani() * 0.82))
 
 
@@ -680,18 +680,18 @@ def onemli_item_gosterimini_guncelle():
 
     simdi = pygame.time.get_ticks()
 
-    # Kart açıldıktan sonra kapanışı yalnız oyuncu girdisi yapar.
+
     if onemli_item_gosterim_aktif:
         return
 
     if not yeni_item_sahnesi_musait_mi():
-        # Modal ekran açık kaldığı sürece ses dahil hiçbir sayaç başlamaz.
+
         onemli_item_gosterim_hazir_zamani = 0
         onemli_item_gorsel_hazir_zamani = 0
         return
 
-    # Ses çaldıysa, görsel tam bir saniye sonra gelir. Bu prelüd sırasında
-    # oyun girdisi/simülasyonu kilitlenir; ses başka bir modalın arkasında kalmaz.
+
+
     if onemli_item_gorsel_hazir_zamani > 0:
         if simdi >= onemli_item_gorsel_hazir_zamani:
             onemli_item_gosterim_aktif = True
@@ -732,8 +732,8 @@ def diyalog_aksiyonlarini_isle():
             diyalog_index += 1
 
             if diyalog_onemli_item_bekliyor:
-                # New Item sistemi yalnız HARITA görünümünde çalışır. Aktif diyalog
-                # bellekte kalır; kart kapandıktan sonra aynı akıştan devam eder.
+
+
                 oyun_alt_durumu = HARITA
                 return
 
@@ -760,9 +760,9 @@ def diyalog_aksiyonlarini_isle():
 # <POTBO_STAGE S0471>
 
 
-# =========================================================
-# AYARLAR
-# =========================================================
+
+
+
 
 
 def ayar_kategorileri():
@@ -966,9 +966,9 @@ def tus_atamalari_varsayilana_don():
 # <POTBO_STAGE S0494>
 
 
-# =========================================================
-# ANA OYUN DÖNGÜSÜ
-# =========================================================
+
+
+
 
 if OYUN_BASLANGIC_SES_YOLU:
     debug_log("Açılış ses dosyası bulundu:", OYUN_BASLANGIC_SES_YOLU)
@@ -986,11 +986,11 @@ else:
 
 # <POTBO_STAGE S0577>
 
-# ---------------------------------------------------------
-# GAME OVER MUSIC
-# ---------------------------------------------------------
-# GAMEOVER_MUSIC_ADAYLARI / GAMEOVER_MUSIC_YOLU ses yükleme aşamasından
-# önce çözülür. Burada yalnız eski state bayrağı korunur.
+
+
+
+
+
 V33_GAMEOVER_MUSIC_STARTED = False
 
 
@@ -1008,7 +1008,7 @@ def _v33_gameover_music_tick(menu_alpha):
             0.0,
             min(1.0, (ana_ses / 100.0) * (muzik_sesi / 100.0)),
         )
-        # Yazıyla aynı anda ağır ağır yükselir; ilk frame'de sert ses sıçraması yoktur.
+
         gain = 0.16 + 0.84 * max(0.0, min(1.0, float(menu_alpha)))
         pygame.mixer.music.set_volume(base * gain)
     except (pygame.error, OSError):
@@ -1082,7 +1082,7 @@ def _v34_gameover_music_tick(title_alpha, simdi=None):
             if gameover_music_kanali is not None and gameover_music_sesi is not None:
                 try:
                     gameover_music_kanali.set_volume(base, base)
-                    # Başlığın ilk görünür pikseliyle aynı karede başlar.
+
                     gameover_music_kanali.play(
                         gameover_music_sesi,
                         loops=0,
@@ -1091,8 +1091,8 @@ def _v34_gameover_music_tick(title_alpha, simdi=None):
                 except pygame.error:
                     pass
             elif GAMEOVER_MUSIC_YOLU:
-                # Bazı SDL_mixer kurulumları uzun MP3'leri Sound olarak açmayıp
-                # streaming music olarak açabilir. Bu yalnız compatibility fallback'tir.
+
+
                 try:
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(GAMEOVER_MUSIC_YOLU)
@@ -1101,14 +1101,14 @@ def _v34_gameover_music_tick(title_alpha, simdi=None):
                 except (pygame.error, OSError):
                     pass
 
-    # Kullanıcı kontratı: en fazla 10 saniye. Dosya daha kısaysa doğal olarak biter.
+
     if int(simdi) - int(V34_GAMEOVER_MUSIC_STARTED_AT) >= V34_GAMEOVER_MUSIC_MS:
         if gameover_music_kanali is not None:
             try:
                 gameover_music_kanali.stop()
             except pygame.error:
                 pass
-        # Streaming fallback kullanılmışsa onu da kes.
+
         if gameover_music_sesi is None and pygame.mixer.get_init():
             try:
                 pygame.mixer.music.stop()
@@ -1140,18 +1140,18 @@ def oyuncu_olum_sahnesini_sifirla():
 # <POTBO_STAGE S0724>
 
 
-# =========================================================
-# END V34C
-# =========================================================
 
 
-# =========================================================
-# V34D AUDIO MIX / THREAT AWARENESS / STATE WATCHDOG / TARGET LANGUAGE
-# =========================================================
-# Bu bölüm "game feel" katmanının sessiz çalışan yarısıdır. Special sırasında
-# ambience'i geri çeker, yanlış footstep loop'unu durdurur, aggro düşmanların ekran
-# dışı yönünü sade biçimde gösterir ve nadir transient-state tutarsızlıklarını kendi
-# kendine toparlayan düşük frekanslı bir invariant watchdog çalıştırır.
+
+
+
+
+
+
+
+
+
+
 
 V34_SPECIAL_AMBIENCE_DUCK = 0.48
 V34_SPECIAL_AMBIENCE_RECOVERY_MS = 280
@@ -1182,7 +1182,7 @@ def _v34_special_audio_duck_ratio(simdi):
             age / max(1.0, float(V34_SPECIAL_AMBIENCE_RECOVERY_MS)),
         ),
     )
-    # smoothstep recovery; impact bitince ambience bir frame'de geri fırlamaz.
+
     t = t * t * (3.0 - 2.0 * t)
     return V34_SPECIAL_AMBIENCE_DUCK + (1.0 - V34_SPECIAL_AMBIENCE_DUCK) * t
 
@@ -1322,8 +1322,8 @@ def _v37_exit_confirm_execute(index):
         oyun_durumu = cikis_donus_durumu
         return
 
-    # Ana menü/pause EXIT'in eski sesli kapanış davranışı korunur; yalnız click
-    # animasyonunun görünmesi için bu blok 120ms sonra başlar.
+
+
     ses_basladi = goodbye_sesini_oynat()
     kapanis_baslangic = pygame.time.get_ticks()
     while True:
@@ -1356,9 +1356,9 @@ def v37_exit_confirm_schedule(index):
 # <POTBO_STAGE S0977>
 
 
-# ---------------------------------------------------------
-# EXPLOSION: SOURCE METADATA + COMPACT VISUAL CORE
-# ---------------------------------------------------------
+
+
+
 def _v38_fire_explosion_init(
     self,
     x,
@@ -1389,9 +1389,9 @@ def _v38_fire_explosion_init(
 # <POTBO_STAGE S1182>
 
 
-# =========================================================
-# V46 - HEAVY/FLUID UI + CHARACTER SELECT AUDIO-ENVELOPE SYNC
-# =========================================================
+
+
+
 V46_VERSION = "46.0"
 # </POTBO_STAGE S1182>
 
@@ -1406,7 +1406,7 @@ try:
     )
 except Exception:
     _v79_sound_length_ms = 0
-# Gerçek dosya süresi biliniyorsa onu kullan; aşırı uzun asset oyunu kilitlemesin.
+
 V79_GAMEOVER_EXPECTED_MS = (
     max(1800, min(18000, _v79_sound_length_ms)) if _v79_sound_length_ms > 0 else 10000
 )
@@ -1476,7 +1476,7 @@ def _v34_gameover_music_tick(title_alpha, simdi=None):
         return
 
     elapsed = int(simdi) - int(V34_GAMEOVER_MUSIC_STARTED_AT)
-    # Gerçek kanaldan bitişi algıla. İlk 900 ms içinde mixer gecikmesi yanlış bitiş sayılmaz.
+
     natural_end = elapsed >= 900 and not _v79_music_is_busy()
     safety_end = elapsed >= int(V79_GAMEOVER_EXPECTED_MS) + 250
     if natural_end or safety_end:
@@ -1500,7 +1500,7 @@ def oyuncu_olum_menu_fade_orani(simdi=None):
     if oyuncu_olum_baslangic_ms <= 0:
         return 0.0
 
-    # Müzik daha başlamadıysa başlığın zaman çizgisini bekle.
+
     if V34_GAMEOVER_MUSIC_STARTED_AT <= 0:
         return 0.0
 
@@ -1509,7 +1509,7 @@ def oyuncu_olum_menu_fade_orani(simdi=None):
     elif V34_GAMEOVER_MUSIC_FINISHED:
         start = int(simdi)
     else:
-        # Render tick henüz natural end'i işaretlemediyse fiziksel süreyi fallback yap.
+
         expected_end = int(V34_GAMEOVER_MUSIC_STARTED_AT) + int(
             V79_GAMEOVER_EXPECTED_MS
         )
@@ -1554,8 +1554,8 @@ def v79_diagnostics():
 
 
 def v85_death_menu_draw(now):
-    # This is the pre-V83 authored fade contract: title and controls use their
-    # independent V79 dither fades and retain the original music-dependent timing.
+
+
     _v79_draw_death_title(now)
     menu_progress = oyuncu_olum_menu_fade_orani(now)
     if menu_progress <= 0.0:
@@ -1572,8 +1572,8 @@ def oyuncu_olum_durumu_guncelle():
     global oyuncu_olum_turu
     if not v86_death_state.active:
         return _v86_death_tick_original()
-    # The inherited tick remains responsible for menu transitions and music-safe
-    # state, but its generic arterial/post-mortem branches see a neutral type.
+
+
     saved_type = oyuncu_olum_turu
     oyuncu_olum_turu = "v86_authored"
     try:
