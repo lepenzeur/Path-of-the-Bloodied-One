@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "path-of-the-bloodied-one"
+version = "2.1.0"
+description = "Path of the Bloodied One by Agraphon Studios"
+requires-python = ">=3.11"
+dependencies = ["pygame-ce>=2.5,<3"]
+authors = [{name = "Agraphon Studios"}]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
